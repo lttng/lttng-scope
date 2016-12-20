@@ -17,16 +17,17 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.WeakHashMap;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.CoreException;
@@ -45,7 +46,6 @@ import org.lttng.scope.common.core.log.TraceCompassLog;
 import org.lttng.scope.common.core.process.ProcessUtils;
 import org.lttng.scope.common.core.process.ProcessUtils.OutputReaderFunction;
 import org.lttng.scope.lami.core.LamiStrings;
-import org.lttng.scope.lami.core.ShellUtils;
 import org.lttng.scope.lami.core.activator.internal.Activator;
 import org.lttng.scope.lami.core.aspect.LamiDurationAspect;
 import org.lttng.scope.lami.core.aspect.LamiEmptyAspect;
@@ -63,8 +63,8 @@ import org.lttng.scope.lami.core.aspect.LamiTimeRangeDurationAspect;
 import org.lttng.scope.lami.core.aspect.LamiTimeRangeEndAspect;
 import org.lttng.scope.lami.core.aspect.LamiTimestampAspect;
 import org.lttng.scope.lami.core.types.LamiData;
-import org.lttng.scope.lami.core.types.LamiTimeRange;
 import org.lttng.scope.lami.core.types.LamiData.DataType;
+import org.lttng.scope.lami.core.types.LamiTimeRange;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
@@ -83,6 +83,10 @@ public class LamiAnalysis implements IOnDemandAnalysis {
 
     private static final Logger LOGGER = TraceCompassLog.getLogger(LamiAnalysis.class);
     private static final String DOUBLE_QUOTES = "\""; //$NON-NLS-1$
+    private static final String SPACE = " "; //$NON-NLS-1$
+
+    private static final String BASH_EXECUTABLE = "bash"; //$NON-NLS-1$
+    private static final String BASH_FLAG = "-c"; //$NON-NLS-1$
 
     /* Flags passed to the analysis scripts */
     private static final String MI_VERSION_FLAG = "--mi-version"; //$NON-NLS-1$
@@ -199,12 +203,13 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     private boolean testCompatibility(ITmfTrace trace) {
         final @NonNull String tracePath = requireNonNull(trace.getPath());
 
-        final List<String> commandLine = ImmutableList.<@NonNull String> builder()
-                .addAll(fScriptCommand)
-                .add(TEST_COMPATIBILITY_FLAG)
-                .add(tracePath)
-                .build();
-        final boolean isCompatible = (getOutputFromCommand(commandLine) != null);
+        StringJoiner sj = new StringJoiner(SPACE);
+        fScriptCommand.forEach(sj::add);
+        sj.add(TEST_COMPATIBILITY_FLAG);
+        sj.add(tracePath);
+        String command = sj.toString();
+
+        final boolean isCompatible = (getOutputFromCommand(command) != null);
 
         /* Add this result to the compatibility cache. */
         fTraceCompatibilityCache.put(trace, isCompatible);
@@ -260,10 +265,12 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     }
 
     private void readVersion() {
-        final String command = fScriptCommand.get(0);
-        final List<String> commandLine = ImmutableList.<@NonNull String> builder()
-                .add(command).add(MI_VERSION_FLAG).build();
-        final String output = getOutputFromCommand(commandLine);
+        String command = new StringJoiner(SPACE)
+                .add(fScriptCommand.get(0))
+                .add(MI_VERSION_FLAG)
+                .toString();
+
+        final String output = getOutputFromCommand(command);
 
         if (output == null) {
             LOGGER.info(() -> String.format(LOG_NO_MI_VERSION_FMT, command));
@@ -361,8 +368,11 @@ public class LamiAnalysis implements IOnDemandAnalysis {
          * script's metadata. Actual runs of the script will use the execute()
          * method.
          */
-        List<String> command = ImmutableList.<@NonNull String> builder()
-                .addAll(fScriptCommand).add(METADATA_FLAG).build();
+        StringJoiner sj = new StringJoiner(SPACE);
+        fScriptCommand.forEach(sj::add);
+        sj.add(METADATA_FLAG);
+        String command = sj.toString();
+
         LOGGER.info(() -> "[LamiAnalysis:RunningMetadataCommand] " + command.toString()); //$NON-NLS-1$
         String output = getOutputFromCommand(command);
         if (output == null || output.isEmpty()) {
@@ -588,7 +598,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
          */
         builder.add(DOUBLE_QUOTES + tracePath + DOUBLE_QUOTES);
         List<String> list = builder.build();
-        String ret = list.stream().collect(Collectors.joining(" ")); //$NON-NLS-1$
+        String ret = String.join(" ", list); //$NON-NLS-1$
         return requireNonNull(ret);
     }
 
@@ -639,17 +649,14 @@ public class LamiAnalysis implements IOnDemandAnalysis {
         /* Should have been called already, but in case it was not */
         initialize();
 
-        final @NonNull String tracePath = requireNonNull(trace.getPath());
-        final @NonNull String trimmedExtraParamsString = requireNonNull(extraParamsString.trim());
-        final List<String> extraParams = ShellUtils.commandStringToArgs(trimmedExtraParamsString);
+        final @NonNull String baseCommand = String.join(SPACE, getBaseCommand(timeRange).build());
+        final @NonNull String trimmedExtraParams = requireNonNull(extraParamsString.trim());
+        final @NonNull String tracePath = DOUBLE_QUOTES + requireNonNull(trace.getPath()) + DOUBLE_QUOTES;
 
-        ImmutableList.Builder<String> builder = getBaseCommand(timeRange);
+        @NonNull String fullCommand = String.join(SPACE, baseCommand, trimmedExtraParams, tracePath);
 
-        builder.addAll(extraParams);
-        builder.add(tracePath);
-        List<String> command = builder.build();
-        LOGGER.info(() -> "[LamiAnalysis:RunningExecuteCommand] " + command.toString()); //$NON-NLS-1$
-        String output = getResultsFromCommand(command, monitor);
+        LOGGER.info(() -> "[LamiAnalysis:RunningExecuteCommand] " + fullCommand); //$NON-NLS-1$
+        String output = getResultsFromCommand(fullCommand, monitor);
 
         if (output.isEmpty()) {
             IStatus status = new Status(IStatus.INFO, Activator.instance().getPluginId(), Messages.LamiAnalysis_NoResults);
@@ -826,9 +833,11 @@ public class LamiAnalysis implements IOnDemandAnalysis {
      * @return The command output as a string
      */
     @VisibleForTesting
-    protected @Nullable String getOutputFromCommand(List<String> command) {
+    protected @Nullable String getOutputFromCommand(String command) {
         LOGGER.info(() -> LOG_RUNNING_MESSAGE + ' ' + command.toString());
-        List<String> lines = ProcessUtils.getOutputFromCommand(command);
+
+        List<String> bashCommand = Arrays.asList(BASH_EXECUTABLE, BASH_FLAG, command);
+        List<String> lines = ProcessUtils.getOutputFromCommand(bashCommand);
         if (lines == null) {
             return null;
         }
@@ -851,9 +860,12 @@ public class LamiAnalysis implements IOnDemandAnalysis {
      *             returned
      */
     @VisibleForTesting
-    protected String getResultsFromCommand(List<String> command, IProgressMonitor monitor)
+    protected String getResultsFromCommand(String command, IProgressMonitor monitor)
             throws CoreException {
-        List<String> lines = ProcessUtils.getOutputFromCommandCancellable(command, monitor, nullToEmptyString(Messages.LamiAnalysis_MainTaskName), OUTPUT_READER);
+
+        List<String> bashCommand = Arrays.asList(BASH_EXECUTABLE, BASH_FLAG, command);
+        List<String> lines = ProcessUtils.getOutputFromCommandCancellable(bashCommand,
+                monitor, nullToEmptyString(Messages.LamiAnalysis_MainTaskName), OUTPUT_READER);
         return requireNonNull(String.join("", lines)); //$NON-NLS-1$
     }
 

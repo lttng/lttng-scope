@@ -16,13 +16,13 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.function.Predicate;
 
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.lami.core.LamiConfigFileStrings;
-import org.lttng.scope.lami.core.ShellUtils;
 import org.lttng.scope.lami.core.activator.internal.Activator;
 
 /**
@@ -85,7 +85,7 @@ public final class LamiAnalysisFactoryFromConfigFile {
         final String command = getProperty(props, LamiConfigFileStrings.PROP_COMMAND);
 
         // Get individual arguments from command string
-        final List<String> args = ShellUtils.commandStringToArgs(command);
+        final List<String> args = Arrays.asList(command.split(" ")); //$NON-NLS-1$
 
         return new LamiAnalysis(name, isUserDefined, appliesTo, args);
     }

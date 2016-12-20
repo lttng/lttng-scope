@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.CoreException;
@@ -66,13 +65,13 @@ public class LamiAnalysisStub extends LamiAnalysis {
     }
 
     @Override
-    protected String getResultsFromCommand(List<String> command, IProgressMonitor monitor)
+    protected String getResultsFromCommand(String command, IProgressMonitor monitor)
             throws CoreException {
         return readLamiFile(fResultFilename);
     }
 
     @Override
-    protected @Nullable String getOutputFromCommand(List<String> command) {
+    protected @Nullable String getOutputFromCommand(String command) {
         return readLamiFile(fMetaDatafilename);
     }
 
