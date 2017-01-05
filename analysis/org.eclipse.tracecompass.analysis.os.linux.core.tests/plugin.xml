@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.analysis">
+      <module
+            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.cpuusage.KernelCpuUsageAnalysis"
+            automatic="false"
+            id="org.eclipse.tracecompass.analysis.os.linux.cpuusage"
+            name="CPU Usage Test Analysis">
+         <tracetype
+               applies="true"
+               class="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+         </tracetype>
+      </module>
+      <module
+            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModule"
+            automatic="false"
+            id="org.eclipse.tracecompass.analysis.os.linux.kernel"
+            name="Linux Kernel Test Analysis">
+         <tracetype
+               applies="true"
+               class="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+         </tracetype>
+      </module>
+      <module
+            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.contextswitch.KernelContextSwitchAnalysis"
+            automatic="false"
+            id="org.eclipse.tracecompass.analysis.os.linux.contextswitch"
+            name="Context switch test">
+         <tracetype
+               class="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+         </tracetype>
+      </module>
+      <module
+            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.kernelmemoryusage.KernelMemoryAnalysisModule"
+            automatic="false"
+            id="org.eclipse.tracecompass.analysis.os.linux.core.kernelmemoryanalysismodule"
+            name="Kernel Memory Usage Test Analysis">
+         <tracetype
+               applies="true"
+               class="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+         </tracetype>
+      </module>
+      <module
+            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.inputoutput.InputOutputAnalysisModule"
+            automatic="false"
+            id="org.eclipse.tracecompass.analysis.os.linux.inputoutput"
+            name="IO Test Analysis">
+         <tracetype
+               class="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+         </tracetype>
+      </module>
+      <module
+            analysis_module="org.eclipse.tracecompass.internal.analysis.os.linux.core.latency.statistics.SystemCallLatencyStatisticsAnalysisModule"
+            id="org.eclipse.tracecompass.analysis.os.linux.core.latency.statistics.syscall"
+            name="System call stats">
+         <tracetype
+               applies="true"
+               class="org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelTrace">
+         </tracetype>
+      </module>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.tracetype">
+      <type
+            category="org.eclipse.linuxtools.tmf.core.tests.category"
+            event_type="org.eclipse.tracecompass.tmf.core.event.TmfEvent"
+            id="org.eclipse.tracecompass.analysis.os.linux.core.kernel.trace.stub"
+            isDirectory="false"
+            name="XML Kernel Trace Stub"
+            trace_type="org.eclipse.tracecompass.analysis.os.linux.core.tests.stubs.trace.TmfXmlKernelTraceStub">
+      </type>
+   </extension> 
+</plugin>

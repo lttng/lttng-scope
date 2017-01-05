@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension
+       point="org.eclipse.ui.views">
+        <category id="org.eclipse.linuxtools.tmf.ui.stubs" name="TMF UI Stubs">
+        </category>
+        <view category="org.eclipse.linuxtools.tmf.ui.stubs"
+            class="org.eclipse.tracecompass.tmf.ui.widgets.timegraph.test.stub.views.TsfTraceAnalysisView"
+            id="org.eclipse.linuxtools.tmf.ui.widgets.timeAnalysis.test.stub.views.TmfTaTimeAnalysis"
+            name="Time Graph View" restorable="true">
+        </view>
+  <view
+        category="org.eclipse.linuxtools.tmf.ui.stubs"
+        class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.SDView"
+        id="org.eclipse.linuxtools.tmf.ui.tests.testSDView1Loader"
+        name="TestSDView1Loader"
+        restorable="true">
+  </view>
+  <view
+        category="org.eclipse.linuxtools.tmf.ui.stubs"
+        class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.SDView"
+        id="org.eclipse.linuxtools.tmf.ui.tests.testSDView2Loaders"
+        name="TestSDView2Loaders"
+        restorable="true">
+  </view>
+  <view
+        category="org.eclipse.linuxtools.tmf.ui.stubs"
+        class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.SDView"
+        id="org.eclipse.linuxtools.tmf.ui.tests.testAnalysisView"
+        name="Test Analysis View"
+        restorable="true">
+  </view>
+ </extension>
+ <extension
+       point="org.eclipse.linuxtools.tmf.ui.uml2SDLoader">
+    <uml2SDLoader
+          class="org.eclipse.tracecompass.tmf.ui.tests.uml2sd.load.TestLoaders"
+          default="true"
+          id="org.eclipse.linuxtools.tmf.ui.tests.uml2SDLoader1"
+          name="Test Loader "
+          view="org.eclipse.linuxtools.tmf.ui.tests.testSDView1Loader">
+    </uml2SDLoader>
+ </extension>
+ <extension
+       point="org.eclipse.linuxtools.tmf.ui.uml2SDLoader">
+    <uml2SDLoader
+          class="org.eclipse.tracecompass.tmf.ui.tests.uml2sd.load.TestLoaders"
+          default="true"
+          id="org.eclipse.linuxtools.tmf.ui.tests.uml2SDLoader2"
+          name="Test Loader2"
+          view="org.eclipse.linuxtools.tmf.ui.tests.testSDView2Loaders">
+    </uml2SDLoader>
+ </extension>
+ <extension
+       point="org.eclipse.linuxtools.tmf.ui.uml2SDLoader">
+    <uml2SDLoader
+          class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.loader.TmfUml2SDSyncLoader"
+          default="true"
+          id="org.eclipse.linuxtools.tmf.ui.tests.uml2SDLoader3"
+          name="Test Tmf UML2SD Loader"
+          view="org.eclipse.linuxtools.tmf.ui.tests.testSDView2Loaders">
+    </uml2SDLoader>
+ </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.analysis">
+      <module
+            analysis_module="org.eclipse.tracecompass.tmf.ui.tests.stubs.analysis.TestAnalysisUi"
+            id="org.eclipse.linuxtools.tmf.ui.tests.test"
+            name="Test analysis in UI">
+         <tracetype
+               class="org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub">
+         </tracetype>
+      </module>
+      <output
+            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
+            id="org.eclipse.linuxtools.tmf.ui.tests.testAnalysisView">
+         <analysisModuleClass
+               class="org.eclipse.tracecompass.tmf.ui.tests.stubs.analysis.TestAnalysisUi">
+         </analysisModuleClass>
+      </output>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.tracecompass.tmf.ui.tests.experiment.type.TmfEventsEditorStub"
+            default="false"
+            id="org.eclipse.linuxtools.tmf.ui.editors.events.stub"
+            name="%events.editor.name">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.linuxtools.tmf.ui.content-type.trace">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.ui.tracetypeui">
+      <experiment
+            tracetype="org.eclipse.linuxtools.tmf.core.tests.experimenttype">
+         <defaultEditor
+               id="org.eclipse.linuxtools.tmf.ui.editors.events.stub">
+         </defaultEditor>
+      </experiment>
+   </extension>
+
+</plugin>

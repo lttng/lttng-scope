@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.linuxtools.tmf.core.tracetype" name="%extensionpoint.trace_type.name" schema="schema/org.eclipse.linuxtools.tmf.core.tracetype.exsd"/>
+   <extension-point id="org.eclipse.linuxtools.tmf.core.analysis" name="%extensionpoint.analysis_module.name" schema="schema/org.eclipse.linuxtools.tmf.core.analysis.exsd"/>
+   <extension-point id="org.eclipse.tracecompass.tmf.core.analysis.ondemand" name="%extensionpoint.ondemand_analysis.name" schema="schema/org.eclipse.tracecompass.tmf.core.analysis.ondemand.exsd"/>
+   <extension-point id="org.eclipse.tracecompass.tmf.core.custom.trace" name="%extensionpoint.custom_trace.name" schema="schema/org.eclipse.tracecompass.tmf.core.custom.trace.exsd"/>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.tracecompass.internal.tmf.core.TmfCorePreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.analysis">
+      <source
+            class="org.eclipse.tracecompass.internal.tmf.core.analysis.TmfAnalysisModuleSourceConfigElement">
+      </source>
+      <module
+            analysis_module="org.eclipse.tracecompass.tmf.core.statistics.TmfStatisticsModule"
+            automatic="true"
+            icon="icons/statistics.png"
+            id="org.eclipse.linuxtools.tmf.core.statistics.analysis"
+            name="Tmf Statistics">
+         <tracetype
+               applies="true"
+               class="org.eclipse.tracecompass.tmf.core.trace.TmfTrace">
+         </tracetype>
+         <tracetype
+               applies="false"
+               class="org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment">
+         </tracetype>
+      </module>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.tracetype">
+      <experiment
+            id="org.eclipse.linuxtools.tmf.core.experiment.generic"
+            name="%experimenttype.type.generic"
+            experiment_type="org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment">
+      </experiment>
+   </extension>
+</plugin>
