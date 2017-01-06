@@ -12,12 +12,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.trace;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.filter.ITmfFilter;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceContext;
 
 /**
  * Trace type that represents a Linux kernel trace.
@@ -37,9 +32,4 @@ public interface IKernelTrace extends ITmfTrace {
      */
     IKernelAnalysisEventLayout getKernelEventLayout();
 
-    /** @since 2.0 */
-    @Override
-    default TmfTraceContext createTraceContext(TmfTimeRange selection, TmfTimeRange windowRange, @Nullable IFile editorFile, @Nullable ITmfFilter filter) {
-        return new LinuxTraceContext(selection, windowRange, editorFile, filter, this);
-    }
 }

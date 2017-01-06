@@ -10,11 +10,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.tracecompass.internal.lttng2.ust.core;x-friends:="org.eclipse.tracecompass.lttng2.ust.core.tests,org.eclipse.tracecompass.lttng2.ust.ui",
  org.eclipse.tracecompass.internal.lttng2.ust.core.analysis.debuginfo;x-friends:="org.eclipse.tracecompass.lttng2.ust.core.tests",
- org.eclipse.tracecompass.internal.lttng2.ust.core.analysis.memory;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui,org.eclipse.tracecompass.lttng2.ust.core.tests",
  org.eclipse.tracecompass.internal.lttng2.ust.core.callstack;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui,org.eclipse.tracecompass.lttng2.ust.core.tests,org.eclipse.tracecompass.lttng2.ust.ui.swtbot.tests",
  org.eclipse.tracecompass.internal.lttng2.ust.core.trace.layout;x-internal:=true,
  org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo,
- org.eclipse.tracecompass.lttng2.ust.core.analysis.memory,
  org.eclipse.tracecompass.lttng2.ust.core.trace,
  org.eclipse.tracecompass.lttng2.ust.core.trace.layout
 Require-Bundle: org.eclipse.core.runtime,
@@ -22,7 +20,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.common.core,
  org.eclipse.tracecompass.tmf.core,
  org.eclipse.tracecompass.tmf.ctf.core,
- org.eclipse.tracecompass.lttng2.control.core,
  org.eclipse.tracecompass.ctf.core
 Import-Package: com.google.common.annotations;version="15.0.0",
  com.google.common.base,

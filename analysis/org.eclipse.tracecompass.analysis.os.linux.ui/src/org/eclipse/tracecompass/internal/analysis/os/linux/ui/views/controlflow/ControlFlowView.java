@@ -43,8 +43,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModule;
@@ -53,7 +51,6 @@ import org.eclipse.tracecompass.common.core.StreamUtils.StreamFlattener;
 import org.eclipse.tracecompass.internal.analysis.os.linux.core.kernel.Attributes;
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.Activator;
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.Messages;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.actions.FollowThreadAction;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
 import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
@@ -199,14 +196,6 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
      */
     @Override
     protected void fillTimeGraphEntryContextMenu(@NonNull IMenuManager menuManager) {
-        ISelection selection = getSite().getSelectionProvider().getSelection();
-        if (selection instanceof StructuredSelection) {
-            StructuredSelection sSel = (StructuredSelection) selection;
-            if (sSel.getFirstElement() instanceof ControlFlowEntry) {
-                ControlFlowEntry entry = (ControlFlowEntry) sSel.getFirstElement();
-                menuManager.add(new FollowThreadAction(ControlFlowView.this, entry.getName(), entry.getThreadId(), entry.getTrace()));
-            }
-        }
     }
 
     @Override

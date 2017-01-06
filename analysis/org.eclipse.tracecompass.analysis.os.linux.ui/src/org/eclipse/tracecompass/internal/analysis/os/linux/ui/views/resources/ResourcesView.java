@@ -26,22 +26,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModule;
-import org.eclipse.tracecompass.analysis.os.linux.core.signals.TmfCpuSelectedSignal;
 import org.eclipse.tracecompass.internal.analysis.os.linux.core.kernel.Attributes;
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.Messages;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.actions.FollowCpuAction;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.actions.UnfollowCpuAction;
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.resources.ResourcesEntry.Type;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceContext;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.ui.views.timegraph.AbstractStateSystemTimeGraphView;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
@@ -104,23 +97,6 @@ public class ResourcesView extends AbstractStateSystemTimeGraphView {
      */
     @Override
     protected void fillTimeGraphEntryContextMenu(@NonNull IMenuManager menuManager) {
-        ISelection selection = getSite().getSelectionProvider().getSelection();
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection sSel = (IStructuredSelection) selection;
-            if (sSel.getFirstElement() instanceof ResourcesEntry) {
-                ResourcesEntry resourcesEntry = (ResourcesEntry) sSel.getFirstElement();
-                if (resourcesEntry.getType().equals(ResourcesEntry.Type.CPU)) {
-                    TmfTraceContext ctx = TmfTraceManager.getInstance().getCurrentTraceContext();
-                    Integer data = (Integer) ctx.getData(RESOURCES_FOLLOW_CPU);
-                    int cpu = data != null ? data.intValue() : -1;
-                    if (cpu >= 0) {
-                        menuManager.add(new UnfollowCpuAction(ResourcesView.this, resourcesEntry.getId(), resourcesEntry.getTrace()));
-                    } else {
-                        menuManager.add(new FollowCpuAction(ResourcesView.this, resourcesEntry.getId(), resourcesEntry.getTrace()));
-                    }
-                }
-            }
-        }
     }
 
     private static class ResourcesFilterLabelProvider extends TreeLabelProvider {
@@ -424,20 +400,6 @@ public class ResourcesView extends AbstractStateSystemTimeGraphView {
             lastEndTime = time + duration;
         }
         return eventList;
-    }
-
-    /**
-     * Signal handler for a cpu selected signal.
-     *
-     * @param signal
-     *            the cpu selected signal
-     * @since 2.0
-     */
-    @TmfSignalHandler
-    public void listenToCpu(TmfCpuSelectedSignal signal) {
-        int data = signal.getCore() >= 0 ? signal.getCore() : -1;
-        TmfTraceContext ctx = TmfTraceManager.getInstance().getCurrentTraceContext();
-        ctx.setData(RESOURCES_FOLLOW_CPU, data);
     }
 
 }

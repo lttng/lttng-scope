@@ -14,7 +14,6 @@ package org.eclipse.tracecompass.internal.lttng2.kernel.ui.views;
 
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.resources.ResourcesView;
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.controlflow.ControlFlowView;
-import org.eclipse.tracecompass.internal.lttng2.control.ui.views.ControlView;
 import org.eclipse.tracecompass.tmf.ui.project.wizards.NewTmfProjectWizard;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
 import org.eclipse.tracecompass.tmf.ui.views.statistics.TmfStatisticsView;
@@ -32,7 +31,6 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 
     // LTTng views
     private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
-    private static final String CONTROL_VIEW_ID = ControlView.ID;
     private static final String CONTROLFLOW_VIEW_ID = ControlFlowView.ID;
     private static final String RESOURCES_VIEW_ID = ResourcesView.ID;
     private static final String STATISTICS_VIEW_ID = TmfStatisticsView.ID;
@@ -55,11 +53,6 @@ public class PerspectiveFactory implements IPerspectiveFactory {
         IFolderLayout topLeftFolder = layout.createFolder(
                 "topLeftFolder", IPageLayout.LEFT, 0.15f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
         topLeftFolder.addView(PROJECT_VIEW_ID);
-
-        // Create the bottom left folder
-        IFolderLayout bottomLeftFolder = layout.createFolder(
-                "bottomLeftFolder", IPageLayout.BOTTOM, 0.70f, "topLeftFolder"); //$NON-NLS-1$ //$NON-NLS-2$
-        bottomLeftFolder.addView(CONTROL_VIEW_ID);
 
         // Create the top right folder
         IFolderLayout topRightFolder = layout.createFolder(
