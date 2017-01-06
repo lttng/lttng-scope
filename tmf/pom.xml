@@ -47,20 +47,4 @@
     <module>org.eclipse.tracecompass.tmf.remote.ui.tests</module>
   </modules>
 
-  <profiles>
-    <profile>
-      <id>automated-ui-tests</id>
-      <activation>
-        <property>
-          <name>!skip-automated-ui-tests</name>
-        </property>
-      </activation>
-      <modules>
-        <module>org.eclipse.tracecompass.tmf.ui.swtbot.tests</module>
-        <module>org.eclipse.tracecompass.tmf.analysis.xml.ui.swtbot.tests</module>
-        <module>org.eclipse.tracecompass.tmf.remote.ui.swtbot.tests</module>
-      </modules>
-    </profile>
-  </profiles>
-
 </project>

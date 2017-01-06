@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="tracecompass-e4.6" sequenceNumber="42">
+<target name="tracecompass-e4.6" sequenceNumber="43">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -22,14 +22,6 @@
       <repository location="http://download.eclipse.org/tools/cdt/releases/9.1/r"/>
     </location>
 
-    <!-- SWTBot -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.swtbot.generator.feature.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/technology/swtbot/snapshots"/>
-    </location>
-
     <!-- Dependencies packaged in Orbit -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="com.google.guava" version="15.0.0.v201403281430"/>
@@ -42,10 +34,6 @@
       <!-- For the CTF parser -->
       <unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
       <unit id="org.antlr.runtime.source" version="3.2.0.v201101311130"/>
-
-      <!-- SWTBot dependencies -->
-      <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
-      <unit id="org.hamcrest.core" version="0.0.0"/>
       
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
     </location>

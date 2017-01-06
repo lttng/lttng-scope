@@ -70,11 +70,6 @@ the build system. You can set them by using `-P[profile name]` and
   stable platform. To use the staging target for example, use
   `-Dtarget-platform=tracecompass-eStaging`.
 
-* `-Dskip-automated-ui-tests`
-
-  Skips the automated UI integration tests. Not required when using
-  `-Dmaven.test.skip=true`, which already skips all the tests.
-
 * `-Pctf-grammar`
 
   Re-compiles the CTF grammar files. This should be enabled if you modify the

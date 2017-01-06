@@ -119,32 +119,6 @@
       </build>
     </profile>
 
-    <!-- Automatic profile to define the settings for SWTBot test plugins -->
-    <profile>
-      <id>swtbot-test-plugin</id>
-      <activation>
-        <file>
-          <exists>swtbot-test-plugin.properties</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>tycho-surefire-plugin</artifactId>
-            <configuration>
-              <useUIHarness>true</useUIHarness>
-              <useUIThread>false</useUIThread>
-              <environmentVariables>
-                <SWT_GTK3>${SWT_GTK3}</SWT_GTK3>
-                <LIBOVERLAY_SCROLLBAR>0</LIBOVERLAY_SCROLLBAR>
-              </environmentVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
   </profiles>
 
   <modules>
