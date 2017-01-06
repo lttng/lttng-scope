@@ -55,8 +55,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.action.Action;
@@ -76,7 +74,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.OpenStrategy;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -1241,52 +1238,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         final IAction openModelAction = new Action(Messages.TmfEventsTable_OpenModelActionText) {
             @Override
             public void run() {
-
-                final TableItem items[] = fTable.getSelection();
-                if (items.length != 1) {
-                    return;
-                }
-                final TableItem item = items[0];
-
-                final Object eventData = item.getData();
-                if (eventData instanceof ITmfModelLookup) {
-                    String modelURI = ((ITmfModelLookup) eventData).getModelUri();
-
-                    if (modelURI != null) {
-                        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                        IFile file = null;
-                        final URI uri = URI.createURI(modelURI);
-                        if (uri.isPlatformResource()) {
-                            IPath path = new Path(uri.toPlatformString(true));
-                            file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-                        } else if (uri.isFile() && !uri.isRelative()) {
-                            file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-                                    new Path(uri.toFileString()));
-                        }
-
-                        if (file != null) {
-                            try {
-                                /*
-                                 * create a temporary validation marker on the
-                                 * model file, remove it afterwards thus,
-                                 * navigation works with all model editors
-                                 * supporting the navigation to a marker
-                                 */
-                                IMarker marker = file.createMarker(EValidator.MARKER);
-                                marker.setAttribute(EValidator.URI_ATTRIBUTE, modelURI);
-                                marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
-
-                                IDE.openEditor(activePage, marker, OpenStrategy.activateOnOpen());
-                                marker.delete();
-                            } catch (CoreException e) {
-                                displayException(e);
-                            }
-                        } else {
-                            displayException(new FileNotFoundException('\'' + modelURI + '\'' + '\n' + Messages.TmfEventsTable_OpenModelUnsupportedURI));
-                        }
-                    }
-                }
+                /* TODO Remove */
             }
         };
 

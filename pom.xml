@@ -47,7 +47,7 @@
     <tycho-extras-version>0.26.0</tycho-extras-version>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/tracecompass/org.eclipse.tracecompass.git</tycho.scmUrl>
     <cbi-plugins.version>1.1.3</cbi-plugins.version>
-    <target-platform>eclipse-4.6</target-platform>
+    <target-platform>tracecompass-e4.6</target-platform>
 
     <!-- Disable GTK3 because it's not quite usable yet and it can make the tests hang (bug in IcedTea http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=1736) -->
     <SWT_GTK3>0</SWT_GTK3>
