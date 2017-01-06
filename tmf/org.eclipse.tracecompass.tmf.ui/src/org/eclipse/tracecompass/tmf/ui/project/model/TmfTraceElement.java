@@ -45,12 +45,6 @@ import org.eclipse.tracecompass.internal.tmf.ui.Activator;
 import org.eclipse.tracecompass.internal.tmf.ui.editors.ITmfEventsEditorConstants;
 import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtEvent;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTraceDefinition;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlEvent;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTraceDefinition;
 import org.eclipse.tracecompass.tmf.core.project.model.ITmfPropertiesProvider;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
 import org.eclipse.tracecompass.tmf.core.project.model.TraceTypeHelper;
@@ -58,7 +52,6 @@ import org.eclipse.tracecompass.tmf.core.synchronization.TimestampTransformFacto
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestampFormat;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.eclipse.tracecompass.tmf.ui.editors.TmfEventsEditor;
 import org.eclipse.tracecompass.tmf.ui.properties.ReadOnlyTextPropertyDescriptor;
 import org.eclipse.ui.IActionFilter;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -268,22 +261,6 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
 
             String traceTypeId = getTraceType();
             if (traceTypeId != null) {
-                if (CustomTxtTrace.isCustomTraceTypeId(traceTypeId)) {
-                    for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
-                        String id = CustomTxtTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-                        if (traceTypeId.equals(id)) {
-                            return new CustomTxtTrace(def);
-                        }
-                    }
-                }
-                if (CustomXmlTrace.isCustomTraceTypeId(traceTypeId)) {
-                    for (CustomXmlTraceDefinition def : CustomXmlTraceDefinition.loadAll()) {
-                        String id = CustomXmlTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-                        if (traceTypeId.equals(id)) {
-                            return new CustomXmlTrace(def);
-                        }
-                    }
-                }
                 IConfigurationElement ce = TRACE_TYPE_ATTRIBUTES.get(traceTypeId);
                 if (ce == null) {
                     return null;
@@ -307,22 +284,6 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
         try {
             String traceTypeId = getTraceType();
             if (traceTypeId != null) {
-                if (CustomTxtTrace.isCustomTraceTypeId(traceTypeId)) {
-                    for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
-                        String id = CustomTxtTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-                        if (traceTypeId.equals(id)) {
-                            return new CustomTxtEvent(def);
-                        }
-                    }
-                }
-                if (CustomXmlTrace.isCustomTraceTypeId(traceTypeId)) {
-                    for (CustomXmlTraceDefinition def : CustomXmlTraceDefinition.loadAll()) {
-                        String id = CustomXmlTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-                        if (traceTypeId.equals(id)) {
-                            return new CustomXmlEvent(def);
-                        }
-                    }
-                }
                 IConfigurationElement ce = TRACE_TYPE_ATTRIBUTES.get(traceTypeId);
                 if (ce == null) {
                     return null;
@@ -340,10 +301,6 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
     public String getEditorId() {
         String traceTypeId = getTraceType();
         if (traceTypeId != null) {
-            if (CustomTxtTrace.isCustomTraceTypeId(traceTypeId) || CustomXmlTrace.isCustomTraceTypeId(traceTypeId)) {
-                return TmfEventsEditor.ID;
-            }
-
             IConfigurationElement ce = TRACE_TYPE_UI_ATTRIBUTES.get(getTraceType());
             if (ce == null) {
                 /* This trace type does not define UI attributes */

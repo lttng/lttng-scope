@@ -14,7 +14,6 @@ package org.eclipse.tracecompass.tmf.ui.views;
 
 import org.eclipse.tracecompass.tmf.ui.project.wizards.NewTmfProjectWizard;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
-import org.eclipse.tracecompass.tmf.ui.views.statistics.TmfStatisticsView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -39,7 +38,6 @@ public class TracingPerspectiveFactory implements IPerspectiveFactory {
 
     // Standard Eclipse views
     private static final String PROJECT_VIEW_ID = IPageLayout.ID_PROJECT_EXPLORER;
-    private static final String STATISTICS_VIEW_ID = TmfStatisticsView.ID;
     private static final String PROPERTIES_VIEW_ID = IPageLayout.ID_PROP_SHEET;
     private static final String BOOKMARKS_VIEW_ID = IPageLayout.ID_BOOKMARKS;
 
@@ -58,11 +56,6 @@ public class TracingPerspectiveFactory implements IPerspectiveFactory {
         IFolderLayout topLeftFolder = layout.createFolder(
                 "topLeftFolder", IPageLayout.LEFT, 0.15f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
         topLeftFolder.addView(PROJECT_VIEW_ID);
-
-        // Create the middle right folder
-        IFolderLayout middleRightFolder = layout.createFolder(
-                "middleRightFolder", IPageLayout.BOTTOM, 0.50f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
-        middleRightFolder.addView(STATISTICS_VIEW_ID);
 
         // Create the bottom right folder
         IFolderLayout bottomRightFolder = layout.createFolder(

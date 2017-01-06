@@ -38,7 +38,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.tracecompass.internal.tmf.ui.project.wizards.importtrace.ImportConfirmation;
-import org.eclipse.tracecompass.internal.tmf.ui.views.statistics.TmfStatisticsViewImpl;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSelectionRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
@@ -256,17 +255,6 @@ public abstract class AbstractImportAndReadSmokeTest {
         WaitUtils.waitForJobs();
         SWTBotUtils.delay(1000);
         assertNotNull(hv);
-    }
-
-    /**
-     * Verifies the statistics view
-     *
-     * @param vp
-     *            the view part
-     */
-    protected void testStatisticsView(IViewPart vp) {
-        TmfStatisticsViewImpl sv = (TmfStatisticsViewImpl) vp;
-        assertNotNull(sv);
     }
 
     // ---------------------------------------------

@@ -667,7 +667,6 @@ public class StandardImportAndReadSmokeTest extends AbstractImportAndReadSmokeTe
     private void testViews(TmfEventsEditor editor) {
         testHistogramView(getViewPart("Histogram"), editor);
         testPropertyView(getViewPart("Properties"));
-        testStatisticsView(getViewPart("Statistics"));
     }
 
     private static void openImportWizard() {

@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -31,10 +30,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.tracecompass.internal.tmf.ui.Activator;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTraceDefinition;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTraceDefinition;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType.TraceElementType;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement;
@@ -59,7 +54,6 @@ public class SelectElementTypeContributionItem extends CompoundContributionItem 
     private static final String TYPE_PARAMETER = "org.eclipse.linuxtools.tmf.ui.commandparameter.select_trace_type.type"; //$NON-NLS-1$
     private static final String ICON_PARAMETER = "org.eclipse.linuxtools.tmf.ui.commandparameter.select_trace_type.icon"; //$NON-NLS-1$
     private static final String SELECT_TRACE_TYPE_COMMAND_ID = "org.eclipse.linuxtools.tmf.ui.command.select_trace_type"; //$NON-NLS-1$
-    private static final String DEFAULT_TRACE_ICON_PATH = "icons/elcl16/trace.gif"; //$NON-NLS-1$
 
     @Override
     protected IContributionItem[] getContributionItems() {
@@ -170,51 +164,8 @@ public class SelectElementTypeContributionItem extends CompoundContributionItem 
             return list.toArray(new IContributionItem[list.size()]);
         }
 
-        /*
-         * Add the custom txt and xml trace type to the contribution items for
-         * traces
-         */
-        for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
-            String traceBundle = Activator.getDefault().getBundle().getSymbolicName();
-            String traceTypeId = CustomTxtTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-            String traceIcon = DEFAULT_TRACE_ICON_PATH;
-            String label = def.definitionName;
-            boolean selected = selectedTraceTypes.contains(traceTypeId);
-            MenuManager subMenu = getCategorySubMenu(list, categoriesMap, def.categoryName, selected);
-
-            addContributionItem(list, traceBundle, traceTypeId, traceIcon, label, selected, subMenu);
-        }
-        for (CustomXmlTraceDefinition def : CustomXmlTraceDefinition.loadAll()) {
-            String traceBundle = Activator.getDefault().getBundle().getSymbolicName();
-            String traceTypeId = CustomXmlTrace.buildTraceTypeId(def.categoryName, def.definitionName);
-            String traceIcon = DEFAULT_TRACE_ICON_PATH;
-            String label = def.definitionName;
-            boolean selected = selectedTraceTypes.contains(traceTypeId);
-            MenuManager subMenu = getCategorySubMenu(list, categoriesMap, def.categoryName, selected);
-
-            addContributionItem(list, traceBundle, traceTypeId, traceIcon, label, selected, subMenu);
-        }
-
         Collections.sort(list, comparator);
         return list.toArray(new IContributionItem[list.size()]);
-    }
-
-    private static MenuManager getCategorySubMenu(List<IContributionItem> list,
-            Map<String, MenuManager> categoriesMap, String categoryName, boolean selected) {
-        for (Entry<String, MenuManager> entry : categoriesMap.entrySet()) {
-            MenuManager subMenu = entry.getValue();
-            if (subMenu.getMenuText().equals(categoryName)) {
-                if (selected) {
-                    subMenu.setImageDescriptor(SELECTED_ICON);
-                }
-                return subMenu;
-            }
-        }
-        ImageDescriptor icon = selected ? SELECTED_ICON : null;
-        MenuManager subMenu = new MenuManager(categoryName, icon, null);
-        categoriesMap.put(categoryName, subMenu);
-        list.add(subMenu);
-        return subMenu;
     }
 
     private static void addContributionItem(List<IContributionItem> list,

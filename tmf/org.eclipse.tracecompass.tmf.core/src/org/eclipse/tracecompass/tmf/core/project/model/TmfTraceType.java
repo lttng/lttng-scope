@@ -37,10 +37,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.tracecompass.internal.tmf.core.Activator;
 import org.eclipse.tracecompass.internal.tmf.core.project.model.Messages;
 import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomTxtTraceDefinition;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTrace;
-import org.eclipse.tracecompass.tmf.core.parsers.custom.CustomXmlTraceDefinition;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
@@ -102,7 +98,6 @@ public final class TmfTraceType {
 
     static {
         populateCategoriesAndTraceTypes();
-        populateCustomTraceTypes();
     }
 
     /**
@@ -235,119 +230,6 @@ public final class TmfTraceType {
 
         // Format result
         return traceTypes.toArray(new String[traceTypes.size()]);
-    }
-
-    /**
-     * Gets all the custom trace types
-     *
-     * @return the list of custom trace types
-     * @deprecated Use {@link CustomTxtTraceDefinition#loadAll()} and
-     *             {@link CustomXmlTraceDefinition#loadAll()} if achieving this
-     *             is needed.
-     */
-    @Deprecated
-    public static List<String> getCustomTraceTypes() {
-
-        List<String> traceTypes = new ArrayList<>();
-        for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
-            String traceTypeName = def.definitionName;
-            traceTypes.add(traceTypeName);
-        }
-        for (CustomXmlTraceDefinition def : CustomXmlTraceDefinition.loadAll()) {
-            String traceTypeName = def.definitionName;
-            traceTypes.add(traceTypeName);
-        }
-        return traceTypes;
-    }
-
-    private static void populateCustomTraceTypes() {
-        // add the custom trace types
-        for (CustomTxtTraceDefinition def : CustomTxtTraceDefinition.loadAll()) {
-            CustomTxtTrace trace = new CustomTxtTrace(def);
-            String traceTypeId = trace.getTraceTypeId();
-            TraceTypeHelper tt = new TraceTypeHelper(traceTypeId, def.categoryName, def.definitionName, trace, false, TraceElementType.TRACE);
-            TRACE_TYPES.put(traceTypeId, tt);
-            // Deregister trace as signal handler because it is only used for
-            // validation
-            TmfSignalManager.deregister(trace);
-        }
-        for (CustomXmlTraceDefinition def : CustomXmlTraceDefinition.loadAll()) {
-            CustomXmlTrace trace = new CustomXmlTrace(def);
-            String traceTypeId = trace.getTraceTypeId();
-            TraceTypeHelper tt = new TraceTypeHelper(traceTypeId, def.categoryName, def.definitionName, trace, false, TraceElementType.TRACE);
-            TRACE_TYPES.put(traceTypeId, tt);
-            // Deregister trace as signal handler because it is only used for
-            // validation
-            TmfSignalManager.deregister(trace);
-        }
-    }
-
-    /**
-     * Add or replace a custom trace type
-     *
-     * @param traceClass
-     *            The custom trace class, either {@link CustomTxtTrace} or
-     *            {@link CustomXmlTrace}
-     * @param category
-     *            The custom parser category
-     * @param definitionName
-     *            The custom parser definition name to add or replace
-     */
-    public static void addCustomTraceType(Class<? extends ITmfTrace> traceClass, String category, String definitionName) {
-        String traceTypeId = null;
-        ITmfTrace trace = null;
-
-        if (traceClass.equals(CustomTxtTrace.class)) {
-            CustomTxtTraceDefinition def = CustomTxtTraceDefinition.load(category, definitionName);
-            if (def != null) {
-                trace = new CustomTxtTrace(def);
-                traceTypeId = trace.getTraceTypeId();
-            }
-        } else if (traceClass.equals(CustomXmlTrace.class)) {
-            CustomXmlTraceDefinition def = CustomXmlTraceDefinition.load(category, definitionName);
-            if (def != null) {
-                trace = new CustomXmlTrace(def);
-                traceTypeId = trace.getTraceTypeId();
-            }
-        }
-
-        if (traceTypeId != null && trace != null) {
-            TraceTypeHelper helper = TRACE_TYPES.get(traceTypeId);
-            if (helper != null) {
-                helper.getTrace().dispose();
-            }
-            TraceTypeHelper tt = new TraceTypeHelper(traceTypeId, category, definitionName, trace, false, TraceElementType.TRACE);
-            TRACE_TYPES.put(traceTypeId, tt);
-            // Deregister trace as signal handler because it is only used for
-            // validation
-            TmfSignalManager.deregister(trace);
-        }
-    }
-
-    /**
-     * Remove a custom trace type
-     *
-     * @param traceClass
-     *            The custom trace class, either {@link CustomTxtTrace} or
-     *            {@link CustomXmlTrace}
-     * @param category
-     *            The custom parser category
-     * @param definitionName
-     *            The custom parser definition name to add or replace
-     */
-    public static void removeCustomTraceType(Class<? extends ITmfTrace> traceClass, String category, String definitionName) {
-        String traceTypeId = null;
-        if (traceClass.equals(CustomTxtTrace.class)) {
-            traceTypeId = CustomTxtTrace.buildTraceTypeId(category, definitionName);
-        } else if (traceClass.equals(CustomXmlTrace.class)) {
-            traceTypeId = CustomXmlTrace.buildTraceTypeId(category, definitionName);
-        }
-        if (traceTypeId != null) {
-            TraceTypeHelper helper = TRACE_TYPES.remove(traceTypeId);
-            if (helper != null) {
-                helper.getTrace().dispose();
-            }
-        }
     }
 
     /**
@@ -603,15 +485,6 @@ public final class TmfTraceType {
      * @return the trace type ID in Trace Compass format
      */
     public static String buildCompatibilityTraceTypeId(String traceTypeId) {
-        // Fix custom trace type id with old class name or without category name
-        // for backward compatibility
-        if (traceTypeId != null) {
-            String newTraceType = CustomTxtTrace.buildCompatibilityTraceTypeId(traceTypeId);
-            if (newTraceType.equals(traceTypeId)) {
-                newTraceType = CustomXmlTrace.buildCompatibilityTraceTypeId(traceTypeId);
-            }
-            return newTraceType;
-        }
         return traceTypeId;
     }
 
@@ -719,10 +592,6 @@ public final class TmfTraceType {
      * Only return the leaves of the trace types. Ignore custom trace types.
      */
     private static boolean isUnique(TraceTypeHelper trace, List<Pair<Integer, TraceTypeHelper>> set) {
-        if (trace.getTraceClass().equals(CustomTxtTrace.class) ||
-                trace.getTraceClass().equals(CustomXmlTrace.class)) {
-            return true;
-        }
         // check if the trace type is the leaf. we make an instance of the trace
         // type and if it is only an instance of itself, it is a leaf
         final ITmfTrace tmfTrace = trace.getTrace();

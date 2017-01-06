@@ -20,7 +20,6 @@ import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.resources.Re
 import org.eclipse.tracecompass.internal.lttng2.kernel.ui.views.PerspectiveFactory;
 import org.eclipse.tracecompass.tmf.ui.swtbot.tests.shared.AbstractPerspectiveChecker;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
-import org.eclipse.tracecompass.tmf.ui.views.statistics.TmfStatisticsView;
 import org.eclipse.ui.IPageLayout;
 import org.junit.Before;
 
@@ -43,7 +42,6 @@ public class KernelPerspectiveChecker extends AbstractPerspectiveChecker {
                 HistogramView.ID,
                 ControlFlowView.ID,
                 ResourcesView.ID,
-                TmfStatisticsView.ID,
                 // Standard Eclipse views
                 IPageLayout.ID_PROJECT_EXPLORER,
                 IPageLayout.ID_PROP_SHEET,

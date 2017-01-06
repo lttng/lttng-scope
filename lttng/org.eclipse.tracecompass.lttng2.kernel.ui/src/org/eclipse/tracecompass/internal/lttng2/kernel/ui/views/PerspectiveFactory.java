@@ -16,7 +16,6 @@ import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.resources.Re
 import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.controlflow.ControlFlowView;
 import org.eclipse.tracecompass.tmf.ui.project.wizards.NewTmfProjectWizard;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
-import org.eclipse.tracecompass.tmf.ui.views.statistics.TmfStatisticsView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -33,7 +32,6 @@ public class PerspectiveFactory implements IPerspectiveFactory {
     private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
     private static final String CONTROLFLOW_VIEW_ID = ControlFlowView.ID;
     private static final String RESOURCES_VIEW_ID = ResourcesView.ID;
-    private static final String STATISTICS_VIEW_ID = TmfStatisticsView.ID;
 
     // Standard Eclipse views
     private static final String PROJECT_VIEW_ID = IPageLayout.ID_PROJECT_EXPLORER;
@@ -59,7 +57,6 @@ public class PerspectiveFactory implements IPerspectiveFactory {
                 "topRightFolder", IPageLayout.TOP, 0.40f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
         topRightFolder.addView(CONTROLFLOW_VIEW_ID);
         topRightFolder.addView(RESOURCES_VIEW_ID);
-        topRightFolder.addView(STATISTICS_VIEW_ID);
 
         // Create the bottom right folder
         IFolderLayout bottomRightFolder = layout.createFolder(

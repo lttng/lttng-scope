@@ -18,7 +18,6 @@ import java.util.Arrays;
 import org.eclipse.tracecompass.tmf.ui.swtbot.tests.shared.AbstractPerspectiveChecker;
 import org.eclipse.tracecompass.tmf.ui.views.TracingPerspectiveFactory;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
-import org.eclipse.tracecompass.tmf.ui.views.statistics.TmfStatisticsView;
 import org.eclipse.ui.IPageLayout;
 import org.junit.Before;
 
@@ -38,7 +37,6 @@ public class TracingPerspectiveChecker extends AbstractPerspectiveChecker {
         fViewIds = new ArrayList<>();
         fViewIds.addAll(Arrays.asList(new String[] {
                 HistogramView.ID,
-                TmfStatisticsView.ID,
                 // Standard Eclipse views
                 IPageLayout.ID_PROJECT_EXPLORER,
                 IPageLayout.ID_PROP_SHEET,
