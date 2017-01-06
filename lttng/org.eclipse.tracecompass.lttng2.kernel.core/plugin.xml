@@ -11,38 +11,5 @@
             name="%tracetype.type.kernel"
             trace_type="org.eclipse.tracecompass.lttng2.kernel.core.trace.LttngKernelTrace">
       </type>
-      <experiment
-            experiment_type="org.eclipse.tracecompass.internal.lttng2.kernel.core.analysis.vm.trace.VirtualMachineExperiment"
-            id="lttng2.analysis.vm.VirtualMachineExperiment"
-            name="Virtual Machine Experiment">
-      </experiment>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.tmf.core.analysis">
-      <module
-            analysis_module="org.eclipse.tracecompass.internal.lttng2.kernel.core.analysis.vm.module.VirtualMachineCpuAnalysis"
-            automatic="false"
-            id="org.eclipse.tracecompass.lttng2.analysis.vm.core.VirtualMachineAnalysisModule"
-            name="Virtual Machine Analysis">
-            <tracetype
-                  applies="true"
-                  class="org.eclipse.tracecompass.internal.lttng2.kernel.core.analysis.vm.trace.VirtualMachineExperiment">
-            </tracetype>
-      </module>
-      <module
-            analysis_module="org.eclipse.tracecompass.internal.lttng2.kernel.core.analysis.graph.building.LttngKernelExecutionGraph"
-            applies_experiment="true"
-            id="org.eclipse.tracecompass.lttng2.kernel.core.execgraph"
-            name="LTTng Kernel Exec Graph">
-         <tracetype
-               class="org.eclipse.tracecompass.lttng2.kernel.core.trace.LttngKernelTrace">
-         </tracetype>
-      </module>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.tmf.analysis.xml.core.files">
-      <xmlfile
-            file="analysis.xml/org.eclipse.tracecompass.internal.lttng2.kernel.core.analysis.xml.futex/futex_analysis_lttng.xml">
-      </xmlfile>
    </extension>
 </plugin>
