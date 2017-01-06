@@ -62,11 +62,6 @@
       <id>tycho-snapshots</id>
       <url>https://repo.eclipse.org/content/repositories/tycho-snapshots/</url>
     </pluginRepository>
-    <pluginRepository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Repository Group</name>
-      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-    </pluginRepository>
   </pluginRepositories>
 
   <profiles>

@@ -31,8 +31,6 @@ http://www.eclipse.org/legal/epl-v10.html
       </vmArgsLin>
       <vmArgsMac>-Xms512m -Xmx1024m -XstartOnFirstThread -Dosgi.requiredJavaVersion=1.8 -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
-      <vmArgsSol>-Xms512m -Xmx1024m  -Dosgi.requiredJavaVersion=1.8
-      </vmArgsSol>
       <vmArgsWin>-Xms512m -Xmx1024m  -Dosgi.requiredJavaVersion=1.8
       </vmArgsWin>
    </launcherArgs>
@@ -44,13 +42,11 @@ http://www.eclipse.org/legal/epl-v10.html
    <launcher name="tracecompass">
       <linux icon="../org.eclipse.tracecompass.rcp.branding/icons/xpm/tc_icon_256x256.xpm"/>
       <macosx icon="../org.eclipse.tracecompass.rcp.branding/icons/icns/tc_icon.icns"/>
-      <solaris/>
       <win useIco="true">
          <ico path="../org.eclipse.tracecompass.rcp.branding/icons/ico/tc_icon.ico"/>
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
@@ -194,30 +190,23 @@ Java and all Java-based trademarks are trademarks of Oracle Corporation in the U
    <features>
       <feature id="org.eclipse.tracecompass.rcp.branding.feature"/>
       <feature id="org.eclipse.tracecompass.rcp"/>
-      <feature id="org.eclipse.tracecompass.lttng2.kernel"/>
-      <feature id="org.eclipse.tracecompass.lttng2.ust"/>
-      <feature id="org.eclipse.tracecompass.lttng2.control"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
-      <feature id="org.eclipse.tracecompass.tmf"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.tracecompass.btf"/>
-      <feature id="org.eclipse.tracecompass.ctf"/>
-      <feature id="org.eclipse.tracecompass.tmf.ctf"/>
-      <feature id="org.eclipse.tracecompass.tmf.pcap"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.feature"/>
+      <feature id="org.eclipse.equinox.executable"/>
    </features>
 
    <configurations>

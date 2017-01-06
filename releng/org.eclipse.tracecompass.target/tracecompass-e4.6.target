@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="tracecompass-e4.6" sequenceNumber="43">
+<target name="tracecompass-e4.6" sequenceNumber="48">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -13,12 +13,31 @@
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
       <unit id="org.eclipse.platform.ide" version="0.0.0"/>
+
+      <!-- org.eclipse.ui.ide depends on EMF, unfortunately -->
+      <unit id="org.eclipse.emf.common.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.emf.ecore.feature.group" version="0.0.0"/>
+
+      <!-- RCP requires Equinox and ECF (for the self-update feature) -->
+      <unit id="org.eclipse.equinox.concurrent" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
+
+      <unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ecf.filetransfer.httpclient4.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature.feature.group" version="0.0.0"/>
+
       <repository location="http://download.eclipse.org/eclipse/updates/4.6/"/>
     </location>
 
-    <!-- CDT dependencies -->
+    <!-- CDT -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.cdt.core" version="0.0.0"/>
+      <unit id="org.eclipse.cdt.core.native" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tools/cdt/releases/9.1/r"/>
     </location>
 
@@ -28,12 +47,17 @@
       <unit id="org.apache.commons.io" version="0.0.0"/>
       <unit id="org.apache.commons.lang3" version="0.0.0"/>
       <unit id="org.json" version="0.0.0"/>
-      <unit id="org.junit" version="0.0.0"/>
       <unit id="org.swtchart" version="0.7.0.v201201201914"/>
+      
+      <unit id="org.junit" version="0.0.0"/>
+      <unit id="org.hamcrest.core" version="1.3.0.v201303031735"/>
 
       <!-- For the CTF parser -->
       <unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
       <unit id="org.antlr.runtime.source" version="3.2.0.v201101311130"/>
+
+      <!-- CDT dependencies -->
+      <unit id="com.google.gson" version="0.0.0"/>
       
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
     </location>
