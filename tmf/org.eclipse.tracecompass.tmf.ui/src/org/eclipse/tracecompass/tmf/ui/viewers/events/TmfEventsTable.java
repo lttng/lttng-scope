@@ -163,9 +163,6 @@ import org.eclipse.tracecompass.tmf.core.util.Pair;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.TmfEventsCache.CachedEvent;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.TmfEventsTableHeader.IEventsTableHeaderListener;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.columns.TmfEventTableColumn;
-import org.eclipse.tracecompass.tmf.ui.views.colors.ColorSetting;
-import org.eclipse.tracecompass.tmf.ui.views.colors.ColorSettingsManager;
-import org.eclipse.tracecompass.tmf.ui.views.colors.IColorSettingsListener;
 import org.eclipse.tracecompass.tmf.ui.views.filter.FilterManager;
 import org.eclipse.tracecompass.tmf.ui.widgets.rawviewer.TmfRawEventViewer;
 import org.eclipse.tracecompass.tmf.ui.widgets.virtualtable.TmfVirtualTable;
@@ -196,7 +193,7 @@ import com.google.common.collect.Multimap;
  * @author Francois Chouinard
  * @author Patrick Tasse
  */
-public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorSettingsListener, ISelectionProvider, IPropertyChangeListener {
+public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelectionProvider, IPropertyChangeListener {
 
     /**
      * Empty string array, used by {@link #getItemStrings}.
@@ -982,8 +979,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         initializeColors();
         PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(this);
 
-        ColorSettingsManager.addColorSettingsListener(this);
-
         fTable.setItemCount(1); // +1 for header row
 
         fRawViewer = new TmfRawEventViewer(fSashForm, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -1494,7 +1489,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         stopSearchThread();
         stopFilterThread();
         PlatformUI.getWorkbench().getThemeManager().removePropertyChangeListener(this);
-        ColorSettingsManager.removeColorSettingsListener(this);
         fCache.clear();
         if ((fTrace != null) && fDisposeOnClose) {
             fTrace.dispose();
@@ -1589,24 +1583,13 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
         }
 
         boolean searchMatch = false;
-        boolean searchNoMatch = false;
         final ITmfFilter searchFilter = (ITmfFilter) fTable.getData(Key.SEARCH_OBJ);
         if (searchFilter != null) {
             if (searchFilter.matches(tmfEvent)) {
                 searchMatch = true;
-            } else {
-                searchNoMatch = true;
             }
         }
 
-        final ColorSetting colorSetting = ColorSettingsManager.getColorSetting(tmfEvent);
-        if (searchNoMatch) {
-            item.setForeground(colorSetting.getDimmedForegroundColor());
-            item.setBackground(colorSetting.getDimmedBackgroundColor());
-        } else {
-            item.setForeground(colorSetting.getForegroundColor());
-            item.setBackground(colorSetting.getBackgroundColor());
-        }
         item.setFont(fFont);
 
         if (searchMatch) {
@@ -1640,9 +1623,8 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                     while (matcher.find()) {
                         int start = matcher.start();
                         int length = matcher.end() - start;
-                        Color foreground = colorSetting.getForegroundColor();
                         Color background = fHighlightColor;
-                        StyleRange styleRange = new StyleRange(start, length, foreground, background);
+                        StyleRange styleRange = new StyleRange(start, length, null, background);
                         styleRange.data = index;
                         styleRanges.add(styleRange);
                     }
@@ -3217,15 +3199,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, IColorS
                 }
             }
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // Listeners
-    // ------------------------------------------------------------------------
-
-    @Override
-    public void colorSettingsChanged(final ColorSetting[] colorSettings) {
-        fTable.refresh();
     }
 
     // ------------------------------------------------------------------------
