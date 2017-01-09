@@ -52,7 +52,7 @@ take some time, to skip them you can append `-Dmaven.test.skip=true` to the
     mvn clean install -Dmaven.test.skip=true
 
 The stand-alone application (RCP) packages will be placed in
-`rcp/org.eclipse.tracecompass.rcp.product/target/products`.
+`releng/org.eclipse.tracecompass.rcp.product/target/products`.
 
 
 Maven profiles and properties

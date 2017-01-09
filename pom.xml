@@ -121,7 +121,6 @@
     <module>common</module>
     <module>ctf</module>
     <module>lttng</module>
-    <module>rcp</module>
     <module>releng</module>
     <module>statesystem</module>
     <module>tmf</module>

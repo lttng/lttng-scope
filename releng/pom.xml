@@ -25,6 +25,11 @@
   <name>Trace Compass Release Engineering Parent</name>
 
   <modules>
+    <module>org.eclipse.tracecompass.rcp.branding</module>
+    <module>org.eclipse.tracecompass.rcp.branding.feature</module>
+    <module>org.eclipse.tracecompass.rcp</module>
+    <module>org.eclipse.tracecompass.rcp.product</module>
+    <module>org.eclipse.tracecompass.rcp.ui</module>
     <module>org.eclipse.tracecompass.target</module>
   </modules>
 
