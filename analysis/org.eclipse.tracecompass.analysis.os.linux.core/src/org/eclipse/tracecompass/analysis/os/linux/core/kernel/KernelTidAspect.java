@@ -41,16 +41,11 @@ public final class KernelTidAspect extends LinuxTidAspect {
 
     @Override
     public @Nullable Integer resolve(ITmfEvent event) {
-        try {
-            return resolve(event, false, NULL_MONITOR);
-        } catch (InterruptedException e) {
-            /* Should not happen since there is nothing to interrupt */
-            return null;
-        }
+        return resolve(event, false, NULL_MONITOR);
     }
 
     @Override
-    public @Nullable Integer resolve(@NonNull ITmfEvent event, boolean block, final IProgressMonitor monitor) throws InterruptedException {
+    public @Nullable Integer resolve(@NonNull ITmfEvent event, boolean block, final IProgressMonitor monitor) {
         /* Find the CPU this event is run on */
         Integer cpu = TmfTraceUtils.resolveIntEventAspectOfClassForEvent(event.getTrace(),
                 TmfCpuAspect.class, event);
@@ -66,7 +61,11 @@ public final class KernelTidAspect extends LinuxTidAspect {
         }
         long ts = event.getTimestamp().toNanos();
         while (block && !analysis.isQueryable(ts) && !monitor.isCanceled()) {
-            Thread.sleep(100);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return analysis.getThreadOnCpuAtTime(cpu, ts);
     }

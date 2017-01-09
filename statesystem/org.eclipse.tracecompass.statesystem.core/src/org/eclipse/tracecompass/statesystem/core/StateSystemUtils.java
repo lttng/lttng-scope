@@ -115,14 +115,12 @@ public final class StateSystemUtils {
      * @return The List of state intervals that happened between t1 and t2
      * @throws TimeRangeException
      *             If t1 is invalid, or if t2 <= t1
-     * @throws AttributeNotFoundException
-     *             If the requested quark does not exist in the model.
      * @throws StateSystemDisposedException
      *             If the query is sent after the state system has been disposed
      */
     public static List<ITmfStateInterval> queryHistoryRange(ITmfStateSystem ss,
             int attributeQuark, long t1, long t2)
-            throws AttributeNotFoundException, StateSystemDisposedException {
+            throws StateSystemDisposedException {
 
         List<ITmfStateInterval> intervals;
         ITmfStateInterval currentInterval;
@@ -182,15 +180,13 @@ public final class StateSystemUtils {
      * @throws TimeRangeException
      *             If t1 is invalid, if t2 <= t1, or if the resolution isn't
      *             greater than zero.
-     * @throws AttributeNotFoundException
-     *             If the attribute doesn't exist
      * @throws StateSystemDisposedException
      *             If the query is sent after the state system has been disposed
      */
     public static List<ITmfStateInterval> queryHistoryRange(ITmfStateSystem ss,
             int attributeQuark, long t1, long t2, long resolution,
             @Nullable IProgressMonitor monitor)
-            throws AttributeNotFoundException, StateSystemDisposedException {
+            throws StateSystemDisposedException {
         List<ITmfStateInterval> intervals = new LinkedList<>();
         ITmfStateInterval currentInterval = null;
         long ts, tEnd;
