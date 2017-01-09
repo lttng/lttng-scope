@@ -214,17 +214,6 @@ public class CtfTmfEvent extends TmfEvent
     }
 
     /**
-     * Return this event's reference.
-     *
-     * @return The event's reference
-     * @deprecated This method was replaced by {@link #getChannel()}.
-     */
-    @Deprecated
-    public String getReference() {
-        return getChannel();
-    }
-
-    /**
      * Get the stream Id
      *
      * @return the stream ID or -1 if the stream is null

@@ -38,7 +38,6 @@ import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfLostEvent;
-import org.eclipse.tracecompass.tmf.core.event.TmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfBaseAspects;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
@@ -555,18 +554,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
             context.increaseRank();
         }
         return event;
-    }
-
-    /**
-     * Update the trace attributes
-     *
-     * @param context the current trace context
-     * @param timestamp the corresponding timestamp
-     * @deprecated Use {@link #updateAttributes(ITmfContext, ITmfEvent)}
-     */
-    @Deprecated
-    protected synchronized void updateAttributes(final ITmfContext context, final @NonNull ITmfTimestamp timestamp) {
-        updateAttributes(context, new TmfEvent(this, context.getRank(), timestamp, null, null));
     }
 
     /**

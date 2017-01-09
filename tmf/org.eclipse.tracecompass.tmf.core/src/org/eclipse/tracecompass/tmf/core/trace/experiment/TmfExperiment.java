@@ -18,13 +18,11 @@
 
 package org.eclipse.tracecompass.tmf.core.trace.experiment;
 
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,7 +32,6 @@ import org.eclipse.tracecompass.internal.tmf.core.Activator;
 import org.eclipse.tracecompass.internal.tmf.core.trace.experiment.TmfExperimentContext;
 import org.eclipse.tracecompass.internal.tmf.core.trace.experiment.TmfExperimentLocation;
 import org.eclipse.tracecompass.internal.tmf.core.trace.experiment.TmfLocationArray;
-import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
@@ -68,25 +65,6 @@ public class TmfExperiment extends TmfTrace implements ITmfPersistentlyIndexable
     // ------------------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------------------
-
-    /**
-     * The file name of the Synchronization
-     *
-     * @deprecated This file name shouldn't be used directly anymore. All
-     *             synchronization files have been moved to a folder and you
-     *             should use the {@link #getSynchronizationFolder(boolean)}
-     *             method to return the path to this folder.
-     */
-    @Deprecated
-    public static final String SYNCHRONIZATION_FILE_NAME = "synchronization.bin"; //$NON-NLS-1$
-
-    /**
-     * The name of the directory containing trace synchronization data. This
-     * directory typically will be preserved when traces are synchronized.
-     * Analysis involved in synchronization can put their supplementary files in
-     * there so they are not deleted when synchronized traces are copied.
-     */
-    private static final String SYNCHRONIZATION_DIRECTORY = "sync_data"; //$NON-NLS-1$
 
     /**
      * The default index page size
@@ -442,53 +420,6 @@ public class TmfExperiment extends TmfTrace implements ITmfPersistentlyIndexable
             }
         }
         return initTs;
-    }
-
-    /**
-     * Get the path to the folder in the supplementary file where
-     * synchronization-related data can be kept so they are not deleted when the
-     * experiment is synchronized. Analysis involved in synchronization can put
-     * their supplementary files in there so they are preserved after
-     * synchronization.
-     *
-     * If the directory does not exist, it will be created. A return value of
-     * <code>null</code> means either the trace resource does not exist or
-     * supplementary resources cannot be kept.
-     *
-     * @param absolute
-     *            If <code>true</code>, it returns the absolute path in the file
-     *            system, including the supplementary file path. Otherwise, it
-     *            returns only the directory name.
-     * @return The path to the folder where synchronization-related
-     *         supplementary files can be kept or <code>null</code> if not
-     *         available.
-     */
-    public String getSynchronizationFolder(boolean absolute) {
-        /* Set up the path to the synchronization file we'll use */
-        IResource resource = this.getResource();
-        String syncDirectory = null;
-
-        try {
-            /* get the directory where the file will be stored. */
-            if (resource != null) {
-                String fullDirectory = resource.getPersistentProperty(TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER);
-                /* Create the synchronization data directory if not present */
-                if (fullDirectory != null) {
-                    fullDirectory = fullDirectory + File.separator + SYNCHRONIZATION_DIRECTORY;
-                    File syncDir = new File(fullDirectory);
-                    syncDir.mkdirs();
-                }
-                if (absolute) {
-                    syncDirectory = fullDirectory;
-                } else {
-                    syncDirectory = SYNCHRONIZATION_DIRECTORY;
-                }
-            }
-        } catch (CoreException e) {
-            return null;
-        }
-
-        return syncDirectory;
     }
 
     @Override
