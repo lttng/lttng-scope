@@ -28,7 +28,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.ctf.core.event.IEventDeclaration;
 import org.eclipse.tracecompass.ctf.core.event.IEventDefinition;
 import org.eclipse.tracecompass.ctf.core.event.types.ICompositeDefinition;
-import org.eclipse.tracecompass.ctf.core.event.types.IDefinition;
 import org.eclipse.tracecompass.ctf.core.trace.ICTFStream;
 import org.eclipse.tracecompass.tmf.core.event.ITmfCustomAttributes;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
@@ -295,7 +294,7 @@ public class CtfTmfEvent extends TmfEvent
         if (structFields != null) {
             if (structFields.getFieldNames() != null) {
                 for (String fn : structFields.getFieldNames()) {
-                    fields.add(CtfTmfEventField.parseField((IDefinition) structFields.getDefinition(fn), fn));
+                    fields.add(CtfTmfEventField.parseField(structFields.getDefinition(fn), fn));
                 }
             }
         }
@@ -305,7 +304,7 @@ public class CtfTmfEvent extends TmfEvent
             for (String contextName : structContext.getFieldNames()) {
                 /* Prefix field name */
                 String curContextName = CtfConstants.CONTEXT_FIELD_PREFIX + contextName;
-                fields.add(CtfTmfEventField.parseField((IDefinition) structContext.getDefinition(contextName), curContextName));
+                fields.add(CtfTmfEventField.parseField(structContext.getDefinition(contextName), curContextName));
             }
         }
 
