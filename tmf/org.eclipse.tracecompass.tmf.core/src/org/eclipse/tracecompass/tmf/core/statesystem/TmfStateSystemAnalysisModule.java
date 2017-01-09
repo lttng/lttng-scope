@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.common.core.NonNullUtils;
-import org.eclipse.tracecompass.internal.tmf.core.statesystem.backends.partial.PartialHistoryBackend;
-import org.eclipse.tracecompass.internal.tmf.core.statesystem.backends.partial.PartialStateSystem;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.StateSystemFactory;
@@ -236,13 +234,8 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
             }
                 break;
             case PARTIAL: {
-                File htFile = getSsFile();
-                if (htFile == null) {
-                    return false;
-                }
-                createPartialHistory(id, provider, htFile);
+                throw new UnsupportedOperationException("Partial histories not implemented"); //$NON-NLS-1$
             }
-                break;
             case INMEM:
                 createInMemoryHistory(id, provider);
                 break;
@@ -337,79 +330,6 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
              */
             throw new TmfTraceException(e.toString(), e);
         }
-    }
-
-    /*
-     * Create a new state system backed with a partial history. A partial
-     * history is similar to a "full" one (which you get with
-     * {@link #newFullHistory}), except that the file on disk is much smaller,
-     * but queries are a bit slower.
-     *
-     * Also note that single-queries are implemented using a full-query
-     * underneath, (which are much slower), so this might not be a good fit for
-     * a use case where you have to do lots of single queries.
-     */
-    private void createPartialHistory(String id, ITmfStateProvider provider, File htPartialFile)
-            throws TmfTraceException {
-        /*
-         * The order of initializations is very tricky (but very important!)
-         * here. We need to follow this pattern:
-         * (1 is done before the call to this method)
-         *
-         * 1- Instantiate realStateProvider
-         * 2- Instantiate realBackend
-         * 3- Instantiate partialBackend, with prereqs:
-         *  3a- Instantiate partialProvider, via realProvider.getNew()
-         *  3b- Instantiate nullBackend (partialSS's backend)
-         *  3c- Instantiate partialSS
-         *  3d- partialProvider.assignSS(partialSS)
-         * 4- Instantiate realSS
-         * 5- partialSS.assignUpstream(realSS)
-         * 6- realProvider.assignSS(realSS)
-         * 7- Call HistoryBuilder(realProvider, realSS, partialBackend) to build the thing.
-         */
-
-        /* Size of the blocking queue to use when building a state history */
-        final int QUEUE_SIZE = 10000;
-
-        final long granularity = 50000;
-
-        /* 2 */
-        IStateHistoryBackend realBackend = null;
-        try {
-            realBackend = StateHistoryBackendFactory.createHistoryTreeBackendNewFile(
-                    id, htPartialFile, provider.getVersion(), provider.getStartTime(), QUEUE_SIZE);
-        } catch (IOException e) {
-            throw new TmfTraceException(e.toString(), e);
-        }
-
-        /* 3a */
-        ITmfStateProvider partialProvider = provider.getNewInstance();
-
-        /* 3b-3c, constructor automatically uses a NullBackend */
-        PartialStateSystem pss = new PartialStateSystem();
-
-        /* 3d */
-        partialProvider.assignTargetStateSystem(pss);
-
-        /* 3 */
-        IStateHistoryBackend partialBackend = new PartialHistoryBackend(id + ".partial", partialProvider, pss, realBackend, granularity); //$NON-NLS-1$
-
-        /* 4 */
-        @SuppressWarnings("restriction")
-        org.eclipse.tracecompass.internal.statesystem.core.StateSystem realSS =
-        (org.eclipse.tracecompass.internal.statesystem.core.StateSystem) StateSystemFactory.newStateSystem(partialBackend);
-
-        /* 5 */
-        pss.assignUpstream(realSS);
-
-        /* 6 */
-        provider.assignTargetStateSystem(realSS);
-
-        /* 7 */
-        fStateSystem = realSS;
-
-        build(provider);
     }
 
     /*
