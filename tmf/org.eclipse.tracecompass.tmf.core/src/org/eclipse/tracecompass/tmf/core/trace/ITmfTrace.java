@@ -28,7 +28,6 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.filter.ITmfFilter;
-import org.eclipse.tracecompass.tmf.core.synchronization.ITmfTimestampTransform;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfTraceIndexer;
@@ -401,25 +400,6 @@ public interface ITmfTrace extends ITmfEventProvider {
      * @return The host id of this trace
      */
     @NonNull String getHostId();
-
-    // ------------------------------------------------------------------------
-    // Timestamp transformation functions
-    // ------------------------------------------------------------------------
-
-    /**
-     * Returns the timestamp transformation for this trace
-     *
-     * @return the timestamp transform
-     */
-    ITmfTimestampTransform getTimestampTransform();
-
-    /**
-     * Sets the trace's timestamp transform
-     *
-     * @param tt
-     *            The timestamp transform for all timestamps of this trace
-     */
-    void setTimestampTransform(final ITmfTimestampTransform tt);
 
     /**
      * Creates a timestamp for this trace, using the transformation formula

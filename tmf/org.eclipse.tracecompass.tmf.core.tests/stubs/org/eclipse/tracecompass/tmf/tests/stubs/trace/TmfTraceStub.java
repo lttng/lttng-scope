@@ -339,11 +339,6 @@ public class TmfTraceStub extends TmfTrace implements ITmfPersistentlyIndexable 
     }
 
     @Override
-    public ITmfTimestamp createTimestamp(long ts) {
-        return TmfTimestamp.fromMillis(getTimestampTransform().transform(ts) / 1000000L);
-    }
-
-    @Override
     public synchronized void setNbEvents(final long nbEvents) {
         super.setNbEvents(nbEvents);
     }

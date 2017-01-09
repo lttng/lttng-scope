@@ -59,7 +59,6 @@ Export-Package: org.eclipse.tracecompass.internal.tmf.ui;x-friends:="org.eclipse
  org.eclipse.tracecompass.tmf.ui.views.filter,
  org.eclipse.tracecompass.tmf.ui.views.histogram,
  org.eclipse.tracecompass.tmf.ui.views.statesystem,
- org.eclipse.tracecompass.tmf.ui.views.synchronization,
  org.eclipse.tracecompass.tmf.ui.views.timegraph,
  org.eclipse.tracecompass.tmf.ui.widgets.rawviewer,
  org.eclipse.tracecompass.tmf.ui.widgets.timegraph,

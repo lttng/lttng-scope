@@ -49,8 +49,6 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceOpenedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceUpdatedSignal;
-import org.eclipse.tracecompass.tmf.core.synchronization.ITmfTimestampTransform;
-import org.eclipse.tracecompass.tmf.core.synchronization.TimestampTransformFactory;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
@@ -132,8 +130,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
 
     // The trace indexer
     private ITmfTraceIndexer fIndexer;
-
-    private ITmfTimestampTransform fTsTransform;
 
     private final Map<String, IAnalysisModule> fAnalysisModules =
             Collections.synchronizedMap(new LinkedHashMap<String, IAnalysisModule>());
@@ -707,27 +703,9 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
         }
     }
 
-    // ------------------------------------------------------------------------
-    // Timestamp transformation functions
-    // ------------------------------------------------------------------------
-
-    @Override
-    public ITmfTimestampTransform getTimestampTransform() {
-        if (fTsTransform == null) {
-            fTsTransform = TimestampTransformFactory.getTimestampTransform(getResource());
-        }
-        return fTsTransform;
-    }
-
-    @Override
-    public void setTimestampTransform(final ITmfTimestampTransform tt) {
-        fTsTransform = tt;
-        TimestampTransformFactory.setTimestampTransform(getResource(), tt);
-    }
-
     @Override
     public @NonNull ITmfTimestamp createTimestamp(long ts) {
-        return TmfTimestamp.fromNanos(getTimestampTransform().transform(ts));
+        return TmfTimestamp.fromNanos(ts);
     }
 
     // ------------------------------------------------------------------------

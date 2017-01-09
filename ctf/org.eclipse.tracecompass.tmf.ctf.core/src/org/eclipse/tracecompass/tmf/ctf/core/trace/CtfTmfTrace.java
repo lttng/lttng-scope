@@ -641,14 +641,6 @@ public class CtfTmfTrace extends TmfTrace
     // Timestamp transformation functions
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 1.0
-     */
-    @Override
-    public @NonNull ITmfTimestamp createTimestamp(long ts) {
-        return TmfTimestamp.fromNanos(getTimestampTransform().transform(ts));
-    }
-
     private static int fCheckpointSize = -1;
 
     @Override

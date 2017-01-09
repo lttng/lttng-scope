@@ -22,11 +22,9 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfLostEvent;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
 import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
-import org.eclipse.tracecompass.tmf.core.synchronization.TimestampTransformFactory;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.ctf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.tmf.ctf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTmfTrace;
@@ -183,37 +181,6 @@ public class CtfTmfLostEventsTest {
 
         assertFalse(event instanceof ITmfLostEvent);
         assertEquals(ts, event.getTimestamp());
-    }
-
-    /**
-     * Test getting a lost event from a trace that has a timestamp transform.
-     */
-    @Test
-    public void testLostEventWithTransform() {
-        CtfTmfTrace trace = CtfTmfTestTraceUtils.getTrace(testTrace);
-        long offset = 1234567890L;
-        trace.setTimestampTransform(TimestampTransformFactory.createWithOffset(offset));
-        trace.indexTrace(true);
-
-        final long rank = 190;
-        final ITmfTimestamp start = TmfTimestamp.fromNanos(1376592664828900165L + offset);
-        final ITmfTimestamp end = TmfTimestamp.fromNanos(1376592664828900165L + 502911L + offset);
-        final long nbLost = 859;
-
-        ITmfContext context = trace.seekEvent(rank);
-        final CtfTmfEvent ev = trace.getNext(context);
-        context.dispose();
-
-        assertTrue(ev instanceof ITmfLostEvent);
-        ITmfLostEvent event = (ITmfLostEvent) ev;
-
-        assertEquals(start, event.getTimestamp());
-        assertEquals(start, event.getTimeRange().getStartTime());
-        assertEquals(end, event.getTimeRange().getEndTime());
-        assertEquals(nbLost, event.getNbLostEvents());
-
-        trace.setTimestampTransform(null);
-        trace.dispose();
     }
 
     // ------------------------------------------------------------------------

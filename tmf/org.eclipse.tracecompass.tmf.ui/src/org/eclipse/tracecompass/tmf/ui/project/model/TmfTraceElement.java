@@ -48,8 +48,6 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.project.model.ITmfPropertiesProvider;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
 import org.eclipse.tracecompass.tmf.core.project.model.TraceTypeHelper;
-import org.eclipse.tracecompass.tmf.core.synchronization.TimestampTransformFactory;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestampFormat;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.ui.properties.ReadOnlyTextPropertyDescriptor;
@@ -93,7 +91,6 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
     private static final String TRACE_TYPE_ID = Messages.TmfTraceElement_TraceTypeId;
     private static final String IS_LINKED_PROPERTY = Messages.TmfTraceElement_IsLinked;
     private static final String SOURCE_LOCATION = Messages.TmfTraceElement_SourceLocation;
-    private static final String TIME_OFFSET = Messages.TmfTraceElement_TimeOffset;
     private static final String LAST_MODIFIED = Messages.TmfTraceElement_LastModified;
     private static final String SIZE = Messages.TmfTraceElement_Size;
     private static final String TRACE_PROPERTIES_CATEGORY = Messages.TmfTraceElement_TraceProperties;
@@ -105,13 +102,11 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
     private static final ReadOnlyTextPropertyDescriptor TYPE_ID_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(TRACE_TYPE_ID, TRACE_TYPE_ID);
     private static final ReadOnlyTextPropertyDescriptor IS_LINKED_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(IS_LINKED_PROPERTY, IS_LINKED_PROPERTY);
     private static final ReadOnlyTextPropertyDescriptor SOURCE_LOCATION_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(SOURCE_LOCATION, SOURCE_LOCATION);
-    private static final ReadOnlyTextPropertyDescriptor TIME_OFFSET_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(TIME_OFFSET, TIME_OFFSET);
     private static final ReadOnlyTextPropertyDescriptor LAST_MODIFIED_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(LAST_MODIFIED, LAST_MODIFIED);
     private static final ReadOnlyTextPropertyDescriptor SIZE_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(SIZE, SIZE);
 
     private static final IPropertyDescriptor[] sfDescriptors = { NAME_DESCRIPTOR, PATH_DESCRIPTOR, LOCATION_DESCRIPTOR,
-            TYPE_DESCRIPTOR, TYPE_ID_DESCRIPTOR, IS_LINKED_DESCRIPTOR, SOURCE_LOCATION_DESCRIPTOR,
-            TIME_OFFSET_DESCRIPTOR, LAST_MODIFIED_DESCRIPTOR, SIZE_DESCRIPTOR };
+            TYPE_DESCRIPTOR, TYPE_ID_DESCRIPTOR, IS_LINKED_DESCRIPTOR, SOURCE_LOCATION_DESCRIPTOR };
 
     static {
         NAME_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
@@ -121,12 +116,9 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
         TYPE_ID_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
         IS_LINKED_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
         SOURCE_LOCATION_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
-        TIME_OFFSET_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
         LAST_MODIFIED_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
         SIZE_DESCRIPTOR.setCategory(RESOURCE_PROPERTIES_CATEGORY);
     }
-
-    private static final TmfTimestampFormat OFFSET_FORMAT = new TmfTimestampFormat("T.SSS SSS SSS s"); //$NON-NLS-1$
 
     private static final int FOLDER_MAX_COUNT = 1024;
 
@@ -513,14 +505,6 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
                 if (helper != null) {
                     return helper.getTraceTypeId();
                 }
-            }
-            return ""; //$NON-NLS-1$
-        }
-
-        if (TIME_OFFSET.equals(id)) {
-            long offset = TimestampTransformFactory.getTimestampTransform(getElementUnderTraceFolder().getResource()).transform(0);
-            if (offset != 0) {
-                return OFFSET_FORMAT.format(offset);
             }
             return ""; //$NON-NLS-1$
         }
