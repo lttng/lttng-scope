@@ -93,7 +93,7 @@ public class TmfEventsEditor extends TmfEditor implements ITmfTraceEditor, IReus
     private IFile fFile;
     private ITmfTrace fTrace;
     private Composite fParent;
-    private ListenerList fSelectionChangedListeners = new ListenerList();
+    private ListenerList<ISelectionChangedListener> fSelectionChangedListeners = new ListenerList<>();
     private boolean fTraceSelected;
     private IMarker fPendingGotoMarker;
 

@@ -715,7 +715,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @see #fireSelectionChanged
      */
-    private ListenerList selectionChangedListeners = new ListenerList();
+    private ListenerList<ISelectionChangedListener> selectionChangedListeners = new ListenerList<>();
 
     // Bookmark map <Rank, MarkerId>
     private Multimap<Long, Long> fBookmarksMap = HashMultimap.create();
