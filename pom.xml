@@ -41,6 +41,7 @@
     <required-maven-version>3.3</required-maven-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.test.skip>true</maven.test.skip>
     <testArgLine></testArgLine>
 
     <tycho-version>0.26.0</tycho-version>

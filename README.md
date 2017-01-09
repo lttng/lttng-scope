@@ -45,11 +45,10 @@ the top-level directory:
 
     mvn clean install
 
-The default command will compile and run the unit tests. Running the tests can
-take some time, to skip them you can append `-Dmaven.test.skip=true` to the
-`mvn` command:
+Tests are skipped by default. To run the unit tests you can append
+`-Dmaven.test.skip=false` to the `mvn` command:
 
-    mvn clean install -Dmaven.test.skip=true
+    mvn clean install -Dmaven.test.skip=false
 
 The stand-alone application (RCP) packages will be placed in
 `releng/org.eclipse.tracecompass.rcp.product/target/products`.
