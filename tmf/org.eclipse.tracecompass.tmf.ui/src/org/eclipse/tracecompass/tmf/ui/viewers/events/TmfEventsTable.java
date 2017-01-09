@@ -121,7 +121,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.tracecompass.common.core.NonNullUtils;
-import org.eclipse.tracecompass.internal.tmf.core.filter.TmfCollapseFilter;
 import org.eclipse.tracecompass.internal.tmf.ui.Activator;
 import org.eclipse.tracecompass.internal.tmf.ui.Messages;
 import org.eclipse.tracecompass.internal.tmf.ui.commands.CopyToClipboardOperation;
@@ -132,7 +131,6 @@ import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfContentFieldAspect;
-import org.eclipse.tracecompass.tmf.core.event.collapse.ITmfCollapsibleEvent;
 import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfCallsite;
 import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfModelLookup;
 import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfSourceLookup;
@@ -157,7 +155,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.TmfEventsCache.CachedEvent;
@@ -713,7 +710,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
     private final Object fFilterSyncObj = new Object();
     private SearchThread fSearchThread;
     private final Object fSearchSyncObj = new Object();
-    private boolean fCollapseFilterEnabled = false;
 
     /**
      * List of selection change listeners (element type:
@@ -1282,13 +1278,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
             }
         };
 
-        final IAction collapseAction = new Action(Messages.TmfEventsTable_CollapseFilterMenuName) {
-            @Override
-            public void run() {
-                applyFilter(new TmfCollapseFilter());
-            }
-        };
-
         class ToggleBookmarkAction extends Action {
             Long fRank;
 
@@ -1389,26 +1378,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                             fTablePopupMenuManager.add(separator);
                         }
                     }
-                }
-
-                /*
-                 * Only show collapse filter if at least one trace can be
-                 * collapsed.
-                 */
-                boolean isCollapsible = false;
-                if (fTrace != null) {
-                    for (ITmfTrace trace : TmfTraceManager.getTraceSet(fTrace)) {
-                        Class<? extends ITmfEvent> eventClass = trace.getEventType();
-                        isCollapsible = ITmfCollapsibleEvent.class.isAssignableFrom(eventClass);
-                        if (isCollapsible) {
-                            break;
-                        }
-                    }
-                }
-
-                if (isCollapsible && !fCollapseFilterEnabled) {
-                    fTablePopupMenuManager.add(collapseAction);
-                    fTablePopupMenuManager.add(new Separator());
                 }
 
                 fTablePopupMenuManager.add(clearFiltersAction);
@@ -1999,14 +1968,12 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
             for (ITmfFilterTreeNode child : parentFilter.getChildren()) {
                 rootFilter.addChild(child);
             }
-        } else if (filter instanceof TmfCollapseFilter) {
-            fCollapseFilterEnabled = true;
         } else if (filter instanceof ITmfFilterTreeNode) {
             rootFilter.addChild((ITmfFilterTreeNode) filter);
         } else {
             rootFilter.addChild(new TmfFilterObjectNode(filter));
         }
-        fCache.applyFilter(rootFilter, fCollapseFilterEnabled);
+        fCache.applyFilter(rootFilter);
         fHeaderBar.addFilter(filter);
         fTable.clearAll();
         fTable.setData(Key.FILTER_OBJ, rootFilter);
@@ -2032,9 +1999,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
         stopSearchThread();
         fFilterMatchCount = 0;
         fFilterCheckCount = 0;
-        if (filter instanceof TmfCollapseFilter) {
-            fCollapseFilterEnabled = false;
-        } else if (filter instanceof ITmfFilterTreeNode) {
+        if (filter instanceof ITmfFilterTreeNode) {
             rootFilter.removeChild((ITmfFilterTreeNode) filter);
         } else {
             for (ITmfFilterTreeNode child : rootFilter.getChildren()) {
@@ -2046,11 +2011,11 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                 }
             }
         }
-        if (!rootFilter.hasChildren() && !fCollapseFilterEnabled) {
+        if (!rootFilter.hasChildren()) {
             clearFilters();
             return;
         }
-        fCache.applyFilter(rootFilter, fCollapseFilterEnabled);
+        fCache.applyFilter(rootFilter);
         fHeaderBar.removeFilter(filter);
         fTable.clearAll();
         fTable.setData(Key.FILTER_OBJ, rootFilter);
@@ -2075,7 +2040,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
         stopSearchThread();
         fCache.clearFilter();
         fHeaderBar.clearFilters();
-        fCollapseFilterEnabled = false;
         fTable.clearAll();
         for (final TableColumn column : fTable.getColumns()) {
             column.setData(Key.FILTER_OBJ, null);
@@ -2110,7 +2074,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      */
     protected class FilterThread extends Thread {
         private final ITmfFilterTreeNode filter;
-        private TmfCollapseFilter collapseFilter = null;
         private TmfEventRequest request;
         private boolean refreshBusy = false;
         private boolean refreshPending = false;
@@ -2132,9 +2095,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
             if (fTrace == null) {
                 return;
             }
-            if (fCollapseFilterEnabled) {
-                collapseFilter = new TmfCollapseFilter();
-            }
             final int nbRequested = (int) (fTrace.getNbEvents() - fFilterCheckCount);
             if (nbRequested <= 0) {
                 return;
@@ -2149,14 +2109,10 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                     }
                     boolean refresh = false;
                     if (filter.matches(event)) {
-                        if (collapseFilter == null || collapseFilter.matches(event)) {
-                            final long rank = fFilterCheckCount;
-                            final int index = (int) fFilterMatchCount;
-                            fFilterMatchCount++;
-                            fCache.storeEvent(event, rank, index);
-                        } else if (collapseFilter != null) {
-                            fCache.updateCollapsedEvent((int) fFilterMatchCount - 1);
-                        }
+                        final long rank = fFilterCheckCount;
+                        final int index = (int) fFilterMatchCount;
+                        fFilterMatchCount++;
+                        fCache.storeEvent(event, rank, index);
                         refresh = true;
                     }
 
@@ -2586,21 +2542,13 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
         }
     }
 
-    private void packSingleColumn(int i, final TableColumn column) {
+    private static void packSingleColumn(int i, final TableColumn column) {
         if (i != MARGIN_COLUMN_INDEX && !column.getResizable()) {
             return;
         }
         Object data = column.getData(Key.WIDTH);
         final int headerWidth = data instanceof Integer ? (int) data : -1;
         column.pack();
-        /*
-         * Workaround for Linux which doesn't consider the image width of
-         * search/filter row in TableColumn.pack() after having executed
-         * TableItem.setImage(null) for other rows than search/filter row.
-         */
-        if (IS_LINUX && (i == MARGIN_COLUMN_INDEX) && fCollapseFilterEnabled) {
-            column.setWidth(column.getWidth() + SEARCH_IMAGE.getBounds().width);
-        }
 
         if (column.getWidth() < headerWidth) {
             column.setWidth(headerWidth);
