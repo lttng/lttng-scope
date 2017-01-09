@@ -375,21 +375,6 @@ public final class TmfTraceType {
     }
 
     /**
-     * Validate a trace
-     *
-     * @param traceToValidate
-     *            the trace category (canonical name)
-     * @return true if the trace is of a valid type
-     * @deprecated Use TmfTraceType.getTraceTypeHelpers and
-     *             {@link TraceTypeHelper#validate(String)} or
-     *             {@link TraceTypeHelper#validateWithConfidence(String)}
-     */
-    @Deprecated
-    public static boolean validate(TraceValidationHelper traceToValidate) {
-        return validate(traceToValidate.getTraceType(), traceToValidate.getTraceToScan());
-    }
-
-    /**
      * Get a configuration element for a given name
      *
      * @param traceType

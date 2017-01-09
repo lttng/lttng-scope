@@ -13,7 +13,6 @@ package org.eclipse.tracecompass.tmf.ui.symbols;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfCallsite;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
 
@@ -55,20 +54,6 @@ public interface ISymbolProvider {
     @Nullable String getSymbolText(long address);
 
     /**
-     * Return additional information regarding the symbol from the given address
-     * or null if the symbol cannot be found
-     *
-     * @param address
-     *            the address of the symbol
-     * @return the symbol {@link ITmfCallsite} information or null if the symbol
-     *         cannot be found
-     * @deprecated This interface should only provide function/symbol names, not
-     *             full source locations.
-     */
-    @Deprecated
-    @Nullable ITmfCallsite getSymbolInfo(long address);
-
-    /**
      * Return the symbol text corresponding to the given pid/timestamp/address
      * tuple, or null if there is no such symbol.
      *
@@ -82,26 +67,6 @@ public interface ISymbolProvider {
      */
     default @Nullable String getSymbolText(int pid, long timestamp, long address) {
         return getSymbolText(address);
-    }
-
-    /**
-     * Return additional information regarding the symbol from the given
-     * pid/timestamp/address tuple, or null if the symbol cannot be found.
-     *
-     * @param pid
-     *            The process Id for which to query
-     * @param timestamp
-     *            The timestamp of the query
-     * @param address
-     *            the address of the symbol
-     * @return the symbol {@link ITmfCallsite} information or null if the symbol
-     *         cannot be found
-     * @deprecated This interface should only provide function/symbol names, not
-     *             full source locations.
-     */
-    @Deprecated
-    default @Nullable ITmfCallsite getSymbolInfo(int pid, long timestamp, long address) {
-        return getSymbolInfo(address);
     }
 
     /**
