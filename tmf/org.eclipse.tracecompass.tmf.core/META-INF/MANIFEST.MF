@@ -40,7 +40,6 @@ Export-Package: org.eclipse.tracecompass.internal.tmf.core;x-friends:="org.eclip
  org.eclipse.tracecompass.tmf.core.resources,
  org.eclipse.tracecompass.tmf.core.signal,
  org.eclipse.tracecompass.tmf.core.statesystem,
- org.eclipse.tracecompass.tmf.core.statistics,
  org.eclipse.tracecompass.tmf.core.timestamp,
  org.eclipse.tracecompass.tmf.core.trace,
  org.eclipse.tracecompass.tmf.core.trace.experiment,

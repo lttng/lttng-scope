@@ -29,7 +29,6 @@ Export-Package: org.eclipse.tracecompass.internal.tmf.ui;x-friends:="org.eclipse
  org.eclipse.tracecompass.internal.tmf.ui.dialogs;x-internal:=true,
  org.eclipse.tracecompass.internal.tmf.ui.editors;x-internal:=true,
  org.eclipse.tracecompass.internal.tmf.ui.editors.handlers;x-internal:=true,
- org.eclipse.tracecompass.internal.tmf.ui.markers;x-internal:=true,
  org.eclipse.tracecompass.internal.tmf.ui.preferences;x-internal:=true,
  org.eclipse.tracecompass.internal.tmf.ui.project.dialogs;x-internal:=true,
  org.eclipse.tracecompass.internal.tmf.ui.project.dialogs.offset;x-internal:=true,
