@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="tracecompass-e4.6" sequenceNumber="48">
+<target name="tracecompass-e4.6" sequenceNumber="50">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -32,6 +32,13 @@
       <unit id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature.feature.group" version="0.0.0"/>
 
       <repository location="http://download.eclipse.org/eclipse/updates/4.6/"/>
+    </location>
+
+    <!-- Trace Compass CTF parser -->
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.tracecompass.ctf.core" version="0.0.0"/>
+      <unit id="org.eclipse.tracecompass.ctf.parser" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/tracecompass/releases/2.2.0/repository"/>
     </location>
 
     <!-- CDT -->

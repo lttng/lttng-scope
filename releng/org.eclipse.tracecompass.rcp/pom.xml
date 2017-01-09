@@ -73,6 +73,8 @@
                 <plugin id="org.eclipse.core.net.win32.x86"/>
                 <plugin id="org.eclipse.core.net.linux.x86"/>
                 <plugin id="org.eclipse.linuxtools.dataviewers.piechart"/>
+                <plugin id="org.eclipse.tracecompass.ctf.core"/>
+                <plugin id="org.eclipse.tracecompass.ctf.parser"/>
                 <plugin id="org.eclipse.tracecompass.tracing.rcp.help"/>
                 <plugin id="org.json"/>
                 <plugin id="org.sat4j.core"/>

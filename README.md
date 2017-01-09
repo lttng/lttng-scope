@@ -69,11 +69,6 @@ the build system. You can set them by using `-P[profile name]` and
   stable platform. To use the staging target for example, use
   `-Dtarget-platform=tracecompass-eStaging`.
 
-* `-Pctf-grammar`
-
-  Re-compiles the CTF grammar files. This should be enabled if you modify the
-  `.g` files in the `ctf.parser` plugin.
-
 * `-Pdeploy-rcp`
 
   Mainly for use on build servers. Copies the generated RCP archives, as well as
