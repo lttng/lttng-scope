@@ -54,9 +54,6 @@
          <tracetype
                class="org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub">
          </tracetype>
-         <tracetype
-               class="org.eclipse.tracecompass.tmf.tests.stubs.trace.xml.TmfXmlTraceStub">
-         </tracetype>
       </module>
       <module
             analysis_module="org.eclipse.tracecompass.tmf.tests.stubs.analysis.TestExperimentAnalysis"
@@ -129,21 +126,6 @@
             name="Test experiment"
             experiment_type="org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfExperimentStub">
       </experiment>
-      <type
-            category="org.eclipse.linuxtools.tmf.core.tests.category"
-            event_type="org.eclipse.tracecompass.tmf.tests.stubs.trace.text.SyslogEvent"
-            id="org.eclipse.linuxtools.tmf.tests.stubs.trace.text.testsyslog"
-            isDirectory="false"
-            name="Test Syslog"
-            trace_type="org.eclipse.tracecompass.tmf.tests.stubs.trace.text.SyslogTrace">
-      </type>
-      <type
-            category="org.eclipse.linuxtools.tmf.core.tests.category"
-            event_type="org.eclipse.tracecompass.tmf.core.event.TmfEvent"
-            id="org.eclipse.linuxtools.tmf.core.tests.xmlstub"
-            name="XML Trace Stub"
-            trace_type="org.eclipse.tracecompass.tmf.tests.stubs.trace.xml.TmfXmlTraceStub">
-      </type>
    </extension>
    <extension
          point="org.eclipse.tracecompass.tmf.core.analysis.ondemand">
@@ -151,20 +133,6 @@
             class="org.eclipse.tracecompass.tmf.tests.stubs.analysis.ondemand.OnDemandAnalysisStub"
             id="org.eclipse.tracecompass.tmf.core.tests.analysis1">
       </analysis>
-   </extension>
-   <extension
-         point="org.eclipse.tracecompass.tmf.core.custom.trace">
-      <customTrace
-            file="testfiles/txt/testTxtExtensionDefinition.xml"
-            traceContentType="text">
-      </customTrace>
-   </extension>
-   <extension
-         point="org.eclipse.tracecompass.tmf.core.custom.trace">
-      <customTrace
-            file="testfiles/xml/testXmlExtensionDefinition.xml"
-            traceContentType="xml">
-      </customTrace>
    </extension>
 
 </plugin>

@@ -9,27 +9,6 @@
       </type>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-      <view
-            category="org.eclipse.linuxtools.lttng2.ui.views.category"
-            class="org.eclipse.tracecompass.internal.lttng2.ust.ui.views.memusage.MemoryUsageView"
-            icon="icons/eview16/memory-usage.png"
-            id="org.eclipse.linuxtools.lttng2.ust.memoryusage"
-            name="%memoryusage.view.name"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.tmf.core.analysis">
-      <output
-            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
-            id="org.eclipse.linuxtools.lttng2.ust.memoryusage">
-         <analysisId
-               id="org.eclipse.linuxtools.lttng2.ust.analysis.memory">
-         </analysisId>
-      </output>
-   </extension>
-   <extension
          point="org.eclipse.tracecompass.tmf.ui.symbolProvider">
       <providerFactory
             class="org.eclipse.tracecompass.internal.lttng2.ust.ui.analysis.debuginfo.UstDebugInfoSymbolProviderFactory"

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.eclipse.linuxtools.tmf.ui.uml2SDLoader" name="%extensionpoint.sequence_diagram_loader.name" schema="schema/org.eclipse.linuxtools.tmf.ui.uml2SDLoader.exsd"/>
    <extension-point id="org.eclipse.linuxtools.tmf.ui.tracetypeui" name="%extensionpoint.trace_type_ui.name" schema="schema/org.eclipse.linuxtools.tmf.ui.tracetypeui.exsd"/>
    <extension-point id="org.eclipse.tracecompass.tmf.ui.symbolProvider" name="%extensionpoint.symbol_provider.name" schema="schema/org.eclipse.tracecompass.tmf.ui.symbolProvider.exsd"/>
 
@@ -21,29 +20,12 @@
             name="%views.category.name">
       </category>
       <view
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.timechart.TimeChartView"
-            icon="icons/eview16/timechart_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.timechart"
-            name="%timechart.view.name"
-            restorable="true">
-      </view>
-      <view
             allowMultiple="false"
             category="org.eclipse.linuxtools.tmf.ui.views.category"
             class="org.eclipse.tracecompass.tmf.ui.views.statesystem.TmfStateSystemExplorer"
             icon="icons/eview16/events_view.gif"
             id="org.eclipse.linuxtools.tmf.ui.views.ssvisualizer"
             name="%ssvisualizer.view.name"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.colors.ColorsView"
-            icon="icons/eview16/colors_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.colors"
-            name="%colors.view.name"
             restorable="true">
       </view>
       <view
@@ -56,46 +38,12 @@
             restorable="true">
       </view>
       <view
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.SDView"
-            icon="icons/eview16/sequencediagram_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.tmfUml2SDSyncView"
-            name="%uml2sd.view.name"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.internal.tmf.ui.views.statistics.TmfStatisticsViewImpl"
-            icon="icons/eview16/statistics_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.statistics"
-            name="%statistics.view.name"
-            restorable="true">
-      </view>
-      <view
             allowMultiple="false"
             category="org.eclipse.linuxtools.tmf.ui.views.category"
             class="org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView"
             icon="icons/eview16/histogram.gif"
             id="org.eclipse.linuxtools.tmf.ui.views.histogram"
             name="%histogram.view.name"
-            restorable="true">
-      </view>
-      <view
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.callstack.CallStackView"
-            icon="icons/eview16/callstack_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.callstack"
-            name="%callstack.view.name"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.synchronization.TmfSynchronizationView"
-            icon="icons/eview16/synced.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.synchronization"
-            name="%synchronization.view.name"
             restorable="true">
       </view>
    </extension>
@@ -130,20 +78,6 @@
 
          </description>
       </wizard>
-      <wizard
-            category="org.eclipse.linuxtools.tmf.ui.wizards.new"
-            class="org.eclipse.tracecompass.internal.tmf.ui.parsers.wizards.CustomTxtParserWizard"
-            icon="icons/etool16/customparser_wizard.gif"
-            id="org.eclipse.linuxtools.tmf.ui.wizards.custom.text"
-            name="%project.new.wizard.custom.text.parser">
-      </wizard>
-      <wizard
-            category="org.eclipse.linuxtools.tmf.ui.wizards.new"
-            class="org.eclipse.tracecompass.internal.tmf.ui.parsers.wizards.CustomXmlParserWizard"
-            icon="icons/etool16/customparser_wizard.gif"
-            id="org.eclipse.linuxtools.tmf.ui.wizards.custom.xml"
-            name="%project.new.wizard.custom.xml.parser">
-      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.importWizards">
@@ -151,20 +85,6 @@
             id="org.eclipse.linuxtools.tmf.import.category"
             name="%project.new.category.name">
       </category>
-      <wizard
-            category="org.eclipse.linuxtools.tmf.import.category"
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.wizards.importtrace.ImportTraceWizard"
-            icon="icons/etool16/import.gif"
-            id="org.eclipse.linuxtools.tmf.ui.trace.import.wizard"
-            name="%project.import.wizard.name">
-      </wizard>
-      <wizard
-            category="org.eclipse.linuxtools.tmf.import.category"
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.wizards.tracepkg.importexport.ImportTracePackageWizard"
-            icon="icons/etool16/import.gif"
-            id="org.eclipse.linuxtools.tmf.ui.trace.import.package.wizard"
-            name="%project.import.wizard.name.tracepkg">
-      </wizard>
    </extension>
    <extension
          id="org.eclipse.linuxtools.tmf.project.nature"
@@ -1232,10 +1152,6 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.ImportTraceHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.import">
-      </handler>
-      <handler
             class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RefreshHandler"
             commandId="org.eclipse.ui.file.refresh">
          <activeWhen>
@@ -1493,27 +1409,6 @@
             commandId="org.eclipse.linuxtools.tmf.ui.command.delete_suppl_files">
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.wizards.tracepkg.importexport.ExportTracePackageHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.exporttracepkg">
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.wizards.tracepkg.importexport.ImportTracePackageHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.importtracepkg">
-         <activeWhen>
-            <and>
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     operator="and">
-                  <instanceof
-                        value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                  </instanceof>
-               </iterate>
-            </and>
-         </activeWhen>
-      </handler>
-      <handler
             class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.NewExperimentHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.new_experiment">
          <activeWhen>
@@ -1564,27 +1459,6 @@
                </iterate>
             </and>
          </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.SynchronizeTracesHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.synchronize_traces">
-         <activeWhen>
-            <and>
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     operator="and">
-                  <instanceof
-                        value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
-                  </instanceof>
-               </iterate>
-            </and>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.commands.ManageCustomParsersCommandHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.managecustomparsers">
       </handler>
       <handler
             class="org.eclipse.tracecompass.internal.tmf.ui.editors.handlers.AddBookmarkHandler"
@@ -1662,85 +1536,6 @@
             </with>
          </activeWhen>
       </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.OffsetTraceHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.offset_traces">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement">
-                     </instanceof>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
-                     </instanceof>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.ClearTraceOffsetHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.clear_offset">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement">
-                     </instanceof>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
-                     </instanceof>
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RefreshTraceContentHandler"
-            commandId="org.eclipse.ui.file.refresh">
-         <activeWhen>
-            <or>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <instanceof
-                        value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement">
-                  </instanceof>
-               </iterate>
-               <and>
-                  <with
-                      variable="activePart">
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.editors.ITmfTraceEditor">
-                     </instanceof>
-                  </with>
-                  <not>
-                     <with
-                         variable="activeEditorInput">
-                        <test
-                              property="org.eclipse.tracecompass.tmf.ui.isExperimentEditorInput">
-                        </test>
-                     </with>
-                  </not>
-               </and>
-            </or>
-         </activeWhen>
-      </handler>
    </extension>
    <extension point="org.eclipse.ui.bindings">
       <key
@@ -1810,26 +1605,10 @@
       </page>
       <page
             category="org.eclipse.linuxtools.tmf.ui.TmfTracingPreferences"
-            class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.preferences.SDViewerPage"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.preferences.SDViewerPage"
-            name="%preference.page.uml2sd.name">
-      </page>
-      <page
-            category="org.eclipse.linuxtools.tmf.ui.TmfTracingPreferences"
             class="org.eclipse.tracecompass.tmf.ui.properties.TmfTimestampFormatPage"
             id="org.eclipse.linuxtools.tmf.ui.preferences.timestamp.format"
             name="%preferences.page.timestamp.format">
       </page>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.tmf.ui.uml2SDLoader">
-      <uml2SDLoader
-            class="org.eclipse.tracecompass.tmf.ui.views.uml2sd.loader.TmfUml2SDSyncLoader"
-            default="true"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.impl.TmfUml2SDSyncLoader"
-            name="TMF UML2SD Loader"
-            view="org.eclipse.linuxtools.tmf.ui.tmfUml2SDSyncView">
-      </uml2SDLoader>
    </extension>
    <!--extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -1877,33 +1656,6 @@
              </or>
          </selectionEnablement>
       </linkHelper>
-   </extension>
-   <extension
-         point="org.eclipse.ui.exportWizards">
-      <wizard
-            category="org.eclipse.linuxtools.tmf.export.category"
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.wizards.tracepkg.importexport.ExportTracePackageWizard"
-            icon="icons/etool16/export.gif"
-            id="org.eclipse.linuxtools.tmf.ui.trace.export.package.wizard"
-            name="%project.export.wizard.name.tracepkg">
-      </wizard>
-      <category
-            id="org.eclipse.linuxtools.tmf.export.category"
-            name="%project.new.category.name">
-      </category>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.tmf.core.analysis">
-      <output
-            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
-            id="org.eclipse.linuxtools.tmf.ui.views.statistics">
-            <analysisId
-               id="org.eclipse.linuxtools.tmf.core.statistics.analysis">
-            </analysisId>
-      </output>
-      <listener
-            class="org.eclipse.tracecompass.tmf.ui.views.callstack.CallStackAnalysisListener">
-      </listener>
    </extension>
    <extension
          point="org.eclipse.linuxtools.tmf.ui.tracetypeui">
