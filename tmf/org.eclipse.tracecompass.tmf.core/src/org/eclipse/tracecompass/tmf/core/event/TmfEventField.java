@@ -24,7 +24,6 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.core.ObjectUtils;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
@@ -159,12 +158,7 @@ public class TmfEventField implements ITmfEventField {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + getName().hashCode();
-        result = prime * result + ObjectUtils.deepHashCode(getValue());
-        result = prime * result + fFields.hashCode();
-        return result;
+        return Objects.hash(fName, fValue, fFields);
     }
 
     @Override
@@ -189,11 +183,10 @@ public class TmfEventField implements ITmfEventField {
         }
 
         /*
-         * Check that the field values are the same. We use ObjectUtils to
-         * handle cases where the Object values may be primitive and/or nested
-         * arrays.
+         * Check that the field values are the same. We use Objects to handle
+         * cases where the Object values may be primitive and/or nested arrays.
          */
-        if (!ObjectUtils.deepEquals(this.getValue(), other.getValue())) {
+        if (!Objects.deepEquals(this.getValue(), other.getValue())) {
             return false;
         }
 
