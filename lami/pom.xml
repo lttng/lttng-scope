@@ -25,9 +25,9 @@
   <name>LAMI Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.analysis.lami.core</module>
-    <module>org.eclipse.tracecompass.analysis.lami.core.tests</module>
-    <module>org.eclipse.tracecompass.analysis.lami.ui</module>
+    <module>org.eclipse.tracecompass.lami.core</module>
+    <module>org.eclipse.tracecompass.lami.core.tests</module>
+    <module>org.eclipse.tracecompass.lami.ui</module>
   </modules>
 
 </project>

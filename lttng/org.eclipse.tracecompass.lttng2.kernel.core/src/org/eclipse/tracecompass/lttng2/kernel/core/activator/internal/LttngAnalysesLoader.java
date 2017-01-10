@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.eclipse.tracecompass.analysis.lami.core.module.LamiAnalysis;
-import org.eclipse.tracecompass.analysis.lami.core.module.LamiAnalysisFactoryException;
-import org.eclipse.tracecompass.analysis.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
+import org.eclipse.tracecompass.lami.core.module.LamiAnalysis;
+import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryException;
+import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.eclipse.tracecompass.lttng2.kernel.core.trace.LttngKernelTrace;
 import org.eclipse.tracecompass.lttng2.kernel.core.trace.layout.internal.Lttng27EventLayout;
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;

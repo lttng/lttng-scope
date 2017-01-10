@@ -1,45 +1,38 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Ericsson
+ * Copyright (c) 2015, 2016 EfficiOS Inc., Alexandre Montplaisir
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *   Francois Chouinard - Initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.tracecompass.lttng2.kernel.core.activator.internal;
-
-import java.io.IOException;
+package org.eclipse.tracecompass.lami.ui.activator.internal;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryException;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * <b><u>Activator</u></b>
- * <p>
  * The activator class controls the plug-in life cycle
  */
-@NonNullByDefault({})
-public class Activator extends Plugin {
+public class Activator extends AbstractUIPlugin {
 
     // ------------------------------------------------------------------------
     // Attributes
     // ------------------------------------------------------------------------
 
     /**
-     * The plug-in ID
+     *  The plug-in ID
      */
-    public static final String PLUGIN_ID = "org.eclipse.tracecompass.lttng2.kernel.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.eclipse.tracecompass.lami.ui"; //$NON-NLS-1$
 
     /**
-     * The shared instance
+     *  The shared instance
      */
     private static Activator plugin;
 
@@ -67,26 +60,65 @@ public class Activator extends Plugin {
     }
 
     // ------------------------------------------------------------------------
-    // Operators
+    // AbstractUIPlugin
     // ------------------------------------------------------------------------
 
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-
-        try {
-            LttngAnalysesLoader.load();
-        } catch (LamiAnalysisFactoryException | IOException e) {
-            // Not the end of the world if the analyses are not available
-            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
-        }
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
+    }
+
+    @Override
+    protected void initializeImageRegistry(ImageRegistry reg) {
+    }
+
+    // ------------------------------------------------------------------------
+    // Operations
+    // ------------------------------------------------------------------------
+
+    /**
+     * Get the image object from a given path
+     *
+     * @param path
+     *            The path to the image file
+     * @return The Image object
+     */
+    public Image getImageFromPath(String path) {
+        return getImageDescripterFromPath(path).createImage();
+    }
+
+    /**
+     * Get the ImageDescriptor from a given path
+     *
+     * @param path
+     *            The path to the image file
+     * @return The ImageDescriptor object
+     */
+    public ImageDescriptor getImageDescripterFromPath(String path) {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
+
+    /**
+     * Get the Image from a registry
+     *
+     * @param path
+     *            The path to the image registry
+     * @return The Image object
+     */
+    public Image getImageFromImageRegistry(String path) {
+        Image icon = getImageRegistry().get(path);
+        if (icon == null) {
+            icon = getImageDescripterFromPath(path).createImage();
+            plugin.getImageRegistry().put(path, icon);
+        }
+        return icon;
     }
 
     /**
