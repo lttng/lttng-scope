@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.internal.common.core.Activator;
+import org.eclipse.tracecompass.common.core.activator.internal.Activator;
 
 /**
  * Common utility methods for launching external processes and retrieving their

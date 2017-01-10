@@ -21,10 +21,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
 
-import org.eclipse.tracecompass.internal.tmf.core.trace.experiment.TmfExperimentLocation;
-import org.eclipse.tracecompass.internal.tmf.core.trace.experiment.TmfLocationArray;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
+import org.eclipse.tracecompass.tmf.core.trace.experiment.internal.TmfExperimentLocation;
+import org.eclipse.tracecompass.tmf.core.trace.experiment.internal.TmfLocationArray;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfLocation;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfLongLocation;

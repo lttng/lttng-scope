@@ -62,7 +62,7 @@ public class ActivatorTest extends TestCase {
     // ------------------------------------------------------------------------
 
     /**
-     * Test method for {@link org.eclipse.tracecompass.internal.lttng2.ust.core.Activator#Activator()}.
+     * Test method for {@link org.eclipse.tracecompass.lttng2.ust.core.activator.internal.Activator#Activator()}.
      */
     @Test
     public void testActivator() {
@@ -70,7 +70,7 @@ public class ActivatorTest extends TestCase {
     }
 
     /**
-     * Test method for {@link org.eclipse.tracecompass.internal.lttng2.ust.core.Activator#getDefault()}.
+     * Test method for {@link org.eclipse.tracecompass.lttng2.ust.core.activator.internal.Activator#getDefault()}.
      */
     @Test
     public void testGetDefault() {
@@ -78,7 +78,7 @@ public class ActivatorTest extends TestCase {
     }
 
     /**
-     * Test method for {@link org.eclipse.tracecompass.internal.lttng2.ust.core.Activator#start(org.osgi.framework.BundleContext)}.
+     * Test method for {@link org.eclipse.tracecompass.lttng2.ust.core.activator.internal.Activator#start(org.osgi.framework.BundleContext)}.
      */
     @Test
     public void testStartBundleContext() {
@@ -86,7 +86,7 @@ public class ActivatorTest extends TestCase {
     }
 
     /**
-     * Test method for {@link org.eclipse.tracecompass.internal.lttng2.ust.core.Activator#stop(org.osgi.framework.BundleContext)}.
+     * Test method for {@link org.eclipse.tracecompass.lttng2.ust.core.activator.internal.Activator#stop(org.osgi.framework.BundleContext)}.
      */
     @Test
     public void testStopBundleContext() {

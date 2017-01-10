@@ -15,7 +15,7 @@ package org.eclipse.tracecompass.tmf.core.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.tracecompass.internal.tmf.core.Activator;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.junit.Test;
 
 /**

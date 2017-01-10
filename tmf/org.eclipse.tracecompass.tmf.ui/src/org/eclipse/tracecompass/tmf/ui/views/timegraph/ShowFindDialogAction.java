@@ -9,9 +9,9 @@
 package org.eclipse.tracecompass.tmf.ui.views.timegraph;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
-import org.eclipse.tracecompass.internal.tmf.ui.ITmfImageConstants;
-import org.eclipse.tracecompass.internal.tmf.ui.Messages;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.ITmfImageConstants;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.ui.views.timegraph.AbstractTimeGraphView.FindTarget;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
 import org.eclipse.ui.IWorkbenchPart;

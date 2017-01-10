@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.internal.tmf.core.TmfCoreTracer;
+import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.osgi.framework.BundleContext;
 
 /**

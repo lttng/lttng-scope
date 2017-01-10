@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.internal.provisional.analysis.lami.core.module.LamiAnalysis;
-import org.eclipse.tracecompass.internal.provisional.analysis.lami.core.module.LamiChartModel;
+import org.eclipse.tracecompass.analysis.lami.core.module.LamiAnalysis;
+import org.eclipse.tracecompass.analysis.lami.core.module.LamiChartModel;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
 import com.google.common.collect.ImmutableMultimap;

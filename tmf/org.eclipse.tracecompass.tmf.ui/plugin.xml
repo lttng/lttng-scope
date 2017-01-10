@@ -143,7 +143,7 @@
                suppressedExtensionId="org.eclipse.ui.navigator.resourceContent">
          </override>
          <actionProvider
-               class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.TmfActionProvider"
+               class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.TmfActionProvider"
                id="org.eclipse.linuxtools.tmf.ui.navigator.actions.provider">
             <enablement>
                <or>
@@ -154,7 +154,7 @@
             </enablement>
          </actionProvider>
          <dropAssistant
-               class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.DropAdapterAssistant"
+               class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.DropAdapterAssistant"
                id="org.eclipse.linuxtools.tmf.ui.navigator.dropAssistant">
             <possibleDropTargets>
                <or>
@@ -706,7 +706,7 @@
                mnemonic="%command.select_trace_type.mnemonic"
                tooltip="%command.select_trace_type.description">
             <dynamic
-                  class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.SelectElementTypeContributionItem"
+                  class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectElementTypeContributionItem"
                   id="org.eclipse.linuxtools.tmf.ui.command.select_trace_type.dynamic">
             </dynamic>
             <separator
@@ -737,7 +737,7 @@
                mnemonic="%command.select_experiment_type.mnemonic"
                tooltip="%command.select_experiment_type.description">
             <dynamic
-                  class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.SelectElementTypeContributionItem"
+                  class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectElementTypeContributionItem"
                   id="org.eclipse.linuxtools.tmf.ui.command.select_trace_type.dynamic">
             </dynamic>
             <visibleWhen
@@ -1131,7 +1131,7 @@
       </command>
       <command
             categoryId="org.eclipse.ui.category.file"
-            defaultHandler="org.eclipse.tracecompass.internal.tmf.ui.commands.OpenFileHandler"
+            defaultHandler="org.eclipse.tracecompass.tmf.ui.commands.internal.OpenFileHandler"
             description="%command.OpenFile.description"
             id="org.eclipse.linuxtools.tmf.ui.openFile"
             name="%command.OpenFile.name">
@@ -1152,7 +1152,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RefreshHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.RefreshHandler"
             commandId="org.eclipse.ui.file.refresh">
          <activeWhen>
             <and>
@@ -1178,7 +1178,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.OpenTraceHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.OpenTraceHandler"
             commandId="org.eclipse.ui.navigate.openResource">
          <activeWhen>
             <and>
@@ -1195,7 +1195,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.OpenExperimentHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.OpenExperimentHandler"
             commandId="org.eclipse.ui.navigate.openResource">
          <activeWhen>
             <and>
@@ -1212,7 +1212,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.OpenAnalysisHelpHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.OpenAnalysisHelpHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.analysis_help">
          <activeWhen>
             <and>
@@ -1229,7 +1229,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.OpenAnalysisOutputHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.OpenAnalysisOutputHandler"
             commandId="org.eclipse.ui.navigate.openResource">
          <activeWhen>
             <and>
@@ -1246,7 +1246,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.CopyTraceHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.CopyTraceHandler"
             commandId="org.eclipse.ui.edit.copy">
          <activeWhen>
             <and>
@@ -1275,7 +1275,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.CopyExperimentHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.CopyExperimentHandler"
             commandId="org.eclipse.ui.edit.copy">
          <activeWhen>
             <and>
@@ -1298,7 +1298,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RenameTraceHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.RenameTraceHandler"
             commandId="org.eclipse.ui.edit.rename">
          <activeWhen>
             <and>
@@ -1315,7 +1315,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RenameExperimentHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.RenameExperimentHandler"
             commandId="org.eclipse.ui.edit.rename">
          <activeWhen>
             <and>
@@ -1332,7 +1332,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.RenameFolderHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.RenameFolderHandler"
             commandId="org.eclipse.ui.edit.rename">
          <activeWhen>
             <and>
@@ -1356,7 +1356,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.DeleteExperimentHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.DeleteExperimentHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <iterate
@@ -1369,7 +1369,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.DeleteTraceFolderElementHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.DeleteTraceFolderElementHandler"
             commandId="org.eclipse.ui.edit.delete">
          <activeWhen>
             <iterate
@@ -1387,7 +1387,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.NewFolderHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.NewFolderHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.new_folder">
          <activeWhen>
             <and>
@@ -1405,11 +1405,11 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.DeleteTraceSupplementaryFilesHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.DeleteTraceSupplementaryFilesHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.delete_suppl_files">
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.NewExperimentHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.NewExperimentHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.new_experiment">
          <activeWhen>
             <and>
@@ -1426,7 +1426,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.SelectTraceTypeHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectTraceTypeHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.select_trace_type">
          <activeWhen>
             <iterate
@@ -1444,7 +1444,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.SelectTracesHandler"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectTracesHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.select_traces">
          <activeWhen>
             <and>
@@ -1461,7 +1461,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.editors.handlers.AddBookmarkHandler"
+            class="org.eclipse.tracecompass.tmf.ui.editors.handlers.internal.AddBookmarkHandler"
             commandId="org.eclipse.ui.edit.addBookmark">
          <activeWhen>
             <and>
@@ -1485,7 +1485,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.tmf.ui.commands.ExportToTextCommandHandler"
+            class="org.eclipse.tracecompass.tmf.ui.commands.internal.ExportToTextCommandHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.exportToText">
       </handler>
       <handler
@@ -1599,7 +1599,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.eclipse.tracecompass.internal.tmf.ui.preferences.TmfTracingPreferencePage"
+            class="org.eclipse.tracecompass.tmf.ui.preferences.internal.TmfTracingPreferencePage"
             id="org.eclipse.linuxtools.tmf.ui.TmfTracingPreferences"
             name="%preference.page.trace.name">
       </page>
@@ -1623,14 +1623,14 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.TracePropertyTester"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.TracePropertyTester"
             id="org.eclipse.linuxtools.tmf.ui.tracePropertyTester"
             namespace="org.eclipse.linuxtools.tmf.ui"
             properties="isExperimentTrace,hasSupplementaryFiles,traceType"
             type="org.eclipse.tracecompass.tmf.ui.project.model.TmfProjectModelElement">
       </propertyTester>
       <propertyTester
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.handlers.EditorInputPropertyTester"
+            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.EditorInputPropertyTester"
             id="org.eclipse.tracecompass.tmf.ui.editorInputPropertyTester"
             namespace="org.eclipse.tracecompass.tmf.ui"
             properties="isExperimentEditorInput"
@@ -1640,7 +1640,7 @@
    <extension
          point="org.eclipse.ui.navigator.linkHelper">
       <linkHelper
-            class="org.eclipse.tracecompass.internal.tmf.ui.project.model.TmfEditorLinkHelper"
+            class="org.eclipse.tracecompass.tmf.ui.project.model.internal.TmfEditorLinkHelper"
             id="org.eclipse.linuxtools.internal.tmf.ui.project.model.TmfEditorLinkHelper">
          <editorInputEnablement>
              <instanceof value="org.eclipse.ui.IFileEditorInput"/>
@@ -1723,7 +1723,7 @@
    <extension
          point="org.eclipse.tracecompass.tmf.ui.symbolProvider">
       <providerFactory
-            class="org.eclipse.tracecompass.internal.tmf.ui.symbols.BasicSymbolProviderFactory"
+            class="org.eclipse.tracecompass.tmf.ui.symbols.internal.BasicSymbolProviderFactory"
             id="org.eclipse.tracecompass.tmf.ui.providerFactory1"
             priority="0">
       </providerFactory>

@@ -50,9 +50,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
-import org.eclipse.tracecompass.internal.tmf.ui.project.operations.SelectTracesOperation;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.project.model.ITmfProjectModelElement;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfNavigatorContentProvider;
@@ -60,6 +59,7 @@ import org.eclipse.tracecompass.tmf.ui.project.model.TmfNavigatorLabelProvider;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfProjectElement;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder;
+import org.eclipse.tracecompass.tmf.ui.project.operations.internal.SelectTracesOperation;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
@@ -132,7 +132,7 @@ public class SelectTracesWizardPage extends WizardPage {
         buttonComposite.setLayoutData(gd);
 
         Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
-        selectAllButton.setText(org.eclipse.tracecompass.internal.tmf.ui.project.dialogs.Messages.Dialog_SelectAll);
+        selectAllButton.setText(org.eclipse.tracecompass.tmf.ui.project.dialogs.internal.Messages.Dialog_SelectAll);
         selectAllButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -141,7 +141,7 @@ public class SelectTracesWizardPage extends WizardPage {
         });
 
         Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
-        deselectAllButton.setText(org.eclipse.tracecompass.internal.tmf.ui.project.dialogs.Messages.Dialog_DeselectAll);
+        deselectAllButton.setText(org.eclipse.tracecompass.tmf.ui.project.dialogs.internal.Messages.Dialog_DeselectAll);
         deselectAllButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

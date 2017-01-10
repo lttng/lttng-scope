@@ -20,11 +20,11 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.BTree;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.BTreeCheckpointVisitor;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.FlatArray;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTree;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTreeCheckpointVisitor;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.FlatArray;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfLongLocation;
 import org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub;
 

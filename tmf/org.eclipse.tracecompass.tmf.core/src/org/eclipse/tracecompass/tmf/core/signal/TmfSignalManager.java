@@ -23,8 +23,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.eclipse.tracecompass.internal.tmf.core.Activator;
-import org.eclipse.tracecompass.internal.tmf.core.TmfCoreTracer;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
+import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 
 /**
  * This class manages the set of signal listeners and the signals they are

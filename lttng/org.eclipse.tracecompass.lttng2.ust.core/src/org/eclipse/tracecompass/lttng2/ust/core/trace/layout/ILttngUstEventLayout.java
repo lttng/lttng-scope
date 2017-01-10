@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.trace.layout;
 
-import org.eclipse.tracecompass.internal.lttng2.ust.core.trace.layout.LttngUst20EventLayout;
+import org.eclipse.tracecompass.lttng2.ust.core.trace.layout.internal.LttngUst20EventLayout;
 
 /**
  * This interface defines concepts exposed by liblttng-ust libraries and traces.

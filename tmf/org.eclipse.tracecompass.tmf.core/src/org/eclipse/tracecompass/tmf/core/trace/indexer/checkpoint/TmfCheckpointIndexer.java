@@ -19,10 +19,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.internal.tmf.core.Activator;
-import org.eclipse.tracecompass.internal.tmf.core.Messages;
-import org.eclipse.tracecompass.internal.tmf.core.TmfCoreTracer;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.TmfMemoryIndex;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Messages;
+import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
@@ -35,6 +34,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTraceKnownSize;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfTraceIndexer;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.TmfMemoryIndex;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 
 /**

@@ -19,8 +19,8 @@ import java.nio.ByteBuffer;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.common.core.math.SaturatedArithmetic;
-import org.eclipse.tracecompass.internal.tmf.core.timestamp.TmfNanoTimestamp;
-import org.eclipse.tracecompass.internal.tmf.core.timestamp.TmfSecondTimestamp;
+import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfNanoTimestamp;
+import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfSecondTimestamp;
 
 /**
  * A generic timestamp implementation. The timestamp is represented by the tuple

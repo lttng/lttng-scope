@@ -13,9 +13,9 @@ package org.eclipse.tracecompass.tmf.ui.views;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
-import org.eclipse.tracecompass.internal.tmf.ui.ITmfImageConstants;
-import org.eclipse.tracecompass.internal.tmf.ui.Messages;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.ITmfImageConstants;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 
 /**
  *

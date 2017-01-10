@@ -16,7 +16,7 @@ package org.eclipse.tracecompass.tmf.core.request;
 import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.internal.tmf.core.TmfCoreTracer;
+import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.filter.ITmfFilter;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;

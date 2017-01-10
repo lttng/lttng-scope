@@ -14,12 +14,12 @@ package org.eclipse.tracecompass.tmf.core.trace.indexer;
 
 import java.io.File;
 
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.FlatArray;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.FlatArray;
 
 /**
  * <p>A checkpoint index that uses a FlatArray to store and search checkpoints by

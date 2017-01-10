@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.editors;
 
-import org.eclipse.tracecompass.internal.tmf.ui.editors.TmfTableColumnUtils;
+import org.eclipse.tracecompass.tmf.ui.editors.internal.TmfTableColumnUtils;
 
 /**
  * This class manages the column settings associated with a trace type.

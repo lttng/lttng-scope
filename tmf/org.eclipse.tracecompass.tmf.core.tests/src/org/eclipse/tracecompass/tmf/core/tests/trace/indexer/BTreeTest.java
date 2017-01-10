@@ -16,13 +16,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.BTree;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.BTreeCheckpointVisitor;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.IBTreeVisitor;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfPersistentlyIndexable;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTree;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTreeCheckpointVisitor;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.IBTreeVisitor;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfLongLocation;
 import org.junit.Test;
 

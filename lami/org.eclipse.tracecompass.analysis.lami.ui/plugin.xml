@@ -13,7 +13,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.handler.RunAnalysisHandler"
+            class="org.eclipse.tracecompass.analysis.lami.ui.handler.RunAnalysisHandler"
             commandId="org.eclipse.ui.navigate.openResource">
          <activeWhen>
             <and>
@@ -30,7 +30,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.handler.OpenReportHandler"
+            class="org.eclipse.tracecompass.analysis.lami.ui.handler.OpenReportHandler"
             commandId="org.eclipse.ui.navigate.openResource">
          <activeWhen>
             <and>
@@ -45,7 +45,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.handler.DeleteReportHandler"
+            class="org.eclipse.tracecompass.analysis.lami.ui.handler.DeleteReportHandler"
             commandId="org.eclipse.tracecompass.tmf.ui.command.report_delete">
          <activeWhen>
             <and>
@@ -60,7 +60,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.handler.RemoveAnalysisHandler"
+            class="org.eclipse.tracecompass.analysis.lami.ui.handler.RemoveAnalysisHandler"
             commandId="org.eclipse.tracecompass.tmf.ui.command.analysis_remove">
          <activeWhen>
             <and>
@@ -75,7 +75,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.handler.AddAnalysisHandler"
+            class="org.eclipse.tracecompass.analysis.lami.ui.handler.AddAnalysisHandler"
             commandId="org.eclipse.tracecompass.tmf.ui.command.analysis_add">
          <activeWhen>
             <and>
@@ -236,7 +236,7 @@
       <view
             allowMultiple="true"
             category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.internal.provisional.analysis.lami.ui.views.LamiReportView"
+            class="org.eclipse.tracecompass.analysis.lami.ui.views.LamiReportView"
             id="org.eclipse.tracecompass.analysis.lami.views.reportview"
             name="%analysis.report.view"
             restorable="false">

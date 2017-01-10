@@ -28,7 +28,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.internal.common.core.Activator;
+import org.eclipse.tracecompass.common.core.activator.internal.Activator;
 
 /**
  * A BufferedBlockingQueue is a wrapper around a {@link BlockingQueue}, which

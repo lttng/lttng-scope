@@ -15,7 +15,7 @@ package org.eclipse.tracecompass.ctf.tmf.core.context;
 
 import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.internal.ctf.tmf.core.trace.iterator.CtfIterator;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.iterator.internal.CtfIterator;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 

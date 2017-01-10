@@ -5,7 +5,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 2.3.0.qualifier
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.eclipse.tracecompass.rcp.ui;singleton:=true
-Bundle-Activator: org.eclipse.tracecompass.internal.tracing.rcp.ui.TracingRcpPlugin
+Bundle-Activator: org.eclipse.tracecompass.rcp.ui.internal.TracingRcpPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.commands,
@@ -18,6 +18,6 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.tracecompass.tmf.core,
  org.eclipse.update.configurator;bundle-version="3.3.200",
  org.eclipse.equinox.p2.ui.sdk
-Export-Package: org.eclipse.tracecompass.internal.tracing.rcp.ui;x-internal:=true,
- org.eclipse.tracecompass.internal.tracing.rcp.ui.cli;x-internal:=true,
- org.eclipse.tracecompass.internal.tracing.rcp.ui.messages;x-internal:=true
+Export-Package: org.eclipse.tracecompass.rcp.ui.cli.internal;x-internal:=true,
+ org.eclipse.tracecompass.rcp.ui.internal;x-internal:=true,
+ org.eclipse.tracecompass.tracing.rcp.ui.messages.internal;x-internal:=true

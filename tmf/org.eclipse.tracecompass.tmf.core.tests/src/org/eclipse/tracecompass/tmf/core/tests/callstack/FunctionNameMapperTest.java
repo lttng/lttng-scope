@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import org.eclipse.tracecompass.internal.tmf.core.callstack.FunctionNameMapper;
+import org.eclipse.tracecompass.tmf.core.callstack.internal.FunctionNameMapper;
 import org.junit.Test;
 
 /**

@@ -11,7 +11,7 @@
    <extension
          point="org.eclipse.tracecompass.tmf.ui.symbolProvider">
       <providerFactory
-            class="org.eclipse.tracecompass.internal.lttng2.ust.ui.analysis.debuginfo.UstDebugInfoSymbolProviderFactory"
+            class="org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.internal.UstDebugInfoSymbolProviderFactory"
             id="org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.providerFactory"
             priority="50">
       </providerFactory>

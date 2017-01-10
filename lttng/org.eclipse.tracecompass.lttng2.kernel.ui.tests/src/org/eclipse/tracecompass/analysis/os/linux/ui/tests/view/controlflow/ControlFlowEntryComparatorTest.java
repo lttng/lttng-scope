@@ -19,10 +19,10 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.SWT;
+import org.eclipse.tracecompass.analysis.os.linux.ui.views.controlflow.internal.ControlFlowColumnComparators;
+import org.eclipse.tracecompass.analysis.os.linux.ui.views.controlflow.internal.ControlFlowEntry;
+import org.eclipse.tracecompass.analysis.os.linux.ui.views.controlflow.internal.IControlFlowEntryComparator;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.controlflow.ControlFlowColumnComparators;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.controlflow.ControlFlowEntry;
-import org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.controlflow.IControlFlowEntryComparator;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.ui.views.timegraph.ITimeGraphEntryComparator;

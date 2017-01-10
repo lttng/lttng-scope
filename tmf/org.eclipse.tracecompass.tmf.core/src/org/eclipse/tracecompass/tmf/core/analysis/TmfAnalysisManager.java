@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.internal.tmf.core.Activator;
-import org.eclipse.tracecompass.internal.tmf.core.analysis.TmfAnalysisModuleSources;
-import org.eclipse.tracecompass.internal.tmf.core.analysis.TmfAnalysisParameterProviders;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
+import org.eclipse.tracecompass.tmf.core.analysis.internal.TmfAnalysisModuleSources;
+import org.eclipse.tracecompass.tmf.core.analysis.internal.TmfAnalysisParameterProviders;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
 import com.google.common.collect.HashMultimap;

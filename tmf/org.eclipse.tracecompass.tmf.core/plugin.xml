@@ -9,13 +9,13 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="org.eclipse.tracecompass.internal.tmf.core.TmfCorePreferenceInitializer">
+            class="org.eclipse.tracecompass.tmf.core.activator.internal.TmfCorePreferenceInitializer">
       </initializer>
    </extension>
    <extension
          point="org.eclipse.linuxtools.tmf.core.analysis">
       <source
-            class="org.eclipse.tracecompass.internal.tmf.core.analysis.TmfAnalysisModuleSourceConfigElement">
+            class="org.eclipse.tracecompass.tmf.core.analysis.internal.TmfAnalysisModuleSourceConfigElement">
       </source>
    </extension>
    <extension

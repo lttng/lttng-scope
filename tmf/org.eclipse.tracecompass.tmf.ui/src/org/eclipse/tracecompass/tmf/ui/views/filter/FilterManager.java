@@ -21,11 +21,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
 import org.eclipse.tracecompass.tmf.core.filter.model.ITmfFilterTreeNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterRootNode;
 import org.eclipse.tracecompass.tmf.core.filter.xml.TmfFilterXMLParser;
 import org.eclipse.tracecompass.tmf.core.filter.xml.TmfFilterXMLWriter;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.xml.sax.SAXException;
 
 /**

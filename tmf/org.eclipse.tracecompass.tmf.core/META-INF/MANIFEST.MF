@@ -5,7 +5,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 2.3.0.qualifier
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.eclipse.tracecompass.tmf.core;singleton:=true
-Bundle-Activator: org.eclipse.tracecompass.internal.tmf.core.Activator
+Bundle-Activator: org.eclipse.tracecompass.tmf.core.activator.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
@@ -13,20 +13,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.common.core,
  org.eclipse.tracecompass.statesystem.core;visibility:=reexport,
  org.eclipse.cdt.core
-Export-Package: org.eclipse.tracecompass.internal.tmf.core;x-friends:="org.eclipse.tracecompass.tmf.core.tests,org.eclipse.tracecompass.tmf.ui.swtbot.tests",
- org.eclipse.tracecompass.internal.tmf.core.analysis;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.callstack;x-friends:="org.eclipse.tracecompass.tmf.ui,org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.component;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.project.model;x-internal:=true,
- org.eclipse.tracecompass.internal.tmf.core.request;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.timestamp;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.trace.experiment;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.internal.tmf.core.trace.indexer;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
- org.eclipse.tracecompass.tmf.core,
+Export-Package: org.eclipse.tracecompass.tmf.core,
+ org.eclipse.tracecompass.tmf.core.activator.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests,org.eclipse.tracecompass.tmf.ui.swtbot.tests",
  org.eclipse.tracecompass.tmf.core.analysis,
+ org.eclipse.tracecompass.tmf.core.analysis.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.analysis.ondemand,
  org.eclipse.tracecompass.tmf.core.analysis.requirements,
+ org.eclipse.tracecompass.tmf.core.callstack.internal;x-friends:="org.eclipse.tracecompass.tmf.ui,org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.component,
+ org.eclipse.tracecompass.tmf.core.component.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.event,
  org.eclipse.tracecompass.tmf.core.event.aspect,
  org.eclipse.tracecompass.tmf.core.event.lookup,
@@ -35,15 +30,20 @@ Export-Package: org.eclipse.tracecompass.internal.tmf.core;x-friends:="org.eclip
  org.eclipse.tracecompass.tmf.core.filter.model,
  org.eclipse.tracecompass.tmf.core.filter.xml,
  org.eclipse.tracecompass.tmf.core.project.model,
+ org.eclipse.tracecompass.tmf.core.project.model.internal;x-internal:=true,
  org.eclipse.tracecompass.tmf.core.request,
+ org.eclipse.tracecompass.tmf.core.request.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.resources,
  org.eclipse.tracecompass.tmf.core.signal,
  org.eclipse.tracecompass.tmf.core.statesystem,
  org.eclipse.tracecompass.tmf.core.timestamp,
+ org.eclipse.tracecompass.tmf.core.timestamp.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.trace,
  org.eclipse.tracecompass.tmf.core.trace.experiment,
+ org.eclipse.tracecompass.tmf.core.trace.experiment.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.trace.indexer,
  org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint,
+ org.eclipse.tracecompass.tmf.core.trace.indexer.internal;x-friends:="org.eclipse.tracecompass.tmf.core.tests",
  org.eclipse.tracecompass.tmf.core.trace.location,
  org.eclipse.tracecompass.tmf.core.util
 Import-Package: com.google.common.annotations,

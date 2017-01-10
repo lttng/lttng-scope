@@ -21,11 +21,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.BTree;
-import org.eclipse.tracecompass.internal.tmf.core.trace.indexer.FlatArray;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.TmfBTreeTraceIndexer;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTree;
+import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.FlatArray;
 import org.junit.Test;
 
 /**

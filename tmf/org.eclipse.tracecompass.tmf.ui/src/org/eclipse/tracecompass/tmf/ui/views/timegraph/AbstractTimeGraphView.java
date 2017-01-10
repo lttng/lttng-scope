@@ -84,7 +84,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.tracecompass.common.core.NonNullUtils;
 import org.eclipse.tracecompass.common.core.log.TraceCompassLog;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
 import org.eclipse.tracecompass.tmf.core.resources.ITmfMarker;
 import org.eclipse.tracecompass.tmf.core.signal.TmfMarkerEventSourceUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSelectionRangeUpdatedSignal;
@@ -102,6 +101,7 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceAdapterManager;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceContext;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.ui.TmfUiRefreshHandler;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.signal.TmfTimeViewAlignmentInfo;
 import org.eclipse.tracecompass.tmf.ui.views.ITmfTimeAligned;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
@@ -1344,12 +1344,12 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                             if (bookmark.getDuration() > 0) {
                                 marker.setAttribute(ITmfMarker.MARKER_DURATION, Long.toString(bookmark.getDuration()));
                                 marker.setAttribute(IMarker.LOCATION,
-                                        NLS.bind(org.eclipse.tracecompass.internal.tmf.ui.Messages.TmfMarker_LocationTimeRange,
+                                        NLS.bind(org.eclipse.tracecompass.tmf.ui.activator.internal.Messages.TmfMarker_LocationTimeRange,
                                                 TmfTimestamp.fromNanos(bookmark.getTime()),
                                                 TmfTimestamp.fromNanos(bookmark.getTime() + bookmark.getDuration())));
                             } else {
                                 marker.setAttribute(IMarker.LOCATION,
-                                        NLS.bind(org.eclipse.tracecompass.internal.tmf.ui.Messages.TmfMarker_LocationTime,
+                                        NLS.bind(org.eclipse.tracecompass.tmf.ui.activator.internal.Messages.TmfMarker_LocationTime,
                                                 TmfTimestamp.fromNanos(bookmark.getTime())));
                             }
                             marker.setAttribute(ITmfMarker.MARKER_COLOR, bookmark.getColor().toString());

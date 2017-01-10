@@ -15,8 +15,8 @@ package org.eclipse.tracecompass.tmf.ui.project.model;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.tracecompass.internal.tmf.ui.Activator;
 import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisOutput;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.IViewDescriptor;

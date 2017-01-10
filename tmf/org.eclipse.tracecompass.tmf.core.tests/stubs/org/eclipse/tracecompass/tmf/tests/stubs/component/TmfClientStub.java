@@ -12,9 +12,9 @@
 
 package org.eclipse.tracecompass.tmf.tests.stubs.component;
 
-import org.eclipse.tracecompass.internal.tmf.core.component.TmfProviderManager;
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
 import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
+import org.eclipse.tracecompass.tmf.core.component.internal.TmfProviderManager;
 import org.eclipse.tracecompass.tmf.tests.stubs.event.TmfSyntheticEventStub;
 
 /**

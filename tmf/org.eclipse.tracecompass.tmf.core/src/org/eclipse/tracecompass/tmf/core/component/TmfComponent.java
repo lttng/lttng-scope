@@ -14,7 +14,7 @@
 package org.eclipse.tracecompass.tmf.core.component;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.internal.tmf.core.TmfCoreTracer;
+import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 
