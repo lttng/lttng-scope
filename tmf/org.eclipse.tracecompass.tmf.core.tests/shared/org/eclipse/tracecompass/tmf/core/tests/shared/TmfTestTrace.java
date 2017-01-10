@@ -20,9 +20,9 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.tests.TmfCoreTestPlugin;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub2;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -84,7 +84,7 @@ public enum TmfTestTrace {
         if (fTrace != null) {
             fTrace.dispose();
         }
-        final URL location = FileLocator.find(TmfCoreTestPlugin.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
+        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
         try {
             File test = new File(FileLocator.toFileURL(location).toURI());
             ITmfTrace trace = new TmfTraceStub(test.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
@@ -105,7 +105,7 @@ public enum TmfTestTrace {
      */
     public ITmfTrace getTraceAsStub2() {
         ITmfTrace trace = null;
-        final URL location = FileLocator.find(TmfCoreTestPlugin.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
+        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
         try {
             File test = new File(FileLocator.toFileURL(location).toURI());
             trace = new TmfTraceStub2(test.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);

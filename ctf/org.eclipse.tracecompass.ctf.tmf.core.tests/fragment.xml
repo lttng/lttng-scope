@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.linuxtools.tmf.core.tracetype">
+      <type
+            category="org.eclipse.linuxtools.tmf.core.tests.category"
+            event_type="org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent"
+            id="org.eclipse.linuxtools.ctf.tmf.core.tests.ctf.tracetype"
+            isDirectory="true"
+            name="CTF Test Trace"
+            trace_type="org.eclipse.tracecompass.ctf.tmf.core.tests.stubs.CtfTmfTraceStub">
+      </type>
+   </extension>
+
+</fragment>
