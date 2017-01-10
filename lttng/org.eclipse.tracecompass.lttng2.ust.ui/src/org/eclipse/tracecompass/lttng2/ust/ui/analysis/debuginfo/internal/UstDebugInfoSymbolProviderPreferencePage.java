@@ -9,8 +9,8 @@
 
 package org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.internal;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.handler;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;

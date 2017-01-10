@@ -14,7 +14,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.trace;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;

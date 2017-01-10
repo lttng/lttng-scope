@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.tid;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,7 +21,7 @@ import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModu
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.DefaultEventLayout;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelTrace;
-import org.eclipse.tracecompass.common.core.NonNullUtils;
+import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.lttng2.kernel.core.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;

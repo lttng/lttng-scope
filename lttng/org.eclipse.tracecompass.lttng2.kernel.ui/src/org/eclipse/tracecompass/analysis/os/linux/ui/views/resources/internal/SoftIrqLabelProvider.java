@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.ui.views.resources.internal;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
 

@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;

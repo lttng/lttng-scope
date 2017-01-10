@@ -25,8 +25,8 @@
   <name>Trace Compass Common Utilities Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.common.core</module>
-    <module>org.eclipse.tracecompass.common.core.tests</module>
+    <module>org.eclipse.tracecompass.common</module>
+    <module>org.eclipse.tracecompass.common.tests</module>
   </modules>
 
 </project>

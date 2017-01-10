@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core.types;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.Map;
 import java.util.function.Function;

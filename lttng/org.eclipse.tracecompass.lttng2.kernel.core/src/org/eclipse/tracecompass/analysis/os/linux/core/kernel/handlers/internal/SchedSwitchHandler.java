@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.LinuxValues;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.StateValues;

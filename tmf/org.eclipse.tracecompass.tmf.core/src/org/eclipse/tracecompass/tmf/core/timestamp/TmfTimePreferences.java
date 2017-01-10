@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.core.timestamp;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Locale;

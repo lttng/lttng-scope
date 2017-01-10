@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.analysis.requirements;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

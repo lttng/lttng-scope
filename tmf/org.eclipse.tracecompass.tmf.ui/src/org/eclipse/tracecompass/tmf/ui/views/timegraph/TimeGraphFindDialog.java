@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.tracecompass.common.core.NonNullUtils;
+import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.ui.views.timegraph.AbstractTimeGraphView.FindTarget;

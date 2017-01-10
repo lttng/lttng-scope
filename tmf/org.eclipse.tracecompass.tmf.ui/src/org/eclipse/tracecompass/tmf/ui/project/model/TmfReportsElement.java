@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;

@@ -14,7 +14,7 @@
 
 package org.eclipse.tracecompass.tmf.core.request.internal;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.Queue;
 import java.util.Timer;

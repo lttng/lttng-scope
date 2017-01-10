@@ -18,7 +18,7 @@ package org.eclipse.tracecompass.tmf.core.timestamp;
 import java.nio.ByteBuffer;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.common.core.math.SaturatedArithmetic;
+import org.eclipse.tracecompass.common.math.SaturatedArithmetic;
 import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfNanoTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfSecondTimestamp;
 

@@ -9,9 +9,9 @@
 
 package org.eclipse.tracecompass.lami.core.module;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNullContents;
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNullContents;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -35,9 +35,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.core.log.TraceCompassLog;
-import org.eclipse.tracecompass.common.core.process.ProcessUtils;
-import org.eclipse.tracecompass.common.core.process.ProcessUtils.OutputReaderFunction;
+import org.eclipse.tracecompass.common.log.TraceCompassLog;
+import org.eclipse.tracecompass.common.process.ProcessUtils;
+import org.eclipse.tracecompass.common.process.ProcessUtils.OutputReaderFunction;
 import org.eclipse.tracecompass.lami.core.LamiStrings;
 import org.eclipse.tracecompass.lami.core.ShellUtils;
 import org.eclipse.tracecompass.lami.core.activator.internal.Activator;

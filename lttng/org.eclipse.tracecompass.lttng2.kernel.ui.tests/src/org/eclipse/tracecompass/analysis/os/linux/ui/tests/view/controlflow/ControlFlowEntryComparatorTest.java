@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.ui.tests.view.controlflow;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;

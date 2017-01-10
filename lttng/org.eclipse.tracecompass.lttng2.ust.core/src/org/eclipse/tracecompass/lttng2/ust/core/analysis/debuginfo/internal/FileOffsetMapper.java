@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.internal;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.core.log.TraceCompassLog;
-import org.eclipse.tracecompass.common.core.process.ProcessUtils;
+import org.eclipse.tracecompass.common.log.TraceCompassLog;
+import org.eclipse.tracecompass.common.process.ProcessUtils;
 import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
 
 import com.google.common.base.Objects;

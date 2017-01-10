@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.Iterator;
 import java.util.List;

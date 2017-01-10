@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.viewers.events;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
 import java.util.List;

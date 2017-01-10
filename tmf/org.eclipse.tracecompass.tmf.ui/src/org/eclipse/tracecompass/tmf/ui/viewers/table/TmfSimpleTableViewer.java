@@ -13,8 +13,8 @@
 
 package org.eclipse.tracecompass.tmf.ui.viewers.table;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.Collections;
 import java.util.Comparator;

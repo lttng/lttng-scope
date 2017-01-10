@@ -33,7 +33,7 @@ import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.SysEntryHandler;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.SysExitHandler;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
-import org.eclipse.tracecompass.common.core.NonNullUtils;
+import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.lttng2.kernel.core.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;

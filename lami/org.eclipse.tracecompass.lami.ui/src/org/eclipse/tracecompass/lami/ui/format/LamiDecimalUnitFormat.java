@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.text.FieldPosition;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.core.format.DecimalUnitFormat;
+import org.eclipse.tracecompass.common.format.DecimalUnitFormat;
 import org.eclipse.tracecompass.lami.ui.viewers.LamiGraphRange;
 
 /**

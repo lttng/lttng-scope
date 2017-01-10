@@ -9,8 +9,8 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
-import static org.eclipse.tracecompass.common.core.NonNullUtils.nullToEmptyString;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.tracecompass.common.core.format.DecimalUnitFormat;
+import org.eclipse.tracecompass.common.format.DecimalUnitFormat;
 import org.eclipse.tracecompass.lami.core.aspect.LamiTableEntryAspect;
 import org.eclipse.tracecompass.lami.core.module.LamiChartModel;
 import org.eclipse.tracecompass.lami.core.module.LamiResultTable;

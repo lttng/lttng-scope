@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis.ondemand;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.util.HashSet;
 import java.util.Set;

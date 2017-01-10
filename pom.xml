@@ -281,7 +281,7 @@
             <encoding>UTF-8</encoding>
             <useProjectSettings>true</useProjectSettings>
             <compilerArguments>
-              <annotationpath>common/org.eclipse.tracecompass.common.core/annotations</annotationpath>
+              <annotationpath>common/org.eclipse.tracecompass.common/annotations</annotationpath>
             </compilerArguments>
           </configuration>
         </plugin>

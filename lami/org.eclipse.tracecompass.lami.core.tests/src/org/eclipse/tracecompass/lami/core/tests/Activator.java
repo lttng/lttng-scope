@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core.tests;
 
-import org.eclipse.tracecompass.common.core.TraceCompassActivator;
+import org.eclipse.tracecompass.common.TraceCompassActivator;
 
 /**
  * Plugin activator

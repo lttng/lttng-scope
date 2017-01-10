@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.format;
 
-import static org.eclipse.tracecompass.common.core.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
 import java.math.BigDecimal;
 import java.text.FieldPosition;
