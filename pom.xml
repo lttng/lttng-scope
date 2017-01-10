@@ -118,9 +118,9 @@
   </profiles>
 
   <modules>
-    <module>analysis</module>
     <module>common</module>
     <module>ctf</module>
+    <module>lami</module>
     <module>lttng</module>
     <module>releng</module>
     <module>statesystem</module>

@@ -19,10 +19,10 @@
     <version>2.3.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.tracecompass.analysis-parent</artifactId>
+  <artifactId>org.eclipse.tracecompass.lami-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Trace Compass Tracetype-agnostic Analyses Parent</name>
+  <name>LAMI Parent</name>
 
   <modules>
     <module>org.eclipse.tracecompass.analysis.lami.core</module>
