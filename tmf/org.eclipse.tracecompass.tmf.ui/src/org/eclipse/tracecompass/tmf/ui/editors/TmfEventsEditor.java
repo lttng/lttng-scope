@@ -246,23 +246,24 @@ public class TmfEventsEditor extends TmfEditor implements ITmfTraceEditor, IReus
     }
 
     private void createAndInitializeTable() {
-        if (fTrace != null) {
-            setPartName(fTrace.getName());
-            fEventsTable = createEventsTable(fParent, fTrace.getCacheSize());
+        ITmfTrace trace = fTrace;
+        if (trace != null) {
+            setPartName(trace.getName());
+            fEventsTable = createEventsTable(fParent, trace.getCacheSize());
             fEventsTable.registerContextMenus(getSite());
             fEventsTable.addSelectionChangedListener(this);
-            fEventsTable.setTrace(fTrace, true);
+            fEventsTable.setTrace(trace, true);
             fEventsTable.refreshBookmarks(fFile);
             loadState();
 
             /* ensure start time is set */
-            final ITmfContext context = fTrace.seekEvent(0);
-            fTrace.getNext(context);
+            final ITmfContext context = trace.seekEvent(0);
+            trace.getNext(context);
             context.dispose();
 
-            broadcast(new TmfTraceOpenedSignal(this, fTrace, fFile));
+            broadcast(new TmfTraceOpenedSignal(this, trace, fFile));
             if (fTraceSelected) {
-                broadcast(new TmfTraceSelectedSignal(this, fTrace));
+                broadcast(new TmfTraceSelectedSignal(this, trace));
             }
 
             /* go to marker after trace opened */
@@ -555,23 +556,25 @@ public class TmfEventsEditor extends TmfEditor implements ITmfTraceEditor, IReus
 
     @Override
     public void partActivated(IWorkbenchPart part) {
+        ITmfTrace trace = fTrace;
         if (part == this && !fTraceSelected) {
             fTraceSelected = true;
-            if (fTrace == null) {
+            if (trace == null) {
                 return;
             }
-            broadcast(new TmfTraceSelectedSignal(this, fTrace));
+            broadcast(new TmfTraceSelectedSignal(this, trace));
         }
     }
 
     @Override
     public void partBroughtToTop(IWorkbenchPart part) {
+        ITmfTrace trace = fTrace;
         if (part == this && !fTraceSelected) {
             fTraceSelected = true;
-            if (fTrace == null) {
+            if (trace == null) {
                 return;
             }
-            broadcast(new TmfTraceSelectedSignal(this, fTrace));
+            broadcast(new TmfTraceSelectedSignal(this, trace));
         }
     }
 

@@ -15,6 +15,8 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.ui.views.controlflow.internal;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -746,7 +748,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
     private static void hierarchicalToFlatTree(TimeGraphEntry traceEntry) {
         List<@NonNull TimeGraphEntry> rootList = traceEntry.getChildren();
         // We visit the children of every entry to add
-        StreamFlattener<TimeGraphEntry> sf = new StreamFlattener<>(entry -> entry.getChildren().stream());
+        StreamFlattener<TimeGraphEntry> sf = new StreamFlattener<>(entry -> checkNotNull(entry.getChildren().stream()));
         Stream<TimeGraphEntry> allEntries = rootList.stream().flatMap(entry -> sf.flatten(entry));
 
         // We add every entry that is missing from the trace's entry list

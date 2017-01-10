@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.TmfBTreeTraceIndexer;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
@@ -48,7 +49,8 @@ public class TmfBTreeIndexTest extends AbstractIndexTest {
     }
 
     private static class TestBTreeIndexer extends TmfBTreeTraceIndexer implements ITestIndexer {
-        public TestBTreeIndexer(TestTrace testTrace) {
+
+        public TestBTreeIndexer(@NonNull TestTrace testTrace) {
             super(testTrace, BLOCK_SIZE);
         }
 

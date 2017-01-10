@@ -14,6 +14,7 @@ package org.eclipse.tracecompass.tmf.core.trace.indexer;
 
 import java.io.File;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
@@ -42,7 +43,7 @@ public class TmfBTreeTraceIndex implements ITmfCheckpointIndex {
      *
      * @param trace the trace
      */
-    public TmfBTreeTraceIndex(ITmfTrace trace) {
+    public TmfBTreeTraceIndex(@NonNull ITmfTrace trace) {
         BTree bTree = createBTree(trace);
         FlatArray flatArray = createFlatArray(trace);
 
@@ -58,15 +59,15 @@ public class TmfBTreeTraceIndex implements ITmfCheckpointIndex {
         fCheckpointRanks = flatArray;
     }
 
-    private static FlatArray createFlatArray(ITmfTrace trace) {
+    private static FlatArray createFlatArray(@NonNull ITmfTrace trace) {
         return new FlatArray(getIndexFile(trace, FlatArray.INDEX_FILE_NAME), (ITmfPersistentlyIndexable)trace);
     }
 
-    private static BTree createBTree(ITmfTrace trace) {
+    private static BTree createBTree(@NonNull ITmfTrace trace) {
         return new BTree(BTREE_DEGREE, getIndexFile(trace, BTree.INDEX_FILE_NAME), (ITmfPersistentlyIndexable)trace);
     }
 
-    private static File getIndexFile(ITmfTrace trace, String fileName) {
+    private static File getIndexFile(@NonNull ITmfTrace trace, String fileName) {
         String directory = TmfTraceManager.getSupplementaryFileDir(trace);
         return new File(directory + fileName);
     }

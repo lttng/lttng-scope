@@ -13,6 +13,7 @@
 package org.eclipse.tracecompass.tmf.core.signal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  */
 public class TmfTraceOpenedSignal extends TmfSignal {
 
-    private final ITmfTrace fTrace;
+    private final @NonNull ITmfTrace fTrace;
     private final IFile fEditorFile;
 
     /**
@@ -38,7 +39,7 @@ public class TmfTraceOpenedSignal extends TmfSignal {
      * @param editorFile
      *            Pointer to the editor file
      */
-    public TmfTraceOpenedSignal(Object source, ITmfTrace trace, IFile editorFile) {
+    public TmfTraceOpenedSignal(Object source, @NonNull ITmfTrace trace, IFile editorFile) {
         super(source);
         fTrace = trace;
         fEditorFile = editorFile;
@@ -49,7 +50,7 @@ public class TmfTraceOpenedSignal extends TmfSignal {
      *
      * @return The trace
      */
-    public ITmfTrace getTrace() {
+    public @NonNull ITmfTrace getTrace() {
         return fTrace;
     }
 

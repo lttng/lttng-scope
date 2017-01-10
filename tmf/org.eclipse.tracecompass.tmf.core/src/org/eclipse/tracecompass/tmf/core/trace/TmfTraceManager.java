@@ -538,7 +538,11 @@ public final class TmfTraceManager {
                 Activator.logError(e.getLocalizedMessage(), e);
             }
         }
-        return System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+        String tmpDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+        if (tmpDir == null) {
+            return "/tmp"; //$NON-NLS-1$
+        }
+        return tmpDir;
     }
 
     /**

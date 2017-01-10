@@ -26,6 +26,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
@@ -127,7 +128,7 @@ public abstract class AbstractIndexTest {
          * @param testTrace
          *            the test trace
          */
-        public TestIndexer(ITmfTrace testTrace) {
+        public TestIndexer(@NonNull ITmfTrace testTrace) {
             super(testTrace, BLOCK_SIZE);
         }
 
@@ -144,7 +145,7 @@ public abstract class AbstractIndexTest {
      *            the trace
      * @return the indexer for testing
      */
-    protected ITestIndexer createTestIndexer(TestTrace trace) {
+    protected ITestIndexer createTestIndexer(@NonNull TestTrace trace) {
         return new TestIndexer(trace);
     }
 

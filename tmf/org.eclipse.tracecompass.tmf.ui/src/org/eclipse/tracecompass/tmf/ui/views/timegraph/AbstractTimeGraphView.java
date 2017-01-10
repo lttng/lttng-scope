@@ -1609,7 +1609,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
     // Internal
     // ------------------------------------------------------------------------
 
-    private void loadTrace(final ITmfTrace trace) {
+    private void loadTrace(final @NonNull ITmfTrace trace) {
         if (fZoomThread != null) {
             fZoomThread.cancel();
             fZoomThread = null;

@@ -379,7 +379,8 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
             Iterator<Color> colorsIt = Iterators.cycle(COLORS);
             GC gc = e.gc;
 
-            for (ISeries series : getChart().getSeriesSet().getSeries()) {
+            for (ISeries s : getChart().getSeriesSet().getSeries()) {
+                ISeries series = checkNotNull(s);
                 Color color = colorsIt.next();
                 for (int index : getSelection()) {
                     int graphIndex = getGraphIndexFromTableEntryIndex(series, index);

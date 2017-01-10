@@ -10,6 +10,7 @@
 package org.eclipse.tracecompass.lami.ui.views;
 
 import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -173,8 +174,14 @@ public class LamiSeriesDialog extends SelectionDialog {
         fSeriesListViewer.setInput(series);
         fSeriesListViewer.getTable().setHeaderVisible(true);
         fSeriesListViewer.getTable().setLinesVisible(true);
-        TableViewerColumn column1 = createTableViewerColumn(fSeriesListViewer, Messages.LamiSeriesDialog_x_values, element -> element.getXAspect().getLabel());
-        TableViewerColumn column2 = createTableViewerColumn(fSeriesListViewer, Messages.LamiSeriesDialog_y_values, element -> element.getYAspect().getLabel());
+
+        TableViewerColumn column1 = createTableViewerColumn(fSeriesListViewer,
+                nullToEmptyString(Messages.LamiSeriesDialog_x_values),
+                element -> element.getXAspect().getLabel());
+        TableViewerColumn column2 = createTableViewerColumn(fSeriesListViewer,
+                nullToEmptyString(Messages.LamiSeriesDialog_y_values),
+                element -> element.getYAspect().getLabel());
+
         layout.setColumnData(column1.getColumn(), new ColumnWeightData(1, MINIMUM_COLUMN_WIDTH, true));
         layout.setColumnData(column2.getColumn(), new ColumnWeightData(1, MINIMUM_COLUMN_WIDTH, true));
 

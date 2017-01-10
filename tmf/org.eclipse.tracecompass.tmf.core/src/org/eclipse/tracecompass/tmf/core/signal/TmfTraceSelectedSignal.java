@@ -12,6 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.signal;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  */
 public class TmfTraceSelectedSignal extends TmfSignal {
 
-    private final ITmfTrace fTrace;
+    private final @NonNull ITmfTrace fTrace;
 
     /**
      * Constructor
@@ -35,7 +36,7 @@ public class TmfTraceSelectedSignal extends TmfSignal {
      * @param trace
      *            The trace that was selected
      */
-    public TmfTraceSelectedSignal(Object source, ITmfTrace trace) {
+    public TmfTraceSelectedSignal(Object source, @NonNull ITmfTrace trace) {
         super(source);
         fTrace = trace;
     }
@@ -43,7 +44,7 @@ public class TmfTraceSelectedSignal extends TmfSignal {
     /**
      * @return The trace referred to by this signal
      */
-    public ITmfTrace getTrace() {
+    public @NonNull ITmfTrace getTrace() {
         return fTrace;
     }
 

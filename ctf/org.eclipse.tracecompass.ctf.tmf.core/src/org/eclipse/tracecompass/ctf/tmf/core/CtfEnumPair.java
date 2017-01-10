@@ -12,6 +12,8 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+
 import org.eclipse.tracecompass.tmf.core.util.Pair;
 
 /**
@@ -53,6 +55,6 @@ public class CtfEnumPair extends Pair<String, Long> {
 
     @Override
     public String toString() {
-        return getFirst();
+        return nullToEmptyString(getFirst());
     }
 }

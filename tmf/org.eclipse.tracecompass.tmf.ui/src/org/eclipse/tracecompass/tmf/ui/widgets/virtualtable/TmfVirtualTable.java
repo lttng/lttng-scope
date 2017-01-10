@@ -837,7 +837,9 @@ public class TmfVirtualTable extends Composite {
         /*
          * Bug in Linux.  The method getItemHeight doesn't always return the correct value.
          */
-        if (fLinuxItemHeight >= 0 && System.getProperty("os.name").contains("Linux")) { //$NON-NLS-1$ //$NON-NLS-2$
+        String osName = System.getProperty("os.name"); //$NON-NLS-1$
+        boolean isLinux = (osName != null && osName.contains("Linux")); //$NON-NLS-1$
+        if (fLinuxItemHeight >= 0 && isLinux) {
             if (fLinuxItemHeight != 0) {
                 return fLinuxItemHeight;
             }

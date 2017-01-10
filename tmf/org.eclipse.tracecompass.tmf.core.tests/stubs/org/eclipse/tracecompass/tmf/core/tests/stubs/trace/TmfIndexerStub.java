@@ -12,6 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.stubs.trace;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpointIndexer;
@@ -25,7 +26,7 @@ import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpointI
 @SuppressWarnings("javadoc")
 public class TmfIndexerStub extends TmfCheckpointIndexer {
 
-    public TmfIndexerStub(ITmfTrace trace, int blockSize) {
+    public TmfIndexerStub(@NonNull ITmfTrace trace, int blockSize) {
         super(trace, blockSize);
     }
 

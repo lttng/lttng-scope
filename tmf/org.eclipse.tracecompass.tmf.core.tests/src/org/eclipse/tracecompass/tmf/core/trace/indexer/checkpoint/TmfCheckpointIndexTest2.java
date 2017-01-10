@@ -24,6 +24,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
@@ -79,11 +80,11 @@ public class TmfCheckpointIndexTest2 {
     // ------------------------------------------------------------------------
 
     private static class TestIndexer extends TmfCheckpointIndexer implements ITestIndexer {
-        public TestIndexer(TestTrace testTrace) {
+        public TestIndexer(@NonNull TestTrace testTrace) {
             super(testTrace, BLOCK_SIZE);
         }
 
-        public TestIndexer(EmptyTestTrace testTrace) {
+        public TestIndexer(@NonNull EmptyTestTrace testTrace) {
             super(testTrace, BLOCK_SIZE);
         }
 

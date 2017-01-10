@@ -86,6 +86,7 @@ public class LamiJsonParserTest {
     public void testMetadata() {
         LamiAnalysisStub analysis = new LamiAnalysisStub("test-metadata.json", "test-results.json");
 
+        assertNotNull(fTrace);
         assertTrue(analysis.canExecute(fTrace));
         assertEquals("LAMI test", analysis.getAnalysisTitle());
 
@@ -133,6 +134,7 @@ public class LamiJsonParserTest {
     public void testResults() throws CoreException {
         LamiAnalysisStub analysis = new LamiAnalysisStub("test-metadata.json", "test-results.json");
 
+        assertNotNull(fTrace);
         List<LamiResultTable> resultTables = analysis.execute(fTrace, null, "", new NullProgressMonitor());
 
         assertFalse(resultTables.isEmpty());
@@ -218,6 +220,7 @@ public class LamiJsonParserTest {
     public void testResultsError() throws CoreException {
         LamiAnalysisStub analysis = new LamiAnalysisStub("test-metadata.json", "test-error.json");
 
+        assertNotNull(fTrace);
         analysis.execute(fTrace, null, "", new NullProgressMonitor());
     }
 
@@ -226,6 +229,9 @@ public class LamiJsonParserTest {
      */
     @Test
     public void testBaseCommand() {
+        LamiTmfTraceStub trace = fTrace;
+        assertNotNull(trace);
+
         LamiAnalysisStub analysis = new LamiAnalysisStub("test-metadata.json", "test-error.json");
 
         ITmfTimestamp begin = TmfTimestamp.fromNanos(98233);
@@ -233,7 +239,7 @@ public class LamiJsonParserTest {
 
         TmfTimeRange timerange = new TmfTimeRange(begin, end);
 
-        assertEquals("StubExecutable " + '\"' + TRACEPATH + '\"', analysis.getFullCommandAsString(fTrace, null));
-        assertEquals("StubExecutable --begin 98233 --end 1293828 " + '\"' + TRACEPATH + '\"', analysis.getFullCommandAsString(fTrace, timerange));
+        assertEquals("StubExecutable " + '\"' + TRACEPATH + '\"', analysis.getFullCommandAsString(trace, null));
+        assertEquals("StubExecutable --begin 98233 --end 1293828 " + '\"' + TRACEPATH + '\"', analysis.getFullCommandAsString(trace, timerange));
     }
 }

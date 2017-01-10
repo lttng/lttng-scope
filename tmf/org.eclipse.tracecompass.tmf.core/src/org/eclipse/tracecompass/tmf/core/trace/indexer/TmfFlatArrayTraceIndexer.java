@@ -12,6 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.trace.indexer;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpointIndexer;
@@ -31,7 +32,7 @@ public class TmfFlatArrayTraceIndexer extends TmfCheckpointIndexer {
      * @param interval
      *            the checkpoints interval
      */
-    public TmfFlatArrayTraceIndexer(ITmfTrace trace, int interval) {
+    public TmfFlatArrayTraceIndexer(@NonNull ITmfTrace trace, int interval) {
         super(trace, interval);
     }
 

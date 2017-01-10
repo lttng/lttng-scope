@@ -23,7 +23,12 @@ import org.junit.Test;
  */
 public class TmfTraceCoreUtilsTest {
 
-    private static final boolean IS_WINDOWS = System.getProperty("os.name").contains("Windows") ? true : false; //$NON-NLS-1$ //$NON-NLS-2$
+    private static final boolean IS_WINDOWS;
+    static {
+        String osName = System.getProperty("os.name"); //$NON-NLS-1$
+        IS_WINDOWS = (osName != null && osName.contains("Windows")); //$NON-NLS-1$
+    }
+
     private static final char BACKSLASH_PUA = 0xF000 + '\\';
     private static final char COLON_PUA = 0xF000 + ':';
 

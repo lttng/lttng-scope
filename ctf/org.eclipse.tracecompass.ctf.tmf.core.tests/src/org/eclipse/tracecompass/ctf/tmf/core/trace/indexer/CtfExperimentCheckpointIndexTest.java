@@ -109,7 +109,7 @@ public class CtfExperimentCheckpointIndexTest {
      */
     private static class TestIndexer extends TmfBTreeTraceIndexer {
 
-        public TestIndexer(ITmfTrace trace, int interval) {
+        public TestIndexer(@NonNull ITmfTrace trace, int interval) {
             super(trace, interval);
         }
 

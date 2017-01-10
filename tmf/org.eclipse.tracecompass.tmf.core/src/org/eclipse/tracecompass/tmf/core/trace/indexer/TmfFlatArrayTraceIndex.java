@@ -14,6 +14,7 @@ package org.eclipse.tracecompass.tmf.core.trace.indexer;
 
 import java.io.File;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
@@ -39,11 +40,11 @@ public class TmfFlatArrayTraceIndex implements ITmfCheckpointIndex {
      *
      * @param trace the trace
      */
-    public TmfFlatArrayTraceIndex(ITmfTrace trace) {
+    public TmfFlatArrayTraceIndex(@NonNull ITmfTrace trace) {
         fCheckpoints = new FlatArray(getIndexFile(trace, FlatArray.INDEX_FILE_NAME), (ITmfPersistentlyIndexable)trace);
     }
 
-    private static File getIndexFile(ITmfTrace trace, String fileName) {
+    private static File getIndexFile(@NonNull ITmfTrace trace, String fileName) {
         String directory = TmfTraceManager.getSupplementaryFileDir(trace);
         return new File(directory + fileName);
     }

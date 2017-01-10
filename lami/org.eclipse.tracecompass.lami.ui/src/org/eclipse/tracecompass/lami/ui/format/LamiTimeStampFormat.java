@@ -158,6 +158,6 @@ public class LamiTimeStampFormat extends Format {
      * @return the pattern string.
      */
     public String getPattern() {
-        return fFormat.toPattern();
+        return checkNotNull(fFormat.toPattern());
     }
 }

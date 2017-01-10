@@ -24,7 +24,12 @@ public class TmfTraceCoreUtils {
     // ------------------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------------------
-    private static final boolean IS_WINDOWS = System.getProperty("os.name").contains("Windows") ? true : false; //$NON-NLS-1$ //$NON-NLS-2$
+    private static final boolean IS_WINDOWS;
+    static {
+        String osName = System.getProperty("os.name"); //$NON-NLS-1$
+        IS_WINDOWS = (osName != null && osName.contains("Windows")); //$NON-NLS-1$
+    }
+
     private static final String INVALID_RESOURCE_CHARACTERS_WIN = "[\\\\/:*?\\\"<>\\|]|\\.$"; //$NON-NLS-1$
     private static final String INVALID_RESOURCE_CHARACTERS_OTHER = "[/\0]"; //$NON-NLS-1$
     private static final char BACKSLASH_PUA = 0xF000 + '\\';

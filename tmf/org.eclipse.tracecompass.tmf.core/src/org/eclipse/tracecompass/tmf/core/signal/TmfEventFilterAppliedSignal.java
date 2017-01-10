@@ -12,6 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.signal;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.filter.ITmfFilter;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
@@ -22,7 +23,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  */
 public class TmfEventFilterAppliedSignal extends TmfSignal {
 
-    private final ITmfTrace fTrace;
+    private final @NonNull ITmfTrace fTrace;
     private final ITmfFilter fEventFilter;
 
     /**
@@ -35,7 +36,7 @@ public class TmfEventFilterAppliedSignal extends TmfSignal {
      * @param filter
      *            The applied event filter or null
      */
-    public TmfEventFilterAppliedSignal(Object source, ITmfTrace trace, ITmfFilter filter) {
+    public TmfEventFilterAppliedSignal(Object source, @NonNull ITmfTrace trace, ITmfFilter filter) {
         super(source);
         fTrace = trace;
         fEventFilter = filter;
@@ -46,7 +47,7 @@ public class TmfEventFilterAppliedSignal extends TmfSignal {
      *
      * @return The trace
      */
-    public ITmfTrace getTrace() {
+    public @NonNull ITmfTrace getTrace() {
         return fTrace;
     }
 

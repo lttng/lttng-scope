@@ -200,7 +200,11 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      */
     protected static final @NonNull String EMPTY_STRING = ""; //$NON-NLS-1$
 
-    private static final boolean IS_LINUX = System.getProperty("os.name").contains("Linux") ? true : false; //$NON-NLS-1$ //$NON-NLS-2$
+    private static final boolean IS_LINUX;
+    static {
+        String osName = System.getProperty("os.name"); //$NON-NLS-1$
+        IS_LINUX = (osName != null && osName.contains("Linux")); //$NON-NLS-1$
+    }
 
     private static final String FONT_DEFINITION_ID = "org.eclipse.tracecompass.tmf.ui.font.eventtable"; //$NON-NLS-1$
     private static final String HIGHLIGHT_COLOR_DEFINITION_ID = "org.eclipse.tracecompass.tmf.ui.color.eventtable.highlight"; //$NON-NLS-1$
@@ -1853,7 +1857,9 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *            The filter that was just applied
      */
     protected void fireFilterApplied(final ITmfFilter filter) {
-        broadcast(new TmfEventFilterAppliedSignal(this, fTrace, filter));
+        if (fTrace != null) {
+            broadcast(new TmfEventFilterAppliedSignal(this, fTrace, filter));
+        }
     }
 
     /**
@@ -1863,7 +1869,9 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *            The search filter that was just applied
      */
     protected void fireSearchApplied(final ITmfFilter filter) {
-        broadcast(new TmfEventSearchAppliedSignal(this, fTrace, filter));
+        if (fTrace != null) {
+            broadcast(new TmfEventSearchAppliedSignal(this, fTrace, filter));
+        }
     }
 
     /**

@@ -62,7 +62,7 @@ public class TmfCheckpointIndexer implements ITmfTraceIndexer {
     // ------------------------------------------------------------------------
 
     /** The event trace to index */
-    protected final ITmfTrace fTrace;
+    protected final @NonNull ITmfTrace fTrace;
 
     /** The interval between checkpoints */
     private final int fCheckpointInterval;
@@ -95,7 +95,7 @@ public class TmfCheckpointIndexer implements ITmfTraceIndexer {
      * @param trace
      *            the trace to index
      */
-    public TmfCheckpointIndexer(final ITmfTrace trace) {
+    public TmfCheckpointIndexer(final @NonNull ITmfTrace trace) {
         this(trace, TmfEventProvider.DEFAULT_BLOCK_SIZE);
     }
 
@@ -107,7 +107,7 @@ public class TmfCheckpointIndexer implements ITmfTraceIndexer {
      * @param interval
      *            the checkpoints interval
      */
-    public TmfCheckpointIndexer(final ITmfTrace trace, final int interval) {
+    public TmfCheckpointIndexer(final @NonNull ITmfTrace trace, final int interval) {
         fTrace = trace;
         fCheckpointInterval = interval;
         fTraceIndex = createIndex(trace);
@@ -122,7 +122,7 @@ public class TmfCheckpointIndexer implements ITmfTraceIndexer {
      *            the trace to index
      * @return the index
      */
-    protected ITmfCheckpointIndex createIndex(final ITmfTrace trace) {
+    protected ITmfCheckpointIndex createIndex(final @NonNull ITmfTrace trace) {
         return new TmfMemoryIndex(trace);
     }
 

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.common.StreamUtils.StreamFlattener;
 import org.junit.Test;
 
@@ -44,13 +45,13 @@ public class StreamFlattenerTest {
     @Test
     public void testFlattenTree() {
         /* Prepare the tree */
-        TreeNode nodeD = new TreeNode(new TreeNode[0], "D");
-        TreeNode nodeE = new TreeNode(new TreeNode[0], "E");
-        TreeNode nodeF = new TreeNode(new TreeNode[0], "F");
-        TreeNode nodeG = new TreeNode(new TreeNode[0], "G");
-        TreeNode nodeB = new TreeNode(new TreeNode[] {nodeD, nodeE}, "B");
-        TreeNode nodeC = new TreeNode(new TreeNode[] {nodeF, nodeG}, "C");
-        TreeNode nodeA = new TreeNode(new TreeNode[] {nodeB, nodeC}, "A");
+        TreeNode nodeD = new TreeNode(new @NonNull TreeNode[0], "D");
+        TreeNode nodeE = new TreeNode(new @NonNull TreeNode[0], "E");
+        TreeNode nodeF = new TreeNode(new @NonNull TreeNode[0], "F");
+        TreeNode nodeG = new TreeNode(new @NonNull TreeNode[0], "G");
+        TreeNode nodeB = new TreeNode(new @NonNull TreeNode[] {nodeD, nodeE}, "B");
+        TreeNode nodeC = new TreeNode(new @NonNull TreeNode[] {nodeF, nodeG}, "C");
+        TreeNode nodeA = new TreeNode(new @NonNull TreeNode[] {nodeB, nodeC}, "A");
 
         /* Run the test */
         StreamFlattener<TreeNode> sf = new StreamFlattener<>(node -> Arrays.stream(node.getChildren()));
@@ -63,15 +64,15 @@ public class StreamFlattenerTest {
 
     private static class TreeNode {
 
-        private final TreeNode[] children;
+        private final @NonNull TreeNode[] children;
         private final String value;
 
-        public TreeNode(TreeNode[] children, String value) {
+        public TreeNode(@NonNull TreeNode[] children, String value) {
             this.children = children;
             this.value = value;
         }
 
-        public TreeNode[] getChildren() {
+        public @NonNull TreeNode[] getChildren() {
             return children;
         }
 

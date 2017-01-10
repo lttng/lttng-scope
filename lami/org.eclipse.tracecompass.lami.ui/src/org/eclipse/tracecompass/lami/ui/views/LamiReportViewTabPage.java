@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.tracecompass.lami.core.aspect.LamiEmptyAspect;
 import org.eclipse.tracecompass.lami.core.aspect.LamiTableEntryAspect;
 import org.eclipse.tracecompass.lami.core.module.LamiChartModel;
@@ -193,7 +194,8 @@ public final class LamiReportViewTabPage extends TmfComponent {
 
         IStructuredContentProvider contentProvider = checkNotNull(ArrayContentProvider.getInstance());
 
-        LamiSeriesDialog dialog = new LamiSeriesDialog(getControl().getShell(),
+        Shell shell = checkNotNull(getControl().getShell());
+        LamiSeriesDialog dialog = new LamiSeriesDialog(shell,
                 chartType,
                 xStringColumn,
                 yStringColumn,

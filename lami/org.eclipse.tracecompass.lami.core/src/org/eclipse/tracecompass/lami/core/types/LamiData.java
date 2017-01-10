@@ -279,7 +279,7 @@ public abstract class LamiData {
             return new LamiIRQ(irqType, nr, name);
         });
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_SIZE, (obj) -> createFromNumberJsonObject(obj, true));
-        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_STRING, (obj) -> new LamiString(obj.getString(LamiStrings.VALUE)));
+        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_STRING, (obj) -> new LamiString(checkNotNull(obj.getString(LamiStrings.VALUE))));
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_SYSCALL, (obj) -> new LamiSystemCall(getJSONObjectStringName(obj)));
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_TIME_RANGE, (obj) -> {
             Object beginObj = checkNotNull(obj.get((LamiStrings.BEGIN)));
