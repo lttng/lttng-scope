@@ -36,7 +36,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.project.model.ITmfPropertiesProvider;
@@ -210,11 +209,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
 
     @Override
     public boolean canExecute(ITmfTrace trace) {
-        for (TmfAbstractAnalysisRequirement requirement : getAnalysisRequirements()) {
-            if (!requirement.test(trace)) {
-                return false;
-            }
-        }
         return true;
     }
 
@@ -516,19 +510,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
     protected String getTraceCannotExecuteHelpText(ITmfTrace trace) {
         StringBuilder builder = new StringBuilder();
         builder.append(NLS.bind(Messages.TmfAbstractAnalysisModule_AnalysisCannotExecute, getName()));
-        for (TmfAbstractAnalysisRequirement requirement : getAnalysisRequirements()) {
-            if (!requirement.test(trace)) {
-                builder.append("\n\n"); //$NON-NLS-1$
-                builder.append(NLS.bind(Messages.TmfAnalysis_RequirementNotFulfilled, requirement.getPriorityLevel()));
-                builder.append("\n"); //$NON-NLS-1$
-                builder.append(NLS.bind(Messages.TmfAnalysis_RequirementMandatoryValues, requirement.getValues()));
-                Set<String> information = requirement.getInformation();
-                if (!information.isEmpty()) {
-                    builder.append("\n"); //$NON-NLS-1$
-                    builder.append(NLS.bind(Messages.TmfAnalysis_RequirementInformation, information));
-                }
-            }
-        }
         return builder.toString();
     }
 
@@ -544,11 +525,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
             text = text + "\n\n" + getTraceCannotExecuteHelpText(trace); //$NON-NLS-1$
         }
         return text;
-    }
-
-    @Override
-    public Iterable<@NonNull TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
-        return Collections.EMPTY_SET;
     }
 
     // ------------------------------------------------------------------------

@@ -13,7 +13,6 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.analysis.internal.TmfAnalysisModuleSourceConfigElement;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
 import org.eclipse.tracecompass.tmf.core.project.model.TraceTypeHelper;
@@ -161,18 +159,6 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
         }
 
         return traceTypes;
-    }
-
-    @Override
-    public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
-        IAnalysisModule module = createModule();
-        if (module != null) {
-            Iterable<@NonNull TmfAbstractAnalysisRequirement> requirements = module.getAnalysisRequirements();
-            module.dispose();
-            return requirements;
-        }
-        return Collections.EMPTY_SET;
-
     }
 
     // ---------------------------------------

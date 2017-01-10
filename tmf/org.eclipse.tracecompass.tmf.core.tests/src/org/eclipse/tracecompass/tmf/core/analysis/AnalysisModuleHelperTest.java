@@ -24,10 +24,8 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;
-import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.AnalysisRequirementFactory;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis2;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
@@ -341,20 +339,5 @@ public class AnalysisModuleHelperTest {
         Set<Class<? extends ITmfTrace>> expected = ImmutableSet.of((Class<? extends ITmfTrace>) TmfTraceStub.class, TmfTraceStub2.class, TmfTraceStub3.class);
         Iterable<Class<? extends ITmfTrace>> traceTypes = fReqModule.getValidTraceTypes();
         assertEquals(expected, traceTypes);
-    }
-
-    /**
-     * Test for the
-     * {@link TmfAnalysisModuleHelperConfigElement#getAnalysisRequirements}
-     * method
-     */
-    @Test
-    public void testGetRequirements() {
-        Iterable<TmfAbstractAnalysisRequirement> requirements = fReqModule.getAnalysisRequirements();
-        Set<TmfAbstractAnalysisRequirement> expected = ImmutableSet.of(
-                AnalysisRequirementFactory.REQUIREMENT_1,
-                AnalysisRequirementFactory.REQUIREMENT_3);
-
-        assertEquals(expected, requirements);
     }
 }

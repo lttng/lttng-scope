@@ -30,7 +30,6 @@ import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedE
 import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
 import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
 import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
@@ -69,13 +68,6 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
     @Override
     protected @Nullable LttngUstTrace getTrace() {
         return (LttngUstTrace) super.getTrace();
-    }
-
-    @Override
-    public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
-        // TODO specify actual requirements once the requirement-checking is
-        // implemented. This analysis needs "ip" and "vpid" contexts.
-        return Collections.EMPTY_SET;
     }
 
     @Override

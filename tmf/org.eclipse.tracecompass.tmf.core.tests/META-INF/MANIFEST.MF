@@ -10,7 +10,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.0.0"
 Export-Package: org.eclipse.tracecompass.tmf.core.analysis,
  org.eclipse.tracecompass.tmf.core.analysis.ondemand,
- org.eclipse.tracecompass.tmf.core.analysis.requirements,
  org.eclipse.tracecompass.tmf.core.callstack,
  org.eclipse.tracecompass.tmf.core.component,
  org.eclipse.tracecompass.tmf.core.event,

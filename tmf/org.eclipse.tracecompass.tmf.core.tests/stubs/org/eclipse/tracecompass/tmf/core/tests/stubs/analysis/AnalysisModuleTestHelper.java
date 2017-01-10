@@ -13,13 +13,10 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.stubs.analysis;
 
-import java.util.Collections;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleHelper;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub2;
@@ -145,22 +142,6 @@ public class AnalysisModuleTestHelper implements IAnalysisModuleHelper {
         return ImmutableList.<Class<? extends ITmfTrace>> of(
                 TmfTraceStub.class,
                 TmfTraceStub2.class);
-    }
-
-    @Override
-    public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
-        switch (fModule) {
-        case TEST:
-            return ImmutableList.of(
-                    AnalysisRequirementFactory.REQUIREMENT_1,
-                    AnalysisRequirementFactory.REQUIREMENT_3);
-        case TEST2:
-            return ImmutableList.of(
-                    AnalysisRequirementFactory.REQUIREMENT_2,
-                    AnalysisRequirementFactory.REQUIREMENT_3);
-        default:
-            return Collections.EMPTY_SET;
-        }
     }
 
 }

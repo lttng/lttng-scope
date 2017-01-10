@@ -11,9 +11,6 @@ package org.eclipse.tracecompass.analysis.os.linux.core.tid;
 
 import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.analysis.os.linux.core.internal.Messages;
@@ -28,7 +25,6 @@ import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedE
 import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
 import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue.Type;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -48,14 +44,6 @@ public class TidAnalysisModule extends TmfStateSystemAnalysisModule {
 
     /** The ID of this analysis module */
     public static final @NonNull String ID = "org.eclipse.tracecompass.analysis.os.linux.kernel.tid"; //$NON-NLS-1$
-
-    /** The requirements as an immutable set */
-    private static final @NonNull Set<@NonNull TmfAbstractAnalysisRequirement> REQUIREMENTS = Collections.EMPTY_SET;
-
-    @Override
-    public @NonNull Iterable<@NonNull TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
-        return REQUIREMENTS;
-    }
 
     @Override
     public String getHelpText() {
