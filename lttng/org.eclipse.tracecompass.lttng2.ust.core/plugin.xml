@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.linuxtools.tmf.core.tracetype">
       <type
-            category="org.eclipse.linuxtools.tmf.ctf.core.category.ctf"
+            category="org.eclipse.linuxtools.ctf.tmf.core.category.ctf"
             event_type="org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstEvent"
             id="org.eclipse.linuxtools.lttng2.ust.tracetype"
             isDirectory="true"

@@ -9,8 +9,8 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.tests.stubs;
 
+import org.eclipse.tracecompass.ctf.tmf.core.tests.stubs.ITmfTraceStub;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstTrace;
-import org.eclipse.tracecompass.tmf.ctf.core.tests.stubs.ITmfTraceStub;
 
 /**
  * LTTng UST trace stub

@@ -23,6 +23,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTraceValidationStatus;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
 import org.eclipse.tracecompass.internal.lttng2.ust.core.Activator;
 import org.eclipse.tracecompass.internal.lttng2.ust.core.trace.layout.LttngUst20EventLayout;
 import org.eclipse.tracecompass.internal.lttng2.ust.core.trace.layout.LttngUst27EventLayout;
@@ -36,9 +39,6 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTraceValidationStatus;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfUtils;
 
 import com.google.common.collect.ImmutableSet;
 

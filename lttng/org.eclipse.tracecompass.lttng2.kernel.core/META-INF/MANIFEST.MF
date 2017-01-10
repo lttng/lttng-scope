@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.tracecompass.common.core,
  org.eclipse.tracecompass.tmf.core,
- org.eclipse.tracecompass.tmf.ctf.core,
+ org.eclipse.tracecompass.ctf.tmf.core,
  org.eclipse.tracecompass.analysis.lami.core
 Export-Package: org.eclipse.tracecompass.analysis.os.linux.core.event.aspect,
  org.eclipse.tracecompass.analysis.os.linux.core.kernel,

@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.tracecompass.common.core,
  org.eclipse.tracecompass.tmf.core,
- org.eclipse.tracecompass.tmf.ctf.core,
+ org.eclipse.tracecompass.ctf.tmf.core,
  org.eclipse.tracecompass.ctf.core
 Import-Package: com.google.common.annotations;version="15.0.0",
  com.google.common.base,

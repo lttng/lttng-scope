@@ -25,8 +25,8 @@
   <name>Trace Compass CTF Support Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.tmf.ctf.core</module>
-    <module>org.eclipse.tracecompass.tmf.ctf.core.tests</module>
+    <module>org.eclipse.tracecompass.ctf.tmf.core</module>
+    <module>org.eclipse.tracecompass.ctf.tmf.core.tests</module>
   </modules>
 
 </project>

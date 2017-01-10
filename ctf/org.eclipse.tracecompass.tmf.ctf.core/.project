@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.tracecompass.tmf.ctf.core</name>
+	<name>org.eclipse.tracecompass.ctf.tmf.core</name>
 	<comment></comment>
 	<projects>
 	</projects>

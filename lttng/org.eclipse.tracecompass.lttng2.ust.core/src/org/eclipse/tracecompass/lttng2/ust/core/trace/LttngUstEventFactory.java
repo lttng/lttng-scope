@@ -14,11 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.ctf.core.CTFStrings;
 import org.eclipse.tracecompass.ctf.core.event.IEventDeclaration;
 import org.eclipse.tracecompass.ctf.core.event.IEventDefinition;
+import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
+import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventFactory;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
-import org.eclipse.tracecompass.tmf.ctf.core.event.CtfTmfEvent;
-import org.eclipse.tracecompass.tmf.ctf.core.event.CtfTmfEventFactory;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTmfTrace;
 
 /**
  * Factory for {@link LttngUstEvent}.

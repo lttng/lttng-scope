@@ -113,7 +113,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tracecompass.tmf.ctf.core"
+         id="org.eclipse.tracecompass.ctf.tmf.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

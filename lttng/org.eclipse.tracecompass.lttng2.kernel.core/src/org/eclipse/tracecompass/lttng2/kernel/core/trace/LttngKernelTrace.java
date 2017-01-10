@@ -26,6 +26,10 @@ import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelTidAspect;
 import org.eclipse.tracecompass.analysis.os.linux.core.event.aspect.ThreadPriorityAspect;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelTrace;
+import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventType;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTraceValidationStatus;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
 import org.eclipse.tracecompass.internal.lttng2.kernel.core.Activator;
 import org.eclipse.tracecompass.internal.lttng2.kernel.core.trace.layout.Lttng26EventLayout;
 import org.eclipse.tracecompass.internal.lttng2.kernel.core.trace.layout.Lttng27EventLayout;
@@ -37,10 +41,6 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
-import org.eclipse.tracecompass.tmf.ctf.core.event.CtfTmfEventType;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfTraceValidationStatus;
-import org.eclipse.tracecompass.tmf.ctf.core.trace.CtfUtils;
 
 import com.google.common.collect.ImmutableSet;
 

@@ -10,7 +10,7 @@
 package org.eclipse.tracecompass.internal.lttng2.kernel.core.trace.layout;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.ctf.core.event.CtfTmfEventField;
+import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventField;
 
 /**
  * This file defines all the known event and field names for LTTng kernel
