@@ -123,7 +123,6 @@
     <module>lami</module>
     <module>lttng</module>
     <module>releng</module>
-    <module>statesystem</module>
     <module>tmf</module>
   </modules>
 
