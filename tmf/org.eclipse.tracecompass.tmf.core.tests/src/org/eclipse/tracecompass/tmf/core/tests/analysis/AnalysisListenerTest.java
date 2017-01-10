@@ -13,8 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.NewModuleListenerStub;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.TestAnalysis;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.NewModuleListenerStub;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis;
 import org.junit.Test;
 
 /**

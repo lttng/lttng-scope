@@ -23,9 +23,9 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.tests.TmfCoreTestPlugin;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub2;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub;
-import org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub2;
 
 /**
  * Generic TMF test traces

@@ -23,9 +23,9 @@ import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisParameterProvider;
 import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysisParameterProvider;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.TestAnalysis;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.TestAnalysisParameterProvider;
 import org.junit.After;
 import org.junit.Test;
 

@@ -22,7 +22,7 @@ import java.util.Set;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement.PriorityLevel;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.AnalysisRequirementFactory;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.AnalysisRequirementFactory;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;

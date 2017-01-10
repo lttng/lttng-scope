@@ -18,10 +18,10 @@ import java.util.Set;
 
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.IOnDemandAnalysis;
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.ondemand.OnDemandAnalysisStub;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub2;
+import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub3;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.tests.stubs.analysis.ondemand.OnDemandAnalysisStub;
-import org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub2;
-import org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub3;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
