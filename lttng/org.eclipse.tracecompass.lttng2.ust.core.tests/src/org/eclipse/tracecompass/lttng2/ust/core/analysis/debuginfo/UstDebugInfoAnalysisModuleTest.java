@@ -22,10 +22,6 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule;
-import org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
-import org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.UstDebugInfoBinaryFile;
-import org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.UstDebugInfoLoadedBinaryFile;
 import org.eclipse.tracecompass.lttng2.ust.core.tests.shared.LttngUstTestTraceUtils;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstEvent;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstTrace;

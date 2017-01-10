@@ -20,11 +20,6 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.tracecompass.tmf.ui.project.model.ITmfProjectModelElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfAnalysisElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfAnalysisOutputElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfProjectElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
 import org.eclipse.tracecompass.tmf.ui.tests.shared.IWaitCondition;
 import org.eclipse.tracecompass.tmf.ui.tests.shared.ProjectModelTestData;
 import org.eclipse.tracecompass.tmf.ui.tests.shared.WaitTimeoutException;

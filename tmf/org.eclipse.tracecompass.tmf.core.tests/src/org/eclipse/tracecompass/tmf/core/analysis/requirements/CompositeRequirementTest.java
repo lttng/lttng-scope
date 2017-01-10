@@ -17,10 +17,8 @@ import java.util.Collections;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement.PriorityLevel;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
-import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfCompositeAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.junit.After;
 import org.junit.Before;

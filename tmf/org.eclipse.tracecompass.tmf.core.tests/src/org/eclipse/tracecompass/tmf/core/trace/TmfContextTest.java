@@ -22,8 +22,6 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
-import org.eclipse.tracecompass.tmf.core.trace.TmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfLongLocation;
 import org.eclipse.tracecompass.tmf.core.trace.location.TmfTimestampLocation;
 import org.junit.Test;

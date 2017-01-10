@@ -20,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.event.TmfEventField;
 import org.junit.After;
 import org.junit.Test;
 

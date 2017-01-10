@@ -15,7 +15,6 @@ import java.text.Format;
 import java.text.ParseException;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.common.format.DecimalUnitFormat;
 import org.junit.Test;
 
 /**

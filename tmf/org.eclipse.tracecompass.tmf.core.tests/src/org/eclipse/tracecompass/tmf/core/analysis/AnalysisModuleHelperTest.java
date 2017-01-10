@@ -24,10 +24,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleHelper;
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisModuleHelperConfigElement;
 import org.eclipse.tracecompass.tmf.core.analysis.requirements.TmfAbstractAnalysisRequirement;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;

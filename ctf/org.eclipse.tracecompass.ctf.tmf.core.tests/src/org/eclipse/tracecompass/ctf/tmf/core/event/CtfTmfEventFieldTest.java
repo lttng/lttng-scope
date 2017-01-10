@@ -33,7 +33,6 @@ import org.eclipse.tracecompass.ctf.core.event.types.StringDeclaration;
 import org.eclipse.tracecompass.ctf.core.event.types.StructDeclaration;
 import org.eclipse.tracecompass.ctf.core.event.types.StructDefinition;
 import org.eclipse.tracecompass.ctf.core.event.types.VariantDeclaration;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventField;
 import org.eclipse.tracecompass.internal.ctf.core.event.types.ArrayDeclaration;
 import org.eclipse.tracecompass.internal.ctf.core.event.types.SequenceDeclaration;
 import org.junit.Before;

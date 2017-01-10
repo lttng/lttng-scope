@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfPersistentlyIndexable;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTree;

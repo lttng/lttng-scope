@@ -25,10 +25,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.internal.TmfExperimentLocation;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.internal.TmfLocationArray;
-import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
-import org.eclipse.tracecompass.tmf.core.trace.location.TmfLocation;
-import org.eclipse.tracecompass.tmf.core.trace.location.TmfLongLocation;
-import org.eclipse.tracecompass.tmf.core.trace.location.TmfTimestampLocation;
 import org.junit.Before;
 import org.junit.Test;
 

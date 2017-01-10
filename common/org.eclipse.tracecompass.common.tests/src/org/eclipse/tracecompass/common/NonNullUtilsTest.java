@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.junit.Test;
 
 /**

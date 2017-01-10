@@ -20,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.ctf.tmf.core.context.CtfTmfContext;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;

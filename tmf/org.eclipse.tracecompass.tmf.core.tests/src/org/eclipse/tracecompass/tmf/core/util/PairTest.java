@@ -16,7 +16,6 @@ package org.eclipse.tracecompass.tmf.core.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.tracecompass.tmf.core.util.Pair;
 import org.junit.Test;
 
 /**

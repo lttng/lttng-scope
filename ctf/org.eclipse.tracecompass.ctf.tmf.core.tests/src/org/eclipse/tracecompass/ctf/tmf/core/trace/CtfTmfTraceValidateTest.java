@@ -26,8 +26,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTraceValidationStatus;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.junit.Test;

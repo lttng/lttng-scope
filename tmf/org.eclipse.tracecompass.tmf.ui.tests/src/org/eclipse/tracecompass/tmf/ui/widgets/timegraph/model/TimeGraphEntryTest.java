@@ -21,10 +21,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
-import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.NullTimeEvent;
-import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.TimeEvent;
-import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.TimeGraphEntry;
 import org.junit.Test;
 
 import com.google.common.collect.Iterators;

@@ -16,8 +16,8 @@ package org.eclipse.tracecompass.tmf.core.filter.xml;
 
 import java.util.Stack;
 
-import org.eclipse.tracecompass.tmf.core.event.aspect.TmfBaseAspects;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
+import org.eclipse.tracecompass.tmf.core.event.aspect.TmfBaseAspects;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfEventFieldAspect;
 import org.eclipse.tracecompass.tmf.core.filter.model.ITmfFilterTreeNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterAndNode;

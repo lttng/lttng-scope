@@ -17,8 +17,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfCallsite;
-import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
 import org.junit.Test;
 
 /**

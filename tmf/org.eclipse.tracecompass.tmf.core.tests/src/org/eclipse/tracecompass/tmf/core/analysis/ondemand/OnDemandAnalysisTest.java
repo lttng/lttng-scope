@@ -17,8 +17,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.tmf.core.analysis.ondemand.IOnDemandAnalysis;
-import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.ondemand.OnDemandAnalysisStub;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub2;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub3;

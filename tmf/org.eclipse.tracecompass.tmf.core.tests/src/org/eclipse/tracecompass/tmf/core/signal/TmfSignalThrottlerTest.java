@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalThrottler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

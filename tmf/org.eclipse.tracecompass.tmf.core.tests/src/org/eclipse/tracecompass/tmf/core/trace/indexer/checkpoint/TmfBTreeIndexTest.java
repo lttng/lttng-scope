@@ -24,7 +24,6 @@ import java.io.File;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.TmfBTreeTraceIndexer;
-import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpointIndex;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.BTree;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.internal.FlatArray;
 import org.junit.Test;

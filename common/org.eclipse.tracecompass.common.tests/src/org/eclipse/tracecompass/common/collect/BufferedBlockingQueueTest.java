@@ -14,8 +14,8 @@ package org.eclipse.tracecompass.common.collect;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.common.collect.BufferedBlockingQueue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

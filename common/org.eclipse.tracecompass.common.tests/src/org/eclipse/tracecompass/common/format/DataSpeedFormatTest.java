@@ -12,7 +12,6 @@ package org.eclipse.tracecompass.common.format;
 import java.text.Format;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.common.format.DataSpeedWithUnitFormat;
 
 /**
  * Test the {@link DataSpeedWithUnitFormat} class

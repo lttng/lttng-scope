@@ -21,9 +21,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleHelper;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleSource;
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.AnalysisModuleSourceStub;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.AnalysisModuleTestHelper;

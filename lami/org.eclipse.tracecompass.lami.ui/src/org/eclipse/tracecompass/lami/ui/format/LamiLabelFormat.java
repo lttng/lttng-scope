@@ -14,7 +14,6 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Map.Entry;
 
-
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.common.collect.BiMap;

@@ -16,7 +16,6 @@ package org.eclipse.tracecompass.ctf.tmf.core.event;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventType;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.eclipse.tracecompass.tmf.core.event.TmfEventField;
 import org.junit.Test;

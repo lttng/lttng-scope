@@ -20,11 +20,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
-import org.eclipse.tracecompass.tmf.core.signal.TmfEndSynchSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.signal.TmfStartSynchSignal;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

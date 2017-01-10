@@ -47,8 +47,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.tracecompass.lami.core.aspect.LamiTableEntryAspect;
-import org.eclipse.tracecompass.lami.core.module.LamiXYSeriesDescription;
 import org.eclipse.tracecompass.lami.core.module.LamiChartModel.ChartType;
+import org.eclipse.tracecompass.lami.core.module.LamiXYSeriesDescription;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 /**

@@ -20,7 +20,6 @@ import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.graphics.RGBA;
-import org.eclipse.tracecompass.tmf.ui.markers.PeriodicMarkerEventSource;
 import org.eclipse.tracecompass.tmf.ui.markers.PeriodicMarkerEventSource.Reference;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.IMarkerEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.IMarkerEventSource;

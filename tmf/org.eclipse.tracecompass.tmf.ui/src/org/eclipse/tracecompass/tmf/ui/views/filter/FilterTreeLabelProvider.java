@@ -19,13 +19,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterAndNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterCompareNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterCompareNode.Type;
-import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterContainsNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterEqualsNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterMatchesNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterOrNode;
 import org.eclipse.tracecompass.tmf.core.filter.model.TmfFilterTraceTypeNode;
+import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 
 /**
  * This is the Label Provider for our Filter Tree

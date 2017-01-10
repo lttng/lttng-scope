@@ -23,11 +23,6 @@ import java.util.Optional;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.ui.project.model.ITmfProjectModelElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfAnalysisElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfProjectElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
-import org.eclipse.tracecompass.tmf.ui.project.model.TmfViewsElement;
 import org.eclipse.tracecompass.tmf.ui.tests.shared.ProjectModelTestData;
 import org.eclipse.tracecompass.tmf.ui.tests.shared.WaitTimeoutException;
 import org.eclipse.tracecompass.tmf.ui.tests.stubs.analysis.TestAnalysisUi;

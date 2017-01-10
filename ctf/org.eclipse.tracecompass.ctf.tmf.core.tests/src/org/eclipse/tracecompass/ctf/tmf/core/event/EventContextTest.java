@@ -15,7 +15,6 @@ package org.eclipse.tracecompass.ctf.tmf.core.event;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;

@@ -23,9 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEventType;
-import org.eclipse.tracecompass.tmf.core.event.TmfEventField;
-import org.eclipse.tracecompass.tmf.core.event.TmfEventType;
 import org.junit.Test;
 
 /**

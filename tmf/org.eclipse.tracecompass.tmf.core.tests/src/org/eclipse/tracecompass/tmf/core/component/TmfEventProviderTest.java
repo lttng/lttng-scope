@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.eclipse.tracecompass.tmf.core.component.ITmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfProviderManager;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest.ExecutionType;

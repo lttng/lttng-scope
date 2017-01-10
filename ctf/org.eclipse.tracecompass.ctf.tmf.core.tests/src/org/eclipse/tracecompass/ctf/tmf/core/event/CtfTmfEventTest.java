@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventFactory;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.iterator.internal.CtfIterator;

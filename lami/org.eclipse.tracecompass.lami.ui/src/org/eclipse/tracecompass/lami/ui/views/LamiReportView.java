@@ -26,8 +26,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysisReport;
-import org.eclipse.tracecompass.lami.core.module.LamiResultTable;
 import org.eclipse.tracecompass.lami.core.module.LamiChartModel.ChartType;
+import org.eclipse.tracecompass.lami.core.module.LamiResultTable;
 import org.eclipse.tracecompass.lami.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 

@@ -27,7 +27,6 @@ import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedE
 import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceOpenedSignal;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestExperimentAnalysis;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfExperimentStub;

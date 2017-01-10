@@ -16,8 +16,6 @@ package org.eclipse.tracecompass.ctf.tmf.core.context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.eclipse.tracecompass.ctf.tmf.core.context.CtfLocation;
-import org.eclipse.tracecompass.ctf.tmf.core.context.CtfLocationInfo;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.junit.Before;

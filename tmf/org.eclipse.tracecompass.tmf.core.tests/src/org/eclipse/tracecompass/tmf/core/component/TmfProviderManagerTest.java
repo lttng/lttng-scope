@@ -16,7 +16,6 @@ package org.eclipse.tracecompass.tmf.core.component;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfProviderManager;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.TmfEvent;

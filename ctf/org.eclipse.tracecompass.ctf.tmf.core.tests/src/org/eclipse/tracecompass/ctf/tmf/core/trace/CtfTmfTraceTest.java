@@ -32,7 +32,6 @@ import org.eclipse.tracecompass.ctf.tmf.core.context.CtfLocation;
 import org.eclipse.tracecompass.ctf.tmf.core.context.CtfLocationInfo;
 import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventType;
 import org.eclipse.tracecompass.tmf.core.signal.TmfEndSynchSignal;

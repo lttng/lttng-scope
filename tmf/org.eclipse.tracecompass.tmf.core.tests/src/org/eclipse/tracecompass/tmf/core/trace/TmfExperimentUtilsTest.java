@@ -26,7 +26,6 @@ import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis2;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfExperimentStub;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperimentUtils;
 import org.junit.After;
