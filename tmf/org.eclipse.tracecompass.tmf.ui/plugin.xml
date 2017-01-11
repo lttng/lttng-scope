@@ -311,57 +311,10 @@
                name="org.eclipse.linuxtools.tmf.ui.separator1"
                visible="true">
          </separator>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.import"
-               label="%command.import"
-               mnemonic="%command.import.mnemonic"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        operator="and">
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                     </instanceof>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
          <separator
                name="org.eclipse.linuxtools.tmf.ui.separator0"
                visible="true">
          </separator>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.new_folder"
-               icon="icons/etool16/newfolder_wiz.gif"
-               label="%command.new_folder"
-               mnemonic="%command.new_folder.mnemonic"
-               style="push"
-               tooltip="%command.new_folder.description">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false"
-                        operator="or">
-                     <or>
-                        <instanceof
-                              value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                        </instanceof>
-                     </or>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
          <command
                commandId="org.eclipse.ui.edit.copy"
                disabledIcon="icons/dtool16/copy_edit.gif"
@@ -604,94 +557,10 @@
                </with>
             </visibleWhen>
          </command>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.importtracepkg"
-               label="%command.import_trace_package"
-               mnemonic="%command.import_trace_package.mnemonic"
-               style="push"
-               tooltip="%command.import_trace_package.description">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <count
-                           value="1">
-                     </count>
-                     <iterate
-                           ifEmpty="false"
-                           operator="and">
-                        <instanceof
-                              value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                        </instanceof>
-                     </iterate>
-                  </and>
-               </with>
-            </visibleWhen>
-         </command>
-        <separator
-              name="org.eclipse.linuxtools.tmf.ui.export.separator"
-              visible="true">
-        </separator>
-        <command
-              commandId="org.eclipse.linuxtools.tmf.ui.command.exporttracepkg"
-              icon="icons/etool16/export.gif"
-              label="%command.export_trace_package"
-              mnemonic="%command.export_trace_package.mnemonic"
-              style="push"
-              tooltip="%command.export_trace_package.description">
-           <visibleWhen
-                 checkEnabled="false">
-              <with
-                    variable="selection">
-                 <or>
-                    <iterate
-                          ifEmpty="false"
-                          operator="and">
-                       <instanceof
-                             value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement">
-                       </instanceof>
-                    </iterate>
-                    <and>
-                       <count
-                             value="1">
-                       </count>
-                       <iterate
-                             operator="and">
-                          <instanceof
-                                value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                          </instanceof>
-                       </iterate>
-                    </and>
-                 </or>
-              </with>
-           </visibleWhen>
-        </command>
          <separator
                name="org.eclipse.linuxtools.tmf.ui.separator3"
                visible="true">
          </separator>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.managecustomparsers"
-               icon="icons/etool16/customparser_wizard.gif"
-               id="org.eclipse.linuxtools.tmf.ui.menu.managecustomparsers"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        operator="and">
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                     </instanceof>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
          <menu
                label="%command.select_trace_type"
                mnemonic="%command.select_trace_type.mnemonic"
@@ -700,15 +569,6 @@
                   class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectElementTypeContributionItem"
                   id="org.eclipse.linuxtools.tmf.ui.command.select_trace_type.dynamic">
             </dynamic>
-            <separator
-                  name="org.eclipse.linuxtools.tmf.ui.separator6"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="org.eclipse.linuxtools.tmf.ui.command.managecustomparsers"
-                  icon="icons/etool16/customparser_wizard.gif"
-                  style="push">
-            </command>
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -771,48 +631,6 @@
                      </instanceof>
                   </iterate>
                </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.synchronize_traces"
-               icon="icons/obj16/add_obj.gif"
-               label="%command.synchronize_traces"
-               mnemonic="%command.synchronize_traces.mnemonic"
-               style="push"
-               tooltip="%command.synchronize_traces.description">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <instanceof
-                           value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
-                     </instanceof>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.offset_traces"
-               label="%command.offset_traces"
-               style="push"
-               tooltip="%command.offset_traces.description">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.tmf.ui.command.clear_offset"
-               label="%command.clear_offset"
-               style="push"
-               tooltip="%command.clear_offset.description">
-            <visibleWhen
-                  checkEnabled="true">
             </visibleWhen>
          </command>
          <separator
@@ -981,12 +799,6 @@
       </category>
       <command
             categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            description="%command.new_folder.description"
-            id="org.eclipse.linuxtools.tmf.ui.command.new_folder"
-            name="%command.new_folder">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
             description="%command.new_experiment.description"
             id="org.eclipse.linuxtools.tmf.ui.command.new_experiment"
             name="%command.new_experiment">
@@ -1025,89 +837,15 @@
       </command>
       <command
             categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            id="org.eclipse.linuxtools.tmf.ui.command.exporttracepkg"
-            name="%command.export_trace_package">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            id="org.eclipse.linuxtools.tmf.ui.command.importtracepkg"
-            name="%command.import_trace_package">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
             description="%command.select_traces.description"
             id="org.eclipse.linuxtools.tmf.ui.command.select_traces"
             name="%command.select_traces">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            description="%command.synchronize_traces.description"
-            id="org.eclipse.linuxtools.tmf.ui.command.synchronize_traces"
-            name="%command.synchronize_traces">
       </command>
       <category
             description="%commands.parser.category.description"
             id="org.eclipse.linuxtools.tmf.ui.commands.parser.category"
             name="%commands.parser.category.name">
       </category>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.parser.category"
-            description="%commands.parser.manage.description"
-            id="org.eclipse.linuxtools.tmf.ui.command.managecustomparsers"
-            name="%commands.parser.manage">
-      </command>
-      <category
-            description="%commands.uml2sd.category.name"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            name="%commands.uml2sd.category.name">
-      </category>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.goto.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.GoToMessage"
-            name="%commands.uml2sd.goto">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.showend.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.ShowNodeEnd"
-            name="%commands.uml2sd.showend">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.showstart.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.ShowNodeStart"
-            name="%commands.uml2sd.showstart">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.scrollup.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDUp"
-            name="%commands.uml2sd.scrollup">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.scrolldown.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDDown"
-            name="%commands.uml2sd.scrolldown">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.scrollleft.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDLeft"
-            name="%commands.uml2sd.scrollleft">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.category"
-            description="%commands.uml2sd.scrollright.description"
-            id="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDRight"
-            name="%commands.uml2sd.scrollright">
-      </command>
-      <command
-            description="%command.import.description"
-            id="org.eclipse.linuxtools.tmf.ui.import"
-            name="%command.import">
-      </command>
       <command
             categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
             description="%command.copy_to_clipboard.description"
@@ -1126,18 +864,6 @@
             description="%command.OpenFile.description"
             id="org.eclipse.linuxtools.tmf.ui.openFile"
             name="%command.OpenFile.name">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            description="%command.offset_traces.description"
-            id="org.eclipse.linuxtools.tmf.ui.command.offset_traces"
-            name="%command.offset_traces">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.tmf.ui.commands.category"
-            description="%command.clear_offset.description"
-            id="org.eclipse.linuxtools.tmf.ui.command.clear_offset"
-            name="%command.clear_offset">
       </command>
    </extension>
    <extension
@@ -1378,24 +1104,6 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.NewFolderHandler"
-            commandId="org.eclipse.linuxtools.tmf.ui.command.new_folder">
-         <activeWhen>
-            <and>
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="or">
-                  <instanceof
-                        value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceFolder">
-                  </instanceof>
-               </iterate>
-            </and>
-         </activeWhen>
-      </handler>
-      <handler
             class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.DeleteTraceSupplementaryFilesHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.delete_suppl_files">
       </handler>
@@ -1480,50 +1188,6 @@
             commandId="org.eclipse.linuxtools.tmf.ui.exportToText">
       </handler>
    </extension>
-   <extension point="org.eclipse.ui.bindings">
-      <key
-            sequence="ALT+R"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.GoToMessage"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+END"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.ShowNodeEnd"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+HOME"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.ShowNodeStart"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+ARROW_UP"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDUp"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+ARROW_DOWN"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDDown"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+ARROW_LEFT"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDLeft"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-      <key
-            sequence="SHIFT+ALT+ARROW_RIGHT"
-            contextId="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            commandId="org.eclipse.linuxtools.tmf.ui.views.uml2sd.handlers.MoveSDRight"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
-      </key>
-   </extension>
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
@@ -1531,13 +1195,6 @@
             name="%contenttype.trace"
             priority="normal">
       </content-type>
-   </extension>
-   <extension
-         point="org.eclipse.ui.contexts">
-      <context
-            id="org.eclipse.linuxtools.tmf.ui.view.uml2sd.context"
-            name="%contexts.uml2sd">
-      </context>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

@@ -48,15 +48,6 @@
                   visible="true">
             </separator>
             <command
-                  commandId="org.eclipse.linuxtools.tmf.ui.import"
-                  label="%command.import"
-                  style="push">
-            </command>
-            <separator
-                  name="org.eclipse.tracecompass.rcp.ui.menu.file.separator2"
-                  visible="true">
-            </separator>
-            <command
                   commandId="org.eclipse.ui.file.restartWorkbench"
                   style="push">
             </command>
