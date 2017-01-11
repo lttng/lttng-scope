@@ -12,6 +12,8 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event.aspect;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+
 import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
@@ -25,12 +27,12 @@ public class CtfChannelAspect implements ITmfEventAspect<String> {
 
     @Override
     public String getName() {
-        return Messages.getMessage(Messages.AspectName_Channel);
+        return nullToEmptyString(Messages.AspectName_Channel);
     }
 
     @Override
     public String getHelpText() {
-        return Messages.getMessage(Messages.AspectHelpText_Channel);
+        return nullToEmptyString(Messages.AspectHelpText_Channel);
     }
 
     @Override

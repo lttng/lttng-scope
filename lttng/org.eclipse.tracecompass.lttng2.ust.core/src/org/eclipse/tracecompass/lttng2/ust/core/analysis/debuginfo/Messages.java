@@ -9,29 +9,29 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Message bundle
  *
  * @author Alexandre Montplaisir
- * @since 2.0
+ * @noreference Messages class
  */
+@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static @Nullable String UstDebugInfoAnalysis_BinaryAspectName;
-    public static @Nullable String UstDebugInfoAnalysis_BinaryAspectHelpText;
-    public static @Nullable String UstDebugInfoAnalysis_FunctionAspectName;
-    public static @Nullable String UstDebugInfoAnalysis_FunctionAspectHelpText;
-    public static @Nullable String UstDebugInfoAnalysis_SourceAspectName;
-    public static @Nullable String UstDebugInfoAnalysis_SourceAspectHelpText;
+    public static String UstDebugInfoAnalysis_BinaryAspectName;
+    public static String UstDebugInfoAnalysis_BinaryAspectHelpText;
+    public static String UstDebugInfoAnalysis_FunctionAspectName;
+    public static String UstDebugInfoAnalysis_FunctionAspectHelpText;
+    public static String UstDebugInfoAnalysis_SourceAspectName;
+    public static String UstDebugInfoAnalysis_SourceAspectHelpText;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

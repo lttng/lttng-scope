@@ -11,15 +11,17 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event.aspect;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * Message bundle
+ *
+ * @noreference Messages class
+ */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME =
-            "org.eclipse.tracecompass.ctf.tmf.core.event.aspect.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String AspectName_Channel;
     public static String AspectHelpText_Channel;
@@ -29,15 +31,5 @@ public class Messages extends NLS {
     }
 
     private Messages() {
-    }
-
-    /**
-     * Helper method to expose externalized strings as non-null objects.
-     */
-    static @NonNull String getMessage(@Nullable String msg) {
-        if (msg == null) {
-            return ""; //$NON-NLS-1$
-        }
-        return msg;
     }
 }

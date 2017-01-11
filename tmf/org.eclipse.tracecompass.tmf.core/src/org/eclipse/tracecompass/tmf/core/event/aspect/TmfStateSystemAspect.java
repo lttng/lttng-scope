@@ -13,6 +13,7 @@
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
 import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -67,7 +68,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
 
     @Override
     public @NonNull String getHelpText() {
-        return Messages.getMessage(NLS.bind(Messages.AspectHelpText_Statesystem,
+        return nullToEmptyString(NLS.bind(Messages.AspectHelpText_Statesystem,
                 fSS.getSSID(), fSS.getFullAttributePath(fAttribute)));
     }
 

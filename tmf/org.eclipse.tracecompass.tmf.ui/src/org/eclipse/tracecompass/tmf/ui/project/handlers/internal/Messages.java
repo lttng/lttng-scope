@@ -19,12 +19,12 @@ import org.eclipse.osgi.util.NLS;
  * Messages file
  *
  * @author Francois Chouinard
- * @version 1.0
+ * @noreference Messages class
  */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.project.handlers.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String DeleteDialog_Title;
     public static String DeleteTraceHandler_Message;
@@ -76,7 +76,6 @@ public class Messages extends NLS {
     public static String TmfActionProvider_OpenWith;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

@@ -15,21 +15,19 @@ package org.eclipse.tracecompass.tmf.core;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Message strings for TMF model handling.
+ * Message bundle
  *
  * @author Marc-Andre Laperle
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.core.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /**
-     * The name of the default project
-     */
     public static String DefaultTraceProjectName;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

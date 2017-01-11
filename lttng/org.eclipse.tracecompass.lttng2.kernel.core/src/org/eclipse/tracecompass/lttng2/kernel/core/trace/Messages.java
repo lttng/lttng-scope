@@ -17,26 +17,18 @@ import org.eclipse.osgi.util.NLS;
  * Message bundle for lttng2.kernel.core.trace
  *
  * @author Matthew Khouzam
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.lttng2.kernel.core.trace.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /**
-     * The domain is not "kernel"
-     */
     public static String LttngKernelTrace_DomainError;
-    /**
-     * Malformed trace (buffer overflow maybe?)
-     */
     public static String LttngKernelTrace_MalformedTrace;
-    /**
-     * Trace read error
-     */
     public static String LttngKernelTrace_TraceReadError;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

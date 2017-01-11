@@ -9,18 +9,24 @@
  * Contributors:
  *     Marc-Andre Laperle - Initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.tracecompass.tmf.ui.properties;
 
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * Message bundle
+ *
+ * @noreference Messages class
+ */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.ui.properties.messages"; //$NON-NLS-1$
+
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String TmfTimestampFormatPage_LocalTime;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

@@ -23,8 +23,6 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-//    public static String LamiAnalysis_MainTaskName;
-//    public static String LamiAnalysis_NoResults;
     public static String ProcessUtils_ErrorDuringExecution;
     public static String ProcessUtils_ErrorNoOutput;
     public static String ProcessUtils_ExecutionInterrupted;

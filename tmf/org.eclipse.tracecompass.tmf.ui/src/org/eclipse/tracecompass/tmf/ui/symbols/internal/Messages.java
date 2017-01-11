@@ -13,18 +13,12 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Message bundle
+ * @noreference Messages class
  */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private Messages() {
-    }
-
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.symbols.messages"; //$NON-NLS-1$
-
-    static {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String BasicSymbolProviderPrefPage_radioBinaryFile_text;
     public static String BasicSymbolProviderPrefPage_radioBinaryFile_tooltip;
@@ -37,4 +31,10 @@ public class Messages extends NLS {
     public static String BasicSymbolProviderPrefPage_errorFileDoesNotExists;
     public static String BasicSymbolProviderPrefPage_errorSpecifyFile;
 
+    static {
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }

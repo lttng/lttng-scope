@@ -17,11 +17,13 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Message bundle for dialog messages.
+ *
+ * @noreference Messages class
  */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.project.dialogs.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String SelectSpplementaryResources_DialogTitle;
     public static String SelectSpplementaryResources_ResourcesGroupTitle;
@@ -29,7 +31,6 @@ public class Messages extends NLS {
     public static String Dialog_DeselectAll;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

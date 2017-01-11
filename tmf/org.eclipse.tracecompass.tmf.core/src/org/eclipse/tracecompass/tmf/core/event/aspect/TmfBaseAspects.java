@@ -9,6 +9,8 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+
 import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -32,7 +34,7 @@ public final class TmfBaseAspects {
     private static final ITmfEventAspect<ITmfTimestamp> TIMESTAMP_ASPECT = new ITmfEventAspect<ITmfTimestamp>() {
         @Override
         public String getName() {
-            return Messages.getMessage(Messages.AspectName_Timestamp);
+            return nullToEmptyString(Messages.AspectName_Timestamp);
         }
 
         @Override
@@ -49,12 +51,12 @@ public final class TmfBaseAspects {
     private static final ITmfEventAspect<String> EVENT_TYPE_ASPECT = new ITmfEventAspect<String>() {
         @Override
         public String getName() {
-            return Messages.getMessage(Messages.AspectName_EventType);
+            return nullToEmptyString(Messages.AspectName_EventType);
         }
 
         @Override
         public String getHelpText() {
-            return Messages.getMessage(Messages.AspectHelpText_EventType);
+            return nullToEmptyString(Messages.AspectHelpText_EventType);
         }
 
         @Override
@@ -67,7 +69,7 @@ public final class TmfBaseAspects {
         }
     };
 
-    private static final TmfEventFieldAspect CONTENTS_ASPECT = new TmfEventFieldAspect(Messages.getMessage(Messages.AspectName_Contents), null, new TmfEventFieldAspect.IRootField() {
+    private static final TmfEventFieldAspect CONTENTS_ASPECT = new TmfEventFieldAspect(nullToEmptyString(Messages.AspectName_Contents), null, new TmfEventFieldAspect.IRootField() {
         @Override
         public @Nullable ITmfEventField getRootField(ITmfEvent event) {
             return event.getContent();
@@ -75,19 +77,19 @@ public final class TmfBaseAspects {
     }) {
         @Override
         public String getHelpText() {
-            return Messages.getMessage(Messages.AspectHelpText_Contents);
+            return nullToEmptyString(Messages.AspectHelpText_Contents);
         }
     };
 
     private static final ITmfEventAspect<String> TRACE_NAME_ASPECT = new ITmfEventAspect<String>() {
         @Override
         public String getName() {
-            return Messages.getMessage(Messages.AspectName_TraceName);
+            return nullToEmptyString(Messages.AspectName_TraceName);
         }
 
         @Override
         public String getHelpText() {
-            return Messages.getMessage(Messages.AspectHelpText_TraceName);
+            return nullToEmptyString(Messages.AspectHelpText_TraceName);
         }
 
         @Override

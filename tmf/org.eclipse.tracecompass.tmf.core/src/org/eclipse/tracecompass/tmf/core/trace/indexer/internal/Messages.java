@@ -15,50 +15,27 @@ package org.eclipse.tracecompass.tmf.core.trace.indexer.internal;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Message bundle for tmf.core.trace.index
+ * Message bundle
  *
  * @author Marc-Andre Laperle
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.core.trace.indexer.messages"; //$NON-NLS-1$
-    /**
-     * Error opening index
-     */
+
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
     public static String ErrorOpeningIndex;
-    /**
-     * I/O Error allocating a node
-     */
     public static String BTree_IOErrorAllocatingNode;
-    /**
-     * I/O Error closing the index
-     */
     public static String IOErrorClosingIndex;
-    /**
-     * I/O Error reading header from disk
-     */
     public static String IOErrorReadingHeader;
-    /**
-     * I/O Error writing header from disk
-     */
     public static String IOErrorWritingHeader;
-    /**
-     * I/O Error reading node from disk
-     */
     public static String BTreeNode_IOErrorLoading;
-    /**
-     * I/O Error writing node to disk
-     */
     public static String BTreeNode_IOErrorWriting;
-    /**
-     * I/O Error reading from disk
-     */
     public static String FlatArray_IOErrorReading;
-    /**
-     * I/O Error writing to disk
-     */
     public static String FlatArray_IOErrorWriting;
+
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

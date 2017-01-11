@@ -19,17 +19,16 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private Messages() {
-    }
-
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.ui.symbols.messages"; //$NON-NLS-1$
-
-    static {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String SymbolProviderConfigDialog_loadingConfigurations;
     public static String SymbolProviderConfigDialog_title;
     public static String SymbolProviderConfigDialog_message;
 
+    static {
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {
+    }
 }

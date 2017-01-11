@@ -15,16 +15,16 @@ import org.eclipse.osgi.util.NLS;
  * Message strings for TMF model handling.
  *
  * @author Bernd Hufmann
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.core.project.model.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /** No trace type match */
     public static String TmfOpenTraceHelper_NoTraceTypeMatch;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

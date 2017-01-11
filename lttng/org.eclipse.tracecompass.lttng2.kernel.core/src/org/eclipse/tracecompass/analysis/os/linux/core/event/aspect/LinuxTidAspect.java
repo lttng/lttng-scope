@@ -12,6 +12,8 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.event.aspect;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
@@ -27,12 +29,12 @@ public abstract class LinuxTidAspect implements ITmfEventAspect<Integer> {
 
     @Override
     public final String getName() {
-        return Messages.getMessage(Messages.AspectName_Tid);
+        return nullToEmptyString(Messages.AspectName_Tid);
     }
 
     @Override
     public final String getHelpText() {
-        return Messages.getMessage(Messages.AspectHelpText_Tid);
+        return nullToEmptyString(Messages.AspectHelpText_Tid);
     }
 
     @Override

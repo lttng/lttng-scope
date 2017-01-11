@@ -15,34 +15,26 @@ import org.eclipse.osgi.util.NLS;
  * Softirq names. Not the C style ones, but descriptive ones
  *
  * @author Matthew Khouzam
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.analysis.os.linux.ui.views.resources.messages"; //$NON-NLS-1$
-    /** softirq 0 */
+
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
     public static String SoftIrqLabelProvider_softIrq0;
-    /** softirq 1 */
     public static String SoftIrqLabelProvider_softIrq1;
-    /** softirq 2 */
     public static String SoftIrqLabelProvider_softIrq2;
-    /** softirq 3 */
     public static String SoftIrqLabelProvider_softIrq3;
-    /** softirq 4 */
     public static String SoftIrqLabelProvider_softIrq4;
-    /** softirq 5 */
     public static String SoftIrqLabelProvider_softIrq5;
-    /** softirq 6 */
     public static String SoftIrqLabelProvider_softIrq6;
-    /** softirq 7 */
     public static String SoftIrqLabelProvider_softIrq7;
-    /** softirq 8 */
     public static String SoftIrqLabelProvider_softIrq8;
-    /** softirq 9 */
     public static String SoftIrqLabelProvider_softIrq9;
-    /** other softirq */
     public static String SoftIrqLabelProvider_Unknown;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

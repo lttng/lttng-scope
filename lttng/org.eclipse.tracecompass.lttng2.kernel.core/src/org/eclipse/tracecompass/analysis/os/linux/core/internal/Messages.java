@@ -9,27 +9,26 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.internal;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Messages
+ *
+ * TODO Split this into per-package classes
+ *
+ * @noreference Messages class
  */
+@NonNullByDefault({})
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.analysis.os.linux.core.messages"; //$NON-NLS-1$
 
-    /**
-     * Description of the context swith analysis module for the help
-     */
-    public static @Nullable String KernelContextSwitchAnalysis_Description;
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /**
-     * Description of the TID analysis module for the help
-     */
-    public static @Nullable String TidAnalysisModule_Description;
+    public static String KernelContextSwitchAnalysis_Description;
+    public static String TidAnalysisModule_Description;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

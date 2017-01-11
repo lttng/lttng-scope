@@ -17,16 +17,16 @@ import org.eclipse.osgi.util.NLS;
  * Message bundle
  *
  * @author Matthew Khouzam
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.ctf.tmf.core.event.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /** Unsupported field type */
     public static String CtfTmfEventField_UnsupportedType;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

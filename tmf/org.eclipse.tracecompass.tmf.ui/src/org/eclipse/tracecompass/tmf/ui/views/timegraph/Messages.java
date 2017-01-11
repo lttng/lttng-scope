@@ -16,24 +16,22 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Generic messages for the bar charts
+ * @noreference Messages class
  */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.ui.views.timegraph.messages"; //$NON-NLS-1$
+
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String AbstractTimeGraphtView_NextText;
-    /**
-     * Build Job title
-     * @since 2.1
-     */
     public static String AbstractTimeGraphView_BuildJob;
 
     public static String AbstractTimeGraphView_NextTooltip;
     public static String AbstractTimeGraphView_PreviousText;
     public static String AbstractTimeGraphView_PreviousTooltip;
     public static String TimeGraphPresentationProvider_multipleStates;
+
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

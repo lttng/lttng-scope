@@ -22,64 +22,26 @@ import org.eclipse.osgi.util.NLS;
  * <p>
  *
  * @author Francois Chouinard
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    // ------------------------------------------------------------------------
-    // Constants
-    // ------------------------------------------------------------------------
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.ui.views.histogram.messages"; //$NON-NLS-1$
-
-    /**
-     * The label for the Show Traces button
-     */
     public static String HistogramView_showTraces;
-    /**
-     * The label for the Lost Events button
-     */
     public static String HistogramView_hideLostEvents;
-    /**
-     * The label for the selection start time
-     */
     public static String HistogramView_selectionStartLabel;
-    /**
-     * The label for the selection end time
-     */
     public static String HistogramView_selectionEndLabel;
-    /**
-     * The label for the window span.
-     */
     public static String HistogramView_windowSpanLabel;
-    /**
-     * The tool tip text for the selection span.
-     */
     public static String Histogram_selectionSpanToolTip;
-    /**
-     * The tool tip text for the bucket range.
-     */
     public static String Histogram_bucketRangeToolTip;
-    /**
-     * The tool tip text for the event count.
-     */
     public static String Histogram_eventCountToolTip;
-    /**
-     * The tool tip text for the lost event count.
-     */
     public static String Histogram_lostEventCountToolTip;
 
-    // ------------------------------------------------------------------------
-    // Initializer
-    // ------------------------------------------------------------------------
-
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
-
-    // ------------------------------------------------------------------------
-    // Constructor
-    // ------------------------------------------------------------------------
 
     private Messages() {
     }

@@ -13,11 +13,13 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * TMF message bundle
+ *
+ * @noreference Messages class
  */
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String AddBookmarkDialog_Alpha;
     public static String AddBookmarkDialog_Color;
@@ -347,7 +349,6 @@ public class Messages extends NLS {
     public static String ExportToTextJob_Unable_to_export_trace;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

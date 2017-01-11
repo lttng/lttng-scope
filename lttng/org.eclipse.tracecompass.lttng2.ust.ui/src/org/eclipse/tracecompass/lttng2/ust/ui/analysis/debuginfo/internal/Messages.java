@@ -21,14 +21,7 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private Messages() {}
-
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.lttng2.ust.ui.analysis.debuginfo.messages"; //$NON-NLS-1$
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String PreferencePage_WindowDescription;
 
@@ -41,4 +34,9 @@ public class Messages extends NLS {
     public static String PreferencePage_BrowseDialogTitle;
     public static String PreferencePage_ErrorDirectoryDoesNotExists;
 
+    static {
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    private Messages() {}
 }

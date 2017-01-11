@@ -12,23 +12,24 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Externalized message strings from the LTTng Kernel Analysis
  *
  * @author Geneviève Bastien
- * @since 2.0
+ * @noreference Messages class
  */
+@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.analysis.os.linux.core.kernel.messages"; //$NON-NLS-1$
 
-    public static @Nullable String LttngKernelAnalysisModule_Help;
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
+    public static String LttngKernelAnalysisModule_Help;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

@@ -15,20 +15,20 @@ package org.eclipse.tracecompass.tmf.ui.commands.internal;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Messages for commands
+ * Message bundle
  *
  * @author Marc-Andre Laperle
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.commands.messages"; //$NON-NLS-1$
 
-    /** Select trace directory */
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
     public static String OpenDirHandler_SelectTraceDirectory;
-    /** Select trace file */
     public static String OpenFileHandler_SelectTraceFile;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

@@ -17,48 +17,25 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Messages for the offset dialog
+ *
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.internal.tmf.ui.project.dialogs.offset.messages"; //$NON-NLS-1$
 
-    /**
-     * Advanced mode button
-     */
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
     public static String OffsetDialog_AdvancedButton;
-    /**
-     * Advanced mode dialog message
-     */
     public static String OffsetDialog_AdvancedMessage;
-    /**
-     * Basic mode button
-     */
     public static String OffsetDialog_BasicButton;
-    /**
-     * Basic mode dialog message
-     */
     public static String OffsetDialog_BasicMessage;
-    /**
-     * Offset time
-     */
     public static String OffsetDialog_OffsetTime;
-    /**
-     * Reference time
-     */
     public static String OffsetDialog_ReferenceTime;
-    /**
-     * Target time
-     */
     public static String OffsetDialog_TargetTime;
-    /**
-     * Dialog title
-     */
     public static String OffsetDialog_Title;
-    /**
-     * Trace name
-     */
     public static String OffsetDialog_TraceName;
+
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

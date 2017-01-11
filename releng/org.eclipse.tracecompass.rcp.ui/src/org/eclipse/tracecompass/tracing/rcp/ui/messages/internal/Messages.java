@@ -17,33 +17,26 @@ import org.eclipse.osgi.util.NLS;
  * Messages file for the tracing RCP.
  *
  * @author Bernd Hufmann
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.rcp.ui.messages.internal.messages"; //$NON-NLS-1$
 
-    /** Error title for error during workspace creation */
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
     public static String Application_WorkspaceCreationError;
-    /** Error message if workspace root doesn't exist */
     public static String Application_WorkspaceRootNotExistError;
-    /** Error message if workspace root is write protected */
     public static String Application_WorkspaceRootPermissionError;
-    /** Error message if workspace is already in use */
     public static String Application_WorkspaceInUseError;
-    /** Error message if workspace can't be saved during shutdown */
     public static String Application_WorkspaceSavingError;
-    /** Error message for internal errors */
     public static String Application_InternalError;
 
-    /** Version string */
     public static String SplahScreen_VersionString;
 
-    /** Malformed command */
     public static String CliParser_MalformedCommand;
-    /** Unkown command */
     public static String CliParser_UnknownCommand;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

@@ -12,6 +12,8 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 
@@ -27,12 +29,12 @@ public abstract class TmfCpuAspect implements ITmfEventAspect<Integer> {
 
     @Override
     public final String getName() {
-        return Messages.getMessage(Messages.AspectName_CPU);
+        return nullToEmptyString(Messages.AspectName_CPU);
     }
 
     @Override
     public final String getHelpText() {
-        return Messages.getMessage(Messages.AspectHelpText_CPU);
+        return nullToEmptyString(Messages.AspectHelpText_CPU);
     }
 
     /**

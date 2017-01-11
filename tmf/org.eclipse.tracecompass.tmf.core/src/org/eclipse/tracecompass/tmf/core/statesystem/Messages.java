@@ -9,33 +9,26 @@
 
 package org.eclipse.tracecompass.tmf.core.statesystem;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Message bundle for org.eclipse.tracecompass.tmf.core.statesystem
  *
  * @author Geneviève Bastien
- * @since 2.0
+ * @noreference Messages class
  */
+@NonNullByDefault({})
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.core.statesystem.messages"; //$NON-NLS-1$
 
-    /**
-     * Analysis not executed text
-     */
-    public static @Nullable String TmfStateSystemAnalysisModule_PropertiesAnalysisNotExecuted;
-    /**
-     * Backend property text
-     */
-    public static @Nullable String TmfStateSystemAnalysisModule_PropertiesBackend;
-    /**
-     * File size property text
-     */
-    public static @Nullable String TmfStateSystemAnalysisModule_PropertiesFileSize;
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
+    public static String TmfStateSystemAnalysisModule_PropertiesAnalysisNotExecuted;
+    public static String TmfStateSystemAnalysisModule_PropertiesBackend;
+    public static String TmfStateSystemAnalysisModule_PropertiesFileSize;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 

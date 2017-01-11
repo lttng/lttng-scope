@@ -12,40 +12,36 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * Message bundle
+ *
+ * @noreference Messages class
+ */
+@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.tmf.core.event.aspect.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static @Nullable String AspectName_Timestamp;
-    public static @Nullable String AspectName_EventType;
-    public static @Nullable String AspectName_Contents;
-    public static @Nullable String AspectName_TraceName;
-    public static @Nullable String AspectName_CPU;
+    public static String AspectName_Timestamp;
+    public static String AspectName_EventType;
+    public static String AspectName_Contents;
+    public static String AspectName_TraceName;
+    public static String AspectName_CPU;
 
-    public static @Nullable String AspectHelpText_EventType;
-    public static @Nullable String AspectHelpText_Contents;
-    public static @Nullable String AspectHelpText_TraceName;
-    public static @Nullable String AspectHelpText_CPU;
-    public static @Nullable String AspectHelpText_Statesystem;
+    public static String AspectHelpText_EventType;
+    public static String AspectHelpText_Contents;
+    public static String AspectHelpText_TraceName;
+    public static String AspectHelpText_CPU;
+    public static String AspectHelpText_Statesystem;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     private Messages() {
-    }
-
-    /**
-     * Helper method to expose externalized strings as non-null objects.
-     */
-    static String getMessage(@Nullable String msg) {
-        if (msg == null) {
-            return ""; //$NON-NLS-1$
-        }
-        return msg;
     }
 }

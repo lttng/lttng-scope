@@ -17,28 +17,20 @@ import org.eclipse.osgi.util.NLS;
  * Message bundle
  *
  * @author Matthew Khouzam
+ * @noreference Messages class
  */
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.tracecompass.ctf.tmf.core.trace.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    /** Buffer overflow detected */
     public static String CtfTmfTrace_BufferOverflowErrorMessage;
-
-    /** Text for host ID */
     public static String CtfTmfTrace_HostID;
-
-    /** Major version number not set */
     public static String CtfTmfTrace_MajorNotSet;
-
-    /** Reading error */
     public static String CtfTmfTrace_ReadingError;
-
-    /** No event */
     public static String CtfTmfTrace_NoEvent;
 
     static {
-        // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
