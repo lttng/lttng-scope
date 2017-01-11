@@ -31,15 +31,6 @@
       <view
             allowMultiple="false"
             category="org.eclipse.linuxtools.tmf.ui.views.category"
-            class="org.eclipse.tracecompass.tmf.ui.views.filter.FilterView"
-            icon="icons/eview16/filters_view.gif"
-            id="org.eclipse.linuxtools.tmf.ui.views.filter"
-            name="%filters.view.name"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.eclipse.linuxtools.tmf.ui.views.category"
             class="org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView"
             icon="icons/eview16/histogram.gif"
             id="org.eclipse.linuxtools.tmf.ui.views.histogram"
@@ -1487,54 +1478,6 @@
       <handler
             class="org.eclipse.tracecompass.tmf.ui.commands.internal.ExportToTextCommandHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.exportToText">
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.tmf.ui.views.filter.CopyHandler"
-            commandId="org.eclipse.ui.edit.copy">
-         <activeWhen>
-            <with
-                  variable="activePart">
-               <instanceof
-                     value="org.eclipse.tracecompass.tmf.ui.views.filter.FilterView">
-               </instanceof>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.tmf.ui.views.filter.PasteHandler"
-            commandId="org.eclipse.ui.edit.paste">
-         <activeWhen>
-            <with
-                  variable="activePart">
-               <instanceof
-                     value="org.eclipse.tracecompass.tmf.ui.views.filter.FilterView">
-               </instanceof>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.tmf.ui.views.filter.CutHandler"
-            commandId="org.eclipse.ui.edit.cut">
-         <activeWhen>
-            <with
-                  variable="activePart">
-               <instanceof
-                     value="org.eclipse.tracecompass.tmf.ui.views.filter.FilterView">
-               </instanceof>
-            </with>
-         </activeWhen>
-      </handler>
-      <handler
-            class="org.eclipse.tracecompass.tmf.ui.views.filter.DeleteHandler"
-            commandId="org.eclipse.ui.edit.delete">
-         <activeWhen>
-            <with
-                  variable="activePart">
-               <instanceof
-                     value="org.eclipse.tracecompass.tmf.ui.views.filter.FilterView">
-               </instanceof>
-            </with>
-         </activeWhen>
       </handler>
    </extension>
    <extension point="org.eclipse.ui.bindings">
