@@ -319,7 +319,7 @@ The following is an example of the extension point:
       &lt;module
          id=&quot;org.eclipse.linuxtools.tmf.core.tests.analysis.testctf&quot;
          name=&quot;Test analysis ctf&quot;
-         analysis_module=&quot;org.eclipse.linuxtools.tmf.tests.stubs.analysis.TestCtfAnalysis&quot;
+         analysis_module=&quot;org.eclipse.linuxtools.tmf.core.tests.stubs.analysis.TestCtfAnalysis&quot;
          automatic=&quot;true&quot;&gt;
       &lt;/module&gt;
    &lt;/extension&gt;

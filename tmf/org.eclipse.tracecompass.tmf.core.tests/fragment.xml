@@ -28,7 +28,7 @@
                name="test">
          </parameter>
          <tracetype
-               class="org.eclipse.tracecompass.tmf.tests.stubs.trace.TmfTraceStub">
+               class="org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub">
          </tracetype>
       </module>
       <module

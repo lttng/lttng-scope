@@ -103,7 +103,7 @@ The following is an example of the extension point usage:
    &lt;extension
          point=&quot;org.eclipse.tracecompass.tmf.core.analysis.ondemand&quot;&gt;
       &lt;analysis
-            class=&quot;org.eclipse.tracecompass.tmf.tests.stubs.analysis.ondemand.OnDemandAnalysisStub&quot;
+            class=&quot;org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.ondemand.OnDemandAnalysisStub&quot;
             id=&quot;org.eclipse.tracecompass.tmf.core.tests.analysis1&quot;&gt;
       &lt;/analysis&gt;
    &lt;/extension&gt;
