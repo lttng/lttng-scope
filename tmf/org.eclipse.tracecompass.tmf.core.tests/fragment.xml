@@ -65,14 +65,6 @@
          </tracetype>
       </module>
       <module
-            analysis_module="org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestRequirementAnalysis"
-            id="org.eclipse.linuxtools.tmf.core.tests.analysis.reqtest"
-            name="Test analysis requirements">
-         <tracetype
-               class="org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub">
-         </tracetype>
-      </module>
-      <module
          id="org.eclipse.linuxtools.tmf.core.tests.analysis.testParamProvider"
          name="Test analysis with param provider"
          analysis_module="org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis">
