@@ -26,7 +26,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
  * merges them into one single time event stream
  *
  * @author Matthew Khouzam
- * @since 2.0
  */
 public class AggregateEventIterator implements Iterator<@NonNull ITimeEvent> {
 

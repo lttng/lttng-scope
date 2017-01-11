@@ -129,7 +129,6 @@ public abstract class TmfTimeViewer extends TmfViewer implements ITmfTimeProvide
      *            The start time to set
      * @param windowEndTime
      *            The start time to set
-     * @since 1.0
      */
     protected void setWindowRange(long windowStartTime, long windowEndTime) {
         fWindowStartTime = windowStartTime;
@@ -144,8 +143,6 @@ public abstract class TmfTimeViewer extends TmfViewer implements ITmfTimeProvide
      *            The begin time to set
      * @param selectionEndTime
      *            The end time to set
-     *
-     * @since 1.0
      */
     protected void setSelectionRange(long selectionBeginTime, long selectionEndTime) {
         fSelectionBeginTime = selectionBeginTime;
@@ -335,7 +332,6 @@ public abstract class TmfTimeViewer extends TmfViewer implements ITmfTimeProvide
      *
      * @param signal
      *            The {@link TmfSelectionRangeUpdatedSignal}
-     * @since 1.0
      */
     @TmfSignalHandler
     public void selectionRangeUpdated(@Nullable TmfSelectionRangeUpdatedSignal signal) {
@@ -351,7 +347,6 @@ public abstract class TmfTimeViewer extends TmfViewer implements ITmfTimeProvide
      *
      * @param signal
      *            The {@link TmfWindowRangeUpdatedSignal}
-     * @since 1.0
      */
     @TmfSignalHandler
     public void windowRangeUpdated(@Nullable TmfWindowRangeUpdatedSignal signal) {

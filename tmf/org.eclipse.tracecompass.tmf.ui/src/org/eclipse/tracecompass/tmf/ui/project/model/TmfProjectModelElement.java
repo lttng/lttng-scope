@@ -44,7 +44,6 @@ import com.google.common.collect.ImmutableList;
  * The implementation of the base TMF project model element. It provides default implementation
  * of the <code>ITmfProjectModelElement</code> interface.
  * <p>
- * @version 1.0
  * @author Francois Chouinard
  */
 public abstract class TmfProjectModelElement implements ITmfProjectModelElement {
@@ -201,8 +200,6 @@ public abstract class TmfProjectModelElement implements ITmfProjectModelElement 
      * Refresh the children of this model element, adding new children and
      * removing dangling children as necessary. The remaining children should
      * also refresh their own children sub-tree.
-     *
-     * @since 2.0
      */
     protected abstract void refreshChildren();
 

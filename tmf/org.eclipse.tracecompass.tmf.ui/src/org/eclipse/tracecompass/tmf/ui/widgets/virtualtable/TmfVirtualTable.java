@@ -1140,7 +1140,6 @@ public class TmfVirtualTable extends Composite {
      *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
      *                thread that created the receiver</li>
      *                </ul>
-     * @since 2.0
      */
     public void setSelectionRange(int beginIndex, int endIndex) {
         if (fTableItemCount > 0) {

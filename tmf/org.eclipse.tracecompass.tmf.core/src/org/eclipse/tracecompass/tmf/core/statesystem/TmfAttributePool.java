@@ -26,7 +26,6 @@ import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
  * list as needed.
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public class TmfAttributePool {
 

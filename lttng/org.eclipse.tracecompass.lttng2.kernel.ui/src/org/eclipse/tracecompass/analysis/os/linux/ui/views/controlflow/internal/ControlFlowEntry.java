@@ -97,7 +97,6 @@ public class ControlFlowEntry extends TimeGraphEntry {
      *
      * @param ptid
      *            The "PTID"
-     * @since 1.1
      */
     public void setParentThreadId(int ptid) {
         fParentThreadId = ptid;

@@ -25,7 +25,6 @@ import com.google.common.collect.ImmutableMap;
  * closest thousand's unit, with at most 1 decimal.
  *
  * @author Michael Jeanson
- * @since 2.0
  */
 public class DecimalUnitFormat extends Format {
 
@@ -141,9 +140,6 @@ public class DecimalUnitFormat extends Format {
         throw new IllegalArgumentException("Cannot format given Object as a Number: " + obj); //$NON-NLS-1$
     }
 
-    /**
-     * @since 2.2
-     */
     @Override
     public Number parseObject(String source, ParsePosition pos) {
         Number number = NumberFormat.getInstance().parse(source, pos);

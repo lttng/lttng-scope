@@ -42,7 +42,6 @@ public interface ITimeDataProvider {
      *            the selection end time
      * @param ensureVisible
      *            if true, ensure visibility of the new selection range boundary
-     * @since 2.0
      */
     void setSelectionRangeNotify(long beginTime, long endTime, boolean ensureVisible);
 
@@ -60,7 +59,6 @@ public interface ITimeDataProvider {
      *            the selection end time
      * @param ensureVisible
      *            if true, ensure visibility of the new selection range boundary
-     * @since 2.0
      */
     void setSelectionRange(long beginTime, long endTime, boolean ensureVisible);
 
@@ -181,7 +179,6 @@ public interface ITimeDataProvider {
      *
      * @param notify
      *            if true, notify the registered listeners
-     * @since 2.0
      */
     default void resetStartFinishTime(boolean notify) {
         if (notify) {

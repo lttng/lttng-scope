@@ -24,9 +24,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
  * ITimeGraphEntry as input element.
  *
  * @author Patrick Tasse
- * @since 1.0
  */
-
 public class TimeGraphContentProvider implements ITimeGraphContentProvider {
 
     @Override

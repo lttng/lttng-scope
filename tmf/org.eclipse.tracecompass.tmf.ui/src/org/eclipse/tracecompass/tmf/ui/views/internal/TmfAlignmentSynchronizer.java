@@ -42,8 +42,6 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Receives various notifications for realignment and
  * performs the alignment on the appropriate views.
- *
- * @since 1.0
  */
 public class TmfAlignmentSynchronizer {
 

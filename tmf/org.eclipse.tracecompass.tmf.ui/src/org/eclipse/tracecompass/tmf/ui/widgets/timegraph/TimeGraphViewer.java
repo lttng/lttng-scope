@@ -320,7 +320,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Sets the tree columns for this time graph combo's filter dialog.
      *
      * @param columnNames the tree column names
-     * @since 1.2
      */
     public void setFilterColumns(String[] columnNames) {
         getShowFilterDialogAction().getFilterDialog().setColumnNames(columnNames);
@@ -330,7 +329,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Sets the tree content provider used by the filter dialog
      *
      * @param contentProvider the tree content provider
-     * @since 1.2
      */
     public void setFilterContentProvider(ITreeContentProvider contentProvider) {
         getShowFilterDialogAction().getFilterDialog().setContentProvider(contentProvider);
@@ -340,7 +338,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Sets the tree label provider used by the filter dialog
      *
      * @param labelProvider the tree label provider
-     * @since 1.2
      */
     public void setFilterLabelProvider(ITableLabelProvider labelProvider) {
         getShowFilterDialogAction().getFilterDialog().setLabelProvider(labelProvider);
@@ -684,7 +681,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * @param timeProvider
      *            The time data provider
      * @return The new TimeGraphMarkerAxis
-     * @since 2.0
      */
     protected TimeGraphMarkerAxis createTimeGraphMarkerAxis(Composite parent,
             @NonNull TimeGraphColorScheme colorScheme, @NonNull ITimeDataProvider timeProvider) {
@@ -975,9 +971,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
         fTimeRangeFixed = false;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public void resetStartFinishTime(boolean notify) {
         if (notify) {
@@ -1006,17 +999,11 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
         setSelectionRangeInt(time, time, ensureVisible, doNotify);
     }
 
-    /**
-     * @since 1.2
-     */
     @Override
     public void setSelectionRangeNotify(long beginTime, long endTime, boolean ensureVisible) {
         setSelectionRangeInt(beginTime, endTime, ensureVisible, true);
     }
 
-    /**
-     * @since 1.2
-     */
     @Override
     public void setSelectionRange(long beginTime, long endTime, boolean ensureVisible) {
         /* if there is a pending time selection, ignore this one */
@@ -1098,7 +1085,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void selectNextEvent(boolean extend) {
         fTimeGraphCtrl.selectNextEvent(extend);
@@ -1110,7 +1096,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void selectPrevEvent(boolean extend) {
         fTimeGraphCtrl.selectPrevEvent(extend);
@@ -1282,7 +1267,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param listener
      *            The listener to add
-     * @since 2.0
      */
     public void addBookmarkListener(ITimeGraphBookmarkListener listener) {
         fBookmarkListeners.add(listener);
@@ -1293,7 +1277,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param listener
      *            The listener to remove
-     * @since 2.0
      */
     public void removeBookmarkListener(ITimeGraphBookmarkListener listener) {
         fBookmarkListeners.remove(listener);
@@ -1320,7 +1303,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param bookmarks
      *            The bookmarks list, or null
-     * @since 2.0
      */
     public void setBookmarks(List<IMarkerEvent> bookmarks) {
         fBookmarks.clear();
@@ -1335,7 +1317,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the bookmarks list.
      *
      * @return The bookmarks list
-     * @since 2.0
      */
     public List<IMarkerEvent> getBookmarks() {
         return Collections.unmodifiableList(fBookmarks);
@@ -1346,7 +1327,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param categories
      *            The list of marker categories, or null
-     * @since 2.0
      */
     public void setMarkerCategories(List<String> categories) {
         fMarkerCategories.clear();
@@ -1357,9 +1337,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
         fMarkerAxisCtrl.setMarkerCategories(fMarkerCategories);
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public void setMarkerCategoryVisible(String category, boolean visible) {
         boolean changed = false;
@@ -1380,7 +1357,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param markers
      *            The markers list, or null
-     * @since 2.0
      */
     public void setMarkers(List<IMarkerEvent> markers) {
         fMarkers.clear();
@@ -1395,7 +1371,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the markers list.
      *
      * @return The markers list, or null
-     * @since 2.0
      */
     public List<IMarkerEvent> getMarkers() {
         return Collections.unmodifiableList(fMarkers);
@@ -1665,7 +1640,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * i.e. TimeGraphScale, TimeGraphControl.
      *
      * @return the time based composite
-     * @since 1.0
      */
     public Composite getTimeAlignedComposite() {
         return fTimeAlignedComposite;
@@ -1785,7 +1759,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * @param entry
      *            The entry
      * @return true if the entry is expanded, false if collapsed
-     * @since 1.1
      */
     public boolean getExpandedState(ITimeGraphEntry entry) {
         return fTimeGraphCtrl.getExpandedState(entry);
@@ -1825,7 +1798,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param entry
      *            The entry to select
-     * @since 2.0
      */
     public void selectAndReveal(@NonNull ITimeGraphEntry entry) {
         final ITimeGraphEntry parent = entry.getParent();
@@ -2147,7 +2119,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the show filter dialog action.
      *
      * @return The Action object
-     * @since 1.2
      */
     public ShowFilterDialogAction getShowFilterDialogAction() {
         if (fShowFilterDialogAction == null) {
@@ -2160,7 +2131,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the toggle bookmark action.
      *
      * @return The Action object
-     * @since 2.0
      */
     public Action getToggleBookmarkAction() {
         if (fToggleBookmarkAction == null) {
@@ -2202,7 +2172,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the next marker action.
      *
      * @return The Action object
-     * @since 2.0
      */
     public Action getNextMarkerAction() {
         if (fNextMarkerAction == null) {
@@ -2267,7 +2236,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the previous marker action.
      *
      * @return The Action object
-     * @since 2.0
      */
     public Action getPreviousMarkerAction() {
         if (fPreviousMarkerAction == null) {
@@ -2293,7 +2261,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Get the show markers menu.
      *
      * @return The menu manager object
-     * @since 2.0
      */
     public MenuManager getMarkersMenu() {
         if (fMarkersMenu == null) {
@@ -2552,7 +2519,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * Returns this viewer's filters.
      *
      * @return an array of viewer filters
-     * @since 1.2
      */
     public @NonNull ViewerFilter[] getFilters() {
         return fTimeGraphCtrl.getFilters();
@@ -2564,7 +2530,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *
      * @param filters
      *            an array of viewer filters, or null
-     * @since 1.2
      */
     public void setFilters(@NonNull ViewerFilter[] filters) {
         fTimeGraphCtrl.setFilters(filters);
@@ -2577,8 +2542,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * @return the time alignment information
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public TmfTimeViewAlignmentInfo getTimeViewAlignmentInfo() {
         return fTimeGraphCtrl.getTimeViewAlignmentInfo();
@@ -2592,8 +2555,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      * @param requestedOffset
      *            the requested offset
      * @return the available width for the time-axis
-     *
-     * @since 1.0
      */
     public int getAvailableWidth(int requestedOffset) {
         int totalWidth = fTimeAlignedComposite.getSize().x;
@@ -2609,8 +2570,6 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
      *            the alignment width
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public void performAlign(int offset, int width) {
         fTimeGraphCtrl.performAlign(offset);

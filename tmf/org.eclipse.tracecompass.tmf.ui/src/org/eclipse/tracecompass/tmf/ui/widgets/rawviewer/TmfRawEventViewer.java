@@ -65,7 +65,6 @@ import org.eclipse.ui.themes.IThemeManager;
  * An underlying data model is used to store a cache of event raw text line data.
  * The slider is ratio-based.
  *
- * @version 1.0
  * @author Patrick Tasse
  */
 public class TmfRawEventViewer extends Composite implements ControlListener, SelectionListener, MouseListener,
@@ -213,7 +212,6 @@ public class TmfRawEventViewer extends Composite implements ControlListener, Sel
 
     /**
      * Initialize the fonts.
-     * @since 1.0
      */
     protected void initializeFonts() {
         FontRegistry fontRegistry = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getFontRegistry();
@@ -223,7 +221,6 @@ public class TmfRawEventViewer extends Composite implements ControlListener, Sel
 
     /**
      * Initialize the colors.
-     * @since 1.1
      */
     protected void initializeColors() {
         ColorRegistry colorRegistry = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
@@ -231,9 +228,6 @@ public class TmfRawEventViewer extends Composite implements ControlListener, Sel
         fSelectionColor = colorRegistry.get(SELECTION_COLOR_DEFINITION_ID);
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if ((IThemeManager.CHANGE_CURRENT_THEME.equals(event.getProperty())) ||
@@ -875,16 +869,10 @@ public class TmfRawEventViewer extends Composite implements ControlListener, Sel
     // MouseListener (Slider)
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 1.1
-     */
     @Override
     public void mouseDown(MouseEvent e) {
     }
 
-    /**
-     * @since 1.1
-     */
     @Override
     public void mouseUp(MouseEvent e) {
         if (e.button != 1) {
@@ -904,9 +892,6 @@ public class TmfRawEventViewer extends Composite implements ControlListener, Sel
         widgetSelected(new SelectionEvent(event));
     }
 
-    /**
-     * @since 1.1
-     */
     @Override
     public void mouseDoubleClick(MouseEvent e) {
     }

@@ -18,7 +18,6 @@ import org.eclipse.tracecompass.tmf.core.analysis.ondemand.IOnDemandAnalysis;
  * User-defined on-demand analysis element.
  *
  * @author Philippe Proulx
- * @since 2.0
  */
 public class TmfUserDefinedOnDemandAnalysisElement extends TmfOnDemandAnalysisElement {
 

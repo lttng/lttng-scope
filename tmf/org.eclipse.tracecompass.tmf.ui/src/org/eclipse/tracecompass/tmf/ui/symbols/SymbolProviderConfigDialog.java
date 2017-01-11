@@ -43,8 +43,6 @@ import org.eclipse.ui.PlatformUI;
  *
  *
  * @author Robert Kiss
- * @since 2.0
- *
  */
 public class SymbolProviderConfigDialog extends TitleAreaDialog implements IPreferencePageContainer {
 

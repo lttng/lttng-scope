@@ -19,8 +19,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 /**
  * Trace validation status that contains additional information from a CTF
  * trace for further validation.
- *
- * @since 1.0
  */
 public class CtfTraceValidationStatus extends TraceValidationStatus {
 

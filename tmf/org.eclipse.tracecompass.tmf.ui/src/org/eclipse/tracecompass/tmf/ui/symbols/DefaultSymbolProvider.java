@@ -21,8 +21,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * format representation of the symbol address
  *
  * @author Robert Kiss
- * @since 2.0
- *
  */
 @NonNullByDefault
 public class DefaultSymbolProvider implements ISymbolProvider {

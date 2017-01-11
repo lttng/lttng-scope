@@ -30,7 +30,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
  *
  * @noinstantiate This class is not intended to be instantiated by clients.
  * @noextend This class is not intended to be subclassed by clients.
- * @since 1.0
  */
 public class ControlFlowCheckActiveProvider implements ITimeGraphEntryActiveProvider {
 

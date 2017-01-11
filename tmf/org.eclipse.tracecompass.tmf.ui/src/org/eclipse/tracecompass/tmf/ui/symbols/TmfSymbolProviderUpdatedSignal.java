@@ -19,7 +19,6 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
  * FIXME: move to core when possible
  *
  * @author Matthew Khouzam
- * @since 2.2
  */
 public class TmfSymbolProviderUpdatedSignal extends TmfSignal {
     /**

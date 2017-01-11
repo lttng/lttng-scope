@@ -34,8 +34,6 @@ import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 
 /**
  * Header bar for the events table.
- *
- * @since 2.0
  */
 public class TmfEventsTableHeader extends Composite {
 

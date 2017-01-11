@@ -50,7 +50,6 @@ public class TraceValidationStatus extends Status {
      *            a human-readable message, localized to the current locale
      * @param exception
      *            a low-level exception, or <code>null</code> if not applicable
-     * @since 1.0
      */
     public TraceValidationStatus(int confidence, int severity, String pluginId, String message, Throwable exception) {
         super(severity, pluginId, message, exception);

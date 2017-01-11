@@ -62,7 +62,6 @@ public interface ITmfStateProvider {
      *
      * @return The last timestamp at which it is safe to query the state system
      *         underneath
-     * @since 2.0
      */
     long getLatestSafeTime();
 
@@ -115,7 +114,6 @@ public interface ITmfStateProvider {
 
     /**
      * Callback when trace has been fully read
-     * @since 2.1
      */
     default void done() {}
 }

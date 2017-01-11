@@ -359,7 +359,6 @@ public final class TmfTraceType {
      * @throws TmfTraceImportException
      *             if there are errors in the trace file or no trace type found
      *             for a directory trace
-     * @since 2.0
      */
     public static @NonNull List<TraceTypeHelper> selectTraceType(String path, String traceTypeHint) throws TmfTraceImportException {
 

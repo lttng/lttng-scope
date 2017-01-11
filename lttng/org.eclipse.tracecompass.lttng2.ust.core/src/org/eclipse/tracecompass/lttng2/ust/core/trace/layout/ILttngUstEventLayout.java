@@ -16,7 +16,6 @@ import org.eclipse.tracecompass.lttng2.ust.core.trace.layout.internal.LttngUst20
  * Actual implementations can differ between different versions of the tracer.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @SuppressWarnings("javadoc")
 public interface ILttngUstEventLayout {

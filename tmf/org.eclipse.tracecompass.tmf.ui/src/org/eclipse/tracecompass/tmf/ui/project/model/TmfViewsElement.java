@@ -32,7 +32,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * node, since the user cannot really interact with the analyses themselves.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class TmfViewsElement extends TmfProjectModelElement {
 

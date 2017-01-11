@@ -25,7 +25,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
  *
  * @author Matthew Khouzam
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class LttngUstEventFactory extends CtfTmfEventFactory {
 

@@ -278,7 +278,6 @@ public abstract class AbstractTmfTreeViewer extends TmfTimeViewer {
      * Get the tree viewer object
      *
      * @return The tree viewer object displayed by this viewer
-     * @since 2.2
      */
     public TreeViewer getTreeViewer() {
         return fTreeViewer;

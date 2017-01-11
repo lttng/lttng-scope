@@ -17,8 +17,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
 /**
  * Interface containing information for an additional view-specific active
  * dependent button to be used in TimeGraphFilterDialog.
- *
- * @since 1.0
  */
 public interface ITimeGraphEntryActiveProvider {
 

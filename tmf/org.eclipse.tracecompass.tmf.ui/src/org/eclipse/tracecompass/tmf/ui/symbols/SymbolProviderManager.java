@@ -31,8 +31,6 @@ import com.google.common.collect.ImmutableList;
  * <code>org.eclipse.tracecompass.tmf.ui.symbolProvider</code> extension point.
  *
  * @author Robert Kiss
- * @since 2.0
- *
  */
 public final class SymbolProviderManager {
 

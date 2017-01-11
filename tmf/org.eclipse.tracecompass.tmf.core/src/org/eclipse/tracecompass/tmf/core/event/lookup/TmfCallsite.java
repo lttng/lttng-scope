@@ -45,7 +45,6 @@ public class TmfCallsite implements ITmfCallsite {
      *            The source file's name
      * @param lineNumber
      *            The line number in the source file
-     * @since 2.1
      */
     public TmfCallsite(@NonNull String fileName, @Nullable Long lineNumber) {
         fFileName = fileName;
@@ -72,9 +71,6 @@ public class TmfCallsite implements ITmfCallsite {
         return fFileName;
     }
 
-    /**
-     * @since 2.1
-     */
     @Override
     public @Nullable Long getLineNo() {
         return fLineNumber;

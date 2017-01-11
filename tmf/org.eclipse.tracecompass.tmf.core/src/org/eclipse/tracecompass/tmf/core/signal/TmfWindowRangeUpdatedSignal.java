@@ -22,7 +22,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
  * {@link TmfSelectionRangeUpdatedSignal}.
  *
  * @author Francois Chouinard
- * @since 1.0
  */
 public class TmfWindowRangeUpdatedSignal extends TmfSignal {
 

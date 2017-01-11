@@ -21,8 +21,6 @@ import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 /**
  * Interface for a marker time event that includes a category, a color and
  * an optional label.
- *
- * @since 2.0
  */
 public interface IMarkerEvent extends ITimeEvent {
 

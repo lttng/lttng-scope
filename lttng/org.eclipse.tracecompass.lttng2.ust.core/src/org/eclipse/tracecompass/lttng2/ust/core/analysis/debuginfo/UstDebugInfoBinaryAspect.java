@@ -27,7 +27,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
  * available even without debug information.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class UstDebugInfoBinaryAspect implements ITmfEventAspect<BinaryCallsite> {
 

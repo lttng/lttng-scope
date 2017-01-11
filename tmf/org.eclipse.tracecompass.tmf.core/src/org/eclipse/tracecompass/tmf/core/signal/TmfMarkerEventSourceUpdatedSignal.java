@@ -14,8 +14,6 @@ package org.eclipse.tracecompass.tmf.core.signal;
 
 /**
  * A marker event source has been updated
- *
- * @since 2.1
  */
 public class TmfMarkerEventSourceUpdatedSignal extends TmfSignal {
 

@@ -170,9 +170,6 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
     // Accessors
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Class<? extends ITmfEvent> getEventType() {
         return fType;

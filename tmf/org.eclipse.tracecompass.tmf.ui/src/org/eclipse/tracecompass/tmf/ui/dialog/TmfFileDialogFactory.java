@@ -28,7 +28,6 @@ import com.google.common.annotations.VisibleForTesting;
  * This allows file dialogs to be stubbed out for SWTBot tests.
  *
  * @author Matthew Khouzam
- * @since 2.2
  */
 public final class TmfFileDialogFactory {
     private static @Nullable String[] fOverridePaths = null;

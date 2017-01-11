@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Image;
 /**
  * The implementation of TMF project model element.
  *
- * @version 1.0
  * @author Francois Chouinard
  */
 public class TmfProjectElement extends TmfProjectModelElement {
@@ -101,9 +100,6 @@ public class TmfProjectElement extends TmfProjectModelElement {
     // TmfProjectModelElement
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         IProject project = getResource();
@@ -155,9 +151,6 @@ public class TmfProjectElement extends TmfProjectModelElement {
         return this;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Image getIcon() {
         return null;

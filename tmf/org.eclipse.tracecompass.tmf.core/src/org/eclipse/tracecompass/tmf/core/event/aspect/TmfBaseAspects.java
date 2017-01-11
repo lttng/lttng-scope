@@ -27,7 +27,6 @@ import com.google.common.collect.ImmutableList;
  *
  * @author Alexandre Montplaisir
  * @author Geneviève Bastien
- * @since 2.0
  */
 public final class TmfBaseAspects {
 

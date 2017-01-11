@@ -19,7 +19,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * offset may or may not be available.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class FunctionLocation {
 
@@ -43,7 +42,6 @@ public class FunctionLocation {
      * Get the function name.
      *
      * @return The function name
-     * @since 2.1
      */
     public String getFunctionName() {
         return fFunctionName;
@@ -53,7 +51,6 @@ public class FunctionLocation {
      * Get the offset *within this function* represented by this location.
      *
      * @return The offset of this location, or 'null' if unavailable
-     * @since 2.1
      */
     public @Nullable Long getOffsetInFunction() {
         return fOffset;

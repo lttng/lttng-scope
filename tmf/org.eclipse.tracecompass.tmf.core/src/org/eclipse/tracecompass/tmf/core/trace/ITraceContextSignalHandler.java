@@ -16,8 +16,6 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfTraceModelSignal;
  * Signal handler for all the {@link TmfTraceModelSignal} handling
  *
  * @author Matthew Khouzam
- * @since 2.0
- *
  */
 public interface ITraceContextSignalHandler {
 

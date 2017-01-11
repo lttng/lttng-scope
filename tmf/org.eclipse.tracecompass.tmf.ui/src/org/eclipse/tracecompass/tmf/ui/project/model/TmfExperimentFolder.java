@@ -91,9 +91,6 @@ public class TmfExperimentFolder extends TmfProjectModelElement implements IProp
         return (IFolder) super.getResource();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         IFolder folder = getResource();
@@ -129,17 +126,11 @@ public class TmfExperimentFolder extends TmfProjectModelElement implements IProp
         }
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Image getIcon() {
         return TmfProjectModelIcons.FOLDER_ICON;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String getLabelText() {
         return getName() + " [" + getChildren().size() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -170,7 +161,6 @@ public class TmfExperimentFolder extends TmfProjectModelElement implements IProp
      * @param resource
      *            the resource to search for
      * @return the experiment element if found else null
-     * @since 2.0
      */
     public @Nullable TmfExperimentElement getExperiment(@NonNull IResource resource) {
         String name = resource.getName();
@@ -186,7 +176,6 @@ public class TmfExperimentFolder extends TmfProjectModelElement implements IProp
      * @param name
      *            the name of experiment to search for
      * @return the experiment element if found else null
-     * @since 2.0
      */
     public @Nullable TmfExperimentElement getExperiment(@NonNull String name) {
         return getExperiments()

@@ -18,7 +18,6 @@ import org.eclipse.tracecompass.tmf.ui.editors.internal.TmfTableColumnUtils;
  * This class manages the column settings associated with a trace type.
  *
  * @author Patrick Tasse
- * @since 1.0
  */
 public class TmfTraceColumnManager {
 

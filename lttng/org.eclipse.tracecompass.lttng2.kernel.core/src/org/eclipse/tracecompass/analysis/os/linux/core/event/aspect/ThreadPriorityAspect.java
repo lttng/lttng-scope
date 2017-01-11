@@ -35,7 +35,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
  * the {@link KernelAnalysisModule}.
  *
  * @author Christian Mansky
- * @since 2.0
  */
 public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
 

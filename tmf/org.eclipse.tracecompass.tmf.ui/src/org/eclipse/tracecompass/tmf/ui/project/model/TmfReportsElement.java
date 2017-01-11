@@ -30,7 +30,6 @@ import com.google.common.collect.HashBiMap;
  * deleted.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class TmfReportsElement extends TmfProjectModelElement {
 

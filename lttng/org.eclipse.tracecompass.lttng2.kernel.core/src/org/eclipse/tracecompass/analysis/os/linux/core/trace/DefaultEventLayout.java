@@ -27,7 +27,6 @@ import com.google.common.collect.ImmutableList;
  * Due to historical reasons, the definitions are the same as LTTng event names.
  *
  * @author Alexandre Montplaisir
- * @since 1.0
  */
 public class DefaultEventLayout implements IKernelAnalysisEventLayout {
 
@@ -40,7 +39,6 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
      * instances via the constructor.
      *
      * @return the instance
-     * @since 2.0
      */
     public static synchronized DefaultEventLayout getInstance() {
         DefaultEventLayout inst = INSTANCE;
@@ -112,8 +110,6 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
     /**
      * Constructor, to be used by classes extending this one. To get an instance
      * of this class, INSTANCE should be used.
-     *
-     * @since 2.0
      */
     protected DefaultEventLayout() {
     }
@@ -152,9 +148,6 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
         return SCHED_SWITCH;
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public String eventSchedPiSetprio() {
         return SCHED_PI_SETPRIO;
@@ -200,23 +193,16 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
         return SYSCALL_EXIT_PREFIX;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventCompatSyscallExitPrefix() {
         return SYSCALL_EXIT_PREFIX;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String eventKmemPageAlloc() {
         return KMEM_ALLOC;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String eventKmemPageFree() {
         return KMEM_FREE;
@@ -277,99 +263,81 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
         return CHILD_TID;
     }
 
-    /** @since 1.0 */
     @Override
     public String fieldPrio() {
         return PRIO;
     }
 
-    /** @since 1.0 */
     @Override
     public String fieldNewPrio() {
         return NEW_PRIO;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String fieldPrevPrio() {
         return PREV_PRIO;
     }
 
-    /** @since 1.0 */
     @Override
     public String fieldNextPrio() {
         return NEXT_PRIO;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldComm() {
         return COMM;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldName() {
         return NAME;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldStatus() {
         return STATUS;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldPrevComm() {
         return PREV_COMM;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldFilename() {
         return FILENAME;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventSchedProcessExec() {
         return SCHED_PROCESS_EXEC;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventSchedProcessWakeup() {
         return SCHED_WAKEUP;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventSchedProcessWakeupNew() {
         return SCHED_WAKEUP_NEW;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventHRTimerStart() {
         return HRTIMER_START;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventHRTimerCancel() {
         return HRTIMER_CANCEL;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventHRTimerExpireEntry() {
         return HRTIMER_EXPIRE_ENTRY;
     }
 
-    /** @since 2.0 */
     @Override
     public String eventHRTimerExpireExit() {
         return HRTIMER_EXPIRE_EXIT;
@@ -379,37 +347,31 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
      * Event indicating the source of the wakeup signal.
      *
      * @return The name of the event
-     * @since 2.0
      */
     public String eventSchedProcessTTWU() {
         return SCHED_TTWU;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldHRtimer() {
         return HRTIMER;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldHRtimerFunction() {
         return FUNCTION;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldHRtimerExpires() {
         return EXPIRES;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldHRtimerSoftexpires() {
         return SOFT_EXPIRES;
     }
 
-    /** @since 2.0 */
     @Override
     public String fieldHRtimerNow() {
         return NOW;
@@ -420,9 +382,6 @@ public class DefaultEventLayout implements IKernelAnalysisEventLayout {
         return SCHED_WAKING;
     }
 
-    /**
-     * @since 2.2
-     */
     @Override
     public @NonNull String fieldOrder() {
         return ORDER;

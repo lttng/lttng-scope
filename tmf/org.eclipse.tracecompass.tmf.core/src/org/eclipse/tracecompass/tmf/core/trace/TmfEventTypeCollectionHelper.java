@@ -58,7 +58,6 @@ public final class TmfEventTypeCollectionHelper {
      *            an iterable collection of ITmfEventTypes
      * @return a set of the names of these events, if some event names are
      *         clashing they will only appear once
-     * @since 2.0
      */
     public static Multimap<@NonNull String, @NonNull String> getEventFieldNames(Iterable<@NonNull ? extends ITmfEventType> eventTypes) {
         Multimap<@NonNull String, @NonNull String> retMap = HashMultimap.create();

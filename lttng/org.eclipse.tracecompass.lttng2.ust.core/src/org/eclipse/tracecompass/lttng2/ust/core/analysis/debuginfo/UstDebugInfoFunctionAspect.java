@@ -22,7 +22,6 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
  * Aspect for the function location obtained with the UST debug info.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class UstDebugInfoFunctionAspect implements ITmfEventAspect<FunctionLocation> {
 
@@ -60,7 +59,6 @@ public class UstDebugInfoFunctionAspect implements ITmfEventAspect<FunctionLocat
      *            The binary callsite, representing a binary and offset within
      *            this binary
      * @return The corresponding function location
-     * @since 2.1
      */
     public static @Nullable FunctionLocation getFunctionFromBinaryLocation(BinaryCallsite bc) {
         String functionName = FileOffsetMapper.getFunctionNameFromOffset(

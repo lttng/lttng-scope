@@ -20,7 +20,6 @@ package org.eclipse.tracecompass.tmf.core.analysis.ondemand;
  * Unlike on-demand analyses, a report is specific to its trace.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public interface IOnDemandAnalysisReport {
 

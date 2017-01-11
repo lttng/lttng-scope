@@ -29,8 +29,6 @@ import com.google.common.collect.Table;
  * Base class for a trace adapter factory. The factory creates a single instance
  * of each adapter type per trace, and disposes the adapter when the trace is
  * closed, if it is an instance of {@link IDisposableAdapter}.
- *
- * @since 2.0
  */
 public abstract class AbstractTmfTraceAdapterFactory implements IAdapterFactory {
 

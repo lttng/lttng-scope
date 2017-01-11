@@ -88,7 +88,6 @@ public interface ITmfEventAspect<T> {
      *            The progress monitor, to be used by implementation to verify
      *            the cancellation of the current thread
      * @return The resulting tidbit of information for this event.
-     * @since 2.0
      */
     default @Nullable T resolve(ITmfEvent event, boolean block, IProgressMonitor monitor) {
         return resolve(event);

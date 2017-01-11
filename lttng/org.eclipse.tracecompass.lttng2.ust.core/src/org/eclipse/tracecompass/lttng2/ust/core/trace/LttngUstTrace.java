@@ -52,8 +52,6 @@ public class LttngUstTrace extends CtfTmfTrace {
     /**
      * Name of the tracer that generates this trace type, as found in the CTF
      * metadata.
-     *
-     * @since 2.0
      */
     public static final String TRACER_NAME = "lttng-ust"; //$NON-NLS-1$
 
@@ -84,7 +82,6 @@ public class LttngUstTrace extends CtfTmfTrace {
      * tracer's version.
      *
      * @return The event layout
-     * @since 2.0
      */
     public @NonNull ILttngUstEventLayout getEventLayout() {
         ILttngUstEventLayout layout = fLayout;
@@ -163,8 +160,6 @@ public class LttngUstTrace extends CtfTmfTrace {
 
     /**
      * Configuration of the symbol provider.
-     *
-     * @since 2.0
      */
     public static class SymbolProviderConfig {
 
@@ -226,7 +221,6 @@ public class LttngUstTrace extends CtfTmfTrace {
      * Get the current symbol provider configuration for this trace.
      *
      * @return The current symbol provider configuration
-     * @since 2.0
      */
     public @NonNull SymbolProviderConfig getSymbolProviderConfig() {
         return fCurrentProviderConfig;
@@ -237,7 +231,6 @@ public class LttngUstTrace extends CtfTmfTrace {
      *
      * @param config
      *            The new symbol provider configuration to use
-     * @since 2.0
      */
     public void setSymbolProviderConfig(@NonNull SymbolProviderConfig config) {
         fCurrentProviderConfig = config;

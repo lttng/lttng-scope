@@ -88,9 +88,6 @@ public abstract class AbstractTmfStateProvider implements ITmfStateProvider {
         return fTrace.getStartTime().toNanos();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public long getLatestSafeTime() {
         return fSafeTime;

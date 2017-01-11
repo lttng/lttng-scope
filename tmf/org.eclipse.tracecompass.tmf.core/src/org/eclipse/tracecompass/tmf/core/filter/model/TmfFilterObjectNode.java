@@ -21,9 +21,7 @@ import org.eclipse.tracecompass.tmf.core.filter.ITmfFilter;
 /**
  * Filter node that contains its own filter object
  *
- * @version 1.0
  * @author Patrick Tasse
- * @since 2.0
  */
 public class TmfFilterObjectNode extends TmfFilterTreeNode {
 

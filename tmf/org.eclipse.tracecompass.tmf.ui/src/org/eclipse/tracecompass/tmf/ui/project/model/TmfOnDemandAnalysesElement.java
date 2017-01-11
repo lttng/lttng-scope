@@ -33,7 +33,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * executed on this particular trace.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class TmfOnDemandAnalysesElement extends TmfProjectModelElement {
 

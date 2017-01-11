@@ -32,15 +32,9 @@ public interface ITimeGraphContentProvider extends ITreeContentProvider {
     @Override
     public ITimeGraphEntry[] getElements(Object inputElement);
 
-    /**
-     * @since 1.0
-     */
     @Override
     public ITimeGraphEntry[] getChildren(Object parentElement);
 
-    /**
-     * @since 1.0
-     */
     @Override
     public ITimeGraphEntry getParent(Object element);
 }

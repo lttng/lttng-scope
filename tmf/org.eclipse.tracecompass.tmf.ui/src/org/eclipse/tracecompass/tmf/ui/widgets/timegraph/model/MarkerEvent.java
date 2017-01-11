@@ -16,8 +16,6 @@ import org.eclipse.swt.graphics.RGBA;
 
 /**
  * TimeEvent implementation for marker events
- *
- * @since 2.0
  */
 public class MarkerEvent extends TimeEvent implements IMarkerEvent {
 

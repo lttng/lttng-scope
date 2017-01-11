@@ -852,7 +852,6 @@ public class TimeGraphCombo extends Composite {
      * Get the show filter dialog action.
      *
      * @return The Action object
-     * @since 1.2
      */
     public ShowFilterDialogAction getShowFilterDialogAction() {
         if (fShowFilterDialogAction == null) {
@@ -944,7 +943,6 @@ public class TimeGraphCombo extends Composite {
      *
      * @param activeProvider
      *            Additional button info specific to a certain view.
-     * @since 1.0
      */
     public void addTimeGraphFilterCheckActiveButton(ITimeGraphEntryActiveProvider activeProvider) {
         getShowFilterDialogAction().getFilterDialog().addTimeGraphFilterCheckActiveButton(activeProvider);
@@ -955,7 +953,6 @@ public class TimeGraphCombo extends Composite {
      *
      * @param inactiveProvider
      *            Additional button info specific to a certain view.
-     * @since 1.0
      */
     public void addTimeGraphFilterUncheckInactiveButton(ITimeGraphEntryActiveProvider inactiveProvider) {
         getShowFilterDialogAction().getFilterDialog().addTimeGraphFilterUncheckInactiveButton(inactiveProvider);
@@ -1092,7 +1089,6 @@ public class TimeGraphCombo extends Composite {
      * Returns this viewer's filters.
      *
      * @return an array of viewer filters
-     * @since 1.2
      */
     public @NonNull ViewerFilter[] getFilters() {
         return fTimeGraphViewer.getFilters();
@@ -1104,7 +1100,6 @@ public class TimeGraphCombo extends Composite {
      *
      * @param filters
      *            an array of viewer filters, or null
-     * @since 1.2
      */
     public void setFilters(@NonNull ViewerFilter[] filters) {
         fInhibitTreeSelection = true;
@@ -1184,7 +1179,6 @@ public class TimeGraphCombo extends Composite {
      *
      * @param selection
      *            The new selection
-     * @since 2.0
      */
     public void selectAndReveal(@NonNull ITimeGraphEntry selection) {
         fTimeGraphViewer.selectAndReveal(selection);
@@ -1250,7 +1244,6 @@ public class TimeGraphCombo extends Composite {
      * @param entry
      *            The entry
      * @return true if the entry is expanded, false if collapsed
-     * @since 2.0
      */
     public boolean getExpandedState(ITimeGraphEntry entry) {
         return fTimeGraphViewer.getExpandedState(entry);
@@ -1455,8 +1448,6 @@ public class TimeGraphCombo extends Composite {
      * @return the time alignment information
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public TmfTimeViewAlignmentInfo getTimeViewAlignmentInfo() {
         Point location = fSashForm.toDisplay(0, 0);
@@ -1472,8 +1463,6 @@ public class TimeGraphCombo extends Composite {
      * @param requestedOffset
      *            the requested offset
      * @return the available width for the time-axis
-     *
-     * @since 1.0
      */
     public int getAvailableWidth(int requestedOffset) {
         int vBarWidth = ((fTimeGraphViewer.getVerticalBar() != null) && (fTimeGraphViewer.getVerticalBar().isVisible())) ? fTimeGraphViewer.getVerticalBar().getSize().x : 0;
@@ -1490,8 +1479,6 @@ public class TimeGraphCombo extends Composite {
      *            the alignment width
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public void performAlign(int offset, int width) {
         int total = fSashForm.getBounds().width;

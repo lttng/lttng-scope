@@ -14,7 +14,6 @@ package org.eclipse.tracecompass.common.math;
  * to clamp numbers to maximum and mimumum and avoid overflows.
  *
  * @author Matthew Khouzam
- * @since 2.1
  */
 public final class SaturatedArithmetic {
 

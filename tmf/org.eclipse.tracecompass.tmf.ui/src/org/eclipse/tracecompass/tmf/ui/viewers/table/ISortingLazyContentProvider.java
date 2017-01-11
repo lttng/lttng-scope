@@ -20,7 +20,6 @@ import org.eclipse.jface.viewers.ILazyContentProvider;
  * Interface that allows sorting in a ILazyContentProvider.
  *
  * @author France Lapointe Nguyen
- * @since 2.0
  */
 public interface ISortingLazyContentProvider extends ILazyContentProvider {
 

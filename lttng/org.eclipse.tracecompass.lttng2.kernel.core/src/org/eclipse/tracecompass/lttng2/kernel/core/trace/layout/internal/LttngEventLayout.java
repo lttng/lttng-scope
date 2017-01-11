@@ -224,17 +224,11 @@ public class LttngEventLayout implements IKernelAnalysisEventLayout {
         return SYSCALL_EXIT_PREFIX;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String eventKmemPageAlloc() {
         return KMEM_ALLOC;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String eventKmemPageFree() {
         return KMEM_FREE;
@@ -378,7 +372,6 @@ public class LttngEventLayout implements IKernelAnalysisEventLayout {
      * Event indicating the source of the wakeup signal.
      *
      * @return The name of the event
-     * @since 2.0
      */
     public String eventSchedProcessTTWU() {
         return SCHED_TTWU;

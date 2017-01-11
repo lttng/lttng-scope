@@ -263,8 +263,6 @@ public class TmfTimestampFormat extends SimpleDateFormat {
     /**
      * The map of optional unit of seconds suffix characters that can follow the
      * T pattern. The map value is the unit of seconds denominator.
-     *
-     * @since 2.0
      */
     protected Map<Character, Long> fUnitOfSecondsMap = new HashMap<>();
     {

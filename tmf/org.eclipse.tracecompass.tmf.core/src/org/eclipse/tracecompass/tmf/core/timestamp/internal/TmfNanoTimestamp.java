@@ -55,9 +55,6 @@ public final class TmfNanoTimestamp extends TmfTimestamp {
         return ITmfTimestamp.NANOSECOND_SCALE;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public long toNanos() {
         return getValue();

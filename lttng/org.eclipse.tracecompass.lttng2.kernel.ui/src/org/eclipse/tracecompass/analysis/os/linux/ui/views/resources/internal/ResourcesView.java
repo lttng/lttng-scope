@@ -92,9 +92,6 @@ public class ResourcesView extends AbstractStateSystemTimeGraphView {
     }
 
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void fillTimeGraphEntryContextMenu(@NonNull IMenuManager menuManager) {
     }

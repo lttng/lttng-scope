@@ -113,7 +113,6 @@ public class CtfTmfEvent extends TmfEvent
      *            The event declaration
      * @param eventDefinition
      *            The event definition
-     * @since 2.0
      */
     protected CtfTmfEvent(CtfTmfTrace trace,
             long rank,
@@ -207,7 +206,6 @@ public class CtfTmfEvent extends TmfEvent
      * Return the CTF trace's channel from which this event originates.
      *
      * @return The event's channel
-     * @since 2.0
      */
     public String getChannel() {
         return fChannel;
@@ -217,7 +215,6 @@ public class CtfTmfEvent extends TmfEvent
      * Get the stream Id
      *
      * @return the stream ID or -1 if the stream is null
-     * @since 2.0
      */
     public long getStreamId() {
         ICTFStream stream = fStream;
@@ -334,7 +331,6 @@ public class CtfTmfEvent extends TmfEvent
      * and values where the key and value can never be null.
      *
      * @return gets the packet attributes
-     * @since 2.0
      */
     public Map<String, Object> getPacketAttributes() {
         return fPacketAttributes;

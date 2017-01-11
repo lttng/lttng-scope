@@ -14,7 +14,6 @@ package org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets;
 
 /**
  * Interface for marker axis call-backs.
- * @since 2.0
  */
 public interface IMarkerAxisListener {
 

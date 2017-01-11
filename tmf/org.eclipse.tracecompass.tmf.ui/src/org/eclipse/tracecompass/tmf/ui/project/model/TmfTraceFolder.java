@@ -33,7 +33,6 @@ import org.eclipse.ui.views.properties.IPropertySource2;
  * Implementation of trace folder model element representing a trace folder in
  * the project.
  * <p>
- * @version 1.0
  * @author Francois Chouinard
  */
 public class TmfTraceFolder extends TmfProjectModelElement implements IPropertySource2 {
@@ -100,9 +99,6 @@ public class TmfTraceFolder extends TmfProjectModelElement implements IPropertyS
         return (IFolder) super.getResource();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         IFolder folder = getResource();
@@ -146,17 +142,11 @@ public class TmfTraceFolder extends TmfProjectModelElement implements IPropertyS
         }
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Image getIcon() {
         return TmfProjectModelIcons.FOLDER_ICON;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String getLabelText() {
         int nbTraces = getTraces().size();
@@ -193,7 +183,6 @@ public class TmfTraceFolder extends TmfProjectModelElement implements IPropertyS
      * @param resources
      *            resources to search for
      * @return list of trace elements
-     * @since 2.0
      */
     public @NonNull List<TmfTraceElement> getTraceElements(@NonNull List<IResource> resources) {
         List<TmfTraceElement> traceElements = new ArrayList<>();

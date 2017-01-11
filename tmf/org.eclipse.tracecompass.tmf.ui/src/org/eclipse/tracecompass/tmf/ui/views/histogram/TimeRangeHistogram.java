@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
  * <li>zoom out: mouse wheel down (or backward)
  * </ul>
  *
- * @version 1.1
  * @author Francois Chouinard
  */
 public class TimeRangeHistogram extends Histogram {
@@ -70,7 +69,6 @@ public class TimeRangeHistogram extends Histogram {
      *            The parent composite
      * @param sendTimeAlignSignals
      *            Flag to send time alignment signals or not
-     * @since 1.0
      */
     public TimeRangeHistogram(HistogramView view, Composite parent, boolean sendTimeAlignSignals) {
         super(view, parent, sendTimeAlignSignals);

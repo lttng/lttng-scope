@@ -17,8 +17,6 @@ import org.eclipse.jface.preference.IPreferencePage;
  * Allow the user to configure a {@link ISymbolProvider}
  *
  * @author Robert Kiss
- * @since 2.0
- *
  */
 @NonNullByDefault
 public interface ISymbolProviderPreferencePage extends IPreferencePage {

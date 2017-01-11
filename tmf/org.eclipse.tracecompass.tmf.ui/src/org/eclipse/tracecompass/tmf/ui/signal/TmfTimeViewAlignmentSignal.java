@@ -20,8 +20,6 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
  * time axis on right side and extra information on the left side.
  *
  * @see TmfTimeViewAlignmentInfo
- *
- * @since 1.0
  */
 public class TmfTimeViewAlignmentSignal extends TmfSignal {
 

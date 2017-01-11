@@ -44,7 +44,6 @@ import org.eclipse.tracecompass.tmf.core.event.TmfEventField;
 /**
  * The CTF implementation of the TMF event field model
  *
- * @version 2.0
  * @author Matthew Khouzam
  * @author Alexandre Montplaisir
  */
@@ -55,8 +54,6 @@ public abstract class CtfTmfEventField extends TmfEventField {
      * Value that can be used in the {@link #getField(String...)} for variants.
      * Using this field value means that the selected field will be returned
      * whatever the selected choice for the event
-     *
-     * @since 2.1
      */
     public static final @NonNull String FIELD_VARIANT_SELECTED = "Any"; //$NON-NLS-1$
 

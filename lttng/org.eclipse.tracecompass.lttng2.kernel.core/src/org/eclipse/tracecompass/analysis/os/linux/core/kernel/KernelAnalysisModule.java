@@ -29,7 +29,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * State System Module for lttng kernel traces
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public class KernelAnalysisModule extends TmfStateSystemAnalysisModule {
 

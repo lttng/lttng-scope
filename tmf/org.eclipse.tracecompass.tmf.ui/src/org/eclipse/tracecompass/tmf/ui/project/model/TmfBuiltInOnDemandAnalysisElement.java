@@ -20,7 +20,6 @@ import org.eclipse.tracecompass.tmf.core.analysis.ondemand.IOnDemandAnalysis;
  * These cannot be deleted by the user.
  *
  * @author Philippe Proulx
- * @since 2.0
  */
 public class TmfBuiltInOnDemandAnalysisElement extends TmfOnDemandAnalysisElement {
 

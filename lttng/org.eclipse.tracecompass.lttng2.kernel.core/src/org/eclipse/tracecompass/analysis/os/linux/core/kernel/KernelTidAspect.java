@@ -27,7 +27,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
  * {@link KernelAnalysisModule}.
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public final class KernelTidAspect extends LinuxTidAspect {
 

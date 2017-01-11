@@ -43,8 +43,6 @@ import com.google.common.collect.Multimap;
  * from a state system. The state system full state is queried in chronological
  * order before creating the time event lists as this is optimal for state
  * system queries.
- *
- * @since 1.1
  */
 public abstract class AbstractStateSystemTimeGraphView extends AbstractTimeGraphView {
 
@@ -411,7 +409,6 @@ public abstract class AbstractStateSystemTimeGraphView extends AbstractTimeGraph
      * @param monitor
      *            A progress monitor
      * @return The list of link events
-     * @since 2.0
      */
     protected @NonNull List<ILinkEvent> getLinkList(ITmfStateSystem ss,
             @NonNull List<List<ITmfStateInterval>> fullStates, @Nullable List<ITmfStateInterval> prevFullState, @NonNull IProgressMonitor monitor) {
@@ -431,7 +428,6 @@ public abstract class AbstractStateSystemTimeGraphView extends AbstractTimeGraph
      * @param monitor
      *            A progress monitor
      * @return The list of marker events
-     * @since 2.0
      */
     protected @NonNull List<IMarkerEvent> getViewMarkerList(ITmfStateSystem ss,
             @NonNull List<List<ITmfStateInterval>> fullStates, @Nullable List<ITmfStateInterval> prevFullState, @NonNull IProgressMonitor monitor) {

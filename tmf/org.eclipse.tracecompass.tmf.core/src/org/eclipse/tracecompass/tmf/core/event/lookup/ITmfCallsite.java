@@ -40,7 +40,6 @@ public interface ITmfCallsite {
      * Returns the line number of the call site.
      *
      * @return The line number, or 'null' if unavailable
-     * @since 2.1
      */
     @Nullable Long getLineNo();
 }

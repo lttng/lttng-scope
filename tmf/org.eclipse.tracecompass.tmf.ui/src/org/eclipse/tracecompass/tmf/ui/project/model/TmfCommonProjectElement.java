@@ -104,18 +104,12 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
     // ITmfProjectModelElement
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.3
-     */
     @Override
     public void dispose() {
         super.dispose();
         TmfSignalManager.deregister(this);
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         /* Get the base path to put the resource to */
@@ -147,9 +141,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         fReportsElement.refreshChildren();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Image getIcon() {
         String traceType = getTraceType();
@@ -188,7 +179,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
      * Get the child element "Views". There should always be one.
      *
      * @return The child element
-     * @since 2.0
      */
     protected TmfViewsElement getChildElementViews() {
         return fViewsElement;
@@ -198,7 +188,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
      * Get the child element "Reports".
      *
      * @return The Reports child element
-     * @since 2.0
      */
     public TmfReportsElement getChildElementReports() {
         return fReportsElement;

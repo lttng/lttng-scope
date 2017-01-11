@@ -20,7 +20,6 @@ import org.eclipse.jdt.annotation.NonNull;
  * decimals.
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public class DataSpeedWithUnitFormat extends DataSizeWithUnitFormat {
 

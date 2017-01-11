@@ -26,8 +26,6 @@ import com.google.common.collect.Multimap;
 /**
  * This class manages adapter factories for traces. An adapter can be specific
  * to a given trace type id, or to traces of a given trace class.
- *
- * @since 2.0
  */
 public class TmfTraceAdapterManager {
 

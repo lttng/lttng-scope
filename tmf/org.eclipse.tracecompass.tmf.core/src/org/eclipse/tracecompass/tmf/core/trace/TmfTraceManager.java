@@ -108,8 +108,6 @@ public final class TmfTraceManager {
 
     /**
      * Disposes the trace manager
-     *
-     * @since 2.3
      */
     public synchronized void dispose() {
         TmfSignalManager.deregister(this);
@@ -172,7 +170,6 @@ public final class TmfTraceManager {
      * used to retrieve the current active/selected time ranges and such.
      *
      * @return The trace's context.
-     * @since 1.0
      */
     public synchronized TmfTraceContext getCurrentTraceContext() {
         TmfTraceContext curCtx = fTraces.get(fCurrentTrace);
@@ -292,7 +289,6 @@ public final class TmfTraceManager {
      *
      * @param trace
      *            The trace for which the supplementary files are to be deleted
-     * @since 2.2
      */
     public static void deleteSupplementaryFiles(ITmfTrace trace) {
         try {
@@ -337,7 +333,6 @@ public final class TmfTraceManager {
      *
      * @param signal
      *            any signal
-     * @since 2.0
      */
     @TmfSignalHandler
     public synchronized void signalReceived(final TmfTraceModelSignal signal) {
@@ -405,7 +400,6 @@ public final class TmfTraceManager {
      *
      * @param signal
      *            The incoming signal
-     * @since 1.0
      */
     @TmfSignalHandler
     public synchronized void selectionRangeUpdated(final TmfSelectionRangeUpdatedSignal signal) {
@@ -438,7 +432,6 @@ public final class TmfTraceManager {
      *
      * @param signal
      *            The incoming signal
-     * @since 1.0
      */
     @TmfSignalHandler
     public synchronized void windowRangeUpdated(final TmfWindowRangeUpdatedSignal signal) {

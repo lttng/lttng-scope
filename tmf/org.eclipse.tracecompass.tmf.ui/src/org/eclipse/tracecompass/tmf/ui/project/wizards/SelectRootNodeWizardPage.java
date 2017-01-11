@@ -42,8 +42,6 @@ import org.eclipse.ui.dialogs.PatternFilter;
  * synchronization.
  *
  * @author Cedric Biancheri
- * @since 2.0
- *
  */
 public class SelectRootNodeWizardPage extends WizardPage {
 

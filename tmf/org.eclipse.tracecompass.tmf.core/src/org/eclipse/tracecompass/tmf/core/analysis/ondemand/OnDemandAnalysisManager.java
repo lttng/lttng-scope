@@ -34,7 +34,6 @@ import com.google.common.collect.ImmutableSet;
  * for traces via the {@link #getOndemandAnalyses(ITmfTrace)} method.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public final class OnDemandAnalysisManager {
 

@@ -67,17 +67,11 @@ public class TimeDataProviderCyclesConverter implements ITimeDataProviderConvert
         return toCycles(time);
     }
 
-    /**
-     * @since 1.2
-     */
     @Override
     public void setSelectionRangeNotify(long beginTime, long endTime, boolean ensureVisible) {
         fProvider.setSelectionRangeNotify(toNanos(beginTime), toNanos(endTime), ensureVisible);
     }
 
-    /**
-     * @since 1.2
-     */
     @Override
     public void setSelectionRange(long beginTime, long endTime, boolean ensureVisible) {
         fProvider.setSelectionRange(toNanos(beginTime), toNanos(endTime), ensureVisible);
@@ -159,9 +153,6 @@ public class TimeDataProviderCyclesConverter implements ITimeDataProviderConvert
         fProvider.resetStartFinishTime();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public void resetStartFinishTime(boolean notify) {
         fProvider.resetStartFinishTime(notify);

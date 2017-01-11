@@ -37,7 +37,6 @@ import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue.Type;
  * from a Linux Kernel Analysis
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public final class KernelThreadInformationProvider {
 

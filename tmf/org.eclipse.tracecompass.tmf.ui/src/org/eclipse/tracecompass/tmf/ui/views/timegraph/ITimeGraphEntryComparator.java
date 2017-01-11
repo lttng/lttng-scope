@@ -19,8 +19,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
  * behavior is required depending on the sort direction.
  *
  * @author Bernd Hufmann
- * @since 2.0
- *
  */
 public interface ITimeGraphEntryComparator extends Comparator<ITimeGraphEntry> {
 

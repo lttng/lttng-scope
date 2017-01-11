@@ -31,7 +31,6 @@ import org.eclipse.tracecompass.common.activator.internal.Activator;
  * output.
  *
  * @author Alexandre Montplaisir
- * @since 2.2
  */
 public final class ProcessUtils {
 

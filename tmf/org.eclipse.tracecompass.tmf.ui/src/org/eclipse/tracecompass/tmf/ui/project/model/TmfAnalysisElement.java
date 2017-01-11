@@ -41,7 +41,6 @@ import org.osgi.framework.Bundle;
  * Class for project elements of type analysis modules
  *
  * @author Geneviève Bastien
- * @since 2.0
  */
 public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfStyledProjectModelElement, IPropertySource2 {
 
@@ -69,7 +68,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
      *            Parent of the analysis
      * @param module
      *            The analysis module helper
-     * @since 2.0
      */
     protected TmfAnalysisElement(String name, IResource resource,
             TmfViewsElement parent, @NonNull IAnalysisModuleHelper module) {
@@ -81,18 +79,12 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
     // TmfProjectModelElement
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public TmfViewsElement getParent() {
         /* Type enforced at constructor */
         return (TmfViewsElement) super.getParent();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         fCanExecute = true;
@@ -149,9 +141,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
         }
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Image getIcon() {
         String iconFile = getIconFile();
@@ -263,7 +252,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
     /**
      * Make sure the trace this analysis is associated to is the currently
      * selected one
-     * @since 2.0
      */
     public void activateParentTrace() {
         TmfCommonProjectElement parentTrace = getParent().getParent();
@@ -278,9 +266,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
     // IPropertySource2
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Object getEditableValue() {
         return null;
@@ -321,9 +306,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
         return Collections.EMPTY_MAP;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public IPropertyDescriptor[] getPropertyDescriptors() {
         Map<String, String> helperProperties = getAnalysisHelperProperties();
@@ -345,9 +327,6 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
         return new IPropertyDescriptor[0];
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Object getPropertyValue(Object id) {
         if (id == null) {
@@ -371,31 +350,19 @@ public class TmfAnalysisElement extends TmfProjectModelElement implements ITmfSt
         return null;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public final void resetPropertyValue(Object id) {
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public final void setPropertyValue(Object id, Object value) {
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public final boolean isPropertyResettable(Object id) {
         return false;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public final boolean isPropertySet(Object id) {
         return false;

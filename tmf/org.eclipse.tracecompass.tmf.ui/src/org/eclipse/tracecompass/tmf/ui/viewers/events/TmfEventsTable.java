@@ -638,22 +638,16 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
 
         /**
          * Table item list of style ranges
-         *
-         * @since 1.0
          */
         String STYLE_RANGES = "$style_ranges"; //$NON-NLS-1$
 
         /**
          * The width of a table item
-         *
-         * @since 1.1
          */
         String WIDTH = "$width"; //$NON-NLS-1$
 
         /**
          * The position of the column
-         *
-         * @since 2.1
          */
         String INDEX = "$index"; //$NON-NLS-1$
     }
@@ -667,8 +661,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
     public static enum HeaderState {
         /**
          * No search filter is applied
-         *
-         * @since 2.0
          */
         NO_SEARCH,
 
@@ -1831,8 +1823,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
 
     /**
      * Apply the current search condition as a new filter.
-     *
-     * @since 2.0
      */
     protected void applySearchAsFilter() {
         Object searchObj = fTable.getData(Key.SEARCH_OBJ);
@@ -1946,7 +1936,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param filter
      *            The filter to remove
-     * @since 2.0
      */
     protected void removeFilter(ITmfFilter filter) {
         ITmfFilterTreeNode rootFilter = (ITmfFilterTreeNode) fTable.getData(Key.FILTER_OBJ);
@@ -2448,9 +2437,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
         fHighlightColor = colorRegistry.get(HIGHLIGHT_COLOR_DEFINITION_ID);
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if ((IThemeManager.CHANGE_CURRENT_THEME.equals(event.getProperty())) ||
@@ -2470,8 +2456,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @return Whether or not a pack was done in this call. Otherwise, it was
      *         already done by a previous call
-     *
-     * @since 2.0
      */
     protected boolean packColumns() {
         if (fPackDone) {
@@ -2624,7 +2608,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      * creation order of the columns.
      *
      * @return the current visual order of the receiver's columns
-     * @since 1.0
      */
     public int[] getColumnOrder() {
         return fColumnOrder;
@@ -2634,7 +2617,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      * Get column widths
      *
      * @return the current visual widths of the receiver's columns
-     * @since 2.1
      */
     public int[] getColumnWidth() {
         return fColumnSize;
@@ -2644,7 +2626,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      * Get whether the columns are resizable
      *
      * @return an array stating if each column is resizable
-     * @since 2.1
      */
     public boolean[] getColumnResizable() {
         return fColumnResizable;
@@ -2660,7 +2641,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param order
      *            the new order to display the columns
-     * @since 1.0
      */
     public void setColumnOrder(int[] order) {
         if (order == null || order.length != fTable.getColumns().length) {
@@ -2677,7 +2657,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *            an array of widths
      * @param resizable
      *            an array of bools saying if a column is resizable or not
-     * @since 2.1
      */
     public void setColumnWidth(int[] width, boolean[] resizable) {
         int length = fTable.getColumns().length;
@@ -2716,8 +2695,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param site
      *            the site that the context menus will be registered for
-     *
-     * @since 1.2
      */
     public void registerContextMenus(IWorkbenchPartSite site) {
         if (site instanceof IEditorSite) {
@@ -2969,7 +2946,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param bookmarks
      *            The bookmarks to add
-     * @since 2.0
      */
     public void addBookmark(final IMarker... bookmarks) {
         for (IMarker bookmark : bookmarks) {
@@ -2997,7 +2973,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param bookmarks
      *            The bookmarks to remove
-     * @since 2.0
      */
     public void removeBookmark(final IMarker... bookmarks) {
         for (IMarker bookmark : bookmarks) {
@@ -3153,7 +3128,6 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
      *
      * @param signal
      *            The incoming signal
-     * @since 1.0
      */
     @TmfSignalHandler
     public void selectionRangeUpdated(final TmfSelectionRangeUpdatedSignal signal) {

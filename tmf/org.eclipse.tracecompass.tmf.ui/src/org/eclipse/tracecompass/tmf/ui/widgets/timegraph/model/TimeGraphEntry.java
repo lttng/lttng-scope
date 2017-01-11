@@ -64,9 +64,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
     // Getters and setters
     // ---------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public TimeGraphEntry getParent() {
         return fParent;
@@ -76,7 +73,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
      * Sets the entry's parent
      *
      * @param entry The new parent entry
-     * @since 2.0
      */
     public void setParent(TimeGraphEntry entry) {
         fParent = entry;
@@ -94,8 +90,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
 
     /**
      * Clear the children of the entry
-     *
-     * @since 2.0
      */
     public synchronized void clearChildren() {
         fChildren.clear();
@@ -227,7 +221,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
      *
      * @param event
      *            The time event to add
-     * @since 1.1
      */
     public void addZoomedEvent(ITimeEvent event) {
         long start = event.getTime();
@@ -280,7 +273,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
      *            Index at which the specified entry is to be inserted
      * @param child
      *            The child entry
-     * @since 2.0
      */
     public synchronized void addChild(int index, @NonNull TimeGraphEntry child) {
         if (child.getParent() == this) {
@@ -298,7 +290,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
      *
      * @param child
      *            The child entry
-     * @since 2.0
      */
     public synchronized void removeChild(@NonNull TimeGraphEntry child) {
         if (child.getParent() == this) {
@@ -331,9 +322,6 @@ public class TimeGraphEntry implements ITimeGraphEntry {
         return getClass().getSimpleName() + '(' + fName + ')';
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public boolean matches(@NonNull Pattern pattern) {
         // Default implementation

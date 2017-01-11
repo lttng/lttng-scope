@@ -18,7 +18,6 @@ import org.eclipse.jface.preference.PreferencePage;
  * of implementing the interface one should extend this class.
  *
  * @author Robert Kiss
- * @since 2.0
  */
 @NonNullByDefault
 public abstract class AbstractSymbolProviderPreferencePage extends PreferencePage implements ISymbolProviderPreferencePage {

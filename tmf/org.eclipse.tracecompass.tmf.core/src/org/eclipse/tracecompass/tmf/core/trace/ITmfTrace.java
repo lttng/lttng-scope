@@ -422,7 +422,6 @@ public interface ITmfTrace extends ITmfEventProvider {
      * @param filter
      *            The currently applied filter. 'null' for none.
      * @return The newly created context
-     * @since 2.0
      */
     default @NonNull TmfTraceContext createTraceContext(@NonNull TmfTimeRange selection, @NonNull TmfTimeRange windowRange, @Nullable IFile editorFile, @Nullable ITmfFilter filter) {
         return new TmfTraceContext(selection, windowRange, editorFile, filter);

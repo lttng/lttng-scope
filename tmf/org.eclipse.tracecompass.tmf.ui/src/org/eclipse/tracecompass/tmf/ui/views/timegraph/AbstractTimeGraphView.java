@@ -718,7 +718,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
 
     /**
      * Zoom thread
-     * @since 1.1
      */
     protected abstract class ZoomThread extends Thread {
         private final long fZoomStartTime;
@@ -797,7 +796,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
          *
          * @param runnable
          *            the code to run in order to apply the results
-         * @since 2.0
          */
         protected void applyResults(Runnable runnable) {
             synchronized (fZoomThreadResultLock) {
@@ -809,7 +807,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
 
         /**
          * Run the zoom operation.
-         * @since 2.0
          */
         public abstract void doRun();
     }
@@ -961,7 +958,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *            clicking on column header
      * @param initialSortColumn
      *            Index of column to sort initially
-     * @since 2.0
      */
     protected void setTreeColumns(final String[] columns, final Comparator<ITimeGraphEntry>[] comparators, int initialSortColumn) {
         checkPartNotCreated();
@@ -990,7 +986,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param tgcp
      *            The time graph content provider
-     * @since 1.0
      */
     protected void setTimeGraphContentProvider(final @NonNull ITimeGraphContentProvider tgcp) {
         checkPartNotCreated();
@@ -1030,7 +1025,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param contentProvider
      *            The filter content provider
-     * @since 1.2
      */
     protected void setFilterContentProvider(final ITreeContentProvider contentProvider) {
         checkPartNotCreated();
@@ -1426,9 +1420,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
         }
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public void resourceChanged(final IResourceChangeEvent event) {
         for (final IMarkerDelta delta : event.findMarkerDeltas(IMarker.BOOKMARK, false)) {
@@ -1528,7 +1519,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param signal
      *            The signal that's received
-     * @since 1.0
      */
     @TmfSignalHandler
     public void selectionRangeUpdated(final TmfSelectionRangeUpdatedSignal signal) {
@@ -1559,7 +1549,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param signal
      *            The signal that's received
-     * @since 1.0
      */
     @TmfSignalHandler
     public void windowRangeUpdated(final TmfWindowRangeUpdatedSignal signal) {
@@ -1596,7 +1585,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param signal
      *            the signal
-     * @since 2.1
      */
     @TmfSignalHandler
     public void markerEventSourceUpdated(final TmfMarkerEventSourceUpdatedSignal signal) {
@@ -1733,7 +1721,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *            The parent of the trace set, or the trace itself
      * @param monitor
      *            The progress monitor object
-     * @since 2.0
      */
     protected abstract void buildEntryList(@NonNull ITmfTrace trace, @NonNull ITmfTrace parentTrace, @NonNull IProgressMonitor monitor);
 
@@ -1784,7 +1771,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * returns an empty list.
      *
      * @return The list of marker categories
-     * @since 2.0
      */
     protected @NonNull List<String> getViewMarkerCategories() {
         return new ArrayList<>();
@@ -1803,7 +1789,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * @param monitor
      *            The progress monitor object
      * @return The list of marker events
-     * @since 2.0
      */
     protected @NonNull List<IMarkerEvent> getViewMarkerList(long startTime, long endTime,
             long resolution, @NonNull IProgressMonitor monitor) {
@@ -1822,7 +1807,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * @param monitor
      *            The progress monitor object
      * @return The list of marker events
-     * @since 2.0
      */
     protected @NonNull List<IMarkerEvent> getTraceMarkerList(long startTime, long endTime,
             long resolution, @NonNull IProgressMonitor monitor) {
@@ -1842,7 +1826,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * Get the list of current marker categories.
      *
      * @return The list of marker categories
-     * @since 2.1
      */
     protected @NonNull List<String> getMarkerCategories() {
         Set<String> categories = new LinkedHashSet<>(getViewMarkerCategories());
@@ -1858,7 +1841,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * @param trace
      *            The trace
      * @return The list of marker event sources
-     * @since 2.0
      */
     private @NonNull List<IMarkerEventSource> getMarkerEventSources(ITmfTrace trace) {
         List<IMarkerEventSource> markerEventSources = fMarkerEventSourcesMap.get(trace);
@@ -2018,7 +2000,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *            the zoom start time
      * @param endTime
      *            the zoom end time
-     * @since 2.0
      */
     protected final void startZoomThread(long startTime, long endTime) {
         long clampedStartTime = (fStartTime == Long.MAX_VALUE ? startTime : Math.min(Math.max(startTime, fStartTime), fEndTime));
@@ -2057,7 +2038,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * @param restart
      *            true if restarting zoom for the same time range
      * @return a zoom thread
-     * @since 1.1
      */
     protected @Nullable ZoomThread createZoomThread(long startTime, long endTime, long resolution, boolean restart) {
         final List<TimeGraphEntry> entryList = fEntryList;
@@ -2112,15 +2092,11 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      * Add actions to local menu manager
      *
      * @param manager the tool bar manager
-     * @since 2.0
      */
     protected void fillLocalMenu(IMenuManager manager) {
         manager.add(fTimeGraphWrapper.getTimeGraphViewer().getMarkersMenu());
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public TmfTimeViewAlignmentInfo getTimeViewAlignmentInfo() {
         if (fTimeGraphWrapper == null) {
@@ -2129,9 +2105,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
         return fTimeGraphWrapper.getTimeViewAlignmentInfo();
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public int getAvailableWidth(int requestedOffset) {
         if (fTimeGraphWrapper == null) {
@@ -2140,9 +2113,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
         return fTimeGraphWrapper.getAvailableWidth(requestedOffset);
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public void performAlign(int offset, int width) {
         if (fTimeGraphWrapper != null) {
@@ -2163,7 +2133,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @return true if the time graph view has yet to completely update its
      *         model, false otherwise
-     * @since 2.0
      */
     public boolean isDirty() {
         if (fTrace == null) {
@@ -2329,7 +2298,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param viewTrace
      *            trace to reset the view for.
-     * @since 2.0
      */
     protected void resetView(ITmfTrace viewTrace) {
         if (viewTrace == null) {
@@ -2402,7 +2370,6 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
      *
      * @param menuManager
      *          a menuManager to fill
-     * @since 2.0
      */
     protected void fillTimeGraphEntryContextMenu (@NonNull IMenuManager menuManager) {
     }

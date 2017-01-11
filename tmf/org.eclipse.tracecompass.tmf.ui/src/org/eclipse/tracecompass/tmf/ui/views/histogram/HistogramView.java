@@ -86,7 +86,6 @@ import org.eclipse.ui.IActionBars;
  * </ul>
  * The histograms x-axis show their respective time range.
  *
- * @version 2.0
  * @author Francois Chouinard
  */
 public class HistogramView extends TmfView implements ITmfTimeAligned {
@@ -398,9 +397,6 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
     	getParentComposite().layout(true);
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public TmfTimeViewAlignmentInfo getTimeViewAlignmentInfo() {
         if (fSashForm == null) {
@@ -413,9 +409,6 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
         return fScrollComposite.getSize().x + fSashForm.getSashWidth() + fTimeRangeHistogram.getPointAreaOffset();
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public int getAvailableWidth(int requestedOffset) {
         int pointAreaWidth = fTimeRangeHistogram.getPointAreaWidth();
@@ -432,9 +425,6 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
         return availableWidth;
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public void performAlign(int offset, int width) {
         int total = fSashForm.getBounds().width;
@@ -753,7 +743,6 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
      *
      * @param signal
      *            the signal to process
-     * @since 1.0
      */
     @TmfSignalHandler
     public void selectionRangeUpdated(final TmfSelectionRangeUpdatedSignal signal) {
@@ -784,7 +773,6 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
      *
      * @param signal
      *            the signal to process
-     * @since 1.0
      */
     @TmfSignalHandler
     public void windowRangeUpdated(final TmfWindowRangeUpdatedSignal signal) {

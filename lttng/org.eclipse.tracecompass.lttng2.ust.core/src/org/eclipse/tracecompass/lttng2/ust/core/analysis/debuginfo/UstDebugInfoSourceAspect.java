@@ -25,7 +25,6 @@ import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
  * info analysis and the IP (instruction pointer) context.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class UstDebugInfoSourceAspect implements ITmfEventAspect<TmfCallsite> {
 
@@ -44,9 +43,6 @@ public class UstDebugInfoSourceAspect implements ITmfEventAspect<TmfCallsite> {
         return nullToEmptyString(Messages.UstDebugInfoAnalysis_SourceAspectHelpText);
     }
 
-    /**
-     * @since 2.1
-     */
     @Override
     public @Nullable TmfCallsite resolve(ITmfEvent event) {
         /* This aspect only supports UST traces */

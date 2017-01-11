@@ -16,7 +16,6 @@ package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
  * be added here first.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public interface LinuxValues {
 

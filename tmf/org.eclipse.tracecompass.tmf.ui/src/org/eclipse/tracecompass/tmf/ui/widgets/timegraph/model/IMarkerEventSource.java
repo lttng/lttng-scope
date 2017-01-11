@@ -19,8 +19,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * Interface to an object which is capable of providing marker events.
- *
- * @since 2.0
  */
 public interface IMarkerEventSource {
 

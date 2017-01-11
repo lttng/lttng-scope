@@ -21,7 +21,6 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
  * things.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @NonNullByDefault
 public interface ITmfPropertiesProvider {

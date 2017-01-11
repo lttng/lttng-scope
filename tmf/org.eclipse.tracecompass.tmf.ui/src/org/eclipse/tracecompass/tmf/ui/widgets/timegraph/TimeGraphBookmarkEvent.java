@@ -20,7 +20,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.IMarkerEvent;
  * Bookmark event
  *
  * @author Patrick Tasse
- * @since 2.0
  */
 public class TimeGraphBookmarkEvent extends EventObject {
 

@@ -138,9 +138,6 @@ public class TmfEvent extends PlatformObject implements ITmfEvent {
         return fContent;
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public String getName() {
         ITmfEventType type = getType();

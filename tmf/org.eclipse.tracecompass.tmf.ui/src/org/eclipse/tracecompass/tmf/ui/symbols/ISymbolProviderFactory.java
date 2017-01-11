@@ -20,8 +20,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * used to create instances of {@link ISymbolProvider}
  *
  * @author Robert Kiss
- *
- * @since 2.0
  */
 public interface ISymbolProviderFactory {
 

@@ -38,7 +38,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * start splitting up the kernel analysis into smaller sections.
  *
  * @author Matthew Khouzam
- * @since 2.0
  */
 public class TidAnalysisModule extends TmfStateSystemAnalysisModule {
 

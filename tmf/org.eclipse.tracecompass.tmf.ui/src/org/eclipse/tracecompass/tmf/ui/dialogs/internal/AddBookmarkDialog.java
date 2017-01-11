@@ -28,8 +28,6 @@ import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 
 /**
  * A dialog for soliciting a bookmark description and color from the user.
- *
- * @since 2.0
  */
 public class AddBookmarkDialog extends MultiLineInputDialog {
 

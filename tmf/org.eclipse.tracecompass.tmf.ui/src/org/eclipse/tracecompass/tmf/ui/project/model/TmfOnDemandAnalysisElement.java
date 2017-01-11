@@ -28,7 +28,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * related trace.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @NonNullByDefault
 public abstract class TmfOnDemandAnalysisElement extends TmfProjectModelElement

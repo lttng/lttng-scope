@@ -193,9 +193,6 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
                 new ControlFlowCheckActiveProvider(Messages.ControlFlowView_uncheckInactiveLabel, Messages.ControlFlowView_uncheckInactiveToolTip));
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void fillTimeGraphEntryContextMenu(@NonNull IMenuManager menuManager) {
     }

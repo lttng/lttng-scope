@@ -253,7 +253,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Gets the time data provider used by this viewer.
      *
      * @return The time data provider, or <code>null</code> if not set
-     * @since 2.1
      */
     public ITimeDataProvider getTimeDataProvider() {
         return fTimeProvider;
@@ -459,8 +458,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Get the links (arrows) of this widget
      *
      * @return The unmodifiable link event list
-     *
-     * @since 1.1
      */
     public List<ILinkEvent> getArrows() {
         return Collections.unmodifiableList(fItemData.fLinks);
@@ -519,7 +516,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            the time graph entry to be positioned
      * @param y
      *            the requested y-coordinate
-     * @since 2.0
      */
     public void setElementPosition(ITimeGraphEntry entry, int y) {
         Item item = fItemData.fItemMap.get(entry);
@@ -577,7 +573,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * @param entry
      *            The entry
      * @return true if the entry is expanded, false if collapsed
-     * @since 1.1
      */
     public boolean getExpandedState(ITimeGraphEntry entry) {
         Item item = fItemData.fItemMap.get(entry);
@@ -935,7 +930,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            1 for next event, -1 for previous event
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void selectEvent(int n, boolean extend) {
         if (null == fTimeProvider) {
@@ -993,7 +987,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void selectNextEvent(boolean extend) {
         selectEvent(1, extend);
@@ -1006,7 +999,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void selectPrevEvent(boolean extend) {
         selectEvent(-1, extend);
@@ -1145,7 +1137,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param zoomIn
      *            true to zoom in, false to zoom out
-     * @since 2.0
      */
     public void verticalZoom(boolean zoomIn) {
         if (zoomIn) {
@@ -1159,8 +1150,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
 
     /**
      * Reset the vertical zoom to default.
-     *
-     * @since 2.0
      */
     public void resetVerticalZoom() {
         fHeightAdjustment = 0;
@@ -1173,7 +1162,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param visible
      *            true to show the grid lines, false otherwise
-     * @since 2.0
      */
     public void setGridLinesVisible(boolean visible) {
         fGridLinesVisible = visible;
@@ -1183,7 +1171,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Get the grid lines visibility.
      *
      * @return true if the grid lines are visible, false otherwise
-     * @since 2.0
      */
     public boolean getGridLinesVisible() {
         return fGridLinesVisible;
@@ -1194,7 +1181,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param color
      *            the grid line color
-     * @since 2.0
      */
     public void setGridLineColor(Color color) {
         fGridLineColor = color;
@@ -1204,7 +1190,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Get the grid line color.
      *
      * @return the grid line color
-     * @since 2.0
      */
     public Color getGridLineColor() {
         return fGridLineColor;
@@ -1215,7 +1200,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param markers
      *            The markers list, or null
-     * @since 2.0
      */
     public void setMarkers(List<IMarkerEvent> markers) {
         fMarkers = markers;
@@ -1225,7 +1209,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Get the markers list.
      *
      * @return The markers list, or null
-     * @since 2.0
      */
     public List<IMarkerEvent> getMarkers() {
         return fMarkers;
@@ -1236,7 +1219,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param visible
      *            true to show the markers, false otherwise
-     * @since 2.0
      */
     public void setMarkersVisible(boolean visible) {
         fMarkersVisible = visible;
@@ -1246,7 +1228,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Get the markers visibility.
      *
      * @return true if the markers are visible, false otherwise
-     * @since 2.0
      */
     public boolean getMarkersVisible() {
         return fMarkersVisible;
@@ -1266,7 +1247,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void followArrowFwd(boolean extend) {
         ITimeGraphEntry trace = getSelectedTrace();
@@ -1299,7 +1279,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param extend
      *            true to extend selection range, false for single selection
-     * @since 1.0
      */
     public void followArrowBwd(boolean extend) {
         ITimeGraphEntry trace = getSelectedTrace();
@@ -1419,7 +1398,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            a point in the widget
      * @return the {@link ITimeGraphEntry} at this point, or <code>null</code>
      *         if none.
-     * @since 2.0
      */
     public ITimeGraphEntry getEntry(Point pt) {
         int idx = getItemIndexAtY(pt.y);
@@ -1597,7 +1575,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * @param index
      *            the element index
      * @return The expanded (visible) element or null if out of range
-     * @since 2.0
      */
     public ITimeGraphEntry getExpandedElement(int index) {
         if (index < 0 || index >= fItemData.fExpandedItems.length) {
@@ -1611,7 +1588,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param entry the time graph entry
      * @return the bounds of the entry, or null if the entry is not visible
-     * @since 2.3
      */
     public Rectangle getItemBounds(ITimeGraphEntry entry) {
         int idx = fItemData.findItemIndex(entry);
@@ -1762,7 +1738,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            The name space width
      * @param gc
      *            Graphics context
-     * @since 2.0
      */
     protected void drawBackground(Rectangle bounds, int nameSpace, GC gc) {
         // draw empty name space background
@@ -1808,7 +1783,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            The bounds of the control
      * @param gc
      *            Graphics context
-     * @since 2.0
      */
     public void drawGridLines(Rectangle bounds, GC gc) {
         if (!fGridLinesVisible) {
@@ -1837,7 +1811,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            The width reserved for the names
      * @param gc
      *            Reference to the SWT GC object
-     * @since 2.0
      */
     protected void drawMarkers(Rectangle bounds, ITimeDataProvider timeProvider, List<IMarkerEvent> markers, boolean foreground, int nameSpace, GC gc) {
         if (!fMarkersVisible || markers == null || markers.isEmpty()) {
@@ -1867,7 +1840,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            The width reserved for the name
      * @param gc
      *            Reference to the SWT GC object
-     * @since 2.0
      */
     protected void drawMarker(IMarkerEvent marker, Rectangle bounds, ITimeDataProvider timeProvider, int nameSpace, GC gc) {
         Rectangle rect = Utils.clone(bounds);
@@ -2562,8 +2534,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
 
     /**
      * Update the status line following a change of selection.
-     *
-     * @since 2.0
      */
     public void updateStatusLine() {
         updateStatusLine(STATUS_WITHOUT_CURSOR_TIME);
@@ -3123,7 +3093,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param blend
      *            true if sub-pixel events should be blended, false otherwise.
-     * @since 1.1
      */
     public void setBlendSubPixelEvents(boolean blend) {
         fBlendSubPixelEvents = blend;
@@ -3174,7 +3143,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * Returns this control's filters.
      *
      * @return an array of viewer filters
-     * @since 1.2
      */
     public @NonNull ViewerFilter[] getFilters() {
         return Iterables.toArray(fFilters, ViewerFilter.class);
@@ -3185,7 +3153,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *
      * @param filters
      *            an array of viewer filters, or null
-     * @since 1.2
      */
     public void setFilters(@NonNull ViewerFilter[] filters) {
         fFilters.clear();
@@ -3448,8 +3415,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      *            the alignment offset
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public void performAlign(int offset) {
         fTimeProvider.setNameSpace(offset);
@@ -3461,8 +3426,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * @return the time alignment information
      *
      * @see ITmfTimeAligned
-     *
-     * @since 1.0
      */
     public TmfTimeViewAlignmentInfo getTimeViewAlignmentInfo() {
         return new TmfTimeViewAlignmentInfo(getShell(), toDisplay(0, 0), fTimeProvider.getNameSpace());

@@ -59,7 +59,6 @@ public class TraceUtils {
      * @param exception
      *            the exception or null if the error does not originate from an
      *            exception
-     * @since 2.2
      */
     public static void displayErrorMsg(final String boxTitle, final String errorMsg, Throwable exception) {
         Display.getDefault().asyncExec(new Runnable() {

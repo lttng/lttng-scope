@@ -83,7 +83,6 @@ public interface ITmfTimestamp extends Comparable<ITmfTimestamp> {
      * will be clamped to those values.
      *
      * @return the timestamp converted to a long value of nanoseconds
-     * @since 2.0
      */
     default long toNanos() {
         if (getScale() == NANOSECOND_SCALE) {

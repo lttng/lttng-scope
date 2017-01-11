@@ -22,7 +22,6 @@ import java.util.stream.StreamSupport;
  * Common utilities for {@link Stream}.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public final class StreamUtils {
 
@@ -49,7 +48,6 @@ public final class StreamUtils {
      * @param iterator
      *            The iterator to wrap
      * @return A stream containing the iterator's elements
-     * @since 2.2
      */
     public static <T> Stream<T> getStream(Iterator<T> iterator) {
         Spliterator<T> spliterator = Spliterators.spliteratorUnknownSize(iterator, 0);

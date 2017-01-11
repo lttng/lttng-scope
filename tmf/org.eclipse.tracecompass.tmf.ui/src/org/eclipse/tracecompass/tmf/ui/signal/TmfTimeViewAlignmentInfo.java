@@ -21,8 +21,6 @@ import org.eclipse.swt.widgets.Shell;
  * what offset.
  *
  * @see TmfTimeViewAlignmentSignal
- *
- * @since 1.0
  */
 public class TmfTimeViewAlignmentInfo {
     private final Point fViewLocation;

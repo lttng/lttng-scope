@@ -81,7 +81,6 @@ public final class NonNullUtils {
      * @return A stream with the same elements
      * @throws NullPointerException
      *             If the stream itself or any of its values are null
-     * @since 2.0
      */
     public static <T> Stream<@NonNull T> checkNotNullContents(@Nullable Stream<T> stream) {
         if (stream == null) {
@@ -98,7 +97,6 @@ public final class NonNullUtils {
      * @return The same array, now with guaranteed @NonNull elements
      * @throws NullPointerException
      *             If the array reference or any contained element was null
-     * @since 2.0
      */
     public static <T> @NonNull T[] checkNotNullContents(T @Nullable [] array) {
         if (array == null) {

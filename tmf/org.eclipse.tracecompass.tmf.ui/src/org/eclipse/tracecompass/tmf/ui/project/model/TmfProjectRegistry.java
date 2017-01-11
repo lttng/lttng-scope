@@ -41,7 +41,6 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 /**
  * Factory class storing TMF tracing projects and creating TMF project model elements.
  * <p>
- * @version 1.0
  * @author Francois Chouinard
  */
 public class TmfProjectRegistry implements IResourceChangeListener {
@@ -58,8 +57,6 @@ public class TmfProjectRegistry implements IResourceChangeListener {
 
     /**
      * Disposes the project registry
-     *
-     * @since 2.3
      */
     public static void dispose() {
         ResourcesPlugin.getWorkspace().removeResourceChangeListener(INSTANCE);

@@ -115,9 +115,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
         fAutomatic = auto;
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public boolean setTrace(ITmfTrace trace) throws TmfAnalysisException {
         if (fTrace != null) {
@@ -290,9 +287,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
         return Collections.EMPTY_LIST;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public int getDependencyLevel() {
         return fDependencyLevel;
@@ -531,9 +525,6 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
     // ITmfPropertiesProvider
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Map<@NonNull String, @NonNull String> getProperties() {
         Map<@NonNull String, @NonNull String> properties = new HashMap<>();

@@ -22,7 +22,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * </ul>
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class BinaryCallsite {
 

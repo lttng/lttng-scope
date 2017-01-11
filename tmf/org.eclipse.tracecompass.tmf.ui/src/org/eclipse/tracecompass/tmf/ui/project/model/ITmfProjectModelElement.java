@@ -26,7 +26,6 @@ import org.eclipse.swt.graphics.Image;
  * Each tracing tree element has to implement this interface to be visible in the
  * Project Explorer.
  *
- * @version 1.0
  * @author Francois Chouinard
  */
 public interface ITmfProjectModelElement {
@@ -89,7 +88,6 @@ public interface ITmfProjectModelElement {
      * Returns the icon of this element.
      *
      * @return The icon
-     * @since 2.0
      */
     Image getIcon();
 
@@ -97,7 +95,6 @@ public interface ITmfProjectModelElement {
      * Returns the text of the label of this element.
      *
      * @return The label text
-     * @since 2.0
      */
     default String getLabelText() {
         return getName();
@@ -115,8 +112,6 @@ public interface ITmfProjectModelElement {
 
     /**
      * Recursively dispose of the element and its children.
-     *
-     * @since 2.3
      */
     default void dispose() {
         getChildren().forEach(element -> element.dispose());

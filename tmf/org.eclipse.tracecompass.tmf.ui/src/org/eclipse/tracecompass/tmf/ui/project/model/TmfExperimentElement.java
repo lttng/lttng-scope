@@ -62,9 +62,7 @@ import org.eclipse.ui.views.properties.IPropertySource2;
  * Implementation of TMF Experiment Model Element.
  * <p>
  *
- * @version 1.0
  * @author Francois Chouinard
- *
  */
 public class TmfExperimentElement extends TmfCommonProjectElement implements IPropertySource2 {
 
@@ -166,9 +164,6 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
         return (IFolder) super.getResource();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     protected void refreshChildren() {
         IFolder folder = getResource();
@@ -253,18 +248,12 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
         return list;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public @NonNull Image getIcon() {
         Image icon = super.getIcon();
         return (icon == null ? TmfProjectModelIcons.DEFAULT_EXPERIMENT_ICON : icon);
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String getLabelText() {
         return getName() + " [" + getTraces().size() + "]"; //$NON-NLS-1$ //$NON-NLS-2$

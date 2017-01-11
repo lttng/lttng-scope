@@ -16,7 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * Utility methods for traces in the CTF format.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @NonNullByDefault
 public final class CtfUtils {

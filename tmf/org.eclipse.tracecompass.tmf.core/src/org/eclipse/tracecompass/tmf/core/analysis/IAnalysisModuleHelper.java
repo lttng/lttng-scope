@@ -123,7 +123,6 @@ public interface IAnalysisModuleHelper {
      * whether it should apply.
      *
      * @return whether this analysis should be run on an experiment
-     * @since 1.0
      */
     boolean appliesToExperiment();
 

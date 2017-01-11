@@ -20,8 +20,6 @@ import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
  * IWizard implementation to select a root node for synchronization.
  *
  * @author Cedric Biancheri
- * @since 2.0
- *
  */
 public class SelectRootNodeWizard extends Wizard {
 

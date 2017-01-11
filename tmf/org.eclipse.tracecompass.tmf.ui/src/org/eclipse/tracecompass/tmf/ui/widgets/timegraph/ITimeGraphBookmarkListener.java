@@ -18,7 +18,6 @@ import java.util.EventListener;
  * A listener which is notified when a timegraph adds or removes a bookmark.
  *
  * @author Patrick Tasse
- * @since 2.0
  */
 public interface ITimeGraphBookmarkListener extends EventListener {
 

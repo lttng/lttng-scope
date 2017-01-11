@@ -202,8 +202,6 @@ public abstract class TmfView extends ViewPart implements ITmfComponent {
      * Returns the parent control of the view
      *
      * @return the parent control
-     *
-     * @since 1.0
      */
     public Composite getParentComposite() {
         return fParentComposite;
@@ -214,7 +212,6 @@ public abstract class TmfView extends ViewPart implements ITmfComponent {
      * simply <Primary ID> if secondary ID is null
      *
      * @return This view's view ID
-     * @since 2.2
      */
     protected String getViewId() {
         IViewSite viewSite = getViewSite();

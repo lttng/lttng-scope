@@ -16,7 +16,6 @@ package org.eclipse.tracecompass.tmf.core.signal;
  * signals (actions on trace, times, analyses).
  *
  * @author Matthew Khouzam
- * @since 2.0
  */
 public abstract class TmfTraceModelSignal extends TmfSignal {
 

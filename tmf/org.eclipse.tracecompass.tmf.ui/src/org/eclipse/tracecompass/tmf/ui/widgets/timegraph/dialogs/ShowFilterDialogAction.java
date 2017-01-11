@@ -30,8 +30,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
  * Action to show the time graph filter dialog and add a filter to hide the
  * unselected elements in the time graph viewer. The filter is removed if all
  * elements are selected.
- *
- * @since 1.2
  */
 public class ShowFilterDialogAction extends Action {
 

@@ -41,16 +41,12 @@ public class CtfTmfEventFactory {
      * The file name to use when none is specified.
      *
      * FIXME Externalize?
-     *
-     * @since 2.0
      */
     protected static final String NO_STREAM = "No stream"; //$NON-NLS-1$
 
     /**
      * Protected constructor, only for use by sub-classes. Users should call
      * the {@link #instance()} method instead.
-     *
-     * @since 2.0
      */
     protected CtfTmfEventFactory() {}
 
@@ -58,7 +54,6 @@ public class CtfTmfEventFactory {
      * Get the singleton factory instance
      *
      * @return The instance
-     * @since 2.0
      */
     public static CtfTmfEventFactory instance() {
         return INSTANCE;
@@ -74,7 +69,6 @@ public class CtfTmfEventFactory {
      * @param fileName
      *            The path to the trace file
      * @return The newly-built CtfTmfEvent
-     * @since 2.0
      */
     public CtfTmfEvent createEvent(CtfTmfTrace trace, IEventDefinition eventDef, @Nullable String fileName) {
 
@@ -120,7 +114,6 @@ public class CtfTmfEventFactory {
      * @param fileName
      *            The file name
      * @return The new lost event
-     * @since 2.0
      */
     protected static CtfTmfEvent createLostEvent(CtfTmfTrace trace,
             IEventDefinition eventDef,
@@ -162,7 +155,6 @@ public class CtfTmfEventFactory {
      * @param trace
      *            The trace to which the new null event will belong
      * @return An empty event
-     * @since 2.0
      */
     public static CtfTmfEvent getNullEvent(CtfTmfTrace trace) {
         return new CtfTmfEvent(trace);

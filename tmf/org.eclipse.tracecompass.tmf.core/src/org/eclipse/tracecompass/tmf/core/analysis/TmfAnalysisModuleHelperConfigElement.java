@@ -83,9 +83,6 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
         return Boolean.parseBoolean(fCe.getAttribute(TmfAnalysisModuleSourceConfigElement.AUTOMATIC_ATTR));
     }
 
-    /**
-     * @since 1.0
-     */
     @Override
     public boolean appliesToExperiment() {
         return Boolean.parseBoolean(fCe.getAttribute(TmfAnalysisModuleSourceConfigElement.APPLIES_EXP_ATTR));

@@ -230,7 +230,6 @@ public class TimeGraphFilterDialog extends SelectionStatusDialog {
     /**
      * @param activeProvider
      *            Information about an additional view specific Button
-     * @since 1.0
      */
     public void addTimeGraphFilterCheckActiveButton(ITimeGraphEntryActiveProvider activeProvider) {
         fCheckActiveProvider = activeProvider;
@@ -239,7 +238,6 @@ public class TimeGraphFilterDialog extends SelectionStatusDialog {
     /**
      * @param inactiveProvider
      *            Information about an additional view specific Button
-     * @since 1.0
      */
     public void addTimeGraphFilterUncheckInactiveButton(ITimeGraphEntryActiveProvider inactiveProvider) {
         fUncheckInactiveProvider = inactiveProvider;

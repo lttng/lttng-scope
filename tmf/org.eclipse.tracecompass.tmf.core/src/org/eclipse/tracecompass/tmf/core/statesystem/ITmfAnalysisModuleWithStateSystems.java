@@ -50,8 +50,6 @@ public interface ITmfAnalysisModuleWithStateSystems extends IAnalysisModule {
      * present.
      *
      * @return True whether the initialization succeeded, false otherwise
-     *
-     * @since 2.0
      */
     boolean waitForInitialization();
 }

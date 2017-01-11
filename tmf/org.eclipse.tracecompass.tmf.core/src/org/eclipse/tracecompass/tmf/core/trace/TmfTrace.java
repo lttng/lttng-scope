@@ -78,7 +78,6 @@ import com.google.common.collect.ImmutableList;
  * TmfCheckpointIndexer (default). In this case, the trace cache size will be
  * used as checkpoint interval.
  *
- * @version 1.0
  * @author Francois Chouinard
  *
  * @see ITmfEvent
@@ -561,7 +560,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
      *
      * @param context the current trace context
      * @param event the corresponding event
-     * @since 1.1
      */
     protected synchronized void updateAttributes(final ITmfContext context, final @NonNull ITmfEvent event) {
         ITmfTimestamp timestamp = event.getTimestamp();

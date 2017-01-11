@@ -14,9 +14,9 @@ package org.eclipse.tracecompass.tmf.core.trace;
  * that reading progress can be shown.
  *
  * @author Matthew Khouzam
- * @since 2.1
  */
 public interface ITmfTraceKnownSize {
+
     /**
      * Get the size of the trace. The units of this value are not important, but
      * they should always be the same as {@link #progress()}

@@ -39,8 +39,6 @@ import com.google.common.collect.Multimap;
 
 /**
  * A control that shows marker labels on a time axis.
- *
- * @since 2.0
  */
 public class TimeGraphMarkerAxis extends TimeGraphBaseControl {
 

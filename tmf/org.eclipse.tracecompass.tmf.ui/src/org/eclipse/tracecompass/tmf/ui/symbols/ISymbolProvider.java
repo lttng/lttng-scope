@@ -21,7 +21,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
  * an {@link TmfTrace} into human readable strings.
  *
  * @author Robert Kiss
- * @since 2.0
  * @see ISymbolProviderFactory
  */
 public interface ISymbolProvider {

@@ -36,7 +36,6 @@ import com.google.common.collect.ImmutableMap;
  * FIXME Is this really the right place for the Editor File ?
  *
  * @author Alexandre Montplaisir
- * @since 1.0
  */
 @NonNullByDefault
 public class TmfTraceContext implements ITraceContextSignalHandler {
@@ -76,7 +75,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      *
      * @param builder
      *            the builder
-     * @since 2.3
      */
     public TmfTraceContext(Builder builder) {
         fSelection = builder.selection;
@@ -129,7 +127,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      *            The id of the data
      * @param value
      *            The value of the data
-     * @since 2.1
      */
     public synchronized void setData(String key, Object value) {
         fData.put(key, value);
@@ -140,7 +137,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      *
      * @param data
      *            The map of data to copy
-     * @since 2.1
      */
     public synchronized void setData(Map<String, Object> data) {
         fData.putAll(data);
@@ -152,7 +148,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      * @param key
      *            The id of the data
      * @return The data or null if the key do not exist
-     * @since 2.1
      */
     public synchronized @Nullable Object getData(String key) {
         return fData.get(key);
@@ -162,7 +157,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      * Get a copy of the data map
      *
      * @return The data map copy
-     * @since 2.1
      */
     public synchronized Map<String, Object> getData() {
         return ImmutableMap.copyOf(fData);
@@ -173,7 +167,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
      * context.
      *
      * @return the builder
-     * @since 2.3
      */
     public Builder builder() {
         return new Builder(this);
@@ -181,8 +174,6 @@ public class TmfTraceContext implements ITraceContextSignalHandler {
 
     /**
      * A builder for creating trace context instances.
-     *
-     * @since 2.3
      */
     public class Builder {
         private TmfTimeRange selection;

@@ -98,7 +98,6 @@ public interface ITmfEventField {
      *            The name or path of the subfield to look for
      * @return The value if a field with this name exists and the value is of
      *         the correct type, or 'null' otherwise
-     * @since 2.1
      */
     default <T> @Nullable T getFieldValue(@NonNull Class<T> type, @NonNull String @NonNull ... fieldName) {
         ITmfEventField field = getField(fieldName);

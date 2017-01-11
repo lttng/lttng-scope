@@ -20,7 +20,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
  * A simplified timestamp where scale and precision are set to 0.
  *
  * @author Francois Chouinard
- * @since 2.0
  */
 public class TmfSecondTimestamp extends TmfTimestamp {
 

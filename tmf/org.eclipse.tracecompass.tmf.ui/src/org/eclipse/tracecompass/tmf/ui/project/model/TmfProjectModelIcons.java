@@ -27,7 +27,6 @@ import org.osgi.framework.Bundle;
  * Facilities to load icons used in the Project View.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 final class TmfProjectModelIcons {
 

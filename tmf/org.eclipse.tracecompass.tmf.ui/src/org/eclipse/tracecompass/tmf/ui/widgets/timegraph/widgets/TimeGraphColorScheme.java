@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Color theme used by the timegraph view
  *
- * @version 1.0
  * @author Patrick Tasse
  */
 @SuppressWarnings("javadoc")
@@ -444,7 +443,6 @@ public class TimeGraphColorScheme {
      * @param rgba
      *            the color descriptor
      * @return a color resource
-     * @since 2.0
      */
     public Color getColor(RGBA rgba) {
         Color color = fColorMap.get(rgba);

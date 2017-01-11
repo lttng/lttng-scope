@@ -59,8 +59,6 @@ public final class TmfAnalysisParameterProviders {
 
     /**
      * Disposes the analysis parameter providers
-     *
-     * @since 2.2
      */
     public static void dispose() {
         fParamProviderInstances.values().forEach(provider -> provider.dispose());

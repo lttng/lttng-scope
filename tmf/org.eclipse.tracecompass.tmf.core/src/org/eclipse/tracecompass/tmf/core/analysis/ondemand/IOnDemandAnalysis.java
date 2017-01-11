@@ -22,7 +22,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  * {@link #execute} method should be independant and not affect each other.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public interface IOnDemandAnalysis {
 

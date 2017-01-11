@@ -16,7 +16,6 @@ import java.util.logging.Logger;
  * Utility class containing methods to support logging in Trace Compass
  *
  * @author Geneviève Bastien
- * @since 2.1
  */
 public final class TraceCompassLog {
 

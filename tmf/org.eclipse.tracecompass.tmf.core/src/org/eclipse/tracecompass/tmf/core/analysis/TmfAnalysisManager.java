@@ -56,8 +56,6 @@ public class TmfAnalysisManager {
 
     /**
      * Disposes the analysis manager
-     *
-     * @since 2.3
      */
     public static void dispose() {
         TmfAnalysisParameterProviders.dispose();
@@ -122,7 +120,6 @@ public class TmfAnalysisManager {
      * This map is read-only
      *
      * @return The map of available {@link IAnalysisModuleHelper}
-     * @since 1.0
      */
     public static synchronized Multimap<String, IAnalysisModuleHelper> getAnalysisModules() {
         if (fAnalysisModules.isEmpty()) {
@@ -208,7 +205,6 @@ public class TmfAnalysisManager {
      * @param trace
      *            The trace
      * @return The set of parameter providers that apply to a trace for this module
-     * @since 2.0
      */
     public static Set<IAnalysisParameterProvider> getParameterProvidersForModule(IAnalysisModule module, ITmfTrace trace) {
         /* First, get the parameter providers from the extension point */

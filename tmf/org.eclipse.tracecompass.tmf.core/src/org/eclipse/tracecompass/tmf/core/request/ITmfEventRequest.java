@@ -73,7 +73,6 @@ public interface ITmfEventRequest {
      * that have a dependency with each other. They will be serviced separately.
      *
      * @return dependency
-     * @since 2.0
      */
     default int getDependencyLevel() {
         return 0;
@@ -140,7 +139,6 @@ public interface ITmfEventRequest {
 
     /**
      * @return get the cause of failure, or null if not applicable
-     * @since 2.0
      */
     @Nullable Throwable getFailureCause();
 
@@ -213,7 +211,6 @@ public interface ITmfEventRequest {
      *
      * @param e
      *            the exception causing the failure, can be null
-     * @since 2.0
      */
     void fail(Exception e);
 

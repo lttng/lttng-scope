@@ -112,7 +112,6 @@ public interface IKernelAnalysisEventLayout {
      * priorities for a given task changes.
      *
      * @return the event name
-     * @since 1.0
      */
     String eventSchedPiSetprio();
 
@@ -184,7 +183,6 @@ public interface IKernelAnalysisEventLayout {
      * "compat_syscall_exit".
      *
      * @return the event name
-     * @since 2.0
      */
     String eventCompatSyscallExitPrefix();
 
@@ -194,8 +192,6 @@ public interface IKernelAnalysisEventLayout {
      * the spawn process as well as fork.
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventSchedProcessExec();
 
@@ -204,8 +200,6 @@ public interface IKernelAnalysisEventLayout {
      * probably soon be scheduled in.
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventSchedProcessWakeup();
 
@@ -215,8 +209,6 @@ public interface IKernelAnalysisEventLayout {
      * wakeup.
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventSchedProcessWakeupNew();
 
@@ -225,7 +217,6 @@ public interface IKernelAnalysisEventLayout {
      * from the waking context.
      *
      * @return The name of the event
-     * @since 2.2
      */
     default String eventSchedProcessWaking() {
         return "sched_waking"; //$NON-NLS-1$
@@ -242,8 +233,6 @@ public interface IKernelAnalysisEventLayout {
      * </ul>
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventHRTimerStart();
 
@@ -258,8 +247,6 @@ public interface IKernelAnalysisEventLayout {
      * </ul>
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventHRTimerCancel();
 
@@ -274,8 +261,6 @@ public interface IKernelAnalysisEventLayout {
      * </ul>
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventHRTimerExpireEntry();
 
@@ -290,8 +275,6 @@ public interface IKernelAnalysisEventLayout {
      * </ul>
      *
      * @return the event name
-     *
-     * @since 2.0
      */
     String eventHRTimerExpireExit();
 
@@ -302,7 +285,6 @@ public interface IKernelAnalysisEventLayout {
      * of ram.
      *
      * @return the event name
-     * @since 2.0
      */
     String eventKmemPageAlloc();
 
@@ -312,7 +294,6 @@ public interface IKernelAnalysisEventLayout {
      * In Linux, this typically means a page of ram was just freed
      *
      * @return the event name
-     * @since 2.0
      */
     String eventKmemPageFree();
 
@@ -330,7 +311,6 @@ public interface IKernelAnalysisEventLayout {
      * This event describes the entries into IPIs.
      *
      * @return the IPI list
-     * @since 2.1
      */
     default Collection<String> getIPIIrqVectorsEntries() {
         return Collections.emptyList();
@@ -350,7 +330,6 @@ public interface IKernelAnalysisEventLayout {
      * This event describes the exits into IPIs.
      *
      * @return the IPI list
-     * @since 2.1
      */
     default Collection<String> getIPIIrqVectorsExits() {
         return Collections.emptyList();
@@ -452,7 +431,6 @@ public interface IKernelAnalysisEventLayout {
      * like "zsh" or "cmd.exe".
      *
      * @return the name of the command field
-     * @since 2.0
      */
     String fieldComm();
 
@@ -469,7 +447,6 @@ public interface IKernelAnalysisEventLayout {
      * <ul>
      *
      * @return the name of the field with a name
-     * @since 2.0
      */
     String fieldName();
 
@@ -486,7 +463,6 @@ public interface IKernelAnalysisEventLayout {
      * </ul>
      *
      * @return The name of the field with a status
-     * @since 2.0
      */
     String fieldStatus();
 
@@ -496,7 +472,6 @@ public interface IKernelAnalysisEventLayout {
      * scheduler switch operation.
      *
      * @return the name of the field with the last command to be run
-     * @since 2.0
      */
     String fieldPrevComm();
 
@@ -517,7 +492,6 @@ public interface IKernelAnalysisEventLayout {
      * just use the file handle.
      *
      * @return the name of the field with the file name
-     * @since 2.0
      */
     String fieldFilename();
 
@@ -527,7 +501,6 @@ public interface IKernelAnalysisEventLayout {
      * it has two processes so it has a previous and next priority.
      *
      * @return the name of the field with the thread or process' priority
-     * @since 1.0
      */
     String fieldPrio();
 
@@ -536,7 +509,6 @@ public interface IKernelAnalysisEventLayout {
      * pi_setprio event event to show the new priority of the thread or process.
      *
      * @return the name of the field with the thread or process' new priority
-     * @since 1.0
      */
     String fieldNewPrio();
 
@@ -545,7 +517,6 @@ public interface IKernelAnalysisEventLayout {
      * event to show the priority of the thread being scheduled out.
      *
      * @return the name of the field with the priority of the previous thread
-     * @since 2.0
      */
     String fieldPrevPrio();
 
@@ -554,7 +525,6 @@ public interface IKernelAnalysisEventLayout {
      * event to show the priority of the next thread or process.
      *
      * @return the name of the field with the thread or process' next priority
-     * @since 1.0
      */
     String fieldNextPrio();
 
@@ -562,7 +532,6 @@ public interface IKernelAnalysisEventLayout {
      * The field with the hrtimer. The hrtimer holds the timer instance.
      *
      * @return the name of the hrTimer field
-     * @since 2.0
      */
     String fieldHRtimer();
 
@@ -571,7 +540,6 @@ public interface IKernelAnalysisEventLayout {
      * time. of the hrtimer.
      *
      * @return the name of the expires field
-     * @since 2.0
      */
     String fieldHRtimerExpires();
 
@@ -580,7 +548,6 @@ public interface IKernelAnalysisEventLayout {
      * the absolute earliest expiry time of the hrtimer.
      *
      * @return the name of the softexpires field
-     * @since 2.0
      */
     String fieldHRtimerSoftexpires();
 
@@ -589,7 +556,6 @@ public interface IKernelAnalysisEventLayout {
      * expiry callback function.
      *
      * @return the name of the function field
-     * @since 2.0
      */
     String fieldHRtimerFunction();
 
@@ -597,7 +563,6 @@ public interface IKernelAnalysisEventLayout {
      * The field of the now value. The now field holds the current time.
      *
      * @return the name of the now field (hrtimer)
-     * @since 2.0
      */
     String fieldHRtimerNow();
 
@@ -605,7 +570,6 @@ public interface IKernelAnalysisEventLayout {
      * The field containing the return value of a system call exit.
      *
      * @return The name of return field
-     * @since 2.0
      */
     default String fieldSyscallRet() {
         return "ret"; //$NON-NLS-1$
@@ -619,7 +583,6 @@ public interface IKernelAnalysisEventLayout {
      * A request to a block IO has just been inserted in the waiting queue.
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockRqInsert() {
         return "block_rq_insert"; //$NON-NLS-1$
@@ -630,7 +593,6 @@ public interface IKernelAnalysisEventLayout {
      * queue to the driver queue. It is being served.
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockRqIssue() {
         return "block_rq_issue"; //$NON-NLS-1$
@@ -640,7 +602,6 @@ public interface IKernelAnalysisEventLayout {
      * A request to a block IO has just been completed.
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockRqComplete() {
         return "block_rq_complete"; //$NON-NLS-1$
@@ -650,7 +611,6 @@ public interface IKernelAnalysisEventLayout {
      * A BIO operation is being merged at the front of a waiting request
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockBioFrontmerge() {
         return "block_bio_frontmerge"; //$NON-NLS-1$
@@ -660,7 +620,6 @@ public interface IKernelAnalysisEventLayout {
      * A BIO operation is being merged at the back of a waiting request
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockBioBackmerge() {
         return "block_bio_backmerge"; //$NON-NLS-1$
@@ -670,7 +629,6 @@ public interface IKernelAnalysisEventLayout {
      * 2 requests previously inserted in the waiting queue are being merged
      *
      * @return The name of the event
-     * @since 2.0
      */
     default String eventBlockRqMerge() {
         return "block_rq_merge"; //$NON-NLS-1$
@@ -681,7 +639,6 @@ public interface IKernelAnalysisEventLayout {
      * device to a device ID
      *
      * @return The name of the event
-     * @since 2.0
      */
     default @Nullable String eventStatedumpBlockDevice() {
         return null;
@@ -691,7 +648,6 @@ public interface IKernelAnalysisEventLayout {
      * The field containing the device ID
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockDeviceId() {
         return "dev"; //$NON-NLS-1$
@@ -701,7 +657,6 @@ public interface IKernelAnalysisEventLayout {
      * The field with the first sector of a block operation
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockSector() {
         return "sector"; //$NON-NLS-1$
@@ -711,7 +666,6 @@ public interface IKernelAnalysisEventLayout {
      * The field with the number of sectors involved in a block operation
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockNrSector() {
         return "nr_sector"; //$NON-NLS-1$
@@ -721,7 +675,6 @@ public interface IKernelAnalysisEventLayout {
      * The field containing the read/write flag of a block operation
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockRwbs() {
         return "rwbs"; //$NON-NLS-1$
@@ -732,7 +685,6 @@ public interface IKernelAnalysisEventLayout {
      * operation is being merged
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockRqSector() {
         return "rq_sector"; //$NON-NLS-1$
@@ -742,7 +694,6 @@ public interface IKernelAnalysisEventLayout {
      * The field with the sector of the request being merged in another one
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldBlockNextRqSector() {
         return "nextrq_sector"; //$NON-NLS-1$
@@ -752,7 +703,6 @@ public interface IKernelAnalysisEventLayout {
      * The field containing the name of the disk
      *
      * @return The name of the field
-     * @since 2.0
      */
     default String fieldDiskname() {
         return "diskname"; //$NON-NLS-1$
@@ -763,7 +713,6 @@ public interface IKernelAnalysisEventLayout {
      * exit).
      *
      * @return the name of the field with the IRQ number
-     * @since 2.1
      */
     default String fieldIPIVector() {
         return "vector"; //$NON-NLS-1$
@@ -784,7 +733,6 @@ public interface IKernelAnalysisEventLayout {
      * time with the option CONFIG_FORCE_MAX_ZONEORDER.
      *
      * @return the name of the order field
-     * @since 2.2
      */
     default @Nullable String fieldOrder() {
         return null;
@@ -798,7 +746,6 @@ public interface IKernelAnalysisEventLayout {
      * Get the list of events indicating that a packet is sent on the network
      *
      * @return The name of the packet send event
-     * @since 2.1
      */
     default Collection<String> eventsNetworkSend() {
         return Collections.EMPTY_SET;
@@ -809,7 +756,6 @@ public interface IKernelAnalysisEventLayout {
      * network
      *
      * @return The collection of names of the packet receive event
-     * @since 2.1
      */
     default Collection<String> eventsNetworkReceive() {
         return Collections.EMPTY_SET;
@@ -821,7 +767,6 @@ public interface IKernelAnalysisEventLayout {
      *
      * @return The path of the sequence number field in the TCP header of a
      *         network packet
-     * @since 2.1
      */
     default String[] fieldPathTcpSeq() {
         return new String[] { "seq" }; //$NON-NLS-1$
@@ -833,7 +778,6 @@ public interface IKernelAnalysisEventLayout {
      *
      * @return The name of the acknowledgment number field in the TCP header of
      *         a network packet
-     * @since 2.1
      */
     default String[] fieldPathTcpAckSeq() {
         return new String[] { "ack_seq" }; //$NON-NLS-1$
@@ -843,7 +787,6 @@ public interface IKernelAnalysisEventLayout {
      * The path of the field corresponding to the flags field of a TCP header
      *
      * @return The path of the flags field in the TCP header of a network packet
-     * @since 2.1
      */
     default String[] fieldPathTcpFlags() {
         return new String[] { "flags" }; //$NON-NLS-1$
@@ -857,7 +800,6 @@ public interface IKernelAnalysisEventLayout {
      * KVM kernel event indicating that virtual machine code is being run
      *
      * @return The name of the kvm entry event
-     * @since 2.1
      */
     default Collection<String> eventsKVMEntry() {
         return Collections.EMPTY_SET;
@@ -868,7 +810,6 @@ public interface IKernelAnalysisEventLayout {
      * but rather hypervisor-specific code
      *
      * @return The name of the kvm exit event
-     * @since 2.1
      */
     default Collection<String> eventsKVMExit() {
         return Collections.EMPTY_SET;

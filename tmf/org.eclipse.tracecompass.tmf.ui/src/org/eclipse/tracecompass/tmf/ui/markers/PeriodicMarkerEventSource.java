@@ -30,8 +30,6 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.MarkerEvent;
 
 /**
  * Marker event source that produces periodic markers.
- *
- * @since 2.0
  */
 @NonNullByDefault
 public class PeriodicMarkerEventSource implements IMarkerEventSource {
@@ -67,7 +65,6 @@ public class PeriodicMarkerEventSource implements IMarkerEventSource {
          *            the reference marker time in time units
          * @param index
          *            the reference marker index
-         * @since 2.3
          */
         public Reference(long time, long index) {
             this.time = time;

@@ -141,7 +141,6 @@ public final class TmfTraceUtils {
      * @return Integer of the first result of the
      *         {@link ITmfEventAspect#resolve(ITmfEvent)} that returns non null
      *         for the event or {@code null} otherwise
-     * @since 2.0
      */
     public static <T extends ITmfEventAspect<Integer>> @Nullable Integer resolveIntEventAspectOfClassForEvent(
             ITmfTrace trace, Class<T> aspectClass, ITmfEvent event) {
@@ -164,7 +163,6 @@ public final class TmfTraceUtils {
      * @return true if it is binary else false
      * @throws IOException
      *             if IOException occurs
-     * @since 1.2
      */
     public static boolean isText(File file) throws IOException {
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
@@ -201,7 +199,6 @@ public final class TmfTraceUtils {
      *            operation
      * @return The first event matching the predicate, or null if the end of the
      *         trace was reached and no event was found
-     * @since 2.1
      */
     public static @Nullable ITmfEvent getNextEventMatching(ITmfTrace trace, long startRank,
             Predicate<ITmfEvent> predicate, @Nullable IProgressMonitor monitor) {
@@ -244,7 +241,6 @@ public final class TmfTraceUtils {
      *            operation
      * @return The first event found matching the predicate, or null if the
      *         beginning of the trace was reached and no event was found
-     * @since 2.1
      */
     public static @Nullable ITmfEvent getPreviousEventMatching(ITmfTrace trace, long startRank,
             Predicate<ITmfEvent> predicate, @Nullable IProgressMonitor monitor) {

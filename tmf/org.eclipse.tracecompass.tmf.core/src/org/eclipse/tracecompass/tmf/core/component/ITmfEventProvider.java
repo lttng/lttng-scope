@@ -53,7 +53,6 @@ public interface ITmfEventProvider extends ITmfComponent {
      * Get the event type this provider handles
      *
      * @return The type of ITmfEvent
-     * @since 2.0
      */
     Class<? extends ITmfEvent> getEventType();
 

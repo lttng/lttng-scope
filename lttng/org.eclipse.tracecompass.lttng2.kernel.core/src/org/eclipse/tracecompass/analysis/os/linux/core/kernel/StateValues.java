@@ -21,7 +21,6 @@ import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
  * history file.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @SuppressWarnings("javadoc")
 public interface StateValues {

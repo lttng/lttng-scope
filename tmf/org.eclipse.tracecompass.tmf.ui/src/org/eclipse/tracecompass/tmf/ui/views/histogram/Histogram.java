@@ -252,7 +252,6 @@ public abstract class Histogram implements ControlListener, PaintListener, KeyLi
      *            A parent composite
      * @param sendTimeAlignSignals
      *            Flag to send time alignment signals or not
-     * @since 1.0
      */
     public Histogram(final TmfView view, final Composite parent, final boolean sendTimeAlignSignals) {
         fParentView = view;
@@ -908,8 +907,6 @@ public abstract class Histogram implements ControlListener, PaintListener, KeyLi
      * be drawn to where the last point could be drawn.
      *
      * @return the offset in pixels
-     *
-     * @since 1.0
      */
     public int getPointAreaOffset() {
         Point absCanvas = fCanvas.toDisplay(0, 0);
@@ -925,8 +922,6 @@ public abstract class Histogram implements ControlListener, PaintListener, KeyLi
      * This also matches the width that the use can select.
      *
      * @return the width in pixels
-     *
-     * @since 1.0
      */
     public int getPointAreaWidth() {
         if (!fCanvas.isDisposed()) {

@@ -96,9 +96,6 @@ public class TmfEventsCache {
             return event.getRank();
         }
 
-        /**
-         * @since 1.0
-         */
         @Override
         public String getName() {
             return event.getName();
@@ -175,7 +172,6 @@ public class TmfEventsCache {
      *
      * @param filter
      *            The ITmfFilter to apply.
-     * @since 2.0
      */
     public void applyFilter(ITmfFilter filter) {
         fFilter = filter;

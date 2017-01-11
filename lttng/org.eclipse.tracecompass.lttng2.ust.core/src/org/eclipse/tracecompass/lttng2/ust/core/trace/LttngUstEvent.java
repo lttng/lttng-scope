@@ -24,7 +24,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
  * Event type for use in LTTng-UST traces.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 @NonNullByDefault
 public class LttngUstEvent extends CtfTmfEvent implements ITmfSourceLookup {

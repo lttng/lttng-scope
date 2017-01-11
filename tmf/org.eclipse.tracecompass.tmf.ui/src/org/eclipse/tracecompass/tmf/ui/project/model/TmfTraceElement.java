@@ -63,7 +63,6 @@ import com.ibm.icu.text.NumberFormat;
  * methods to instantiate <code>ITmfTrace</code> and <code>ITmfEvent</code> as
  * well as editor ID from the trace type extension definition.
  *
- * @version 1.0
  * @author Francois Chouinard
  */
 public class TmfTraceElement extends TmfCommonProjectElement implements IActionFilter, IPropertySource2 {
@@ -218,18 +217,12 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
     // Operations
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public @NonNull Image getIcon() {
         Image icon = super.getIcon();
         return (icon == null ? TmfProjectModelIcons.DEFAULT_TRACE_ICON : icon);
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public String getLabelText() {
         if (getParent() instanceof TmfExperimentElement) {

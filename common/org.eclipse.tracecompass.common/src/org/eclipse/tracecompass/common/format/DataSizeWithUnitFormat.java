@@ -24,7 +24,6 @@ import org.eclipse.jdt.annotation.NonNull;
  * thousand's unit, with at most 3 decimals.
  *
  * @author Matthew Khouzam
- * @since 2.0
  */
 public class DataSizeWithUnitFormat extends Format {
 
@@ -81,9 +80,6 @@ public class DataSizeWithUnitFormat extends Format {
         return toAppendTo.append(obj);
     }
 
-    /**
-     * @since 2.2
-     */
     @Override
     public Number parseObject(String source, ParsePosition pos) {
         Number number = NumberFormat.getInstance().parse(source, pos);

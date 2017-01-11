@@ -86,7 +86,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      * @param value
      *            the value in nanoseconds
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp fromNanos(long value) {
         return new TmfNanoTimestamp(value);
@@ -98,7 +97,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      * @param value
      *            the value in microseconds
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp fromMicros(long value) {
         return create(value, ITmfTimestamp.MICROSECOND_SCALE);
@@ -110,7 +108,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      * @param value
      *            the value in milliseconds
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp fromMillis(long value) {
         return create(value, ITmfTimestamp.MILLISECOND_SCALE);
@@ -122,7 +119,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      * @param value
      *            the value in seconds
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp fromSeconds(long value) {
         return new TmfSecondTimestamp(value);
@@ -134,7 +130,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      * @param bufferIn
      *            the byte buffer to read the timestamp from.
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp create(ByteBuffer bufferIn) {
         return create(bufferIn.getLong(), bufferIn.getInt());
@@ -150,7 +145,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      *            nanosecond would be -9 (10e-9) and a megasecond would be 6
      *            (10e6)
      * @return the timestamp
-     * @since 2.0
      */
     public static @NonNull ITmfTimestamp create(long value, int scale) {
         if (scale == ITmfTimestamp.NANOSECOND_SCALE) {
@@ -172,7 +166,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      *            the buffer to write to
      * @param ts
      *            the timestamp to write
-     * @since 2.0
      */
     public static void serialize(ByteBuffer bufferOut, ITmfTimestamp ts) {
         bufferOut.putLong(ts.getValue());
@@ -288,8 +281,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
 
     /**
      * Scaling factors to help scale
-     *
-     * @since 2.0
      */
     protected static final long SCALING_FACTORS[] = new long[] {
             1L,
@@ -434,7 +425,6 @@ public abstract class TmfTimestamp implements ITmfTimestamp {
      *         of Min(Max(MIN_VALUE, left+right), MAX_VALUE).
      * @see <a href="http://en.wikipedia.org/wiki/Saturation_arithmetic">
      *      Saturation arithmetic</a>
-     * @since 2.0
      * @deprecated use {@link SaturatedArithmetic#add(long, long)} instead
      */
     @Deprecated

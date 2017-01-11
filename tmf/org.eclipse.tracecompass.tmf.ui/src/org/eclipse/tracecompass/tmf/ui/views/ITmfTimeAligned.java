@@ -19,8 +19,6 @@ import org.eclipse.tracecompass.tmf.ui.signal.TmfTimeViewAlignmentInfo;
  * interface provides information about the current state of alignment of the
  * view as well as performs alignment operations in case the views become
  * misaligned (resize, moved, etc).
- *
- * @since 1.0
  */
 public interface ITmfTimeAligned {
 

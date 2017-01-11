@@ -111,7 +111,6 @@ public interface ITimeGraphEntry {
      * @param pattern
      *            The pattern to match
      * @return True if it matches, false otherwise.
-     * @since 2.0
      */
     boolean matches(@NonNull Pattern pattern);
 }

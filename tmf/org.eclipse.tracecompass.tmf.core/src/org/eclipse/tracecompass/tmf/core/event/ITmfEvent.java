@@ -69,7 +69,6 @@ public interface ITmfEvent extends IAdaptable {
      * Gets the name of the event
      *
      * @return the name of the event, same as getType().getName()
-     * @since 1.0
      */
     @NonNull String getName();
 }

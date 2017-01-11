@@ -18,7 +18,6 @@ import org.eclipse.tracecompass.tmf.core.analysis.ondemand.IOnDemandAnalysisRepo
  * execution of an on-demand analysis.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class TmfReportElement extends TmfProjectModelElement {
 

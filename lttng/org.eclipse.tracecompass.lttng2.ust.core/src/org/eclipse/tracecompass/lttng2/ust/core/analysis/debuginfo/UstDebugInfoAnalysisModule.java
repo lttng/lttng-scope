@@ -43,7 +43,6 @@ import com.google.common.collect.ImmutableList;
  * pointer) contexts to address/line numbers via debug information.
  *
  * @author Alexandre Montplaisir
- * @since 2.0
  */
 public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
 

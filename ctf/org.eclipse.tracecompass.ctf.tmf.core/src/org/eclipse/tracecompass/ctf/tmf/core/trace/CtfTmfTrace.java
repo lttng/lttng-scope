@@ -81,7 +81,6 @@ import com.google.common.collect.ImmutableSet;
 /**
  * The CTf trace handler
  *
- * @version 1.0
  * @author Matthew khouzam
  */
 public class CtfTmfTrace extends TmfTrace
@@ -94,8 +93,6 @@ public class CtfTmfTrace extends TmfTrace
 
     /**
      * Clock offset property
-     *
-     * @since 1.2
      */
     public static final String CLOCK_OFFSET = "clock_offset"; //$NON-NLS-1$
 
@@ -106,8 +103,6 @@ public class CtfTmfTrace extends TmfTrace
 
     /**
      * Event aspects available for all CTF traces
-     *
-     * @since 1.0
      */
     protected static final @NonNull Collection<@NonNull ITmfEventAspect<?>> CTF_ASPECTS = ImmutableList.of(
             TmfBaseAspects.getTimestampAspect(),
@@ -170,7 +165,6 @@ public class CtfTmfTrace extends TmfTrace
      *
      * @param eventFactory
      *            The event factory to use to generate trace events
-     * @since 2.0
      */
     protected CtfTmfTrace(@NonNull CtfTmfEventFactory eventFactory) {
         super();
@@ -470,9 +464,6 @@ public class CtfTmfTrace extends TmfTrace
     // ITmfPropertiesProvider
     // -------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public Map<String, String> getProperties() {
         Map<String, String> properties = new HashMap<>();
@@ -573,7 +564,6 @@ public class CtfTmfTrace extends TmfTrace
      * Get the event factory for this trace to generate new events for it.
      *
      * @return The event factory
-     * @since 2.0
      */
     public @NonNull CtfTmfEventFactory getEventFactory() {
         return fEventFactory;
@@ -618,7 +608,6 @@ public class CtfTmfTrace extends TmfTrace
      * @param context
      *            The iterator will initially be pointing to this context
      * @return A new CtfIterator object
-     * @since 1.0
      */
     public ITmfContext createIteratorFromContext(CtfTmfContext context) {
         return fIteratorManager.getIterator(context);
@@ -631,7 +620,6 @@ public class CtfTmfTrace extends TmfTrace
      * @param context
      *            The last context that was pointed to by the iterator (this is
      *            the 'key' to find the correct iterator to dispose).
-     * @since 1.0
      */
     public void disposeContext(CtfTmfContext context) {
         fIteratorManager.removeIterator(context);
@@ -707,7 +695,6 @@ public class CtfTmfTrace extends TmfTrace
      *         file size of the trace and divides it by a factor and the average
      *         event size, this is not accurate but can give a ball park figure
      *         of how much is done.
-     * @since 2.1
      */
     @Override
     public int size() {
@@ -726,7 +713,6 @@ public class CtfTmfTrace extends TmfTrace
 
     /**
      * @return the number of events divided a reduction factor. Is monotonic.
-     * @since 2.1
      */
     @Override
     public int progress() {

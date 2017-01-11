@@ -87,8 +87,6 @@ public class Utils {
     /**
      * Ellipsis character, used to shorten strings that don't fit in their
      * target area.
-     *
-     * @since 2.1
      */
     public static final String ELLIPSIS = "…"; //$NON-NLS-1$
 
@@ -364,7 +362,6 @@ public class Utils {
      * @param isTransparent
      *            If <code>true</code> the background will be transparent, otherwise it will be opaque
      * @return The number of characters written
-     * @since 2.0
      */
     public static int drawText(GC gc, String text, int x, int y, int width, int height, boolean isCentered, boolean isTransparent) {
         if (width < 1 || text.isEmpty()) {

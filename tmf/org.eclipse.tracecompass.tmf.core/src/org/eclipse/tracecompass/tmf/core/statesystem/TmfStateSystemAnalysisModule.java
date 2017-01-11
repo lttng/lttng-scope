@@ -159,9 +159,6 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
         return fStateSystem;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public boolean waitForInitialization() {
         try {
@@ -172,9 +169,6 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
         return fInitializationSucceeded;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public boolean isQueryable(long ts) {
         /* Return true if there is no state provider available (the analysis is not being built) */
@@ -193,7 +187,6 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
      * Get the file where to save the results of the analysis
      *
      * @return The file to save the results in
-     * @since 2.3
      */
     @VisibleForTesting
     protected @Nullable File getSsFile() {
@@ -532,9 +525,6 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
     // ITmfPropertiesProvider
     // ------------------------------------------------------------------------
 
-    /**
-     * @since 2.0
-     */
     @Override
     public @NonNull Map<@NonNull String, @NonNull String> getProperties() {
         Map<@NonNull String, @NonNull String> properties = super.getProperties();

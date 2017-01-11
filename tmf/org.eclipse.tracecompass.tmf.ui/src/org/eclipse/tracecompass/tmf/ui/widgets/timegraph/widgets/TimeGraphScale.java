@@ -205,7 +205,6 @@ public class TimeGraphScale extends TimeGraphBaseControl implements
      * Get the list of visible ticks of the time axis.
      *
      * @return the list of visible tick x-coordinates
-     * @since 2.0
      */
     public List<Integer> getTickList() {
         return fTickList;

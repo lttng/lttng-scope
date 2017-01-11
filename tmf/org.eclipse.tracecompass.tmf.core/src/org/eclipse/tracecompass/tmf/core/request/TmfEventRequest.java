@@ -184,7 +184,6 @@ public abstract class TmfEventRequest implements ITmfEventRequest {
      *            The dependency level. Use different dependency level for
      *            requests that have a dependency with each other. They will
      *            be serviced separately.
-     * @since 2.0
      */
     public TmfEventRequest(Class<? extends ITmfEvent> dataType,
             TmfTimeRange range,
@@ -288,15 +287,11 @@ public abstract class TmfEventRequest implements ITmfEventRequest {
         fEventFilter = provider;
     }
 
-    /** @since 2.0 */
     @Override
     public int getDependencyLevel() {
         return fDependencyLevel;
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public @Nullable Throwable getFailureCause() {
         return fFailureCause;
@@ -407,9 +402,6 @@ public abstract class TmfEventRequest implements ITmfEventRequest {
         fCompletedLatch.countDown();
     }
 
-    /**
-     * @since 2.0
-     */
     @Override
     public void fail(Exception e) {
         fRequestFailed = true;

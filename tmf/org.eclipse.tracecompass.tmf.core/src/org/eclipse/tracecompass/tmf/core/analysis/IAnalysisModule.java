@@ -103,7 +103,6 @@ public interface IAnalysisModule extends ITmfComponent {
      * @throws TmfAnalysisException
      *             This exception should be thrown if the trace is set more than
      *             once
-     * @since 1.0
      */
     boolean setTrace(@NonNull ITmfTrace trace) throws TmfAnalysisException;
 
@@ -142,7 +141,6 @@ public interface IAnalysisModule extends ITmfComponent {
      * used for the dependency level of event requests.
      *
      * @return The dependency level of this analysis
-     * @since 2.0
      */
     default int getDependencyLevel() {
         return 0;
@@ -233,7 +231,6 @@ public interface IAnalysisModule extends ITmfComponent {
      * @return Whether the analysis is ready to be queried at the timestamp. A
      *         value of <code>false</code> means the caller may wait until the
      *         analysis has reached the desired time.
-     * @since 2.0
      */
     default boolean isQueryable(long ts) {
         return true;
