@@ -13,6 +13,8 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis;
 
+import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.analysis.internal.TmfAnalysisModuleSourceConfigElement;
@@ -30,6 +33,8 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.resource.Requirement;
 
 /**
  * Analysis module helper for modules provided by a plugin's configuration
@@ -105,15 +110,40 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
         return ContributorFactoryOSGi.resolve(fCe.getContributor());
     }
 
+    private static Class<?> loadClassForBundle(Bundle bundle, String className) throws ClassNotFoundException {
+        BundleRevision br = bundle.adapt(BundleRevision.class);
+        if ((br.getTypes() & BundleRevision.TYPE_FRAGMENT) != 0) {
+            /*
+             * The bundle is a fragment, we cannot use Bundle.loadClass()
+             * directly (it returns null). We will retrieve the host bundle and
+             * use that instead to load the class.
+             */
+            /* Fragments should have exactly 1 host requirement */
+            Requirement req = br.getRequirements(BundleRevision.HOST_NAMESPACE).get(0);
+            String directive = req.getDirectives().get("filter"); //$NON-NLS-1$
+            directive = checkNotNull(directive);
+            /*
+             * The string will will look like this:
+             * (osgi.wiring.host=org.eclipse.tracecompass.tmf.core)
+             */
+            String hostPluginName = directive.substring(18, directive.length() - 1);
+
+            Bundle hostBundle = Platform.getBundle(hostPluginName);
+            return hostBundle.loadClass(className);
+        }
+        return bundle.loadClass(className);
+    }
+
     private boolean appliesToTraceClass(Class<? extends ITmfTrace> traceclass) {
         boolean applies = false;
 
         /* Get the module's applying tracetypes */
         final IConfigurationElement[] tracetypeCE = fCe.getChildren(TmfAnalysisModuleSourceConfigElement.TRACETYPE_ELEM);
         for (IConfigurationElement element : tracetypeCE) {
-            Class<?> applyclass;
+            String className = null;
             try {
-                applyclass = getBundle().loadClass(element.getAttribute(TmfAnalysisModuleSourceConfigElement.CLASS_ATTR));
+                className = element.getAttribute(TmfAnalysisModuleSourceConfigElement.CLASS_ATTR);
+                Class<?> applyclass = loadClassForBundle(getBundle(), className);
                 String classAppliesVal = element.getAttribute(TmfAnalysisModuleSourceConfigElement.APPLIES_ATTR);
                 boolean classApplies = true;
                 if (classAppliesVal != null) {
@@ -131,7 +161,7 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
                     }
                 }
             } catch (ClassNotFoundException | InvalidRegistryObjectException e) {
-                Activator.logError("Error in applies to trace", e); //$NON-NLS-1$
+                Activator.logError("Error in applies to trace. Trying to load class " + className, e); //$NON-NLS-1$
             }
         }
         return applies;
