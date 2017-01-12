@@ -74,6 +74,7 @@
                 <plugin id="org.eclipse.core.net.linux.x86"/>
                 <plugin id="org.eclipse.linuxtools.dataviewers.piechart"/>
                 <plugin id="org.eclipse.tracecompass.common.core"/>
+                <plugin id="org.eclipse.tracecompass.datastore.core"/>
                 <plugin id="org.eclipse.tracecompass.ctf.core"/>
                 <plugin id="org.eclipse.tracecompass.ctf.parser"/>
                 <plugin id="org.eclipse.tracecompass.statesystem.core"/>
@@ -102,7 +103,7 @@
                 <plugin id="org.eclipse.wst.validation"/>
                 <plugin id="org.eclipse.wst.validation.ui"/>
                 <plugin id="org.eclipse.wst.xml.core"/>
-              <plugin id="org.eclipse.wst.xml.ui"/>
+                <plugin id="org.eclipse.wst.xml.ui"/>
               </excludes>
             </configuration>
           </execution>
