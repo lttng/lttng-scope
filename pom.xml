@@ -124,6 +124,7 @@
     <module>lttng</module>
     <module>releng</module>
     <module>tmf</module>
+    <module>tmf2</module>
   </modules>
 
   <build>

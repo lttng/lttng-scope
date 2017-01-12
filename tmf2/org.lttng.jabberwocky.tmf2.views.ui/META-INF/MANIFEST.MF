@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Version: 2.3.0.qualifier
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.lttng.jabberwocky.tmf2.views.ui;singleton:=true
+Bundle-Activator: org.lttng.jabberwocky.tmf2.views.ui.activator.internal.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.tracecompass.common
+Export-Package: org.lttng.jabberwocky.tmf2.views.ui.activator.internal;x-internal:=true
