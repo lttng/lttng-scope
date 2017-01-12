@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.viewers.table;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.Collections;
@@ -130,7 +130,7 @@ public class TmfSimpleTableViewer extends TmfViewer {
             if (fDirection == SWT.DOWN) {
                 comparator = fComparator;
             } else {
-                comparator = checkNotNull(Collections.reverseOrder(fComparator));
+                comparator = requireNonNull(Collections.reverseOrder(fComparator));
             }
             IContentProvider contentProvider = fTableViewer.getContentProvider();
             if (contentProvider instanceof DeferredContentProvider) {

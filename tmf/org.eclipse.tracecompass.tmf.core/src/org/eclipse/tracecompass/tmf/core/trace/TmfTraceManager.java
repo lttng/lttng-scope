@@ -14,7 +14,7 @@
 
 package org.eclipse.tracecompass.tmf.core.trace;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -409,7 +409,7 @@ public final class TmfTraceManager {
         for (Map.Entry<ITmfTrace, TmfTraceContext> entry : fTraces.entrySet()) {
             final ITmfTrace trace = entry.getKey();
             if (beginTs.intersects(getValidTimeRange(trace)) || endTs.intersects(getValidTimeRange(trace))) {
-                TmfTraceContext prevCtx = checkNotNull(entry.getValue());
+                TmfTraceContext prevCtx = requireNonNull(entry.getValue());
 
                 /*
                  * We want to update the selection range, but keep everything
@@ -437,7 +437,7 @@ public final class TmfTraceManager {
     public synchronized void windowRangeUpdated(final TmfWindowRangeUpdatedSignal signal) {
         for (Map.Entry<ITmfTrace, TmfTraceContext> entry : fTraces.entrySet()) {
             final ITmfTrace trace = entry.getKey();
-            final TmfTraceContext prevCtx = checkNotNull(entry.getValue());
+            final TmfTraceContext prevCtx = requireNonNull(entry.getValue());
 
             final TmfTimeRange validTr = getValidTimeRange(trace);
             if (validTr == null) {

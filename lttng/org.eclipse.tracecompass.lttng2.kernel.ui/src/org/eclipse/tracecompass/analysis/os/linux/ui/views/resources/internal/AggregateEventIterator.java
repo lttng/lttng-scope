@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.ui.views.resources.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -117,6 +117,6 @@ public class AggregateEventIterator implements Iterator<@NonNull ITimeEvent> {
             }
         }
 
-        return checkNotNull(next);
+        return requireNonNull(next);
     }
 }

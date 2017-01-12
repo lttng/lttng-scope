@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -201,7 +201,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
             return;
         }
 
-        final @NonNull ITmfStateSystemBuilder ss = checkNotNull(getStateSystemBuilder());
+        final @NonNull ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
 
         String name = event.getName();
         Integer index = fEventNames.get(name);
@@ -380,7 +380,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
          * Dlopen/load events do not have an is_pic field, it is taken for
          * granted.
          */
-        boolean isPic = (statedump ? (checkNotNull(isPicValue).longValue() != 0) : true);
+        boolean isPic = (statedump ? (requireNonNull(isPicValue).longValue() != 0) : true);
         long ts = getBinInfoTimeStamp(event, vpid, statedump);
 
         boolean hasBuildId = (hasBuildIdValue != 0);
@@ -414,7 +414,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
          * Use lower-case encoding, since this is how eu-readelf
          * displays it.
          */
-        String buildId = checkNotNull(BaseEncoding.base16().encode(longArrayToByteArray(buildIdArray)).toLowerCase());
+        String buildId = requireNonNull(BaseEncoding.base16().encode(longArrayToByteArray(buildIdArray)).toLowerCase());
 
         long ts = getBinInfoTimeStamp(event, vpid, statedump);
         PendingBinInfo p = retrievePendingBinInfo(vpid, baddr);

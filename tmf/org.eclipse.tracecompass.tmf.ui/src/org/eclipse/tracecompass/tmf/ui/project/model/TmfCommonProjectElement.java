@@ -16,7 +16,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -244,7 +244,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
             parent = parent.getParent();
         }
         IPath path = getResource().getFullPath().makeRelativeTo(parent.getPath());
-        return checkNotNull(path.toString());
+        return requireNonNull(path.toString());
     }
 
     /**

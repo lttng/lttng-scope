@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +38,7 @@ public abstract class TmfOnDemandAnalysisElement extends TmfProjectModelElement
      * scripts, etc.) so we do this outside of the UI thread. The executor will
      * reserve one thread to check all on-demand analyses sequentially.
      */
-    private static final ExecutorService EXECUTOR = checkNotNull(Executors.newFixedThreadPool(1));
+    private static final ExecutorService EXECUTOR = requireNonNull(Executors.newFixedThreadPool(1));
 
     /**
      * Worker thread sent to the executor
@@ -98,7 +98,7 @@ public abstract class TmfOnDemandAnalysisElement extends TmfProjectModelElement
 
     @Override
     public TmfOnDemandAnalysesElement getParent() {
-        return checkNotNull((TmfOnDemandAnalysesElement) super.getParent());
+        return requireNonNull((TmfOnDemandAnalysesElement) super.getParent());
     }
 
     @Override

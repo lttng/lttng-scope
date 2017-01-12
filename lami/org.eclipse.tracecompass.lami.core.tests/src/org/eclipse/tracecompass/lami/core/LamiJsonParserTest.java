@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -202,12 +202,12 @@ public class LamiJsonParserTest {
         List<LamiTableEntryAspect> aspects = perSyscallClass.getAspects();
 
         assertEquals("read()", aspects.get(0).resolveString(readEntry));
-        assertEquals(2398123.0, checkNotNull(aspects.get(1).resolveNumber(readEntry)).doubleValue(), DELTA);
-        assertEquals(8123982.0, checkNotNull(aspects.get(2).resolveNumber(readEntry)).doubleValue(), DELTA);
-        assertEquals(223232.0, checkNotNull(aspects.get(3).resolveNumber(readEntry)).doubleValue(), DELTA);
-        assertEquals(98233.0, checkNotNull(aspects.get(4).resolveNumber(readEntry)).doubleValue(), DELTA);
-        assertEquals(1293828.0, checkNotNull(aspects.get(5).resolveNumber(readEntry)).doubleValue(), DELTA);
-        assertEquals(1195595.0, checkNotNull(aspects.get(6).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(2398123.0, requireNonNull(aspects.get(1).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(8123982.0, requireNonNull(aspects.get(2).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(223232.0, requireNonNull(aspects.get(3).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(98233.0, requireNonNull(aspects.get(4).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(1293828.0, requireNonNull(aspects.get(5).resolveNumber(readEntry)).doubleValue(), DELTA);
+        assertEquals(1195595.0, requireNonNull(aspects.get(6).resolveNumber(readEntry)).doubleValue(), DELTA);
         assertNull(aspects.get(7).resolveString(readEntry));
     }
 

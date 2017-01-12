@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.trace;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -91,7 +91,7 @@ public final class TmfTraceUtils {
         List<@NonNull T> modules = new ArrayList<>();
         for (IAnalysisModule module : analysisModules) {
             if (moduleClass.isAssignableFrom(module.getClass())) {
-                modules.add(checkNotNull(moduleClass.cast(module)));
+                modules.add(requireNonNull(moduleClass.cast(module)));
             }
         }
         for (ITmfEventProvider child : trace.getChildren()) {

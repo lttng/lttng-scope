@@ -9,7 +9,7 @@
 
 package org.lttng.jabberwocky.tmf2.project.ui.activator.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -56,7 +56,7 @@ public class Activator extends AbstractUIPlugin {
      * @return the shared instance
      */
     public static Activator getDefault() {
-        return checkNotNull(plugin);
+        return requireNonNull(plugin);
     }
 
     // ------------------------------------------------------------------------

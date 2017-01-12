@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,7 +137,7 @@ public class CtfTmfEvent extends TmfEvent
 
         fEventDeclaration = declaration;
         fSourceCpu = cpu;
-        fEventName = checkNotNull(declaration.getName());
+        fEventName = requireNonNull(declaration.getName());
         fEvent = eventDefinition;
         fChannel = channel;
         fStream = fEvent.getDeclaration().getStream();
@@ -355,7 +355,7 @@ public class CtfTmfEvent extends TmfEvent
             return false;
         }
         /* super.equals() checks that the classes are the same */
-        CtfTmfEvent other = checkNotNull((CtfTmfEvent) obj);
+        CtfTmfEvent other = requireNonNull((CtfTmfEvent) obj);
         if (getCPU() != other.getCPU()) {
             return false;
         }

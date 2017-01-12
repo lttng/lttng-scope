@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.core.timestamp;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -160,7 +160,7 @@ public final class TmfTimePreferences {
     }
 
     private static String computeSubSecFormat(Map<String, String> prefsMap) {
-        String sSecFormat = checkNotNull(prefsMap.get(ITmfTimePreferencesConstants.SUBSEC));
+        String sSecFormat = requireNonNull(prefsMap.get(ITmfTimePreferencesConstants.SUBSEC));
         String sSecFieldSep = prefsMap.get(ITmfTimePreferencesConstants.SSEC_DELIMITER);
         String ssecFmt = sSecFormat.replaceAll(" ", sSecFieldSep); //$NON-NLS-1$
         return ssecFmt;

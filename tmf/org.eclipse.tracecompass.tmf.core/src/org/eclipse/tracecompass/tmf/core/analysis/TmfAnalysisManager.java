@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,7 +129,7 @@ public class TmfAnalysisManager {
                 }
             }
         }
-        return checkNotNull(ImmutableMultimap.copyOf(fAnalysisModules));
+        return requireNonNull(ImmutableMultimap.copyOf(fAnalysisModules));
     }
 
     /**
@@ -174,7 +174,7 @@ public class TmfAnalysisManager {
                 fParameterProviders.put(analysisId, new ArrayList<Class<? extends IAnalysisParameterProvider>>());
             }
             /* We checked via containsKey() above, get() should not return null */
-            checkNotNull(fParameterProviders.get(analysisId)).add(paramProvider);
+            requireNonNull(fParameterProviders.get(analysisId)).add(paramProvider);
         }
     }
 
@@ -215,7 +215,7 @@ public class TmfAnalysisManager {
                 return providerSet;
             }
             /* We checked  via containsKey, get() should not return null */
-            List<Class<? extends IAnalysisParameterProvider>> parameterProviders = checkNotNull(fParameterProviders.get(module.getId()));
+            List<Class<? extends IAnalysisParameterProvider>> parameterProviders = requireNonNull(fParameterProviders.get(module.getId()));
             for (Class<? extends IAnalysisParameterProvider> providerClass : parameterProviders) {
                 try {
                     IAnalysisParameterProvider provider = fParamProviderInstances.get(providerClass);

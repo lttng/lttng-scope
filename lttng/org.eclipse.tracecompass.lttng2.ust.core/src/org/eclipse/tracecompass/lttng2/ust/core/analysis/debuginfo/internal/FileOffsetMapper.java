@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -175,7 +175,7 @@ public final class FileOffsetMapper {
      */
     private static final LoadingCache<FileOffset, @NonNull Iterable<Addr2lineInfo>> ADDR2LINE_INFO_CACHE;
     static {
-        ADDR2LINE_INFO_CACHE = checkNotNull(CacheBuilder.newBuilder()
+        ADDR2LINE_INFO_CACHE = requireNonNull(CacheBuilder.newBuilder()
             .maximumSize(CACHE_SIZE)
             .build(new CacheLoader<FileOffset, @NonNull Iterable<Addr2lineInfo>>() {
                 @Override
@@ -218,7 +218,7 @@ public final class FileOffsetMapper {
         }
         // TODO We should also eventually verify that the passed buildId matches
         // the file we are attempting to open.
-        FileOffset fo = new FileOffset(checkNotNull(file.toString()), buildId, offset);
+        FileOffset fo = new FileOffset(requireNonNull(file.toString()), buildId, offset);
 
         @Nullable Iterable<Addr2lineInfo> callsites = ADDR2LINE_INFO_CACHE.getUnchecked(fo);
         LOGGER.finer(() -> String.format("[FileOffsetMapper:RequestComplete] callsites=%s", callsites)); //$NON-NLS-1$

@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal.KernelStateProvider;
@@ -37,7 +37,7 @@ public class KernelAnalysisModule extends TmfStateSystemAnalysisModule {
 
     @Override
     protected @NonNull ITmfStateProvider createStateProvider() {
-        ITmfTrace trace = checkNotNull(getTrace());
+        ITmfTrace trace = requireNonNull(getTrace());
         IKernelAnalysisEventLayout layout;
 
         if (trace instanceof IKernelTrace) {

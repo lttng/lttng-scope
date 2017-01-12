@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.common;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNullContents;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -42,8 +42,8 @@ public class NonNullUtilsTest {
         @Nullable Stream<String> c           = (new ArrayList<String>()).stream();
         @Nullable Stream<@Nullable String> d = (new ArrayList<@Nullable String>()).stream();
         Stream<@Nullable String> e           = (new ArrayList<@Nullable String>()).stream();
-        @NonNull Stream<String> f            = checkNotNull((new ArrayList<String>()).stream());
-        @NonNull Stream<@NonNull String> g   = checkNotNull((new ArrayList<@NonNull String>()).stream());
+        @NonNull Stream<String> f            = requireNonNull((new ArrayList<String>()).stream());
+        @NonNull Stream<@NonNull String> g   = requireNonNull((new ArrayList<@NonNull String>()).stream());
 
         @NonNull Stream<@NonNull String> checkedA = checkNotNullContents(a);
         @NonNull Stream<@NonNull String> checkedB = checkNotNullContents(b);

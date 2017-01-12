@@ -16,7 +16,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.views.timegraph;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +82,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.common.log.TraceCompassLog;
 import org.eclipse.tracecompass.tmf.core.resources.ITmfMarker;
 import org.eclipse.tracecompass.tmf.core.signal.TmfMarkerEventSourceUpdatedSignal;
@@ -707,7 +706,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
         public void run(IProgressMonitor monitor) {
             LOGGER.info(() -> getLogMessage("BuildThreadStart", "trace=" + fBuildTrace.getName())); //$NON-NLS-1$ //$NON-NLS-2$
 
-            buildEntryList(fBuildTrace, fParentTrace, NonNullUtils.checkNotNull(monitor));
+            buildEntryList(fBuildTrace, fParentTrace, requireNonNull(monitor));
             synchronized (fBuildJobMap) {
                 fBuildJobMap.remove(fBuildTrace);
             }
@@ -2187,7 +2186,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                             ((ITimeGraphEntryComparator) comparator).setDirection(direction);
                         }
                         if (direction != SWT.DOWN) {
-                            comparator = checkNotNull(Collections.reverseOrder(comparator));
+                            comparator = requireNonNull(Collections.reverseOrder(comparator));
                         }
                         setEntryComparator(comparator);
                         fIsRevealSelection = true;
@@ -2234,7 +2233,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                         ((ITimeGraphEntryComparator) comparator).setDirection(fSortDirection);
                     }
                     if (fSortDirection != SWT.DOWN) {
-                        comparator = checkNotNull(Collections.reverseOrder(comparator));
+                        comparator = requireNonNull(Collections.reverseOrder(comparator));
                     }
                     setEntryComparator(comparator);
                 }

@@ -15,7 +15,7 @@
 
 package org.eclipse.tracecompass.tmf.core.event;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -145,7 +145,7 @@ public class TmfEventField implements ITmfEventField {
     public static final @NonNull ITmfEventField makeRoot(final String[] labels) {
         final ITmfEventField[] fields = new ITmfEventField[labels.length];
         for (int i = 0; i < labels.length; i++) {
-            String label = checkNotNull(labels[i]);
+            String label = requireNonNull(labels[i]);
             fields[i] = new TmfEventField(label, null, null);
         }
         // Return a new root field;

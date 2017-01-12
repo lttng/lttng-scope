@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class TmfOnDemandAnalysesElement extends TmfProjectModelElement {
         IPath nodePath = getResource().getFullPath();
 
         analyses.forEach(analysis -> {
-            IFolder analysisRes = checkNotNull(root.getFolder(nodePath.append(analysis.getName())));
+            IFolder analysisRes = requireNonNull(root.getFolder(nodePath.append(analysis.getName())));
             TmfOnDemandAnalysisElement elem;
 
             if (analysis.isUserDefined()) {

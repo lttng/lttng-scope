@@ -14,7 +14,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.trace;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
@@ -226,7 +226,7 @@ public class CtfTmfTrace extends TmfTrace
                         final StructDeclaration fields = ied.getFields();
                         if (fields != null) {
                             for (String fieldName : fields.getFieldsList()) {
-                                content.add(new TmfEventField(checkNotNull(fieldName), null, null));
+                                content.add(new TmfEventField(requireNonNull(fieldName), null, null));
                             }
                         }
 
@@ -235,7 +235,7 @@ public class CtfTmfTrace extends TmfTrace
                         if (streamContextNames.isEmpty()) {
                             if (streamContexts != null) {
                                 for (String fieldName : streamContexts.getFieldsList()) {
-                                    streamContextNames.add(new TmfEventField(checkNotNull(CtfConstants.CONTEXT_FIELD_PREFIX + fieldName), null, null));
+                                    streamContextNames.add(new TmfEventField(requireNonNull(CtfConstants.CONTEXT_FIELD_PREFIX + fieldName), null, null));
                                 }
                             }
                         }
@@ -247,7 +247,7 @@ public class CtfTmfTrace extends TmfTrace
                                     null,
                                     content.toArray(new ITmfEventField[content.size()]));
 
-                            ctfTmfEventType = new CtfTmfEventType(checkNotNull(ied.getName()), contentTree);
+                            ctfTmfEventType = new CtfTmfEventType(requireNonNull(ied.getName()), contentTree);
                             fContainedEventTypes.put(ctfTmfEventType.getName(), ctfTmfEventType);
                         }
                     }

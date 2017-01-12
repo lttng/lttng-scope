@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.trace.iterator.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,7 +183,7 @@ public class CtfIteratorManager {
             final int pos = fRnd.nextInt(size);
             final CtfTmfContext victim = fRandomAccess.get(pos);
             fRandomAccess.set(pos, context);
-            CtfIterator elem = checkNotNull(fMap.remove(victim));
+            CtfIterator elem = requireNonNull(fMap.remove(victim));
             if (elem.isClosed()) {
                 /*
                  * In case the iterator streams have been closed, we need to

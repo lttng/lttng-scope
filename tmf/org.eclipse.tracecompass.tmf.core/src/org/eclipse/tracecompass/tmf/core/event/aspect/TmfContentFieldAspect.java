@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 
@@ -48,7 +48,7 @@ public class TmfContentFieldAspect implements ITmfEventAspect<Object> {
 
     private TmfContentFieldAspect(String aspectName, String helpText, @NonNull String... fieldPath) {
         fAspectName = aspectName;
-        fFieldPath = checkNotNull(Arrays.copyOf(fieldPath, fieldPath.length));
+        fFieldPath = requireNonNull(Arrays.copyOf(fieldPath, fieldPath.length));
         fHelpText = helpText;
     }
 

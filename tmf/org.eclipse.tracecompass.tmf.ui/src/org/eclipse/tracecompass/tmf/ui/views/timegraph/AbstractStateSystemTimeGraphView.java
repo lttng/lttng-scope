@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.views.timegraph;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,7 +150,7 @@ public abstract class AbstractStateSystemTimeGraphView extends AbstractTimeGraph
                     LOGGER.config(() -> "[TimeGraphView:ZoomThreadGettingStates]"); //$NON-NLS-1$
                     if (!fullRange) {
                         for (TimeGraphEntry entry : entryList) {
-                            zoom(checkNotNull(entry), ss, fullStates, prevFullState, monitor);
+                            zoom(requireNonNull(entry), ss, fullStates, prevFullState, monitor);
                         }
                     }
                     /* Refresh the arrows when zooming */

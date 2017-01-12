@@ -13,6 +13,8 @@
 
 package org.eclipse.tracecompass.tmf.core.statesystem;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -25,7 +27,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.StateSystemFactory;
@@ -530,16 +531,16 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
         Map<@NonNull String, @NonNull String> properties = super.getProperties();
 
         StateSystemBackendType backend = getBackendType();
-        properties.put(NonNullUtils.checkNotNull(Messages.TmfStateSystemAnalysisModule_PropertiesBackend), backend.name());
+        properties.put(requireNonNull(Messages.TmfStateSystemAnalysisModule_PropertiesBackend), backend.name());
         switch (backend) {
         case FULL:
         case PARTIAL:
             File htFile = getSsFile();
             if (htFile != null) {
                 if (htFile.exists()) {
-                    properties.put(NonNullUtils.checkNotNull(Messages.TmfStateSystemAnalysisModule_PropertiesFileSize), FileUtils.byteCountToDisplaySize(htFile.length()));
+                    properties.put(requireNonNull(Messages.TmfStateSystemAnalysisModule_PropertiesFileSize), FileUtils.byteCountToDisplaySize(htFile.length()));
                 } else {
-                    properties.put(NonNullUtils.checkNotNull(Messages.TmfStateSystemAnalysisModule_PropertiesFileSize), NonNullUtils.checkNotNull(Messages.TmfStateSystemAnalysisModule_PropertiesAnalysisNotExecuted));
+                    properties.put(requireNonNull(Messages.TmfStateSystemAnalysisModule_PropertiesFileSize), requireNonNull(Messages.TmfStateSystemAnalysisModule_PropertiesAnalysisNotExecuted));
                 }
             }
             break;

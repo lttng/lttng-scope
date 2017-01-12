@@ -15,7 +15,7 @@
 
 package org.eclipse.tracecompass.tmf.core.component;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfEventThread;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfProviderManager;
@@ -533,7 +532,7 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
        synchronized (fChildren) {
            for (TmfEventProvider child : fChildren) {
                if (clazz.isAssignableFrom(child.getClass())) {
-                   list.add(checkNotNull(clazz.cast(child)));
+                   list.add(requireNonNull(clazz.cast(child)));
                }
            }
        }
@@ -554,7 +553,7 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
 
     @Override
     public ITmfEventProvider getChild(int index) {
-        return NonNullUtils.checkNotNull(fChildren.get(index));
+        return requireNonNull(fChildren.get(index));
     }
 
     @Override

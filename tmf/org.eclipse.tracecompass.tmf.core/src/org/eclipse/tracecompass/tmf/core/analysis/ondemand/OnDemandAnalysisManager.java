@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis.ondemand;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +45,7 @@ public final class OnDemandAnalysisManager {
 
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    private final LoadingCache<ITmfTrace, Set<IOnDemandAnalysis>> analysisCache = checkNotNull(CacheBuilder.newBuilder()
+    private final LoadingCache<ITmfTrace, Set<IOnDemandAnalysis>> analysisCache = requireNonNull(CacheBuilder.newBuilder()
             .weakKeys()
             .softValues()
             .build(new CacheLoader<ITmfTrace, Set<IOnDemandAnalysis>>() {
@@ -131,7 +131,7 @@ public final class OnDemandAnalysisManager {
      *         empty, but not null
      */
     public Set<IOnDemandAnalysis> getOndemandAnalyses(ITmfTrace trace) {
-        return checkNotNull(analysisCache.getUnchecked(trace));
+        return requireNonNull(analysisCache.getUnchecked(trace));
     }
 
     /**

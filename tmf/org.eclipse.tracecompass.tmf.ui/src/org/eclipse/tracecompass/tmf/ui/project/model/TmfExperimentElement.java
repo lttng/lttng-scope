@@ -15,7 +15,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -206,7 +206,7 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
         }
 
         /* super.refreshChildren() above should have set this */
-        TmfViewsElement viewsElement = checkNotNull(getChildElementViews());
+        TmfViewsElement viewsElement = requireNonNull(getChildElementViews());
 
         Map<String, TmfAnalysisElement> analysisMap = new HashMap<>();
         for (TmfAnalysisElement analysis : getAvailableAnalysis()) {

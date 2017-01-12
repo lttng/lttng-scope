@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +53,7 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
 
     @Override
     protected ITmfStateProvider createStateProvider() {
-        return new UstDebugInfoStateProvider(checkNotNull(getTrace()));
+        return new UstDebugInfoStateProvider(requireNonNull(getTrace()));
     }
 
     @Override

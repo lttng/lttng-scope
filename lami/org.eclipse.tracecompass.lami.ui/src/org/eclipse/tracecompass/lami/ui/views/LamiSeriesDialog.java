@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.views;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
@@ -117,13 +117,13 @@ public class LamiSeriesDialog extends SelectionDialog {
         fYContentProvider = yContentProvider;
         fYLabelProvider = yLabelProvider;
         series = new ArrayList<>();
-        fSeriesContentProvider = checkNotNull(ArrayContentProvider.getInstance());
+        fSeriesContentProvider = requireNonNull(ArrayContentProvider.getInstance());
 
         fXCheckBoxOptions = new ArrayList<>();
         fYCheckBoxOptions = new ArrayList<>();
         fSeriesListViewer = new TableViewer(parentShell);
         fXTableViewer = new TableViewer(parentShell);
-        fYCheckBoxViewer = checkNotNull(CheckboxTableViewer.newCheckList(parentShell, SWT.NONE));
+        fYCheckBoxViewer = requireNonNull(CheckboxTableViewer.newCheckList(parentShell, SWT.NONE));
 
         /* Dynamic restriction per chart type */
         switch (chartType) {
@@ -267,7 +267,7 @@ public class LamiSeriesDialog extends SelectionDialog {
         fXTableViewer.setLabelProvider(fXLabelProvider);
         fXTableViewer.setInput(fXInputElement);
 
-        fYCheckBoxViewer = checkNotNull(CheckboxTableViewer.newCheckList(sash1, SWT.BORDER));
+        fYCheckBoxViewer = requireNonNull(CheckboxTableViewer.newCheckList(sash1, SWT.BORDER));
         fYCheckBoxViewer.setLabelProvider(fYLabelProvider);
         fYCheckBoxViewer.setContentProvider(fYContentProvider);
         fYCheckBoxViewer.setInput(fYInputElement);
@@ -384,7 +384,7 @@ public class LamiSeriesDialog extends SelectionDialog {
                             TableItem[] items = fYCheckBoxViewer.getTable().getItems();
                             Arrays.stream(items).forEach(item -> {
                                 LamiTableEntryAspect aspect = (LamiTableEntryAspect) item.getData();
-                                if (!aspect.arePropertiesEqual((LamiTableEntryAspect) checkNotNull(selections.getFirstElement()))) {
+                                if (!aspect.arePropertiesEqual((LamiTableEntryAspect) requireNonNull(selections.getFirstElement()))) {
                                     fYCheckBoxViewer.remove(aspect);
                                 }
                             });

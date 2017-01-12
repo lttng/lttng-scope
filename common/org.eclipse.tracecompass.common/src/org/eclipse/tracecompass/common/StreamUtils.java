@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.common;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -89,7 +89,7 @@ public final class StreamUtils {
             Stream<T> ret = Stream.concat(
                     Stream.of(element),
                     fGetChildrenFunction.apply(element).flatMap(this::flatten));
-            return checkNotNull(ret);
+            return requireNonNull(ret);
         }
     }
 }

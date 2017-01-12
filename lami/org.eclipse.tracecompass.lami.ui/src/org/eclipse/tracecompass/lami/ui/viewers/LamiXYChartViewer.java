@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.math.BigDecimal;
@@ -638,7 +638,7 @@ public abstract class LamiXYChartViewer extends TmfViewer implements ILamiViewer
         List<LamiTableEntryAspect> yAxisAspects = new ArrayList<>();
 
         for (String colName : getChartModel().getYSeriesColumns()) {
-            yAxisAspects.add(checkNotNull(getAspectFromName(getResultTable().getTableClass().getAspects(), colName)));
+            yAxisAspects.add(requireNonNull(getAspectFromName(getResultTable().getTableClass().getAspects(), colName)));
         }
 
         return yAxisAspects;
@@ -654,7 +654,7 @@ public abstract class LamiXYChartViewer extends TmfViewer implements ILamiViewer
         List<LamiTableEntryAspect> xAxisAspects = new ArrayList<>();
 
         for (String colName : getChartModel().getXSeriesColumns()) {
-            xAxisAspects.add(checkNotNull(getAspectFromName(getResultTable().getTableClass().getAspects(), colName)));
+            xAxisAspects.add(requireNonNull(getAspectFromName(getResultTable().getTableClass().getAspects(), colName)));
         }
 
         return xAxisAspects;
@@ -711,13 +711,13 @@ public abstract class LamiXYChartViewer extends TmfViewer implements ILamiViewer
         Rectangle chartRect = fChart.getClientArea();
         Rectangle plotRect = fChart.getPlotArea().getClientArea();
 
-        ITitle chartTitle = checkNotNull(fChart.getTitle());
+        ITitle chartTitle = requireNonNull(fChart.getTitle());
         refreshDisplayTitle(chartTitle, fChartTitle, chartRect.width);
 
-        ITitle xTitle = checkNotNull(fChart.getAxisSet().getXAxis(0).getTitle());
+        ITitle xTitle = requireNonNull(fChart.getAxisSet().getXAxis(0).getTitle());
         refreshDisplayTitle(xTitle, getXTitle(), plotRect.width);
 
-        ITitle yTitle = checkNotNull(fChart.getAxisSet().getYAxis(0).getTitle());
+        ITitle yTitle = requireNonNull(fChart.getAxisSet().getYAxis(0).getTitle());
         refreshDisplayTitle(yTitle, getYTitle(), plotRect.height);
     }
 
@@ -892,7 +892,7 @@ public abstract class LamiXYChartViewer extends TmfViewer implements ILamiViewer
             max = min.add(BigDecimal.ONE);
         }
 
-        return new LamiGraphRange(checkNotNull(min), checkNotNull(max));
+        return new LamiGraphRange(requireNonNull(min), requireNonNull(max));
     }
 
     /**

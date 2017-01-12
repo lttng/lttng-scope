@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.stubs.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +45,7 @@ public class TestExperimentAnalysis extends TmfStateSystemAnalysisModule {
 
     @Override
     protected ITmfStateProvider createStateProvider() {
-        return new TestExpStateSystemProvider(checkNotNull(getTrace()));
+        return new TestExpStateSystemProvider(requireNonNull(getTrace()));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class TestExperimentAnalysis extends TmfStateSystemAnalysisModule {
 
         @Override
         protected void eventHandle(ITmfEvent event) {
-            ITmfStateSystemBuilder ss = checkNotNull(getStateSystemBuilder());
+            ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
             if (!fTraces.contains(event.getTrace())) {
                 try {
                     int quarkId = ss.getQuarkAbsoluteAndAdd(TRACE_QUARK_NAME);

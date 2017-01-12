@@ -12,7 +12,10 @@
 
 package org.eclipse.tracecompass.common;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -62,12 +65,11 @@ public final class NonNullUtils {
      * @return A {@link NonNull} reference to the same object
      * @throws NullPointerException
      *             If the reference was actually null
+     * @deprecated Use {@link Objects#requireNonNull} directly instead.
      */
+    @Deprecated
     public static <T> @NonNull T checkNotNull(@Nullable T obj) {
-        if (obj == null) {
-            throw new NullPointerException();
-        }
-        return obj;
+        return requireNonNull(obj);
     }
 
     /**
@@ -86,7 +88,7 @@ public final class NonNullUtils {
         if (stream == null) {
             throw new NullPointerException();
         }
-        return checkNotNull(stream.<@NonNull T> map(t -> checkNotNull(t)));
+        return requireNonNull(stream.<@NonNull T> map(t -> requireNonNull(t)));
     }
 
     /**
@@ -102,7 +104,7 @@ public final class NonNullUtils {
         if (array == null) {
             throw new NullPointerException();
         }
-        Arrays.stream(array).forEach(elem -> checkNotNull(elem));
+        Arrays.stream(array).forEach(elem -> requireNonNull(elem));
         @SuppressWarnings("null")
         @NonNull T[] ret = (@NonNull T[]) array;
         return ret;

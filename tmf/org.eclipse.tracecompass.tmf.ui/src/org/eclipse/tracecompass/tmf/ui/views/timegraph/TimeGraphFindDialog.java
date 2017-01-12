@@ -7,6 +7,8 @@
  *****************************************************************************/
 package org.eclipse.tracecompass.tmf.ui.views.timegraph;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,7 +48,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.ui.views.timegraph.AbstractTimeGraphView.FindTarget;
@@ -625,7 +626,7 @@ class TimeGraphFindDialog extends Dialog {
         for (ITimeGraphEntry entry : topInput) {
             listEntries(items, entry);
         }
-        int startPosition = findTarget.getSelection() == null ? 0 : NonNullUtils.checkNotNull(items.get(findTarget.getSelection()));
+        int startPosition = findTarget.getSelection() == null ? 0 : requireNonNull(items.get(findTarget.getSelection()));
 
         int index = findNext(findString, startPosition, items, options);
 
@@ -639,7 +640,7 @@ class TimeGraphFindDialog extends Dialog {
         }
 
         // Send the entry found to target
-        findTarget.selectAndReveal(NonNullUtils.checkNotNull(items.inverse().get(index)));
+        findTarget.selectAndReveal(requireNonNull(items.inverse().get(index)));
         return true;
     }
 

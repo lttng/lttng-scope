@@ -14,7 +14,7 @@
 
 package org.eclipse.tracecompass.tmf.core.request.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Queue;
 import java.util.Timer;
@@ -78,7 +78,7 @@ public class TmfRequestExecutor implements Executor {
      */
     public TmfRequestExecutor() {
         // We know the canonical name is not null because we use ExecutorService only
-        String canonicalName = checkNotNull(fExecutor.getClass().getCanonicalName());
+        String canonicalName = requireNonNull(fExecutor.getClass().getCanonicalName());
         fExecutorName = canonicalName.substring(canonicalName.lastIndexOf('.') + 1);
         if (TmfCoreTracer.isComponentTraced()) {
             TmfCoreTracer.trace(fExecutor + " created"); //$NON-NLS-1$

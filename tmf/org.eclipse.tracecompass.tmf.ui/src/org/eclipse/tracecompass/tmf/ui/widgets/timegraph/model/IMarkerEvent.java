@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.graphics.RGBA;
@@ -25,7 +25,7 @@ import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 public interface IMarkerEvent extends ITimeEvent {
 
     /** Bookmarks marker category */
-    @NonNull String BOOKMARKS = checkNotNull(Messages.MarkerEvent_Bookmarks);
+    @NonNull String BOOKMARKS = requireNonNull(Messages.MarkerEvent_Bookmarks);
 
     /**
      * Get this marker's category.

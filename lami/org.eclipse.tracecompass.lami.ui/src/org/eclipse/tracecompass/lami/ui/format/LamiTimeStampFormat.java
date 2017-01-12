@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.format;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 import java.text.FieldPosition;
@@ -42,7 +42,7 @@ public class LamiTimeStampFormat extends Format {
      * The default constructor
      */
     public LamiTimeStampFormat() {
-        fFormat = checkNotNull(TmfTimestampFormat.getDefaulTimeFormat());
+        fFormat = requireNonNull(TmfTimestampFormat.getDefaulTimeFormat());
     }
 
     /**
@@ -54,7 +54,7 @@ public class LamiTimeStampFormat extends Format {
      *            The external (real value) range shown to the user
      */
     public LamiTimeStampFormat(LamiGraphRange internalRange, LamiGraphRange externalRange) {
-        fFormat = checkNotNull(TmfTimestampFormat.getDefaulTimeFormat());
+        fFormat = requireNonNull(TmfTimestampFormat.getDefaulTimeFormat());
         fInternalRange = internalRange;
         fExternalRange = externalRange;
     }
@@ -127,12 +127,12 @@ public class LamiTimeStampFormat extends Format {
             @Nullable LamiGraphRange externalRange = fExternalRange;
             if (internalRange == null || externalRange == null) {
                 long time = ((Number)obj).longValue();
-                return checkNotNull(toAppendTo.append(fFormat.format(time)));
+                return requireNonNull(toAppendTo.append(fFormat.format(time)));
             }
 
             if (internalRange.getDelta().compareTo(BigDecimal.ZERO) == 0 ||
                     externalRange.getDelta().compareTo(BigDecimal.ZERO) == 0) {
-                return checkNotNull(toAppendTo.append(fFormat.format(externalRange.getMinimum().doubleValue())));
+                return requireNonNull(toAppendTo.append(fFormat.format(externalRange.getMinimum().doubleValue())));
             }
 
             /* Find external value before formatting */
@@ -142,7 +142,7 @@ public class LamiTimeStampFormat extends Format {
                     .divide(internalRange.getDelta(), BIG_DECIMAL_DIVISION_SCALE, BigDecimal.ROUND_DOWN)
                     .add(externalRange.getMinimum());
 
-            return checkNotNull(toAppendTo.append(fFormat.format(externalValue.longValue())));
+            return requireNonNull(toAppendTo.append(fFormat.format(externalValue.longValue())));
         }
         return new StringBuffer();
     }
@@ -158,6 +158,6 @@ public class LamiTimeStampFormat extends Format {
      * @return the pattern string.
      */
     public String getPattern() {
-        return checkNotNull(fFormat.toPattern());
+        return requireNonNull(fFormat.toPattern());
     }
 }

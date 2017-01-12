@@ -18,6 +18,8 @@
 
 package org.eclipse.tracecompass.tmf.ui.viewers.events;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -120,7 +122,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.component.ITmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
@@ -290,7 +291,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                     fSelectedBeginRank = fSelectedRank;
                 }
                 if (e.item.getData(Key.TIMESTAMP) instanceof ITmfTimestamp) {
-                    final ITmfTimestamp ts = NonNullUtils.checkNotNull((ITmfTimestamp) e.item.getData(Key.TIMESTAMP));
+                    final ITmfTimestamp ts = requireNonNull((ITmfTimestamp) e.item.getData(Key.TIMESTAMP));
                     if (fTable.getSelectionIndices().length == 1) {
                         fSelectedBeginTimestamp = ts;
                     }

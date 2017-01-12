@@ -12,6 +12,8 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -33,7 +35,6 @@ import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.SysEntryHandler;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal.SysExitHandler;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.lttng2.kernel.core.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
@@ -174,7 +175,7 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
         final String eventName = event.getName();
 
         try {
-            final ITmfStateSystemBuilder ss = NonNullUtils.checkNotNull(getStateSystemBuilder());
+            final ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
             /*
              * Feed event to the history system if it's known to cause a state
              * transition.

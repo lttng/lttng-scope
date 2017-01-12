@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.markers;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,6 +244,6 @@ public class PeriodicMarkerEventSource implements IMarkerEventSource {
      * @return the marker label
      */
     public String getMarkerLabel(long index) {
-        return checkNotNull(Long.toString(index));
+        return requireNonNull(Long.toString(index));
     }
 }

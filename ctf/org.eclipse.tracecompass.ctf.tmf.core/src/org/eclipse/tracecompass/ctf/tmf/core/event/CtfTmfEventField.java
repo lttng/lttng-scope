@@ -17,7 +17,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,7 +187,7 @@ public abstract class CtfTmfEventField extends TmfEventField {
         } else if (fieldDef instanceof VariantDefinition) {
             VariantDefinition varDef = (VariantDefinition) fieldDef;
 
-            String curFieldName = checkNotNull(varDef.getCurrentFieldName());
+            String curFieldName = requireNonNull(varDef.getCurrentFieldName());
             IDefinition curFieldDef = varDef.getCurrentField();
             if (curFieldDef != null) {
                 CtfTmfEventField subField = CtfTmfEventField.parseField(curFieldDef, curFieldName);

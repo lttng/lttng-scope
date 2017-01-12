@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.views;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public final class LamiReportViewTabPage extends TmfComponent {
         super(table.getTableClass().getTableTitle());
         fResultTable = table;
         fSelectionIndexes = new HashSet<>();
-        fSelectionIndexes = getIndexOfEntriesIntersectingTimerange(checkNotNull(fResultTable), TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange());
+        fSelectionIndexes = getIndexOfEntriesIntersectingTimerange(requireNonNull(fResultTable), TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange());
 
         fControl = parent;
 
@@ -192,9 +192,9 @@ public final class LamiReportViewTabPage extends TmfComponent {
             break;
         }
 
-        IStructuredContentProvider contentProvider = checkNotNull(ArrayContentProvider.getInstance());
+        IStructuredContentProvider contentProvider = requireNonNull(ArrayContentProvider.getInstance());
 
-        Shell shell = checkNotNull(getControl().getShell());
+        Shell shell = requireNonNull(getControl().getShell());
         LamiSeriesDialog dialog = new LamiSeriesDialog(shell,
                 chartType,
                 xStringColumn,
@@ -203,14 +203,14 @@ public final class LamiReportViewTabPage extends TmfComponent {
                 new LabelProvider() {
                     @Override
                     public String getText(@Nullable Object element) {
-                        return ((LamiTableEntryAspect) checkNotNull(element)).getLabel();
+                        return ((LamiTableEntryAspect) requireNonNull(element)).getLabel();
                     }
                 },
                 contentProvider,
                 new LabelProvider() {
                     @Override
                     public String getText(@Nullable Object element) {
-                        return ((LamiTableEntryAspect) checkNotNull(element)).getLabel();
+                        return ((LamiTableEntryAspect) requireNonNull(element)).getLabel();
                     }
                 });
         dialog.setTitle(chartType.toString() + ' ' + Messages.LamiSeriesDialog_creation);

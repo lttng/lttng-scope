@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -72,8 +72,8 @@ public class LamiScatterViewer extends LamiXYChartViewer {
     private final Map<ISeries, List<Integer>> fIndexMapping;
 
     /* Use a scale from 0 to 1 internally for both axes */
-    private LamiGraphRange fXInternalRange = new LamiGraphRange(checkNotNull(BigDecimal.ZERO), checkNotNull(BigDecimal.ONE));
-    private LamiGraphRange fYInternalRange = new LamiGraphRange(checkNotNull(BigDecimal.ZERO), checkNotNull(BigDecimal.ONE));
+    private LamiGraphRange fXInternalRange = new LamiGraphRange(requireNonNull(BigDecimal.ZERO), requireNonNull(BigDecimal.ONE));
+    private LamiGraphRange fYInternalRange = new LamiGraphRange(requireNonNull(BigDecimal.ZERO), requireNonNull(BigDecimal.ONE));
 
     private @Nullable LamiGraphRange fXExternalRange = null;
     private @Nullable LamiGraphRange fYExternalRange = null;
@@ -109,7 +109,7 @@ public class LamiScatterViewer extends LamiXYChartViewer {
             xAxisAspects.add(singleXAspect);
         }
 
-        BiMap<@Nullable String, Integer> xMap = checkNotNull(HashBiMap.create());
+        BiMap<@Nullable String, Integer> xMap = requireNonNull(HashBiMap.create());
         boolean xIsLog = graphModel.xAxisIsLog();
 
         boolean areXAspectsContinuous = areAspectsContinuous(xAxisAspects);
@@ -130,7 +130,7 @@ public class LamiScatterViewer extends LamiXYChartViewer {
          * series
          */
         if (!areXAspectsContinuous) {
-            generateLabelMap(xAxisAspects, checkNotNull(xMap));
+            generateLabelMap(xAxisAspects, requireNonNull(xMap));
         } else {
             /*
              * Always clamp the range to min and max
@@ -146,7 +146,7 @@ public class LamiScatterViewer extends LamiXYChartViewer {
          * Create Y series
          */
         List<LamiTableEntryAspect> yAxisAspects = getYAxisAspects();
-        BiMap<@Nullable String, Integer> yMap = checkNotNull(HashBiMap.create());
+        BiMap<@Nullable String, Integer> yMap = requireNonNull(HashBiMap.create());
         boolean yIsLog = graphModel.yAxisIsLog();
 
         boolean areYAspectsContinuous = areAspectsContinuous(yAxisAspects);
@@ -274,8 +274,8 @@ public class LamiScatterViewer extends LamiXYChartViewer {
             ILineSeries scatterSeries = (ILineSeries) getChart().getSeriesSet().createSeries(SeriesType.LINE, name);
             scatterSeries.setLineStyle(LineStyle.NONE);
 
-            double[] xserie = validXDoubleSeries.stream().mapToDouble(elem -> checkNotNull(elem).doubleValue()).toArray();
-            double[] yserie = validYDoubleSeries.stream().mapToDouble(elem -> checkNotNull(elem).doubleValue()).toArray();
+            double[] xserie = validXDoubleSeries.stream().mapToDouble(elem -> requireNonNull(elem).doubleValue()).toArray();
+            double[] yserie = validYDoubleSeries.stream().mapToDouble(elem -> requireNonNull(elem).doubleValue()).toArray();
             scatterSeries.setXSeries(xserie);
             scatterSeries.setYSeries(yserie);
             fIndexMapping.put(scatterSeries, indexSeriesCorrespondance);
@@ -293,8 +293,8 @@ public class LamiScatterViewer extends LamiXYChartViewer {
                 setXUnits(((LamiTimeStampFormat) xAxisFormat).getPattern());
             }
         } else {
-            xTick.setFormat(new LamiLabelFormat(checkNotNull(xMap)));
-            updateTickMark(checkNotNull(xMap), xTick, getChart().getPlotArea().getSize().x);
+            xTick.setFormat(new LamiLabelFormat(requireNonNull(xMap)));
+            updateTickMark(requireNonNull(xMap), xTick, getChart().getPlotArea().getSize().x);
 
             /* Remove vertical grid line */
             getChart().getAxisSet().getXAxis(0).getGrid().setStyle(LineStyle.NONE);
@@ -311,8 +311,8 @@ public class LamiScatterViewer extends LamiXYChartViewer {
                 setYUnits(((LamiTimeStampFormat) yAxisFormat).getPattern());
             }
         } else {
-            yTick.setFormat(new LamiLabelFormat(checkNotNull(yMap)));
-            updateTickMark(checkNotNull(yMap), yTick, getChart().getPlotArea().getSize().y);
+            yTick.setFormat(new LamiLabelFormat(requireNonNull(yMap)));
+            updateTickMark(requireNonNull(yMap), yTick, getChart().getPlotArea().getSize().y);
 
             /* Remove horizontal grid line */
             getChart().getAxisSet().getYAxis(0).getGrid().setStyle(LineStyle.NONE);
@@ -381,10 +381,10 @@ public class LamiScatterViewer extends LamiXYChartViewer {
             @Override
             public void handleEvent(@Nullable Event event) {
                 if (yTick.getFormat() instanceof LamiLabelFormat) {
-                    updateTickMark(checkNotNull(yMap), yTick, getChart().getPlotArea().getSize().y);
+                    updateTickMark(requireNonNull(yMap), yTick, getChart().getPlotArea().getSize().y);
                 }
                 if (xTick.getFormat() instanceof LamiLabelFormat) {
-                    updateTickMark(checkNotNull(xMap), xTick, getChart().getPlotArea().getSize().x);
+                    updateTickMark(requireNonNull(xMap), xTick, getChart().getPlotArea().getSize().x);
                 }
             }
         });
@@ -423,7 +423,7 @@ public class LamiScatterViewer extends LamiXYChartViewer {
             ArrayList<Color> colors = new ArrayList<>();
             for (int i = 0; i < series.getXSeries().length; i++) {
                 Color color = ((ILineSeries) series).getSymbolColor();
-                colors.add(checkNotNull(color));
+                colors.add(requireNonNull(color));
             }
             ((ILineSeries) series).setSymbolColors(colors.toArray(new Color[colors.size()]));
         }
@@ -533,7 +533,7 @@ public class LamiScatterViewer extends LamiXYChartViewer {
                 }
                 if (closest != -1) {
                     /* Translate to global index */
-                    int tableEntryIndex = getTableEntryIndexFromGraphIndex(checkNotNull(oneSeries), closest);
+                    int tableEntryIndex = getTableEntryIndexFromGraphIndex(requireNonNull(oneSeries), closest);
                     if (tableEntryIndex < 0) {
                         continue;
                     }
@@ -566,10 +566,10 @@ public class LamiScatterViewer extends LamiXYChartViewer {
             GC gc = e.gc;
 
             /* Draw the selection */
-            drawSelectedDot(checkNotNull(gc));
+            drawSelectedDot(requireNonNull(gc));
 
             /* Draw the hovering cross */
-            drawHoveringCross(checkNotNull(gc));
+            drawHoveringCross(requireNonNull(gc));
         }
 
         private void drawSelectedDot(GC gc) {

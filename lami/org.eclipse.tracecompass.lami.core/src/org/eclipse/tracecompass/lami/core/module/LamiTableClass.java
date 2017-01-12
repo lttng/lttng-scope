@@ -9,8 +9,6 @@
 
 package org.eclipse.tracecompass.lami.core.module;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class LamiTableClass {
             List<LamiTableEntryAspect> columnAspects, Collection<LamiChartModel> predefinedViews) {
         fTableClassName = tableClassName;
         fTableTitle = tableTitle;
-        fAspects = checkNotNull(ImmutableList.copyOf(columnAspects));
+        fAspects = ImmutableList.copyOf(columnAspects);
         fPredefinedViews = ImmutableList.copyOf(predefinedViews);
     }
 

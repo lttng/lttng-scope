@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.LinuxValues;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.StateValues;
@@ -48,7 +48,7 @@ public class StateDumpHandler extends KernelEventHandler {
         int pid = ((Long) content.getField("pid").getValue()).intValue(); //$NON-NLS-1$
         int ppid = ((Long) content.getField("ppid").getValue()).intValue(); //$NON-NLS-1$
         int status = ((Long) content.getField("status").getValue()).intValue(); //$NON-NLS-1$
-        String name = checkNotNull((String) content.getField("name").getValue()); //$NON-NLS-1$
+        String name = requireNonNull((String) content.getField("name").getValue()); //$NON-NLS-1$
         /*
          * "mode" could be interesting too, but it doesn't seem to be populated
          * with anything relevant for now.

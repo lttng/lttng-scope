@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 
@@ -35,7 +35,7 @@ public class LamiGraphRange {
     public LamiGraphRange(BigDecimal minimum, BigDecimal maximum) {
         fMinimum = minimum;
         fMaximum = maximum;
-        fRange = checkNotNull(maximum.subtract(minimum));
+        fRange = requireNonNull(maximum.subtract(minimum));
     }
 
     /**

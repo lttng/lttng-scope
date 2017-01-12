@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.net.URL;
 
@@ -66,18 +66,18 @@ final class TmfProjectModelIcons {
         ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
         Bundle bundle = Activator.getDefault().getBundle();
 
-        FOLDER_ICON = checkNotNull(sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
-        ONDEMAND_ANALYSES_ICON = checkNotNull(loadIcon(bundle, ONDEMAND_ANALYSES_ICON_FILE));
-        REPORTS_ICON = checkNotNull(loadIcon(bundle, REPORTS_ICON_FILE));
-        BUILT_IN_ONDEMAND_ICON = checkNotNull(loadIcon(bundle, BUILT_IN_ONDEMAND_FILE));
-        USER_DEFINED_ONDEMAND_ICON = checkNotNull(loadIcon(bundle, USER_DEFINED_ONDEMAND_FILE));
+        FOLDER_ICON = requireNonNull(sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
+        ONDEMAND_ANALYSES_ICON = requireNonNull(loadIcon(bundle, ONDEMAND_ANALYSES_ICON_FILE));
+        REPORTS_ICON = requireNonNull(loadIcon(bundle, REPORTS_ICON_FILE));
+        BUILT_IN_ONDEMAND_ICON = requireNonNull(loadIcon(bundle, BUILT_IN_ONDEMAND_FILE));
+        USER_DEFINED_ONDEMAND_ICON = requireNonNull(loadIcon(bundle, USER_DEFINED_ONDEMAND_FILE));
 
-        DEFAULT_TRACE_ICON = checkNotNull(loadIcon(bundle, TRACE_ICON_FILE));
-        DEFAULT_EXPERIMENT_ICON = checkNotNull(loadIcon(bundle, EXPERIMENT_ICON_FILE));
-        DEFAULT_ANALYSIS_ICON = checkNotNull(loadIcon(bundle, ANALYSIS_ICON_FILE));
-        DEFAULT_VIEW_ICON = checkNotNull(loadIcon(bundle, VIEW_ICON_FILE));
-        DEFAULT_REPORT_ICON = checkNotNull(loadIcon(bundle, DEFAULT_REPORT_ICON_FILE));
-        VIEWS_ICON = checkNotNull(loadIcon(bundle, VIEWS_ICON_FILE));
+        DEFAULT_TRACE_ICON = requireNonNull(loadIcon(bundle, TRACE_ICON_FILE));
+        DEFAULT_EXPERIMENT_ICON = requireNonNull(loadIcon(bundle, EXPERIMENT_ICON_FILE));
+        DEFAULT_ANALYSIS_ICON = requireNonNull(loadIcon(bundle, ANALYSIS_ICON_FILE));
+        DEFAULT_VIEW_ICON = requireNonNull(loadIcon(bundle, VIEW_ICON_FILE));
+        DEFAULT_REPORT_ICON = requireNonNull(loadIcon(bundle, DEFAULT_REPORT_ICON_FILE));
+        VIEWS_ICON = requireNonNull(loadIcon(bundle, VIEWS_ICON_FILE));
     }
 
     public static @Nullable Image loadIcon(Bundle bundle, String url) {

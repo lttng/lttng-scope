@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import java.nio.file.Files;
@@ -106,7 +106,7 @@ public class UstDebugInfoSymbolProviderPreferencePage extends AbstractSymbolProv
         browseButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(@Nullable SelectionEvent e) {
-                browseDirectory(checkNotNull(fCustomDirectoryPath), Messages.PreferencePage_BrowseDialogTitle);
+                browseDirectory(requireNonNull(fCustomDirectoryPath), Messages.PreferencePage_BrowseDialogTitle);
             }
         });
         fBrowseButton = browseButton;
@@ -117,7 +117,7 @@ public class UstDebugInfoSymbolProviderPreferencePage extends AbstractSymbolProv
         clearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(@Nullable SelectionEvent e) {
-                checkNotNull(fCustomDirectoryPath).setText(""); //$NON-NLS-1$
+                requireNonNull(fCustomDirectoryPath).setText(""); //$NON-NLS-1$
                 updateContents();
             }
         });
@@ -144,8 +144,8 @@ public class UstDebugInfoSymbolProviderPreferencePage extends AbstractSymbolProv
         LttngUstTrace trace = getSymbolProvider().getTrace();
         SymbolProviderConfig config = trace.getSymbolProviderConfig();
 
-        checkNotNull(fUseCustomDirectoryCheckbox).setSelection(config.useCustomRootDir());
-        checkNotNull(fCustomDirectoryPath).setText(config.getCustomRootDirPath());
+        requireNonNull(fUseCustomDirectoryCheckbox).setSelection(config.useCustomRootDir());
+        requireNonNull(fCustomDirectoryPath).setText(config.getCustomRootDirPath());
 
         updateContents();
     }
@@ -160,11 +160,11 @@ public class UstDebugInfoSymbolProviderPreferencePage extends AbstractSymbolProv
     }
 
     private boolean getCurrentCheckBoxState() {
-        return (checkNotNull(fUseCustomDirectoryCheckbox).getSelection());
+        return (requireNonNull(fUseCustomDirectoryCheckbox).getSelection());
     }
 
     private String getCurrentPathPrefix() {
-        return nullToEmptyString(checkNotNull(fCustomDirectoryPath).getText());
+        return nullToEmptyString(requireNonNull(fCustomDirectoryPath).getText());
     }
 
     /**
@@ -174,9 +174,9 @@ public class UstDebugInfoSymbolProviderPreferencePage extends AbstractSymbolProv
      */
     private void updateContents() {
         boolean useCustomDirEnabled = getCurrentCheckBoxState();
-        checkNotNull(fCustomDirectoryPath).setEnabled(useCustomDirEnabled);
-        checkNotNull(fBrowseButton).setEnabled(useCustomDirEnabled);
-        checkNotNull(fClearButton).setEnabled(useCustomDirEnabled);
+        requireNonNull(fCustomDirectoryPath).setEnabled(useCustomDirEnabled);
+        requireNonNull(fBrowseButton).setEnabled(useCustomDirEnabled);
+        requireNonNull(fClearButton).setEnabled(useCustomDirEnabled);
 
         String errorMessage = null;
 

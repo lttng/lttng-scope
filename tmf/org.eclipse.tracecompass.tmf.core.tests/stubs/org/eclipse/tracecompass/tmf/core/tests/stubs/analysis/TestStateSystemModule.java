@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.stubs.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 
@@ -53,7 +53,7 @@ public class TestStateSystemModule extends TmfStateSystemAnalysisModule {
     @Override
     protected ITmfStateProvider createStateProvider() {
 
-        TestStateSystemProvider provider = new TestStateSystemProvider(checkNotNull(getTrace()));
+        TestStateSystemProvider provider = new TestStateSystemProvider(requireNonNull(getTrace()));
         fProvider = provider;
         boolean throttle = fThrottleEvents;
         provider.setThrottling(throttle);

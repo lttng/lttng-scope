@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.views;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,7 +162,7 @@ public final class LamiReportView extends TmfView {
         menuMgr.add(clearCustomViewsAction);
 
         /* Select the first tab initially */
-        CTabFolder tf = checkNotNull(fTabFolder);
+        CTabFolder tf = requireNonNull(fTabFolder);
         if (tf.getItemCount() > 0) {
             tf.setSelection(0);
         }

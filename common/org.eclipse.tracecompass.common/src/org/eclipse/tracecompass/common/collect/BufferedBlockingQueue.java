@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.common.collect;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -65,7 +65,7 @@ public class BufferedBlockingQueue<T> implements Iterable<T> {
 
     private final AtomicInteger fSize = new AtomicInteger(0);
 
-    private final Condition fInnerQueueNotEmpty = checkNotNull(fOutputLock.newCondition());
+    private final Condition fInnerQueueNotEmpty = requireNonNull(fOutputLock.newCondition());
 
     /**
      * Constructor
@@ -183,10 +183,10 @@ public class BufferedBlockingQueue<T> implements Iterable<T> {
                 while (fInnerQueue.isEmpty()) {
                     fInnerQueueNotEmpty.await();
                 }
-                fOutputBuffer = checkNotNull(fInnerQueue.peek());
+                fOutputBuffer = requireNonNull(fInnerQueue.peek());
             }
             /* Our implementation guarantees this output buffer is not empty. */
-            T element = checkNotNull(fOutputBuffer.remove());
+            T element = requireNonNull(fOutputBuffer.remove());
             fSize.decrementAndGet();
             return element;
         } catch (InterruptedException e) {
@@ -219,10 +219,10 @@ public class BufferedBlockingQueue<T> implements Iterable<T> {
                 while (fInnerQueue.isEmpty()) {
                     fInnerQueueNotEmpty.await();
                 }
-                fOutputBuffer = checkNotNull(fInnerQueue.peek());
+                fOutputBuffer = requireNonNull(fInnerQueue.peek());
             }
             /* Our implementation guarantees this output buffer is not empty. */
-            return checkNotNull(fOutputBuffer.peek());
+            return requireNonNull(fOutputBuffer.peek());
         } catch (InterruptedException e) {
             Activator.instance().logError("Buffered queue interrupted", e); //$NON-NLS-1$
             throw new IllegalStateException(e);
@@ -290,8 +290,8 @@ public class BufferedBlockingQueue<T> implements Iterable<T> {
         Itr() {
             fInputLock.lock();
             try {
-                fBufferIterator = checkNotNull(fInputBuffer.descendingIterator());
-                fQueueIterator = checkNotNull(fInnerQueue.descendingIterator());
+                fBufferIterator = requireNonNull(fInputBuffer.descendingIterator());
+                fQueueIterator = requireNonNull(fInnerQueue.descendingIterator());
             } finally {
                 fInputLock.unlock();
             }
@@ -307,7 +307,7 @@ public class BufferedBlockingQueue<T> implements Iterable<T> {
                 return true;
             }
             if (fQueueIterator.hasNext()) {
-                fBufferIterator = checkNotNull(fQueueIterator.next().descendingIterator());
+                fBufferIterator = requireNonNull(fQueueIterator.next().descendingIterator());
                 return hasNext();
             }
             return false;

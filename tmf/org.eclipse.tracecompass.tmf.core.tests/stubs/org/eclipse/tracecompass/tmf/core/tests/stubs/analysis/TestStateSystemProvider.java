@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.tests.stubs.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -109,7 +109,7 @@ public class TestStateSystemProvider extends AbstractTmfStateProvider {
 
     @Override
     protected void eventHandle(ITmfEvent event) {
-        ITmfStateSystemBuilder ss = checkNotNull(getStateSystemBuilder());
+        ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
         sfHandler.eventHandle(ss, event);
     }
 

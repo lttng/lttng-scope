@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.lttng2.kernel.core.analysis.kernel.statesystem;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -185,7 +185,7 @@ public class StateSystemFullHistoryTest extends StateSystemTest {
     }
 
     private static File createStateFile(String name) {
-        File file = new File(TmfTraceManager.getSupplementaryFileDir(checkNotNull(trace)) + name);
+        File file = new File(TmfTraceManager.getSupplementaryFileDir(requireNonNull(trace)) + name);
         if (file.exists()) {
             file.delete();
         }

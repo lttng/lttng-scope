@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.handler;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,8 +60,8 @@ public class AddAnalysisHandler extends AbstractHandler {
         Path configFilePath;
 
         try {
-            configFilePath = LamiConfigUtils.createConfigFile(checkNotNull(dialog.getName().trim()),
-                    checkNotNull(dialog.getCommand().trim()));
+            configFilePath = LamiConfigUtils.createConfigFile(requireNonNull(dialog.getName().trim()),
+                    requireNonNull(dialog.getCommand().trim()));
         } catch (IOException e) {
             showErrorBox(shell, e);
             return null;

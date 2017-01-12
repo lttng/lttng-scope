@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -84,7 +84,7 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
     private final Map<ISeries, List<Mapping>> fIndexPerSeriesMapping;
     private final Map<LamiTableEntry, Mapping> fEntryToCategoriesMap;
 
-    private LamiGraphRange fYInternalRange = new LamiGraphRange(checkNotNull(BigDecimal.ZERO), checkNotNull(BigDecimal.ONE));
+    private LamiGraphRange fYInternalRange = new LamiGraphRange(requireNonNull(BigDecimal.ZERO), requireNonNull(BigDecimal.ONE));
     private LamiGraphRange fYExternalRange;
 
 
@@ -199,7 +199,7 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
             List<Mapping> indexMapping = new ArrayList<>();
 
             for (int i = 0; i < entries.size(); i++) {
-                Integer categoryIndex = checkNotNull(fEntryToCategoriesMap.get(checkNotNull(entries.get(i)))).fInternalValue;
+                Integer categoryIndex = requireNonNull(fEntryToCategoriesMap.get(requireNonNull(entries.get(i)))).fInternalValue;
 
                 if (categoryIndex == null) {
                     /* Invalid value do not show */
@@ -228,9 +228,9 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
                     yValue = (min + logScaleEpsilon) / 2.0;
                 }
 
-                validXValues.add(checkNotNull(categoryIndex).doubleValue());
+                validXValues.add(requireNonNull(categoryIndex).doubleValue());
                 validYValues.add(yValue.doubleValue());
-                indexMapping.add(new Mapping(categoryIndex, checkNotNull(fEntryToCategoriesMap.get(checkNotNull(entries.get(i)))).fModelValue));
+                indexMapping.add(new Mapping(categoryIndex, requireNonNull(fEntryToCategoriesMap.get(requireNonNull(entries.get(i)))).fModelValue));
             }
 
             String name = yAxisAspect.getLabel();
@@ -327,7 +327,7 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
                 for (int j = 0; j < recs.length; j++) {
                     Rectangle rectangle = recs[j];
                     if (rectangle.contains(xMouseLocation, yMouseLocation)) {
-                        int index = getTableEntryIndexFromGraphIndex(checkNotNull(oneSeries), j);
+                        int index = getTableEntryIndexFromGraphIndex(requireNonNull(oneSeries), j);
                         if (!ctrlMode || (index >= 0 && !selections.remove(index))) {
                             selections.add(index);
                         }
@@ -380,7 +380,7 @@ public class LamiBarChartViewer extends LamiXYChartViewer {
             GC gc = e.gc;
 
             for (ISeries s : getChart().getSeriesSet().getSeries()) {
-                ISeries series = checkNotNull(s);
+                ISeries series = requireNonNull(s);
                 Color color = colorsIt.next();
                 for (int index : getSelection()) {
                     int graphIndex = getGraphIndexFromTableEntryIndex(series, index);

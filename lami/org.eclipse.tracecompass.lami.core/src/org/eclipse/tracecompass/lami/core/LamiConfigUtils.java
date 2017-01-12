@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,7 +53,7 @@ public class LamiConfigUtils {
             dir.mkdirs();
         }
 
-        return checkNotNull(dir.toPath());
+        return requireNonNull(dir.toPath());
     }
 
     private static Path getConfigFilePath(String name) {
@@ -61,7 +61,7 @@ public class LamiConfigUtils {
         String normName = name.replaceAll("\\s+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
         normName = normName.replaceAll("[^a-zA-Z0-9_]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-        return checkNotNull(Paths.get(configDirPath.toString(), normName + ".properties")); //$NON-NLS-1$
+        return requireNonNull(Paths.get(configDirPath.toString(), normName + ".properties")); //$NON-NLS-1$
     }
 
     /**

@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core.types;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -159,7 +159,7 @@ public abstract class LamiData {
      *             If the object does not actually have a "name" field.
      */
     private static final String getJSONObjectStringName(JSONObject obj) throws JSONException {
-        return checkNotNull(obj.getString(LamiStrings.NAME));
+        return requireNonNull(obj.getString(LamiStrings.NAME));
     }
 
     // ------------------------------------------------------------------------
@@ -256,7 +256,7 @@ public abstract class LamiData {
         //       is an integer (possibly after rounding).
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_NUMBER, (obj) -> createFromNumberJsonObject(obj, false));
 
-        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_PATH, (obj) -> new LamiPath(checkNotNull(obj.getString(LamiStrings.PATH))));
+        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_PATH, (obj) -> new LamiPath(requireNonNull(obj.getString(LamiStrings.PATH))));
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_PROCESS, (obj) -> {
             String name = obj.optString(LamiStrings.NAME);
             Long pid = (obj.has(LamiStrings.PID) ? obj.getLong(LamiStrings.PID) : null);
@@ -279,11 +279,11 @@ public abstract class LamiData {
             return new LamiIRQ(irqType, nr, name);
         });
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_SIZE, (obj) -> createFromNumberJsonObject(obj, true));
-        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_STRING, (obj) -> new LamiString(checkNotNull(obj.getString(LamiStrings.VALUE))));
+        complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_STRING, (obj) -> new LamiString(requireNonNull(obj.getString(LamiStrings.VALUE))));
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_SYSCALL, (obj) -> new LamiSystemCall(getJSONObjectStringName(obj)));
         complexTypeGenBuilder.put(LamiStrings.DATA_CLASS_TIME_RANGE, (obj) -> {
-            Object beginObj = checkNotNull(obj.get((LamiStrings.BEGIN)));
-            Object endObj = checkNotNull(obj.get(LamiStrings.END));
+            Object beginObj = requireNonNull(obj.get((LamiStrings.BEGIN)));
+            Object endObj = requireNonNull(obj.get(LamiStrings.END));
             LamiTimestamp beginTs;
             LamiTimestamp endTs;
 
@@ -325,7 +325,7 @@ public abstract class LamiData {
             throw new JSONException("Unhandled type: " + obj.toString() + " of type " + obj.getClass().toString()); //$NON-NLS-1$ //$NON-NLS-2$
         }
         /* We never return null in the implementations */
-        return checkNotNull(func.apply(obj));
+        return requireNonNull(func.apply(obj));
     }
 
     /**
@@ -419,8 +419,8 @@ public abstract class LamiData {
             eqValueNumber = eqLowNumber;
         }
 
-        if (checkNotNull(eqValueNumber).doubleValue() < checkNotNull(eqLowNumber).doubleValue() ||
-                checkNotNull(eqHighNumber).doubleValue() < checkNotNull(eqValueNumber).doubleValue()) {
+        if (requireNonNull(eqValueNumber).doubleValue() < requireNonNull(eqLowNumber).doubleValue() ||
+                requireNonNull(eqHighNumber).doubleValue() < requireNonNull(eqValueNumber).doubleValue()) {
             throw new JSONException("Invalid number object: low <= value <= high not respected"); //$NON-NLS-1$
         }
 

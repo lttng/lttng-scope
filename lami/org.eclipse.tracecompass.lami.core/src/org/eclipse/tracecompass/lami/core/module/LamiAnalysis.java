@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core.module;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNullContents;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
@@ -155,7 +155,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     }
 
     /* Available features depending on the MI version */
-    private final EnumSet<Features> fFeatures = checkNotNull(EnumSet.noneOf(Features.class));
+    private final EnumSet<Features> fFeatures = requireNonNull(EnumSet.noneOf(Features.class));
 
     /**
      * Constructor. To be called by implementing classes.
@@ -197,7 +197,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     }
 
     private boolean testCompatibility(ITmfTrace trace) {
-        final @NonNull String tracePath = checkNotNull(trace.getPath());
+        final @NonNull String tracePath = requireNonNull(trace.getPath());
 
         final List<String> commandLine = ImmutableList.<@NonNull String> builder()
                 .addAll(fScriptCommand)
@@ -295,7 +295,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
 
         /* Check if this name is found in the PATH environment variable */
         final String pathEnv = System.getenv("PATH"); //$NON-NLS-1$
-        final String[] exeDirs = pathEnv.split(checkNotNull(Pattern.quote(File.pathSeparator)));
+        final String[] exeDirs = pathEnv.split(requireNonNull(Pattern.quote(File.pathSeparator)));
 
         return Stream.of(exeDirs)
                 .map(Paths::get)
@@ -427,8 +427,8 @@ public class LamiAnalysis implements IOnDemandAnalysis {
             for (String tableClassName : tableClassNames) {
                 JSONObject tableClass = tableClasses.getJSONObject(tableClassName);
 
-                final String tableTitle = checkNotNull(tableClass.getString(LamiStrings.TITLE));
-                @NonNull JSONArray columnDescriptions = checkNotNull(tableClass.getJSONArray(LamiStrings.COLUMN_DESCRIPTIONS));
+                final String tableTitle = requireNonNull(tableClass.getString(LamiStrings.TITLE));
+                @NonNull JSONArray columnDescriptions = requireNonNull(tableClass.getJSONArray(LamiStrings.COLUMN_DESCRIPTIONS));
 
                 List<LamiTableEntryAspect> aspects = getAspectsFromColumnDescriptions(columnDescriptions);
                 Collection<LamiChartModel> chartModels = getPredefinedCharts().get(tableClassName);
@@ -578,7 +578,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
      * @return The command as a single, space-separated string
      */
     public String getFullCommandAsString(ITmfTrace trace, @Nullable TmfTimeRange range) {
-        String tracePath = checkNotNull(trace.getPath());
+        String tracePath = requireNonNull(trace.getPath());
 
         ImmutableList.Builder<String> builder = getBaseCommand(range);
         /*
@@ -589,7 +589,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
         builder.add(DOUBLE_QUOTES + tracePath + DOUBLE_QUOTES);
         List<String> list = builder.build();
         String ret = list.stream().collect(Collectors.joining(" ")); //$NON-NLS-1$
-        return checkNotNull(ret);
+        return requireNonNull(ret);
     }
 
     /**
@@ -639,8 +639,8 @@ public class LamiAnalysis implements IOnDemandAnalysis {
         /* Should have been called already, but in case it was not */
         initialize();
 
-        final @NonNull String tracePath = checkNotNull(trace.getPath());
-        final @NonNull String trimmedExtraParamsString = checkNotNull(extraParamsString.trim());
+        final @NonNull String tracePath = requireNonNull(trace.getPath());
+        final @NonNull String trimmedExtraParamsString = requireNonNull(extraParamsString.trim());
         final List<String> extraParams = ShellUtils.commandStringToArgs(trimmedExtraParamsString);
 
         ImmutableList.Builder<String> builder = getBaseCommand(timeRange);
@@ -735,7 +735,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
                 JSONObject result = results.getJSONObject(i);
 
                 /* Parse the time-range */
-                JSONObject trObject = checkNotNull(result.getJSONObject(LamiStrings.TIME_RANGE));
+                JSONObject trObject = requireNonNull(result.getJSONObject(LamiStrings.TIME_RANGE));
                 LamiData trData = LamiData.createFromObject(trObject);
                 if (!(trData instanceof LamiTimeRange)) {
                     throw new JSONException("Time range did not have expected class type."); //$NON-NLS-1$
@@ -750,7 +750,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
                      * "class" is just a standard string, indicating we use a
                      * metadata-defined table class as-is
                      */
-                    @NonNull String tableClassName = checkNotNull(result.getString(LamiStrings.CLASS));
+                    @NonNull String tableClassName = requireNonNull(result.getString(LamiStrings.CLASS));
                     tableClass = getTableClassFromName(tableClassName);
 
                     // FIXME Rest will become more generic eventually in the LAMI format.
@@ -759,9 +759,9 @@ public class LamiAnalysis implements IOnDemandAnalysis {
                      * Dynamic title: We reuse an existing table class but
                      * override the title.
                      */
-                    String baseTableName = checkNotNull(tableClassObject.getString(LamiStrings.INHERIT));
+                    String baseTableName = requireNonNull(tableClassObject.getString(LamiStrings.INHERIT));
                     LamiTableClass baseTableClass = getTableClassFromName(baseTableName);
-                    String newTitle = checkNotNull(tableClassObject.getString(LamiStrings.TITLE));
+                    String newTitle = requireNonNull(tableClassObject.getString(LamiStrings.TITLE));
 
                     tableClass = new LamiTableClass(baseTableClass, newTitle);
                 } else {
@@ -769,8 +769,8 @@ public class LamiAnalysis implements IOnDemandAnalysis {
                      * Dynamic column descriptions: we implement a new table
                      * class entirely.
                      */
-                    String title = checkNotNull(tableClassObject.getString(LamiStrings.TITLE));
-                    JSONArray columnDescriptions = checkNotNull(tableClassObject.getJSONArray(LamiStrings.COLUMN_DESCRIPTIONS));
+                    String title = requireNonNull(tableClassObject.getString(LamiStrings.TITLE));
+                    JSONArray columnDescriptions = requireNonNull(tableClassObject.getJSONArray(LamiStrings.COLUMN_DESCRIPTIONS));
                     List<LamiTableEntryAspect> aspects = getAspectsFromColumnDescriptions(columnDescriptions);
 
                     tableClass = new LamiTableClass(nullToEmptyString(Messages.LamiAnalysis_DefaultDynamicTableName), title, aspects, Collections.EMPTY_SET);
@@ -786,7 +786,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
                     ImmutableList.Builder<LamiData> rowBuilder = ImmutableList.builder();
 
                     for (int k = 0; k < row.length(); k++) {
-                        Object cellObject = checkNotNull(row.get(k));
+                        Object cellObject = requireNonNull(row.get(k));
                         LamiData cellValue = LamiData.createFromObject(cellObject);
                         rowBuilder.add(cellValue);
 
@@ -806,7 +806,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     }
 
     private LamiTableClass getTableClassFromName(String tableClassName) throws JSONException {
-        Map<String, LamiTableClass> map = checkNotNull(fTableClasses);
+        Map<String, LamiTableClass> map = requireNonNull(fTableClasses);
         LamiTableClass tableClass = map.get(tableClassName);
         if (tableClass == null) {
             throw new JSONException("Table class " + tableClassName + //$NON-NLS-1$
@@ -854,7 +854,7 @@ public class LamiAnalysis implements IOnDemandAnalysis {
     protected String getResultsFromCommand(List<String> command, IProgressMonitor monitor)
             throws CoreException {
         List<String> lines = ProcessUtils.getOutputFromCommandCancellable(command, monitor, nullToEmptyString(Messages.LamiAnalysis_MainTaskName), OUTPUT_READER);
-        return checkNotNull(String.join("", lines)); //$NON-NLS-1$
+        return requireNonNull(String.join("", lines)); //$NON-NLS-1$
     }
 
     private static final OutputReaderFunction OUTPUT_READER = (reader, monitor) -> {

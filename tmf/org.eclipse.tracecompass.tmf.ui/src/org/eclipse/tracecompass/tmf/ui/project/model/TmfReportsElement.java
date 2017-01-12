@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -90,7 +90,7 @@ public class TmfReportsElement extends TmfProjectModelElement {
 
         fCurrentReports.put(reportDisplayName, report);
 
-        IFolder analysisRes = checkNotNull(root.getFolder(nodePath.append(reportDisplayName)));
+        IFolder analysisRes = requireNonNull(root.getFolder(nodePath.append(reportDisplayName)));
         TmfReportElement elem = new TmfReportElement(reportDisplayName, analysisRes, this, report);
         addChild(elem);
         refresh();

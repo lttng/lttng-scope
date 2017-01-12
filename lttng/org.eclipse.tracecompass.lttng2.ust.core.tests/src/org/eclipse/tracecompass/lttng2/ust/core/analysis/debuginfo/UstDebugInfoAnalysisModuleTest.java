@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -159,7 +159,7 @@ public class UstDebugInfoAnalysisModuleTest {
         /* Tests that the aspects are resolved correctly */
         final UstDebugInfoBinaryAspect aspect = UstDebugInfoBinaryAspect.INSTANCE;
 
-        String actual = checkNotNull(aspect.resolve(events.get(0))).toString();
+        String actual = requireNonNull(aspect.resolve(events.get(0))).toString();
         String expected = "/home/simark/src/babeltrace/tests/debug-info-data/libhello_so+0x14d4";
         assertEquals(expected, actual);
 

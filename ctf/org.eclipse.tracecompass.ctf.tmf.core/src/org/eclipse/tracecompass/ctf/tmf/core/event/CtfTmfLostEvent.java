@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -101,7 +101,7 @@ public class CtfTmfLostEvent extends CtfTmfEvent implements ITmfLostEvent {
             return false;
         }
         /* super.equals() checks that the classes are the same */
-        CtfTmfLostEvent other = checkNotNull((CtfTmfLostEvent) obj);
+        CtfTmfLostEvent other = requireNonNull((CtfTmfLostEvent) obj);
         if (!getTimeRange().equals(other.getTimeRange())) {
             return false;
         }

@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -76,7 +76,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
     public @Nullable String resolve(ITmfEvent event) {
         try {
             ITmfStateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
-            return checkNotNull(value.toString());
+            return requireNonNull(value.toString());
         } catch (StateSystemDisposedException e) {
             return null;
         }

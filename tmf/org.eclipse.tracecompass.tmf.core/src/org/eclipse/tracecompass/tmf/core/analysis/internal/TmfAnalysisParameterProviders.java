@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,7 +93,7 @@ public final class TmfAnalysisParameterProviders {
                     if (analysisId.equals(id)) {
                         IAnalysisParameterProvider provider = fParamProviderInstances.get(className);
                         if (provider == null) {
-                            provider = checkNotNull((IAnalysisParameterProvider) ce.createExecutableExtension(CLASS_ATTR));
+                            provider = requireNonNull((IAnalysisParameterProvider) ce.createExecutableExtension(CLASS_ATTR));
                             fParamProviderInstances.put(className, provider);
                         }
                         providers.add(provider);

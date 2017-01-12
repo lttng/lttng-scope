@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -328,7 +328,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
         /*
          * Actual analysis will be run on a separate thread
          */
-        String jobName = checkNotNull(NLS.bind(Messages.TmfAbstractAnalysisModule_RunningAnalysis, getName()));
+        String jobName = requireNonNull(NLS.bind(Messages.TmfAbstractAnalysisModule_RunningAnalysis, getName()));
         fJob = new Job(jobName) {
             @Override
             protected @Nullable IStatus run(final @Nullable IProgressMonitor monitor) {
@@ -529,7 +529,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
     public Map<@NonNull String, @NonNull String> getProperties() {
         Map<@NonNull String, @NonNull String> properties = new HashMap<>();
 
-        properties.put(NonNullUtils.checkNotNull(Messages.TmfAbstractAnalysisModule_LabelId), getId());
+        properties.put(requireNonNull(Messages.TmfAbstractAnalysisModule_LabelId), getId());
 
         return properties;
     }

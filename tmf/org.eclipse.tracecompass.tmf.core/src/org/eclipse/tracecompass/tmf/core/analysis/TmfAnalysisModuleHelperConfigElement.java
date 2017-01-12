@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.core.analysis;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,7 +118,7 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
             /* Fragments should have exactly 1 host requirement */
             Requirement req = br.getRequirements(BundleRevision.HOST_NAMESPACE).get(0);
             String directive = req.getDirectives().get("filter"); //$NON-NLS-1$
-            directive = checkNotNull(directive);
+            directive = requireNonNull(directive);
             /*
              * The string will will look like this:
              * (osgi.wiring.host=org.eclipse.tracecompass.tmf.core)

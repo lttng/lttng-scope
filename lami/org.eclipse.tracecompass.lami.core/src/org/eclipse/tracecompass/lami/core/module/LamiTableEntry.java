@@ -9,8 +9,6 @@
 
 package org.eclipse.tracecompass.lami.core.module;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +37,7 @@ public class LamiTableEntry {
      * @param values Values contained in this row
      */
     public LamiTableEntry(List<LamiData> values) {
-        fValues = checkNotNull(ImmutableList.copyOf(values));
+        fValues = ImmutableList.copyOf(values);
     }
 
     /**

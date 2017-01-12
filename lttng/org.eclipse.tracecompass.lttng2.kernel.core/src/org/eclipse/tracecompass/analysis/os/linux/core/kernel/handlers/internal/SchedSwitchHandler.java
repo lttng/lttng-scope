@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel.handlers.internal;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.LinuxValues;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.StateValues;
@@ -48,11 +48,11 @@ public class SchedSwitchHandler extends KernelEventHandler {
         }
 
         ITmfEventField content = event.getContent();
-        String prevProcessName = checkNotNull((String) content.getField(getLayout().fieldPrevComm()).getValue());
+        String prevProcessName = requireNonNull((String) content.getField(getLayout().fieldPrevComm()).getValue());
         Integer prevTid = ((Long) content.getField(getLayout().fieldPrevTid()).getValue()).intValue();
-        Long prevState = checkNotNull((Long) content.getField(getLayout().fieldPrevState()).getValue());
+        Long prevState = requireNonNull((Long) content.getField(getLayout().fieldPrevState()).getValue());
         Integer prevPrio = ((Long) content.getField(getLayout().fieldPrevPrio()).getValue()).intValue();
-        String nextProcessName = checkNotNull((String) content.getField(getLayout().fieldNextComm()).getValue());
+        String nextProcessName = requireNonNull((String) content.getField(getLayout().fieldNextComm()).getValue());
         Integer nextTid = ((Long) content.getField(getLayout().fieldNextTid()).getValue()).intValue();
         Integer nextPrio = ((Long) content.getField(getLayout().fieldNextPrio()).getValue()).intValue();
 

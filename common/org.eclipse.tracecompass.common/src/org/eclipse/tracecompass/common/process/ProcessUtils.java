@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.common.process;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -136,7 +136,7 @@ public final class ProcessUtils {
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.redirectErrorStream(false);
 
-            Process p = checkNotNull(builder.start());
+            Process p = requireNonNull(builder.start());
 
             cancellerRunnable = new CancellableRunnable(p, monitor);
             cancellerThread = new Thread(cancellerRunnable);
