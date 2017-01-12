@@ -12,12 +12,12 @@ package org.eclipse.tracecompass.lami.core.activator.internal;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.eclipse.tracecompass.common.TraceCompassActivator;
 import org.eclipse.tracecompass.lami.core.LamiConfigUtils;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysis;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryException;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;
+import org.lttng.jabberwocky.common.core.TraceCompassActivator;
 
 /**
  * Plugin activator

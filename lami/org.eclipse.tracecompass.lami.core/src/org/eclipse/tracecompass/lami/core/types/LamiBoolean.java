@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.core.types;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.Nullable;
 

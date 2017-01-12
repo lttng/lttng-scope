@@ -282,7 +282,7 @@
             <encoding>UTF-8</encoding>
             <useProjectSettings>true</useProjectSettings>
             <compilerArguments>
-              <annotationpath>common/org.eclipse.tracecompass.common/annotations</annotationpath>
+              <annotationpath>common/org.lttng.jabberwocky.common.core/annotations</annotationpath>
             </compilerArguments>
           </configuration>
         </plugin>

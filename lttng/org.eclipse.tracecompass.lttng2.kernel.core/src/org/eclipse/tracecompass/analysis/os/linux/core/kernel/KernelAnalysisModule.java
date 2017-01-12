@@ -14,13 +14,13 @@
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
 
 import static java.util.Objects.requireNonNull;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal.KernelStateProvider;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.DefaultEventLayout;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelTrace;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -52,6 +52,6 @@ public class KernelAnalysisModule extends TmfStateSystemAnalysisModule {
 
     @Override
     protected String getFullHelpText() {
-        return NonNullUtils.nullToEmptyString(Messages.LttngKernelAnalysisModule_Help);
+        return nullToEmptyString(Messages.LttngKernelAnalysisModule_Help);
     }
 }

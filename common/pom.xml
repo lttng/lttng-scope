@@ -19,14 +19,14 @@
     <version>2.3.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.tracecompass.common-parent</artifactId>
+  <artifactId>org.lttng.jabberwocky.common-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Trace Compass Common Utilities Parent</name>
+  <name>Jabberwocky Common Utilities Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.common</module>
-    <module>org.eclipse.tracecompass.common.tests</module>
+    <module>org.lttng.jabberwocky.common.core</module>
+    <module>org.lttng.jabberwocky.common.core.tests</module>
   </modules>
 
 </project>

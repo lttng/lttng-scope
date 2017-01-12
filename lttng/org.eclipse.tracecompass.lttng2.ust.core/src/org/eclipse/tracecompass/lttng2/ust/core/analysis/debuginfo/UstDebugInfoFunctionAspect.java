@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import java.io.File;
 

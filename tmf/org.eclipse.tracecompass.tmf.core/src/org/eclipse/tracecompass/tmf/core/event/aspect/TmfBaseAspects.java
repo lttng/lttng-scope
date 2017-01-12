@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.List;
 

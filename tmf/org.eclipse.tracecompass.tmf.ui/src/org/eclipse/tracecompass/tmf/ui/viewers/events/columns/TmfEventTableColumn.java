@@ -14,9 +14,9 @@ package org.eclipse.tracecompass.tmf.ui.viewers.events.columns;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
+import org.lttng.jabberwocky.common.core.NonNullUtils;
 
 /**
  * A column in the

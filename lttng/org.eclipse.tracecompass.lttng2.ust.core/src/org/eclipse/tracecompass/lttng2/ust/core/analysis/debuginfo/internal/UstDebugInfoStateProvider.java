@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.common.log.TraceCompassLog;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstTrace;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.layout.ILttngUstEventLayout;
 import org.eclipse.tracecompass.lttng2.ust.core.trace.layout.internal.LttngUst28EventLayout;
@@ -29,6 +28,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
+import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;

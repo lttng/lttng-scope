@@ -33,7 +33,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
 import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.TmfComponent;
@@ -45,6 +44,7 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfTraceClosedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceSelectedSignal;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.lttng.jabberwocky.common.core.NonNullUtils;
 
 /**
  * Base class that analysis modules main class may extend. It provides default

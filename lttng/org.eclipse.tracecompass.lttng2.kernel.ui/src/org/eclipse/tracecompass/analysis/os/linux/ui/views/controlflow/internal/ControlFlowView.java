@@ -51,7 +51,6 @@ import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModu
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelTidAspect;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal.Attributes;
 import org.eclipse.tracecompass.analysis.os.linux.ui.internal.Messages;
-import org.eclipse.tracecompass.common.StreamUtils.StreamFlattener;
 import org.eclipse.tracecompass.lttng2.kernel.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
@@ -84,6 +83,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.TimeGraphContro
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.Resolution;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.TimeFormat;
+import org.lttng.jabberwocky.common.core.StreamUtils.StreamFlattener;
 
 import com.google.common.collect.ImmutableList;
 

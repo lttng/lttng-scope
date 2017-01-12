@@ -14,7 +14,7 @@
 package org.eclipse.tracecompass.tmf.ui.viewers.table;
 
 import static java.util.Objects.requireNonNull;
-import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Collections;
 import java.util.Comparator;

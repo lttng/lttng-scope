@@ -9,12 +9,13 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.tid;
 
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelAnalysisEventLayout;
-import org.eclipse.tracecompass.common.NonNullUtils;
 import org.eclipse.tracecompass.lttng2.kernel.core.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
@@ -84,7 +85,7 @@ class ActiveTidStateProvider extends AbstractTmfStateProvider {
         Integer cpuQuark = fCpuNumToQuark.get(cpu);
         if (cpuQuark == null) {
             // this will only happen once
-            String cpuAttributeName = NonNullUtils.nullToEmptyString(cpu);
+            String cpuAttributeName = nullToEmptyString(cpu);
             cpuQuark = ssb.getQuarkAbsoluteAndAdd(cpuAttributeName);
             fCpuNumToQuark.put(cpu, cpuQuark);
         }
@@ -96,7 +97,7 @@ class ActiveTidStateProvider extends AbstractTmfStateProvider {
             final TmfStateValue value = TmfStateValue.newValueInt(nextTid);
             ssb.modifyAttribute(event.getTimestamp().toNanos(), value, cpuQuark);
         } catch (StateValueTypeException e) {
-            Activator.getDefault().logError(NonNullUtils.nullToEmptyString(e.getMessage()), e);
+            Activator.getDefault().logError(nullToEmptyString(e.getMessage()), e);
         }
     }
 }

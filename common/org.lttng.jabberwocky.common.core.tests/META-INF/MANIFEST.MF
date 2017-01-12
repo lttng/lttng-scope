@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Version: 1.1.1.qualifier
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.lttng.jabberwocky.common.core.tests;singleton:=true
+Fragment-Host: org.lttng.jabberwocky.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.0.0"
+Import-Package: com.google.common.primitives
+Export-Package: org.lttng.jabberwocky.common.core;x-internal:=true,
+ org.lttng.jabberwocky.common.core.collect;x-internal:=true,
+ org.lttng.jabberwocky.common.core.format;x-internal:=true,
+ org.lttng.jabberwocky.common.core.math;x-internal:=true

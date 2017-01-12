@@ -9,7 +9,7 @@
 
 package org.lttng.jabberwocky.tmf2.core.activator.internal;
 
-import org.eclipse.tracecompass.common.TraceCompassActivator;
+import org.lttng.jabberwocky.common.core.TraceCompassActivator;
 
 /**
  * Plugin activator

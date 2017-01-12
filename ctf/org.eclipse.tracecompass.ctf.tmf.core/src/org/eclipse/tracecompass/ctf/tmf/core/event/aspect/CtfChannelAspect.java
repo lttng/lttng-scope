@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core.event.aspect;
 
-import static org.eclipse.tracecompass.common.NonNullUtils.nullToEmptyString;
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
