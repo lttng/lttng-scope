@@ -27,6 +27,7 @@
   <modules>
     <module>org.lttng.jabberwocky.common.core</module>
     <module>org.lttng.jabberwocky.common.core.tests</module>
+    <module>org.lttng.jabberwocky.common.ui</module>
   </modules>
 
 </project>
