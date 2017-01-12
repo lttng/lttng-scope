@@ -10,5 +10,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
- org.lttng.jabberwocky.common.core
+ org.lttng.jabberwocky.common.core,
+ org.lttng.jabberwocky.common.ui
 Export-Package: org.lttng.jabberwocky.tmf2.views.ui.activator.internal;x-internal:=true

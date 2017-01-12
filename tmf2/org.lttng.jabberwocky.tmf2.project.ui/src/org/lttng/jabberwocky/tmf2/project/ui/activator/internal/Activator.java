@@ -9,145 +9,37 @@
 
 package org.lttng.jabberwocky.tmf2.project.ui.activator.internal;
 
-import static java.util.Objects.requireNonNull;
-
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import org.lttng.jabberwocky.common.ui.JabberwockyUIActivator;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends JabberwockyUIActivator {
 
-    // ------------------------------------------------------------------------
-    // Attributes
-    // ------------------------------------------------------------------------
+    private static final String PLUGIN_ID = "org.lttng.jabberwocky.tmf2.project.ui"; //$NON-NLS-1$
 
     /**
-     *  The plug-in ID
+     * Return the singleton instance of this activator.
+     *
+     * @return The singleton instance
      */
-    public static final String PLUGIN_ID = "org.eclipse.tracecompass.tmf2.ui.project"; //$NON-NLS-1$
+    public static Activator instance() {
+        return (Activator) JabberwockyUIActivator.getInstance(PLUGIN_ID);
+    }
 
     /**
-     *  The shared instance
-     */
-    private static @Nullable Activator plugin;
-
-    // ------------------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------------------
-
-    /**
-     * The constructor
+     * Constructor
      */
     public Activator() {
-    }
-
-    // ------------------------------------------------------------------------
-    // Accessors
-    // ------------------------------------------------------------------------
-
-    /**
-     * Returns the shared instance
-     *
-     * @return the shared instance
-     */
-    public static Activator getDefault() {
-        return requireNonNull(plugin);
-    }
-
-    // ------------------------------------------------------------------------
-    // AbstractUIPlugin
-    // ------------------------------------------------------------------------
-
-    @Override
-    public void start(@Nullable BundleContext context) throws Exception {
-        super.start(context);
-        plugin = this;
+        super(PLUGIN_ID);
     }
 
     @Override
-    public void stop(@Nullable BundleContext context) throws Exception {
-        plugin = null;
-        super.stop(context);
+    protected void startActions() {
     }
 
-    // ------------------------------------------------------------------------
-    // Operations
-    // ------------------------------------------------------------------------
-
-    /**
-     * Logs a message with severity INFO in the runtime log of the plug-in.
-     *
-     * @param message
-     *            A message to log
-     */
-    public void logInfo(String message) {
-        getLog().log(new Status(IStatus.INFO, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity INFO in the runtime log of the
-     * plug-in.
-     *
-     * @param message
-     *            A message to log
-     * @param exception
-     *            A exception to log
-     */
-    public void logInfo(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.INFO, PLUGIN_ID, message, exception));
-    }
-
-    /**
-     * Logs a message and exception with severity WARNING in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
-     */
-    public void logWarning(String message) {
-        getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity WARNING in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
-     * @param exception
-     *            A exception to log
-     */
-    public void logWarning(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message, exception));
-    }
-
-    /**
-     * Logs a message and exception with severity ERROR in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
-     */
-    public void logError(String message) {
-        getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity ERROR in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
-     * @param exception
-     *            A exception to log
-     */
-    public void logError(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, message, exception));
+    @Override
+    protected void stopActions() {
     }
 
 }
