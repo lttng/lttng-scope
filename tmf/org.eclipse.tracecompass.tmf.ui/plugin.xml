@@ -583,28 +583,6 @@
                </with>
             </visibleWhen>
          </menu>
-         <menu
-               label="%command.select_experiment_type"
-               mnemonic="%command.select_experiment_type.mnemonic"
-               tooltip="%command.select_experiment_type.description">
-            <dynamic
-                  class="org.eclipse.tracecompass.tmf.ui.project.handlers.internal.SelectElementTypeContributionItem"
-                  id="org.eclipse.linuxtools.tmf.ui.command.select_trace_type.dynamic">
-            </dynamic>
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                      <instanceof
-                            value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
-                      </instanceof>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </menu>
          <separator
                name="org.eclipse.linuxtools.tmf.ui.separator4"
                visible="true">
@@ -1134,9 +1112,6 @@
                <or>
                   <instanceof
                      value="org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement">
-                  </instanceof>
-                  <instanceof
-                     value="org.eclipse.tracecompass.tmf.ui.project.model.TmfExperimentElement">
                   </instanceof>
                </or>
             </iterate>
