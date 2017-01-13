@@ -253,8 +253,8 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?after=group.open">
          <command
-               commandId="org.eclipse.linuxtools.tmf.ui.openFile"
-               label="%command.OpenFile.label"
+               commandId="org.eclipse.linuxtools.tmf.ui.openDirectory"
+               label="%command.OpenDirectory.name"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -860,10 +860,10 @@
       </command>
       <command
             categoryId="org.eclipse.ui.category.file"
-            defaultHandler="org.eclipse.tracecompass.tmf.ui.commands.internal.OpenFileHandler"
-            description="%command.OpenFile.description"
-            id="org.eclipse.linuxtools.tmf.ui.openFile"
-            name="%command.OpenFile.name">
+            defaultHandler="org.eclipse.tracecompass.tmf.ui.commands.internal.OpenDirectoryHandler"
+            description="%command.OpenDirectory.description"
+            id="org.eclipse.linuxtools.tmf.ui.openDirectory"
+            name="%command.OpenDirectory.name">
       </command>
    </extension>
    <extension

@@ -39,8 +39,8 @@
                label="%menu.main.file"
                mnemonic="%menu.mnemonic">
             <command
-                  commandId="org.eclipse.linuxtools.tmf.ui.openFile"
-                  label="%command.OpenFile.label"
+                  commandId="org.eclipse.linuxtools.tmf.ui.openDirectory"
+                  label="%command.OpenDirectory.name"
                   style="push">
             </command>
             <separator
