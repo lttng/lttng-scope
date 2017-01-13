@@ -192,8 +192,12 @@ public abstract class JabberwockyCoreActivator extends Plugin {
      * @param exception
      *            A exception to log
      */
-    public void logError(@Nullable String message, Throwable exception) {
-        getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message), exception));
+    public void logError(@Nullable String message, @Nullable Throwable exception) {
+        if (exception == null) {
+            getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message)));
+        } else {
+            getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message), exception));
+        }
     }
 
 }
