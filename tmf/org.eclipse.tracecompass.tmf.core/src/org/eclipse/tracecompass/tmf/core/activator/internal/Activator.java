@@ -81,7 +81,6 @@ public class Activator extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         setDefault(this);
-        TmfCoreTracer.init();
         /* Initialize the trace manager */
         TmfTraceManager.getInstance();
         /* Initialize the analysis manager */
@@ -90,7 +89,6 @@ public class Activator extends Plugin {
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        TmfCoreTracer.stop();
         TmfTraceManager.getInstance().dispose();
         TmfAnalysisManager.dispose();
         TmfSignalManager.dispose();

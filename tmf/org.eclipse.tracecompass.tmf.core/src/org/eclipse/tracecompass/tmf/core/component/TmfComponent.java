@@ -14,7 +14,6 @@
 package org.eclipse.tracecompass.tmf.core.component;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 
@@ -56,7 +55,6 @@ public abstract class TmfComponent implements ITmfComponent {
         if (cmpName == null) {
             cmpName = ""; //$NON-NLS-1$
         }
-        TmfCoreTracer.traceComponent(cmpName, "created"); //$NON-NLS-1$
         fName = cmpName;
         TmfSignalManager.register(this);
     }
@@ -105,7 +103,6 @@ public abstract class TmfComponent implements ITmfComponent {
     @Override
     public void dispose() {
         TmfSignalManager.deregister(this);
-        TmfCoreTracer.traceComponent(fName, "disposed"); //$NON-NLS-1$
     }
 
     @Override

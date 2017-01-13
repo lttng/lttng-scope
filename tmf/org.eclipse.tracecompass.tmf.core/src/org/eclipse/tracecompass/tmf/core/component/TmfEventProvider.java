@@ -26,7 +26,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfEventThread;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfProviderManager;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
@@ -181,11 +180,6 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
     @Override
     public void sendRequest(final ITmfEventRequest request) {
         synchronized (fLock) {
-
-            if (TmfCoreTracer.isRequestTraced()) {
-                TmfCoreTracer.traceRequest(request.getRequestId(), "SENT to provider " + getName()); //$NON-NLS-1$
-            }
-
             if (request.getProviderFilter() == null) {
                 request.setProviderFilter(this);
             }
@@ -298,10 +292,7 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
                     request.getDependencyLevel());
             coalescedRequest.addRequest(request);
             coalescedRequest.setProviderFilter(this);
-            if (TmfCoreTracer.isRequestTraced()) {
-                TmfCoreTracer.traceRequest(request.getRequestId(), "COALESCED with " + coalescedRequest.getRequestId()); //$NON-NLS-1$
-                TmfCoreTracer.traceRequest(coalescedRequest.getRequestId(), "now contains " + coalescedRequest.getSubRequestIds()); //$NON-NLS-1$
-            }
+
             coalesceChildrenRequests(coalescedRequest);
             fPendingCoalescedRequests.add(coalescedRequest);
         }
@@ -318,10 +309,7 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
             for (TmfCoalescedEventRequest coalescedRequest : getPendingRequests()) {
                 if (coalescedRequest.isCompatible(request)) {
                     coalescedRequest.addRequest(request);
-                    if (TmfCoreTracer.isRequestTraced()) {
-                        TmfCoreTracer.traceRequest(request.getRequestId(), "COALESCED with " + coalescedRequest.getRequestId()); //$NON-NLS-1$
-                        TmfCoreTracer.traceRequest(coalescedRequest.getRequestId(), "now contains " + coalescedRequest.getSubRequestIds()); //$NON-NLS-1$
-                    }
+
                     coalesceChildrenRequests(coalescedRequest);
                     return;
                 }
@@ -378,10 +366,6 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
             TmfCoalescedEventRequest pendingRequest = iter.next();
             if (request.isCompatible(pendingRequest)) {
                 request.addRequest(pendingRequest);
-                if (TmfCoreTracer.isRequestTraced()) {
-                    TmfCoreTracer.traceRequest(pendingRequest.getRequestId(), "COALESCED with " + request.getRequestId()); //$NON-NLS-1$
-                    TmfCoreTracer.traceRequest(request.getRequestId(), "now contains " + request.getSubRequestIds()); //$NON-NLS-1$
-                }
                 iter.remove();
             }
         }
@@ -405,11 +389,6 @@ public abstract class TmfEventProvider extends TmfComponent implements ITmfEvent
         }
 
         TmfEventThread thread = new TmfEventThread(this, request);
-
-        if (TmfCoreTracer.isRequestTraced()) {
-            TmfCoreTracer.traceRequest(request.getRequestId(), "QUEUED"); //$NON-NLS-1$
-        }
-
         fExecutor.execute(thread);
     }
 

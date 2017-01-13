@@ -89,7 +89,6 @@ public class Activator extends AbstractUIPlugin {
         super.start(context);
         plugin = this;
         TmfUiRefreshHandler.getInstance(); // to classload/initialize it
-        TmfUiTracer.init();
         TmfTraceElement.init();
         TmfExperimentElement.init();
 
@@ -99,7 +98,6 @@ public class Activator extends AbstractUIPlugin {
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        TmfUiTracer.stop();
         TmfUiRefreshHandler.getInstance().dispose();
         TmfAlignmentSynchronizer.getInstance().dispose();
         TmfProjectRegistry.dispose();

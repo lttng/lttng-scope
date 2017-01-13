@@ -24,7 +24,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.internal.TmfEventThread;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest.ExecutionType;
 
@@ -80,9 +79,6 @@ public class TmfRequestExecutor implements Executor {
         // We know the canonical name is not null because we use ExecutorService only
         String canonicalName = requireNonNull(fExecutor.getClass().getCanonicalName());
         fExecutorName = canonicalName.substring(canonicalName.lastIndexOf('.') + 1);
-        if (TmfCoreTracer.isComponentTraced()) {
-            TmfCoreTracer.trace(fExecutor + " created"); //$NON-NLS-1$
-        }
     }
 
     // ------------------------------------------------------------------------
@@ -234,9 +230,6 @@ public class TmfRequestExecutor implements Executor {
         }
 
         fExecutor.shutdown();
-        if (TmfCoreTracer.isComponentTraced()) {
-            TmfCoreTracer.trace(fExecutor + " terminated"); //$NON-NLS-1$
-        }
     }
 
     // ------------------------------------------------------------------------

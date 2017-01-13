@@ -17,7 +17,6 @@ package org.eclipse.tracecompass.tmf.core.component.internal;
 import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.component.ITmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
@@ -158,9 +157,6 @@ public class TmfEventThread implements Runnable {
 
     @Override
     public void run() {
-
-        TmfCoreTracer.traceRequest(fRequest.getRequestId(), "is being serviced by " + fProvider.getName()); //$NON-NLS-1$
-
         if (fRequest.isCancelled()) {
             isCompleted = true;
             return;
@@ -182,11 +178,8 @@ public class TmfEventThread implements Runnable {
         try {
             // Get the ordered events
             ITmfEvent event = fProvider.getNext(context);
-            TmfCoreTracer.traceRequest(fRequest.getRequestId(), "read first event"); //$NON-NLS-1$
 
             while (event != null && !fProvider.isCompleted(fRequest, event, nbRead)) {
-
-                TmfCoreTracer.traceEvent(fProvider, fRequest, event);
                 if (fRequest.getDataType().isInstance(event)) {
                     fRequest.handleData(event);
                 }
@@ -230,7 +223,6 @@ public class TmfEventThread implements Runnable {
      */
     public void suspend() {
         fIsPaused = true;
-        TmfCoreTracer.traceRequest(fRequest.getRequestId(), "SUSPENDED"); //$NON-NLS-1$
     }
 
     /**
@@ -242,8 +234,6 @@ public class TmfEventThread implements Runnable {
         CountDownLatch oldLatch = fLatch;
         fLatch = new CountDownLatch(1);
         oldLatch.countDown();
-
-        TmfCoreTracer.traceRequest(fRequest.getRequestId(), "RESUMED"); //$NON-NLS-1$
     }
 
     /**

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
 import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
@@ -86,18 +85,6 @@ public class TmfCoalescedEventRequest extends TmfEventRequest {
             int dependencyLevel) {
         super(ITmfEvent.class, null, index, nbRequested, priority, dependencyLevel);
         fRange = range;
-
-        if (TmfCoreTracer.isRequestTraced()) {
-            String type = getClass().getName();
-            type = type.substring(type.lastIndexOf('.') + 1);
-            @SuppressWarnings("nls")
-            String message = "CREATED "
-                    + (getExecType() == ITmfEventRequest.ExecutionType.BACKGROUND ? "(BG)" : "(FG)")
-                    + " Type=" + type + " Index=" + getIndex() + " NbReq=" + getNbRequested()
-                    + " Range=" + getRange()
-                    + " DataType=" + getDataType().getSimpleName();
-            TmfCoreTracer.traceRequest(getRequestId(), message);
-        }
     }
 
     @Override

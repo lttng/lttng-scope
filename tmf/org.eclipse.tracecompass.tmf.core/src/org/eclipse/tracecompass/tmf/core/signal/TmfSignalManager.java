@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 
 /**
  * This class manages the set of signal listeners and the signals they are
@@ -195,11 +194,6 @@ public class TmfSignalManager {
     }
 
     private static void sendSignal(Map<Object, Method[]> listeners, TmfSignal signal) {
-
-        if (TmfCoreTracer.isSignalTraced()) {
-            TmfCoreTracer.traceSignal(signal, "(start)"); //$NON-NLS-1$
-        }
-
         // Build the list of listener methods that are registered for this
         // signal
         Class<?> signalClass = signal.getClass();
@@ -222,12 +216,6 @@ public class TmfSignalManager {
             for (Method method : entry.getValue()) {
                 try {
                     method.invoke(entry.getKey(), new Object[] { signal });
-                    if (TmfCoreTracer.isSignalTraced()) {
-                        Object key = entry.getKey();
-                        String hash = String.format("%1$08X", entry.getKey().hashCode()); //$NON-NLS-1$
-                        String target = "[" + hash + "] " + key.getClass().getSimpleName() + ":" + method.getName(); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-                        TmfCoreTracer.traceSignal(signal, target);
-                    }
                 } catch (IllegalArgumentException e) {
                     Activator.logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
                 } catch (IllegalAccessException e) {
@@ -236,10 +224,6 @@ public class TmfSignalManager {
                     Activator.logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
-        }
-
-        if (TmfCoreTracer.isSignalTraced()) {
-            TmfCoreTracer.traceSignal(signal, "(end)"); //$NON-NLS-1$
         }
     }
 

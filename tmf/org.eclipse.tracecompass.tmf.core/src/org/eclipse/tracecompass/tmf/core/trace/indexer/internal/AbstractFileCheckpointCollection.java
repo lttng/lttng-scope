@@ -21,7 +21,6 @@ import java.nio.channels.FileChannel;
 import java.text.MessageFormat;
 
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
-import org.eclipse.tracecompass.tmf.core.activator.internal.TmfCoreTracer;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfPersistentlyIndexable;
@@ -259,7 +258,6 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
 
             // Reserve space for header
             fRandomAccessFile.setLength(header.getSize());
-            TmfCoreTracer.traceIndexer(CheckpointCollectionFileHeader.class.getSimpleName() + " initialize " + "nbEvents: " + header.fNbEvents + " fTimeRange: " + header.fTimeRange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         } catch (IOException e) {
             Activator.logError(MessageFormat.format(Messages.ErrorOpeningIndex, fFile), e);
             return null;
@@ -290,7 +288,6 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             if (header.fVersion != VERSION || header.getSubVersion() != getSubVersion()) {
                 return null;
             }
-            TmfCoreTracer.traceIndexer(CheckpointCollectionFileHeader.class.getSimpleName() + " read " + fFile + " nbEvents: " + header.fNbEvents + " fTimeRange: " + header.fTimeRange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             // Write an invalid version until the very last moment when dispose
             // the index. This is how we know if it's corrupted or not.
@@ -471,8 +468,6 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             }
             setCreatedFromScratch(true);
             fRandomAccessFile = null;
-            String headerTrace = fHeader == null ? "No header" : "nbEvents: " + fHeader.fNbEvents + " timerange:" + fHeader.fTimeRange; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            TmfCoreTracer.traceIndexer(this.getClass().getSimpleName() + " disposed. " + headerTrace); //$NON-NLS-1$
         } catch (IOException e) {
             Activator.logError(MessageFormat.format(Messages.IOErrorClosingIndex, fFile), e);
         }
