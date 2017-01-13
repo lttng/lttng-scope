@@ -30,6 +30,6 @@ public class PinTmfViewAction extends Action {
 
        setId("org.eclipse.linuxtools.tmf.ui.views.PinTmfViewAction"); //$NON-NLS-1$
        setToolTipText(Messages.TmfView_PinActionToolTipText);
-       setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PIN_VIEW));
+       setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PIN_VIEW));
    }
 }

@@ -93,7 +93,7 @@ public class TmfTraceUtilsTest {
     @Before
     public void setUp() {
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             final File test = new File(FileLocator.toFileURL(location).toURI());
             fTrace = new TmfTraceStubWithAspects(test.toURI().getPath());
             TmfSignalManager.deregister(fTrace);

@@ -270,7 +270,7 @@ public final class TmfTraceManager {
             IProject project = resource.getProject();
             /* Remove the project's path from the supplementary path dir */
             if (!supplFolderPath.startsWith(project.getLocation().toOSString())) {
-                Activator.logWarning(String.format("Supplementary files folder for trace %s is not within the project.", trace.getName())); //$NON-NLS-1$
+                Activator.instance().logWarning(String.format("Supplementary files folder for trace %s is not within the project.", trace.getName())); //$NON-NLS-1$
                 return;
             }
             IFolder supplFolder = project.getFolder(supplFolderPath.substring(project.getLocationURI().getPath().length()));
@@ -278,7 +278,7 @@ public final class TmfTraceManager {
                 try {
                     supplFolder.refreshLocal(IResource.DEPTH_INFINITE, null);
                 } catch (CoreException e) {
-                    Activator.logError("Error refreshing resources", e); //$NON-NLS-1$
+                    Activator.instance().logError("Error refreshing resources", e); //$NON-NLS-1$
                 }
             }
         }
@@ -294,7 +294,7 @@ public final class TmfTraceManager {
         try {
             FileUtils.cleanDirectory(new File(TmfTraceManager.getSupplementaryFileDir(trace)));
         } catch (IOException e) {
-            Activator.logError("Error deleting supplementary files for trace " + trace.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error deleting supplementary files for trace " + trace.getName(), e); //$NON-NLS-1$
         }
         refreshSupplementaryFiles(trace);
     }
@@ -528,7 +528,7 @@ public final class TmfTraceManager {
                 }
                 return dir.getAbsolutePath();
             } catch (URISyntaxException e) {
-                Activator.logError(e.getLocalizedMessage(), e);
+                Activator.instance().logError(e.getLocalizedMessage(), e);
             }
         }
         String tmpDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$

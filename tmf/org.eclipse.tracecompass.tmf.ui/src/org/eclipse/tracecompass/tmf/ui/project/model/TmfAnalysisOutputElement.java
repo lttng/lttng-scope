@@ -53,7 +53,7 @@ public class TmfAnalysisOutputElement extends TmfProjectModelElement {
             IViewDescriptor descr = PlatformUI.getWorkbench().getViewRegistry().find(
                     ((TmfAnalysisViewOutput) fOutput).getViewId());
             if (descr != null) {
-                Activator bundle = Activator.getDefault();
+                Activator bundle = Activator.instance();
                 String key = descr.getId();
                 Image icon = bundle.getImageRegistry().get(key);
                 if (icon == null) {

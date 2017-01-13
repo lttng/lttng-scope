@@ -145,7 +145,7 @@ public class CopyToClipboardOperation implements IRunnableWithProgress {
         try {
             request.waitForCompletion();
         } catch (InterruptedException e) {
-            Activator.getDefault().logError("Wait for completion interrupted for copy to clipboard ", e); //$NON-NLS-1$
+            Activator.instance().logError("Wait for completion interrupted for copy to clipboard ", e); //$NON-NLS-1$
         }
         return Status.OK_STATUS;
     }

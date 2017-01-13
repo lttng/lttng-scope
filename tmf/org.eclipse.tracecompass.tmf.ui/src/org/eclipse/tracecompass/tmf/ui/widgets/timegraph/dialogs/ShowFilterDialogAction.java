@@ -80,7 +80,7 @@ public class ShowFilterDialogAction extends Action {
         fTimeGraphViewer = timeGraphViewer;
         setText(Messages.ShowFilterDialogAction_FilterActionNameText);
         setToolTipText(Messages.ShowFilterDialogAction_FilterActionToolTipText);
-        setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FILTERS));
+        setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FILTERS));
     }
 
     @Override

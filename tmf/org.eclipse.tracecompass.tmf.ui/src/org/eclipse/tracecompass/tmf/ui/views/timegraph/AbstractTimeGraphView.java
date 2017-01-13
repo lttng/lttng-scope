@@ -1349,7 +1349,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                         }
                     }, null);
                 } catch (CoreException e) {
-                    Activator.getDefault().logError(e.getMessage());
+                    Activator.instance().logError(e.getMessage());
                 }
             }
 
@@ -1368,7 +1368,7 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                         }
                     }
                 } catch (CoreException e) {
-                    Activator.getDefault().logError(e.getMessage());
+                    Activator.instance().logError(e.getMessage());
                 }
             }
         });
@@ -1453,13 +1453,13 @@ public abstract class AbstractTimeGraphView extends TmfView implements ITmfTimeA
                             RGBA color = new RGBA(red, green, blue, alpha);
                             bookmarks.add(new MarkerEvent(null, Long.valueOf(time), Long.valueOf(duration), IMarkerEvent.BOOKMARKS, color, label, true));
                         } catch (NumberFormatException e) {
-                            Activator.getDefault().logError(e.getMessage());
+                            Activator.instance().logError(e.getMessage());
                         }
                     }
                 }
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError(e.getMessage());
+            Activator.instance().logError(e.getMessage());
         }
         return bookmarks;
     }

@@ -202,7 +202,7 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                                 }
                             }
                         } catch (TimeRangeException | StateValueTypeException e) {
-                            Activator.getDefault().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
+                            Activator.instance().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
                         } catch (StateSystemDisposedException e) {
                             /* Ignored */
                         }
@@ -223,7 +223,7 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                                 }
                             }
                         } catch (TimeRangeException | StateValueTypeException e) {
-                            Activator.getDefault().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
+                            Activator.instance().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
                         } catch (StateSystemDisposedException e) {
                             /* Ignored */
                         }
@@ -258,7 +258,7 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                                 }
                             }
                         } catch (AttributeNotFoundException | TimeRangeException | StateValueTypeException e) {
-                            Activator.getDefault().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
+                            Activator.instance().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
                         } catch (StateSystemDisposedException e) {
                             /* Ignored */
                         }
@@ -370,7 +370,7 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                 time = Math.max(tidInterval.getEndTime() + 1, drawingHelper.getTimeAtX(x + 1));
             }
         } catch (AttributeNotFoundException | TimeRangeException | StateValueTypeException e) {
-            Activator.getDefault().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
+            Activator.instance().logError("Error in ResourcesPresentationProvider", e); //$NON-NLS-1$
         } catch (StateSystemDisposedException e) {
             /* Ignored */
         }

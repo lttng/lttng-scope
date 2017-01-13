@@ -65,7 +65,7 @@ public class TraceUtils {
             @Override
             public void run() {
                 final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-                Activator.getDefault().logError(errorMsg, exception);
+                Activator.instance().logError(errorMsg, exception);
                 MessageDialog.openError(shell, boxTitle, errorMsg);
             }
         });
@@ -85,7 +85,7 @@ public class TraceUtils {
                     tmfProjects.add(project);
                 }
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error getting opened tmf projects", e); //$NON-NLS-1$
+                Activator.instance().logError("Error getting opened tmf projects", e); //$NON-NLS-1$
             }
         }
         return tmfProjects;

@@ -353,7 +353,7 @@ public class SelectTracesWizardPage extends WizardPage {
 
             status = operation.getStatus();
         } catch (InvocationTargetException e) {
-            status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SelectTracesWizardPage_SelectionError, e);
+            status = new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.SelectTracesWizardPage_SelectionError, e);
         } catch (InterruptedException e) {
             status = Status.CANCEL_STATUS;
         }

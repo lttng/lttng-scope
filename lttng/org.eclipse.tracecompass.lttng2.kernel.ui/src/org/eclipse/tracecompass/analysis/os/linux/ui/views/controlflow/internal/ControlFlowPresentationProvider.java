@@ -168,7 +168,7 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
             }
 
         } catch (AttributeNotFoundException | TimeRangeException | StateValueTypeException e) {
-            Activator.getDefault().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
+            Activator.instance().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
         } catch (StateSystemDisposedException e) {
             /* Ignored */
         }
@@ -186,7 +186,7 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
                 }
 
             } catch (TimeRangeException e) {
-                Activator.getDefault().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
+                Activator.instance().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
             } catch (StateSystemDisposedException e) {
                 /* Ignored */
             }
@@ -240,7 +240,7 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
                 Utils.drawText(gc, state.toString().substring(beginIndex), bounds.x, bounds.y, bounds.width, bounds.height, true, true);
             }
         } catch (TimeRangeException e) {
-            Activator.getDefault().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
+            Activator.instance().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
         } catch (StateSystemDisposedException e) {
             /* Ignored */
         }

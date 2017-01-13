@@ -37,10 +37,10 @@ import org.eclipse.tracecompass.tmf.ui.activator.internal.Activator;
  */
 public class TmfEventsTableHeader extends Composite {
 
-    private static final Image COLLAPSED = Activator.getDefault().getImageFromPath("icons/ovr16/collapsed_ovr.gif"); //$NON-NLS-1$
-    private static final Image EXPANDED = Activator.getDefault().getImageFromPath("icons/ovr16/expanded_ovr.gif"); //$NON-NLS-1$
-    private static final Image DELETE = Activator.getDefault().getImageFromPath("icons/elcl16/delete_button.gif"); //$NON-NLS-1$
-    private static final Image DELETE_SMALL = Activator.getDefault().getImageFromPath("icons/ovr16/delete_ovr.gif"); //$NON-NLS-1$
+    private static final Image COLLAPSED = Activator.instance().getImageFromPath("icons/ovr16/collapsed_ovr.gif"); //$NON-NLS-1$
+    private static final Image EXPANDED = Activator.instance().getImageFromPath("icons/ovr16/expanded_ovr.gif"); //$NON-NLS-1$
+    private static final Image DELETE = Activator.instance().getImageFromPath("icons/elcl16/delete_button.gif"); //$NON-NLS-1$
+    private static final Image DELETE_SMALL = Activator.instance().getImageFromPath("icons/ovr16/delete_ovr.gif"); //$NON-NLS-1$
     private static final int DEFAULT_MARGIN = 3;
     private static final int COLLAPSED_IMAGE_MARGIN = 2;
     private static final int COLLAPSED_RIGHT_MARGIN = 32;

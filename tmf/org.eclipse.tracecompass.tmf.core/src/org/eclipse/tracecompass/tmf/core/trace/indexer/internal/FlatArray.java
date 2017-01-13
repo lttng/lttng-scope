@@ -75,7 +75,7 @@ public class FlatArray extends AbstractFileCheckpointCollection {
             checkpoint.serialize(fByteBuffer);
             getRandomAccessFile().write(fByteBuffer.array());
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.FlatArray_IOErrorWriting, getFile()), e);
+            Activator.instance().logError(MessageFormat.format(Messages.FlatArray_IOErrorWriting, getFile()), e);
         }
     }
 
@@ -100,7 +100,7 @@ public class FlatArray extends AbstractFileCheckpointCollection {
             ITmfTimestamp timeStamp = TmfTimestamp.create(fByteBuffer);
             checkpoint = new TmfCheckpoint(timeStamp, location, fByteBuffer);
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.FlatArray_IOErrorReading, getFile()), e);
+            Activator.instance().logError(MessageFormat.format(Messages.FlatArray_IOErrorReading, getFile()), e);
         }
         return checkpoint;
     }

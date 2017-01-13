@@ -49,7 +49,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
  */
 public class SelectElementTypeContributionItem extends CompoundContributionItem {
 
-    private static final ImageDescriptor SELECTED_ICON = Activator.getDefault().getImageDescripterFromPath("icons/elcl16/bullet.gif"); //$NON-NLS-1$
+    private static final ImageDescriptor SELECTED_ICON = Activator.instance().getImageDescripterFromPath("icons/elcl16/bullet.gif"); //$NON-NLS-1$
     private static final String BUNDLE_PARAMETER = "org.eclipse.linuxtools.tmf.ui.commandparameter.select_trace_type.bundle"; //$NON-NLS-1$
     private static final String TYPE_PARAMETER = "org.eclipse.linuxtools.tmf.ui.commandparameter.select_trace_type.type"; //$NON-NLS-1$
     private static final String ICON_PARAMETER = "org.eclipse.linuxtools.tmf.ui.commandparameter.select_trace_type.icon"; //$NON-NLS-1$

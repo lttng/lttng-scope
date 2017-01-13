@@ -192,7 +192,7 @@ public class TmfExperiment extends TmfTrace implements ITmfPersistentlyIndexable
         try {
             super.initialize(resource, path, type);
         } catch (TmfTraceException e) {
-            Activator.logError("Error initializing experiment", e); //$NON-NLS-1$
+            Activator.instance().logError("Error initializing experiment", e); //$NON-NLS-1$
         }
 
     }
@@ -523,10 +523,10 @@ public class TmfExperiment extends TmfTrace implements ITmfPersistentlyIndexable
             initializeStreamingMonitor();
 
             /* Initialize the analysis */
-            MultiStatus status = new MultiStatus(Activator.PLUGIN_ID, IStatus.OK, null, null);
+            MultiStatus status = new MultiStatus(Activator.instance().getPluginId(), IStatus.OK, null, null);
             status.add(executeAnalysis());
             if (!status.isOK()) {
-                Activator.log(status);
+                Activator.instance().getLog().log(status);
             }
             TmfTraceManager.refreshSupplementaryFiles(this);
         }

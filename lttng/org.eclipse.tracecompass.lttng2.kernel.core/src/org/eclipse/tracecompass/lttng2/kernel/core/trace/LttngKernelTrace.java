@@ -159,9 +159,9 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
             /* Make sure the domain is "kernel" in the trace's env vars */
             String domain = environment.get("domain"); //$NON-NLS-1$
             if (domain == null || !domain.equals("\"kernel\"")) { //$NON-NLS-1$
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.LttngKernelTrace_DomainError);
+                return new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.LttngKernelTrace_DomainError);
             }
-            return new TraceValidationStatus(CONFIDENCE, Activator.PLUGIN_ID);
+            return new TraceValidationStatus(CONFIDENCE, Activator.instance().getPluginId());
         }
         return status;
     }

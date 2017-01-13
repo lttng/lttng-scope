@@ -102,7 +102,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
     public static final @NonNull String ID = "org.eclipse.tracecompass.analysis.os.linux.views.controlflow"; //$NON-NLS-1$
 
     private static final String ICONS_PATH = "icons/"; //$NON-NLS-1$
-    private static final String OPTIMIZE_ICON = ICONS_PATH + "elcl16/Optimization.png"; //$NON-NLS-1$
+    private static final @NonNull String OPTIMIZE_ICON = ICONS_PATH + "elcl16/Optimization.png"; //$NON-NLS-1$
 
     private static final String PROCESS_COLUMN = Messages.ControlFlowView_processColumn;
     private static final String TID_COLUMN = Messages.ControlFlowView_tidColumn;
@@ -111,8 +111,8 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
     private static final String INVISIBLE_COLUMN = Messages.ControlFlowView_invisibleColumn;
     private Action fOptimizationAction;
 
-    private static final String NEXT_EVENT_ICON_PATH = "icons/elcl16/shift_r_edit.gif"; //$NON-NLS-1$
-    private static final String PREV_EVENT_ICON_PATH = "icons/elcl16/shift_l_edit.gif"; //$NON-NLS-1$
+    private static final @NonNull String NEXT_EVENT_ICON_PATH = "icons/elcl16/shift_r_edit.gif"; //$NON-NLS-1$
+    private static final @NonNull String PREV_EVENT_ICON_PATH = "icons/elcl16/shift_l_edit.gif"; //$NON-NLS-1$
 
     private static final String[] COLUMN_NAMES = new String[] {
             PROCESS_COLUMN,
@@ -207,7 +207,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
         manager.add(new Separator());
 
         super.fillLocalToolBar(manager);
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         IDialogSettings section = settings.getSection(getClass().getName());
         if (section == null) {
             section = settings.addNewSection(getClass().getName());
@@ -229,20 +229,20 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
         IAction previousEventAction = new SearchEventAction(false, PackageMessages.ControlFlowView_PreviousEventJobName);
         previousEventAction.setText(PackageMessages.ControlFlowView_PreviousEventActionName);
         previousEventAction.setToolTipText(PackageMessages.ControlFlowView_PreviousEventActionTooltip);
-        previousEventAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(PREV_EVENT_ICON_PATH));
+        previousEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(PREV_EVENT_ICON_PATH));
         manager.add(previousEventAction);
 
         IAction nextEventAction = new SearchEventAction(true, PackageMessages.ControlFlowView_NextEventJobName);
         nextEventAction.setText(PackageMessages.ControlFlowView_NextEventActionName);
         nextEventAction.setToolTipText(PackageMessages.ControlFlowView_NextEventActionTooltip);
-        nextEventAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(NEXT_EVENT_ICON_PATH));
+        nextEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(NEXT_EVENT_ICON_PATH));
         manager.add(nextEventAction);
     }
 
     private IAction getOptimizationAction() {
         if (fOptimizationAction == null) {
             fOptimizationAction = new OptimizationAction();
-            fOptimizationAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(OPTIMIZE_ICON));
+            fOptimizationAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(OPTIMIZE_ICON));
             fOptimizationAction.setText(Messages.ControlFlowView_optimizeLabel);
             fOptimizationAction.setToolTipText(Messages.ControlFlowView_optimizeToolTip);
         }
@@ -868,7 +868,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
                 try {
                     status = statusInterval.getStateValue().unboxInt();
                 } catch (StateValueTypeException e) {
-                    Activator.getDefault().logError(e.getMessage());
+                    Activator.instance().logError(e.getMessage());
                 }
                 if (lastEndTime != time && lastEndTime != -1) {
                     eventList.add(new TimeEvent(entry, lastEndTime, time - lastEndTime));
@@ -882,7 +882,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
                 lastEndTime = time + duration;
             }
         } catch (TimeRangeException e) {
-            Activator.getDefault().logError(e.getMessage());
+            Activator.instance().logError(e.getMessage());
         }
         return eventList;
     }
@@ -922,7 +922,7 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
                             }
                         }
                     } catch (AttributeNotFoundException | TimeRangeException | StateValueTypeException e) {
-                        Activator.getDefault().logError(e.getMessage());
+                        Activator.instance().logError(e.getMessage());
                     } catch (StateSystemDisposedException e) {
                         /* Ignored */
                     }

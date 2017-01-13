@@ -134,7 +134,7 @@ public class TmfCheckpointIndexTest2 {
     private synchronized void setupTrace(final String path) {
         if (fTrace == null) {
             try {
-                final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
+                final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(path), null);
                 final File test = new File(FileLocator.toFileURL(location).toURI());
                 fTrace = new TestTrace(test.toURI().getPath(), BLOCK_SIZE);
                 fTrace.indexTrace(true);

@@ -126,7 +126,7 @@ public class RenameTraceDialog extends SelectionStatusDialog {
         IStatus nameStatus = workspace.validateName(newTraceName, IResource.FOLDER);
 
         if ("".equals(newTraceName)) { //$NON-NLS-1$
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR,
                     Messages.Dialog_EmptyNameError, null));
             return;
         }
@@ -138,12 +138,12 @@ public class RenameTraceDialog extends SelectionStatusDialog {
 
         IContainer parentFolder = fTrace.getResource().getParent();
         if (parentFolder.findMember(newTraceName) != null) {
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR,
                     Messages.Dialog_ExistingNameError, null));
             return;
         }
 
-        updateStatus(new Status(IStatus.OK, Activator.PLUGIN_ID, "")); //$NON-NLS-1$
+        updateStatus(new Status(IStatus.OK, Activator.instance().getPluginId(), "")); //$NON-NLS-1$
     }
 
     // ------------------------------------------------------------------------

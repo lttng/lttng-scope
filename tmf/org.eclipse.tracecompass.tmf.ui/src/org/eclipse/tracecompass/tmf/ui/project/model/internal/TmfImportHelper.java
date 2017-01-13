@@ -58,7 +58,7 @@ public class TmfImportHelper {
             if (result.isOK() || result.matches(IStatus.INFO | IStatus.WARNING)) {
                 folder.createLink(location, IResource.REPLACE, new NullProgressMonitor());
             } else {
-                Activator.getDefault().logError(result.getMessage());
+                Activator.instance().logError(result.getMessage());
             }
         } else {
             IFile file = parentFolder.getFile(targetName);
@@ -67,7 +67,7 @@ public class TmfImportHelper {
                 file.createLink(location, IResource.REPLACE,
                         new NullProgressMonitor());
             } else {
-                Activator.getDefault().logError(result.getMessage());
+                Activator.instance().logError(result.getMessage());
             }
         }
         res = parentFolder.findMember(targetName);

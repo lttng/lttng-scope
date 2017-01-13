@@ -75,7 +75,7 @@ public class OpenDirectoryHandler extends AbstractHandler {
         dd.setText(Messages.OpenDirHandler_SelectTraceDirectory);
 
         /* Restore the previously-saved path if there is one */
-        IEclipsePreferences defaultPreferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences defaultPreferences = InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId());
         String lastLocation = defaultPreferences.get(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, null);
         if (lastLocation != null && !lastLocation.isEmpty()) {
             Path parentPath = Paths.get(lastLocation).getParent();
@@ -93,11 +93,11 @@ public class OpenDirectoryHandler extends AbstractHandler {
         try {
             TmfOpenTraceHelper.openTraceFromPath(destinationFolder, filePath, shell);
         } catch (CoreException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
 
         /* Save the user-selected path so that next open operations start from this location */
-        InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).put(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, filePath);
+        InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).put(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, filePath);
         return null;
     }
 }

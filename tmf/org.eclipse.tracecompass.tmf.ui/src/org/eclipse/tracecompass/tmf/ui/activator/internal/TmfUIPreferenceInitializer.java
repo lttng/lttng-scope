@@ -23,7 +23,7 @@ public class TmfUIPreferenceInitializer extends AbstractPreferenceInitializer {
 
     @Override
     public void initializeDefaultPreferences() {
-        IEclipsePreferences defaultPreferences = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences defaultPreferences = DefaultScope.INSTANCE.getNode(Activator.instance().getPluginId());
         defaultPreferences.putBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, true);
     }
 }

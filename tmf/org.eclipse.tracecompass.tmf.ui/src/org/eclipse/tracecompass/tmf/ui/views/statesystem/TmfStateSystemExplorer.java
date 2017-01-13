@@ -42,7 +42,7 @@ public class TmfStateSystemExplorer extends TmfView {
     public static final String ID = "org.eclipse.linuxtools.tmf.ui.views.ssvisualizer"; //$NON-NLS-1$
 
     private static final Image FILTER_IMAGE =
-            Activator.getDefault().getImageFromPath( File.separator + "icons" +  File.separator + "elcl16" +  File.separator + "filter_items.gif"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            Activator.instance().getImageFromPath( File.separator + "icons" +  File.separator + "elcl16" +  File.separator + "filter_items.gif"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     private TmfStateSystemViewer fViewer;
 

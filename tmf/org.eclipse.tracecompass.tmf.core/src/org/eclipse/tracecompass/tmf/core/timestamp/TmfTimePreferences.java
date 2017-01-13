@@ -59,7 +59,7 @@ public final class TmfTimePreferences {
      * Initialize the default preferences and the singleton
      */
     public static void init() {
-        IEclipsePreferences defaultPreferences = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences defaultPreferences = DefaultScope.INSTANCE.getNode(Activator.instance().getPluginId());
         defaultPreferences.put(ITmfTimePreferencesConstants.DATIME, DATIME_DEFAULT);
         defaultPreferences.put(ITmfTimePreferencesConstants.SUBSEC, SUBSEC_DEFAULT);
         defaultPreferences.put(ITmfTimePreferencesConstants.DATE_DELIMITER, DATE_DELIMITER_DEFAULT);
@@ -103,7 +103,7 @@ public final class TmfTimePreferences {
         if (preferencesService == null) {
             return TimeZone.getTimeZone(defaultId);
         }
-        return TimeZone.getTimeZone(preferencesService.getString(Activator.PLUGIN_ID, ITmfTimePreferencesConstants.TIME_ZONE, defaultId, null));
+        return TimeZone.getTimeZone(preferencesService.getString(Activator.instance().getPluginId(), ITmfTimePreferencesConstants.TIME_ZONE, defaultId, null));
     }
 
     /**
@@ -117,7 +117,7 @@ public final class TmfTimePreferences {
         if (preferencesService == null) {
             return Locale.forLanguageTag(defaultLanguageTag);
         }
-        return Locale.forLanguageTag(preferencesService.getString(Activator.PLUGIN_ID, ITmfTimePreferencesConstants.LOCALE, defaultLanguageTag, null));
+        return Locale.forLanguageTag(preferencesService.getString(Activator.instance().getPluginId(), ITmfTimePreferencesConstants.LOCALE, defaultLanguageTag, null));
     }
 
     /**
@@ -140,7 +140,7 @@ public final class TmfTimePreferences {
 
     private static Map<String, String> getPreferenceMap(boolean defaultValues) {
         Map<String, String> prefsMap = new HashMap<>();
-        IEclipsePreferences prefs = defaultValues ? DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID) : InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences prefs = defaultValues ? DefaultScope.INSTANCE.getNode(Activator.instance().getPluginId()) : InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId());
         prefToMap(prefs, prefsMap, ITmfTimePreferencesConstants.SUBSEC, SUBSEC_DEFAULT);
         prefToMap(prefs, prefsMap, ITmfTimePreferencesConstants.TIME_DELIMITER, TIME_DELIMITER_DEFAULT);
         prefToMap(prefs, prefsMap, ITmfTimePreferencesConstants.SSEC_DELIMITER, SSEC_DELIMITER_DEFAULT);

@@ -205,7 +205,7 @@ public class TmfEventThread implements Runnable {
             }
 
         } catch (Exception e) {
-            Activator.logError("Error in " + fProvider.getName() + " handling " + fRequest, e); //$NON-NLS-1$ //$NON-NLS-2$
+            Activator.instance().logError("Error in " + fProvider.getName() + " handling " + fRequest, e); //$NON-NLS-1$ //$NON-NLS-2$
             isCompleted = true;
             fRequest.fail(e);
         }

@@ -145,7 +145,7 @@ public class TmfProjectRegistry implements IResourceChangeListener {
         try {
             PlatformUI.getWorkbench().getProgressService().run(false, false, action);
         } catch (InvocationTargetException e) {
-            Activator.getDefault().logError("Error creating TMF project " + project.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating TMF project " + project.getName(), e); //$NON-NLS-1$
         } catch (InterruptedException e) {
         }
         return project;
@@ -180,7 +180,7 @@ public class TmfProjectRegistry implements IResourceChangeListener {
                         }
                     }
                 } catch (CoreException e) {
-                    Activator.getDefault().logError("Error handling resource change event for " + project.getName(), e); //$NON-NLS-1$
+                    Activator.instance().logError("Error handling resource change event for " + project.getName(), e); //$NON-NLS-1$
                 }
             }
         } else if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
@@ -199,7 +199,7 @@ public class TmfProjectRegistry implements IResourceChangeListener {
                             }
                         }
                     } catch (CoreException e) {
-                        Activator.getDefault().logError("Error handling resource change event for " + project.getName(), e); //$NON-NLS-1$
+                        Activator.instance().logError("Error handling resource change event for " + project.getName(), e); //$NON-NLS-1$
                     }
                 }
             }

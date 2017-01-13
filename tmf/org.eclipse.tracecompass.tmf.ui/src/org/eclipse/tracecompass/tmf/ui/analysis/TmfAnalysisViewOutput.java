@@ -109,7 +109,7 @@ public class TmfAnalysisViewOutput implements IAnalysisOutput, IExecutableExtens
                     }
                 } catch (final PartInitException e) {
                     TraceUtils.displayErrorMsg(Messages.TmfAnalysisViewOutput_Title, "Error opening view " + getName() + e.getMessage()); //$NON-NLS-1$
-                    Activator.getDefault().logError("Error opening view " + getName(), e); //$NON-NLS-1$
+                    Activator.instance().logError("Error opening view " + getName(), e); //$NON-NLS-1$
                 }
             }
         });

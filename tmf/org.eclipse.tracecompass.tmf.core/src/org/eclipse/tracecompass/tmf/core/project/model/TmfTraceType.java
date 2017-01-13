@@ -230,7 +230,7 @@ public final class TmfTraceType {
                     TraceTypeHelper tt = new TraceTypeHelper(typeId, category, attribute, trace, isDir, elementType);
                     TRACE_TYPES.put(typeId, tt);
                 } catch (CoreException e) {
-                    Activator.logError("Unexpected error during populating trace types", e); //$NON-NLS-1$
+                    Activator.instance().logError("Unexpected error during populating trace types", e); //$NON-NLS-1$
                 }
 
             }

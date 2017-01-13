@@ -278,7 +278,7 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
      *         successfully or not
      */
     protected IStatus executeAnalysis() {
-        MultiStatus status = new MultiStatus(Activator.PLUGIN_ID, IStatus.OK, null, null);
+        MultiStatus status = new MultiStatus(Activator.instance().getPluginId(), IStatus.OK, null, null);
 
         /* First modules are initialized */
         Map<String, IAnalysisModuleHelper> modules = TmfAnalysisManager.getAnalysisModules(this.getClass());
@@ -290,7 +290,7 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
                 }
                 fAnalysisModules.put(module.getId(), module);
             } catch (TmfAnalysisException e) {
-                status.add(new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage()));
+                status.add(new Status(IStatus.WARNING, Activator.instance().getPluginId(), e.getMessage()));
             }
         }
 
@@ -633,7 +633,7 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
          */
         IStatus status = executeAnalysis();
         if (!status.isOK()) {
-            Activator.log(status);
+            Activator.instance().getLog().log(status);
         }
 
         TmfTraceManager.refreshSupplementaryFiles(this);

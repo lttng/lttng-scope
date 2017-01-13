@@ -99,7 +99,7 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
      */
     public static final @NonNull String ID = "org.eclipse.linuxtools.tmf.ui.views.histogram"; //$NON-NLS-1$
 
-    private static final Image LINK_IMG = Activator.getDefault().getImageFromPath(ITmfImageConstants.IMG_UI_LINK);
+    private static final Image LINK_IMG = Activator.instance().getImageFromPath(ITmfImageConstants.IMG_UI_LINK);
 
     private static final int[] DEFAULT_WEIGHTS = {1, 3};
 
@@ -488,7 +488,7 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
             };
             hideLostEventsAction.setText(Messages.HistogramView_hideLostEvents);
             hideLostEventsAction.setToolTipText(Messages.HistogramView_hideLostEvents);
-            hideLostEventsAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_LOST_EVENTS));
+            hideLostEventsAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_LOST_EVENTS));
         }
         return hideLostEventsAction;
     }
@@ -513,7 +513,7 @@ public class HistogramView extends TmfView implements ITmfTimeAligned {
             showTraceAction.setChecked(true);
             showTraceAction.setText(Messages.HistogramView_showTraces);
             showTraceAction.setToolTipText(Messages.HistogramView_showTraces);
-            showTraceAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_HIST_TRACES));
+            showTraceAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_HIST_TRACES));
         }
         return showTraceAction;
     }

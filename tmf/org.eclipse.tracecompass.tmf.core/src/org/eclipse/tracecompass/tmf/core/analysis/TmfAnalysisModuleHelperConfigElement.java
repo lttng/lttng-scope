@@ -158,7 +158,7 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
                     }
                 }
             } catch (ClassNotFoundException | InvalidRegistryObjectException e) {
-                Activator.logError("Error in applies to trace. Trying to load class " + className, e); //$NON-NLS-1$
+                Activator.instance().logError("Error in applies to trace. Trying to load class " + className, e); //$NON-NLS-1$
             }
         }
         return applies;
@@ -199,7 +199,7 @@ public class TmfAnalysisModuleHelperConfigElement implements IAnalysisModuleHelp
             module.setName(getName());
             module.setId(getId());
         } catch (CoreException e) {
-            Activator.logError("Error getting analysis modules from configuration files", e); //$NON-NLS-1$
+            Activator.instance().logError("Error getting analysis modules from configuration files", e); //$NON-NLS-1$
         }
         return module;
     }

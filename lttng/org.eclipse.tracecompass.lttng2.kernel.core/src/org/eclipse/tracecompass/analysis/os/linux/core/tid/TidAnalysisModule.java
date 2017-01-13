@@ -89,7 +89,7 @@ public class TidAnalysisModule extends TmfStateSystemAnalysisModule {
                 tid = value.unboxInt();
             }
         } catch (StateSystemDisposedException e) {
-            Activator.getDefault().logError(NonNullUtils.nullToEmptyString(e.getMessage()), e);
+            Activator.instance().logError(NonNullUtils.nullToEmptyString(e.getMessage()), e);
         }
         return tid;
     }
@@ -118,7 +118,7 @@ public class TidAnalysisModule extends TmfStateSystemAnalysisModule {
                 }
             }
         } catch (StateSystemDisposedException e) {
-            Activator.getDefault().logError(NonNullUtils.nullToEmptyString(e.getMessage()), e);
+            Activator.instance().logError(NonNullUtils.nullToEmptyString(e.getMessage()), e);
         }
         return null;
     }

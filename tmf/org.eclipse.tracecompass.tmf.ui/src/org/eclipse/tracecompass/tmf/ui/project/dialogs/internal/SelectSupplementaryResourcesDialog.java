@@ -63,8 +63,8 @@ public class SelectSupplementaryResourcesDialog extends Dialog {
     // ------------------------------------------------------------------------
     // Constants
     // ------------------------------------------------------------------------
-    private static final Image EXPERIMENT_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/experiment.gif"); //$NON-NLS-1$
-    private static final Image TRACE_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/trace.gif"); //$NON-NLS-1$
+    private static final Image EXPERIMENT_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/experiment.gif"); //$NON-NLS-1$
+    private static final Image TRACE_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/trace.gif"); //$NON-NLS-1$
     private static final Image RESOURCE_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 
     // ------------------------------------------------------------------------

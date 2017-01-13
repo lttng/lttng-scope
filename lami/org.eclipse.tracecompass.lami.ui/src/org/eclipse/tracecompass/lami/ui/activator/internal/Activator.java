@@ -1,181 +1,45 @@
-/*******************************************************************************
- * Copyright (c) 2015, 2016 EfficiOS Inc., Alexandre Montplaisir
+/*
+ * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ */
 
 package org.eclipse.tracecompass.lami.ui.activator.internal;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import org.lttng.jabberwocky.common.ui.JabberwockyUIActivator;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Plugin activator
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends JabberwockyUIActivator {
 
-    // ------------------------------------------------------------------------
-    // Attributes
-    // ------------------------------------------------------------------------
+    private static final String PLUGIN_ID = "org.eclipse.tracecompass.lami.ui"; //$NON-NLS-1$
 
     /**
-     *  The plug-in ID
+     * Return the singleton instance of this activator.
+     *
+     * @return The singleton instance
      */
-    public static final String PLUGIN_ID = "org.eclipse.tracecompass.lami.ui"; //$NON-NLS-1$
+    public static Activator instance() {
+        return (Activator) JabberwockyUIActivator.getInstance(PLUGIN_ID);
+    }
 
     /**
-     *  The shared instance
-     */
-    private static Activator plugin;
-
-    // ------------------------------------------------------------------------
-    // Constructors
-    // ------------------------------------------------------------------------
-
-    /**
-     * The constructor
+     * Constructor
      */
     public Activator() {
-    }
-
-    // ------------------------------------------------------------------------
-    // Accessors
-    // ------------------------------------------------------------------------
-
-    /**
-     * Returns the shared instance
-     *
-     * @return the shared instance
-     */
-    public static Activator getDefault() {
-        return plugin;
-    }
-
-    // ------------------------------------------------------------------------
-    // AbstractUIPlugin
-    // ------------------------------------------------------------------------
-
-    @Override
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        plugin = this;
+        super(PLUGIN_ID);
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
-        plugin = null;
-        super.stop(context);
+    protected void startActions() {
     }
 
     @Override
-    protected void initializeImageRegistry(ImageRegistry reg) {
-    }
-
-    // ------------------------------------------------------------------------
-    // Operations
-    // ------------------------------------------------------------------------
-
-    /**
-     * Get the image object from a given path
-     *
-     * @param path
-     *            The path to the image file
-     * @return The Image object
-     */
-    public Image getImageFromPath(String path) {
-        return getImageDescripterFromPath(path).createImage();
-    }
-
-    /**
-     * Get the ImageDescriptor from a given path
-     *
-     * @param path
-     *            The path to the image file
-     * @return The ImageDescriptor object
-     */
-    public ImageDescriptor getImageDescripterFromPath(String path) {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
-    }
-
-    /**
-     * Get the Image from a registry
-     *
-     * @param path
-     *            The path to the image registry
-     * @return The Image object
-     */
-    public Image getImageFromImageRegistry(String path) {
-        Image icon = getImageRegistry().get(path);
-        if (icon == null) {
-            icon = getImageDescripterFromPath(path).createImage();
-            plugin.getImageRegistry().put(path, icon);
-        }
-        return icon;
-    }
-
-    /**
-     * Logs a message with severity INFO in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     */
-    public void logInfo(String message) {
-        getLog().log(new Status(IStatus.INFO, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity INFO in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     * @param exception A exception to log
-     */
-    public void logInfo(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.INFO, PLUGIN_ID, message, exception));
-    }
-
-    /**
-     * Logs a message and exception with severity WARNING in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     */
-    public void logWarning(String message) {
-        getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity WARNING in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     * @param exception A exception to log
-     */
-    public void logWarning(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message, exception));
-    }
-
-    /**
-     * Logs a message and exception with severity ERROR in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     */
-    public void logError(String message) {
-        getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, message));
-    }
-
-    /**
-     * Logs a message and exception with severity ERROR in the runtime log of the plug-in.
-     *
-     * @param message A message to log
-     * @param exception A exception to log
-     */
-    public void logError(String message, Throwable exception) {
-        getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, message, exception));
+    protected void stopActions() {
     }
 
 }

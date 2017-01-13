@@ -9,6 +9,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.activator.internal;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -16,6 +17,7 @@ import org.eclipse.osgi.util.NLS;
  *
  * @noreference Messages class
  */
+@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 

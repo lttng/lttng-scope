@@ -110,7 +110,7 @@ public class TmfAlignmentSynchronizer {
                 }
             }
         };
-        InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).addPreferenceChangeListener(listener);
+        InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).addPreferenceChangeListener(listener);
         return listener;
     }
 
@@ -376,7 +376,7 @@ public class TmfAlignmentSynchronizer {
     }
 
     private static boolean isAlignViewsPreferenceEnabled() {
-        return InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).getBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, true);
+        return InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).getBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, true);
     }
 
     /**
@@ -474,7 +474,7 @@ public class TmfAlignmentSynchronizer {
     private static int getClampedTimeAxisWidth(TmfTimeViewAlignmentInfo alignmentInfo, int width) {
         int max = getMaxInt(alignmentInfo.getShell());
         if (validateInt(width, max)) {
-            Activator.getDefault().logError("Time-axis width out of range (" + width + ")", new Throwable());  //$NON-NLS-1$//$NON-NLS-2$
+            Activator.instance().logError("Time-axis width out of range (" + width + ")", new Throwable());  //$NON-NLS-1$//$NON-NLS-2$
         }
         return Math.min(max, Math.max(0, width));
     }
@@ -483,7 +483,7 @@ public class TmfAlignmentSynchronizer {
         int timeAxisOffset = alignmentInfo.getTimeAxisOffset();
         int max = getMaxInt(alignmentInfo.getShell());
         if (validateInt(timeAxisOffset, max)) {
-            Activator.getDefault().logError("Time-axis offset out of range (" + timeAxisOffset + ")", new Throwable());  //$NON-NLS-1$//$NON-NLS-2$
+            Activator.instance().logError("Time-axis offset out of range (" + timeAxisOffset + ")", new Throwable());  //$NON-NLS-1$//$NON-NLS-2$
         }
         return Math.min(max, Math.max(0, timeAxisOffset));
     }

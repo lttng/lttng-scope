@@ -8,4 +8,4 @@
  */
 
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.eclipse.tracecompass.lami.core.activator.internal;
+package org.eclipse.tracecompass.lttng2.kernel.ui.activator.internal;

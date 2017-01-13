@@ -363,7 +363,7 @@ public class TmfCoalescedEventRequestTest {
     private synchronized TmfTraceStub setupTrace(String path) {
         if (fTrace == null) {
             try {
-                URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
+                URL location = FileLocator.find(Activator.instance().getBundle(), new Path(path), null);
                 File test = new File(FileLocator.toFileURL(location).toURI());
                 fTrace = new TmfTraceStub(test.getPath(), 500, false, null);
             } catch (TmfTraceException e) {

@@ -264,7 +264,7 @@ public abstract class TmfProjectModelElement implements ITmfProjectModelElement 
                 TraceUtils.createFolder((IFolder) folder.getParent(), new NullProgressMonitor());
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error creating supplementary folder " + folder.getFullPath(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating supplementary folder " + folder.getFullPath(), e); //$NON-NLS-1$
         }
         return folder;
     }

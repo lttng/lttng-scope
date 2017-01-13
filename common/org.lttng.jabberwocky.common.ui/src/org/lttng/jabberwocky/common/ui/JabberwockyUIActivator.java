@@ -18,6 +18,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -81,6 +83,34 @@ public abstract class JabberwockyUIActivator extends AbstractUIPlugin {
             throw new IllegalStateException();
         }
         return ret;
+    }
+
+    /**
+     * Get an {@link Image} from a path within the plugin.
+     *
+     * @param path
+     *            The path to the image
+     * @return The image object, or null if it could not be found
+     */
+    public @Nullable Image getImageFromPath(String path) {
+        ImageDescriptor id = getImageDescripterFromPath(path);
+        if (id == null) {
+            return null;
+        }
+        return id.createImage();
+    }
+
+    /**
+     * Get the image descriptor from a path within the plugin.
+     *
+     * @param path
+     *            The path to the image
+     *
+     * @return The corresponding image descriptor, or null if the image is not
+     *         found
+     */
+    public @Nullable ImageDescriptor getImageDescripterFromPath(String path) {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(fPluginId, path);
     }
 
     // ------------------------------------------------------------------------

@@ -171,7 +171,7 @@ public class DeleteTraceSupplementaryFilesHandler extends AbstractHandler {
                     try {
                         project.refreshLocal(IResource.DEPTH_INFINITE, null);
                     } catch (CoreException e) {
-                        Activator.getDefault().logError("Error refreshing project " + project, e); //$NON-NLS-1$
+                        Activator.instance().logError("Error refreshing project " + project, e); //$NON-NLS-1$
                     }
                     subMonitor.worked(1);
                 }

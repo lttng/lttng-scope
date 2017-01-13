@@ -39,7 +39,7 @@ public class TmfTimePreferencesTest {
      */
     @Test
     public void testInit() {
-        assertEquals(DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(ITmfTimePreferencesConstants.DATIME, null), ITmfTimePreferencesConstants.TIME_HOUR_FMT);
+        assertEquals(DefaultScope.INSTANCE.getNode(Activator.instance().getPluginId()).get(ITmfTimePreferencesConstants.DATIME, null), ITmfTimePreferencesConstants.TIME_HOUR_FMT);
     }
 
     /**
@@ -77,7 +77,7 @@ public class TmfTimePreferencesTest {
 
         // Modify the preferences
         String testValue = ITmfTimePreferencesConstants.TIME_HOUR_FMT + "foo";
-        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId());
         node.put(ITmfTimePreferencesConstants.DATIME, testValue);
         try {
             node.flush();

@@ -9,12 +9,14 @@
 
 package org.eclipse.tracecompass.tmf.core.activator.internal;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * TMF Core message bundle
  * @noreference Messages class
  */
+@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 

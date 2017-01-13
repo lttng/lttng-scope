@@ -1073,7 +1073,7 @@ class TimeGraphFindDialog extends Dialog {
      * @return the dialog settings to be used
      */
     private IDialogSettings getDialogSettings() {
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         fDialogSettings = settings.getSection(getClass().getName());
         if (fDialogSettings == null) {
             fDialogSettings = settings.addNewSection(getClass().getName());

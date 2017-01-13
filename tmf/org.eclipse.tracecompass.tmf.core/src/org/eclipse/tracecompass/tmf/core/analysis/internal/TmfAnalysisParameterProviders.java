@@ -99,7 +99,7 @@ public final class TmfAnalysisParameterProviders {
                         providers.add(provider);
                     }
                 } catch (InvalidRegistryObjectException | CoreException e) {
-                    Activator.logError("Error creating module parameter provider", e); //$NON-NLS-1$
+                    Activator.instance().logError("Error creating module parameter provider", e); //$NON-NLS-1$
                 }
             }
         }

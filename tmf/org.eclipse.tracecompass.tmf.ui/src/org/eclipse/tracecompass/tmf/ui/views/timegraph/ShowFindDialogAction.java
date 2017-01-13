@@ -33,7 +33,7 @@ class ShowFindDialogAction extends Action {
     public ShowFindDialogAction() {
         setText(Messages.ShowFindDialogAction_Search);
         setToolTipText(Messages.ShowFindDialogAction_ShowSearchDialog);
-        setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SEARCH));
+        setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SEARCH));
     }
 
     @Override

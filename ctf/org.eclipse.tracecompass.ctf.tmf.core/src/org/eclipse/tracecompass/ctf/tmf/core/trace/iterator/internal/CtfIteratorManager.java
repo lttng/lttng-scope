@@ -190,7 +190,7 @@ public class CtfIteratorManager {
                  * replace it by a fresh new one to access the trace. We also
                  * report that as an error as it should not happen.
                  */
-                Activator.getDefault().logError("Found closed iterator in iterator manager for trace " + victim.getTrace()); //$NON-NLS-1$
+                Activator.instance().logError("Found closed iterator in iterator manager for trace " + victim.getTrace()); //$NON-NLS-1$
 
                 elem.dispose();
                 elem = (CtfIterator) fTrace.createIterator();

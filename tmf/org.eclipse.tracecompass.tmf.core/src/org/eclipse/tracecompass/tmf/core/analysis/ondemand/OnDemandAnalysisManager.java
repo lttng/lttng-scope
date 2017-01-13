@@ -116,7 +116,7 @@ public final class OnDemandAnalysisManager {
                         fAnalysisWrappers.add(new OndemandAnalysisWrapper((IOnDemandAnalysis) extension));
                     }
                 } catch (CoreException | ClassCastException e) {
-                    Activator.logError("Exception while loading extension point", e); //$NON-NLS-1$
+                    Activator.instance().logError("Exception while loading extension point", e); //$NON-NLS-1$
                 }
             }
         }
@@ -141,7 +141,7 @@ public final class OnDemandAnalysisManager {
      */
     public void registerAnalysis(IOnDemandAnalysis analysis) {
         if (fAnalysisWrappers.stream().anyMatch(wrapper -> wrapper.analysis.getName().equals(analysis.getName()))) {
-            Activator.logWarning(String.format("Ignoring external analysis with existing name \"%s\"", analysis.getName())); //$NON-NLS-1$
+            Activator.instance().logWarning(String.format("Ignoring external analysis with existing name \"%s\"", analysis.getName())); //$NON-NLS-1$
             return;
         }
 
@@ -156,7 +156,7 @@ public final class OnDemandAnalysisManager {
      */
     public void unregisterAnalysis(IOnDemandAnalysis analysis) {
         if (!analysis.isUserDefined()) {
-            Activator.logWarning(String.format("Not unregistering built-in on-demand analysis \"%s\"", analysis.getName())); //$NON-NLS-1$
+            Activator.instance().logWarning(String.format("Not unregistering built-in on-demand analysis \"%s\"", analysis.getName())); //$NON-NLS-1$
             return;
         }
 

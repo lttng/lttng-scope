@@ -222,7 +222,7 @@ public abstract class AbstractIndexTest {
      *             when error occurs
      */
     protected TestTrace createTrace(final String path) throws URISyntaxException, IOException, TmfTraceException {
-        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
+        final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(path), null);
         final File test = new File(FileLocator.toFileURL(location).toURI());
         TestTrace trace = new TestTrace(test.toURI().getPath(), BLOCK_SIZE);
         trace.indexTrace(true);

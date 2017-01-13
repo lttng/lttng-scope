@@ -123,7 +123,7 @@ public class RenameFolderDialog extends SelectionStatusDialog {
         IStatus nameStatus = workspace.validateName(newFolderName, IResource.FOLDER);
 
         if ("".equals(newFolderName)) { //$NON-NLS-1$
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR,
                     Messages.Dialog_EmptyNameError, null));
             return;
         }
@@ -135,12 +135,12 @@ public class RenameFolderDialog extends SelectionStatusDialog {
 
         IContainer parentFolder = fFolder.getResource().getParent();
         if (parentFolder.findMember(newFolderName) != null) {
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR,
                     Messages.Dialog_ExistingNameError, null));
             return;
         }
 
-        updateStatus(new Status(IStatus.OK, Activator.PLUGIN_ID, "")); //$NON-NLS-1$
+        updateStatus(new Status(IStatus.OK, Activator.instance().getPluginId(), "")); //$NON-NLS-1$
     }
 
     // ------------------------------------------------------------------------

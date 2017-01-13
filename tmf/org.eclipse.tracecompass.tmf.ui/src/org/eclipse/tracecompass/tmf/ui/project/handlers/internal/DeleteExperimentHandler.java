@@ -102,7 +102,7 @@ public class DeleteExperimentHandler extends AbstractHandler {
                                 mb.open();
                             }
                         });
-                        Activator.getDefault().logError("Error deleting experiment: " + experiment.getName(), e); //$NON-NLS-1$
+                        Activator.instance().logError("Error deleting experiment: " + experiment.getName(), e); //$NON-NLS-1$
                     }
                 }
             }

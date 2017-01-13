@@ -156,7 +156,7 @@ public class ProjectModelTestData {
                 try {
                     resource.delete(true, null);
                 } catch (CoreException e) {
-                    Activator.getDefault().logError("Error deleting experiment element", e);
+                    Activator.instance().logError("Error deleting experiment element", e);
                 }
             }
         }
@@ -181,7 +181,7 @@ public class ProjectModelTestData {
                 try {
                     resource.delete(true, new NullProgressMonitor());
                 } catch (CoreException e) {
-                    Activator.getDefault().logError("Error deleting trace element", e);
+                    Activator.instance().logError("Error deleting trace element", e);
                 }
             }
         }
@@ -190,7 +190,7 @@ public class ProjectModelTestData {
         try {
             project.getResource().delete(true, null);
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error deleting project", e);
+            Activator.instance().logError("Error deleting project", e);
         }
     }
 

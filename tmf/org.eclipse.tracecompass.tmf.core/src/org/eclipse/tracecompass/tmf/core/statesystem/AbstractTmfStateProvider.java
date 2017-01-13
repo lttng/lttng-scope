@@ -187,7 +187,7 @@ public abstract class AbstractTmfStateProvider implements ITmfStateProvider {
         @Override
         public void run() {
             if (!fStateSystemAssigned) {
-                Activator.logError("Cannot run event manager without assigning a target state system first!"); //$NON-NLS-1$
+                Activator.instance().logError("Cannot run event manager without assigning a target state system first!"); //$NON-NLS-1$
                 return;
             }
 

@@ -283,7 +283,7 @@ public class DeleteTraceFolderElementHandler extends AbstractHandler {
                                     mb.open();
                                 }
                             });
-                            Activator.getDefault().logError(getTraceErrorMessage(deleteType) + trace.getName(), e);
+                            Activator.instance().logError(getTraceErrorMessage(deleteType) + trace.getName(), e);
                         }
                     } else if (element instanceof TmfTraceFolder) {
                         final TmfTraceFolder folder = (TmfTraceFolder) element;
@@ -329,7 +329,7 @@ public class DeleteTraceFolderElementHandler extends AbstractHandler {
                                     mb.open();
                                 }
                             });
-                            Activator.getDefault().logError(getFolderErrorMessage(deleteType) + folder.getName(), e);
+                            Activator.instance().logError(getFolderErrorMessage(deleteType) + folder.getName(), e);
                         }
                     }
                     subMonitor.setTaskName(""); //$NON-NLS-1$

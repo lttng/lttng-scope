@@ -543,7 +543,7 @@ public class DropAdapterAssistant extends CommonDropAdapterAssistant {
                         TmfTraceTypeUIUtils.setTraceType(folder, traceTypeHelper);
                     }
                 } else {
-                    Activator.getDefault().logError("Invalid Trace Location"); //$NON-NLS-1$
+                    Activator.instance().logError("Invalid Trace Location"); //$NON-NLS-1$
                 }
             } else {
                 IFile file = parentFolder.getFile(targetName);
@@ -554,7 +554,7 @@ public class DropAdapterAssistant extends CommonDropAdapterAssistant {
                         TmfTraceTypeUIUtils.setTraceType(file, traceTypeHelper);
                     }
                 } else {
-                    Activator.getDefault().logError("Invalid Trace Location"); //$NON-NLS-1$
+                    Activator.instance().logError("Invalid Trace Location"); //$NON-NLS-1$
                 }
             }
         } catch (CoreException e) {
@@ -580,7 +580,7 @@ public class DropAdapterAssistant extends CommonDropAdapterAssistant {
                 if (result.isOK() || result.matches(IStatus.INFO | IStatus.WARNING)) {
                     folder.createLink(location, IResource.REPLACE, null);
                 } else {
-                    Activator.getDefault().logError("Invalid Trace Location"); //$NON-NLS-1$
+                    Activator.instance().logError("Invalid Trace Location"); //$NON-NLS-1$
                 }
             } else {
                 IFile file = parentFolder.getFile(targetName);
@@ -588,7 +588,7 @@ public class DropAdapterAssistant extends CommonDropAdapterAssistant {
                 if (result.isOK() || result.matches(IStatus.INFO | IStatus.WARNING)) {
                     file.createLink(location, IResource.REPLACE, null);
                 } else {
-                    Activator.getDefault().logError("Invalid Trace Location"); //$NON-NLS-1$
+                    Activator.instance().logError("Invalid Trace Location"); //$NON-NLS-1$
                 }
             }
         } catch (CoreException e) {

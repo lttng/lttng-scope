@@ -210,16 +210,16 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
     private static final String FONT_DEFINITION_ID = "org.eclipse.tracecompass.tmf.ui.font.eventtable"; //$NON-NLS-1$
     private static final String HIGHLIGHT_COLOR_DEFINITION_ID = "org.eclipse.tracecompass.tmf.ui.color.eventtable.highlight"; //$NON-NLS-1$
 
-    private static final Image BOOKMARK_IMAGE = Activator.getDefault().getImageFromPath(
+    private static final Image BOOKMARK_IMAGE = Activator.instance().getImageFromPath(
             "icons/elcl16/bookmark_obj.gif"); //$NON-NLS-1$
-    private static final Image SEARCH_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/search.gif"); //$NON-NLS-1$
-    private static final Image SEARCH_MATCH_IMAGE = Activator.getDefault().getImageFromPath(
+    private static final Image SEARCH_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/search.gif"); //$NON-NLS-1$
+    private static final Image SEARCH_MATCH_IMAGE = Activator.instance().getImageFromPath(
             "icons/elcl16/search_match.gif"); //$NON-NLS-1$
-    private static final Image SEARCH_MATCH_BOOKMARK_IMAGE = Activator.getDefault().getImageFromPath(
+    private static final Image SEARCH_MATCH_BOOKMARK_IMAGE = Activator.instance().getImageFromPath(
             "icons/elcl16/search_match_bookmark.gif"); //$NON-NLS-1$
-    private static final Image FILTER_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/filter_items.gif"); //$NON-NLS-1$
-    private static final Image FILTER_ADD_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/filter_add.gif"); //$NON-NLS-1$
-    private static final Image STOP_IMAGE = Activator.getDefault().getImageFromPath("icons/elcl16/stop.gif"); //$NON-NLS-1$
+    private static final Image FILTER_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/filter_items.gif"); //$NON-NLS-1$
+    private static final Image FILTER_ADD_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/filter_add.gif"); //$NON-NLS-1$
+    private static final Image STOP_IMAGE = Activator.instance().getImageFromPath("icons/elcl16/stop.gif"); //$NON-NLS-1$
     private static final String SEARCH_HINT = Messages.TmfEventsTable_SearchHint;
     private static final int MAX_CACHE_SIZE = 1000;
 
@@ -1035,7 +1035,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                 try {
                     PlatformUI.getWorkbench().getProgressService().busyCursorWhile(operation);
                 } catch (InvocationTargetException e) {
-                    Activator.getDefault().logError("Invocation target exception copying to clipboard ", e); //$NON-NLS-1$
+                    Activator.instance().logError("Invocation target exception copying to clipboard ", e); //$NON-NLS-1$
                 } catch (InterruptedException e) {
                     /* ignored */
                 }
@@ -2958,7 +2958,7 @@ public class TmfEventsTable extends TmfComponent implements IGotoMarker, ISelect
                     try {
                         rank = Long.parseLong(rankString);
                     } catch (NumberFormatException e) {
-                        Activator.getDefault().logError("Invalid marker rank", e); //$NON-NLS-1$
+                        Activator.instance().logError("Invalid marker rank", e); //$NON-NLS-1$
                     }
                 }
             }

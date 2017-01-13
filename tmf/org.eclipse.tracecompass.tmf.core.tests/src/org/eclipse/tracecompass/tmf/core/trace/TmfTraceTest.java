@@ -83,7 +83,7 @@ public class TmfTraceTest {
     @Before
     public void setUp() {
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             final File test = new File(FileLocator.toFileURL(location).toURI());
             fTrace = new TmfTraceStub(test.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
             TmfSignalManager.deregister(fTrace);
@@ -111,7 +111,7 @@ public class TmfTraceTest {
     @Test
     public void testFullConstructor() throws TmfTraceException {
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             File testfile = new File(FileLocator.toFileURL(location).toURI());
             TmfTraceStub trace = new TmfTraceStub(testfile.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
             trace.indexTrace(true);
@@ -141,7 +141,7 @@ public class TmfTraceTest {
     public void testLiveTraceConstructor() throws TmfTraceException {
         final long interval = 100;
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             File testfile = new File(FileLocator.toFileURL(location).toURI());
             TmfTraceStub trace = new TmfTraceStub(testfile.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, interval);
             trace.indexTrace(true);
@@ -170,7 +170,7 @@ public class TmfTraceTest {
     @Test
     public void testCopyConstructor() throws TmfTraceException {
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             File testfile = new File(FileLocator.toFileURL(location).toURI());
             TmfTraceStub original = new TmfTraceStub(testfile.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
             TmfTraceStub trace = new TmfTraceStub(original);
@@ -305,7 +305,7 @@ public class TmfTraceTest {
         assertEquals("getEndTime",     Long.MIN_VALUE, trace.getEndTime().getValue());
 
         // Validate
-        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+        final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
         final File testfile = new File(FileLocator.toFileURL(location).toURI());
         assertTrue("validate", trace.validate(null, testfile.getPath()).isOK());
 
@@ -1374,7 +1374,7 @@ public class TmfTraceTest {
         TmfTraceStub trace = null;
         File testfile = null;
         try {
-            final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
+            final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(TEST_TRACE.getFullPath()), null);
             testfile = new File(FileLocator.toFileURL(location).toURI());
             trace = new TmfTraceStub(testfile.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
             // verify initial values

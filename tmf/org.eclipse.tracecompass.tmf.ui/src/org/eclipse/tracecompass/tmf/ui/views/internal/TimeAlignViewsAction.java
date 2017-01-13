@@ -35,18 +35,18 @@ public class TimeAlignViewsAction extends Action {
 
         setId("org.eclipse.tracecompass.tmf.ui.views.TimeAlignViewsAction"); //$NON-NLS-1$
         setToolTipText(Messages.TmfView_AlignViewsActionToolTipText);
-        setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_LINK));
+        setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_LINK));
         setChecked(isPreferenceEnabled());
     }
 
     @Override
     public void run() {
         boolean newValue = !isPreferenceEnabled();
-        InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).putBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, newValue);
+        InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).putBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, newValue);
         setChecked(newValue);
     }
 
     private static boolean isPreferenceEnabled() {
-        return InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).getBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, true);
+        return InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).getBoolean(ITmfUIPreferences.PREF_ALIGN_VIEWS, true);
     }
 }

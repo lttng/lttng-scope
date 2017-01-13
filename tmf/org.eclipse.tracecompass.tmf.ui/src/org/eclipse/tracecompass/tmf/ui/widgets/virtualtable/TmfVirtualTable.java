@@ -1215,7 +1215,7 @@ public class TmfVirtualTable extends Composite {
         try {
             return control.getConstructor(Composite.class, int.class).newInstance(new Object[] {fTable, SWT.NONE});
         } catch (Exception e) {
-            Activator.getDefault().logError("Error creating table editor control", e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating table editor control", e); //$NON-NLS-1$
         }
         return null;
     }

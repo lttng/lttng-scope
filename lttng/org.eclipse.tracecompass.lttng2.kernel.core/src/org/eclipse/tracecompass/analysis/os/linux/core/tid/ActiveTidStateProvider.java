@@ -97,7 +97,7 @@ class ActiveTidStateProvider extends AbstractTmfStateProvider {
             final TmfStateValue value = TmfStateValue.newValueInt(nextTid);
             ssb.modifyAttribute(event.getTimestamp().toNanos(), value, cpuQuark);
         } catch (StateValueTypeException e) {
-            Activator.getDefault().logError(nullToEmptyString(e.getMessage()), e);
+            Activator.instance().logError(nullToEmptyString(e.getMessage()), e);
         }
     }
 }

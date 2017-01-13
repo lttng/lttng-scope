@@ -130,7 +130,7 @@ public final class LamiReportView extends TmfView {
         Action toggleTableAction = new ToggleTableAction();
         toggleTableAction.setText(Messages.LamiReportView_ActivateTableAction_ButtonName);
         toggleTableAction.setToolTipText(Messages.LamiReportView_ActivateTableAction_ButtonTooltip);
-        toggleTableAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath("icons/table.gif")); //$NON-NLS-1$
+        toggleTableAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath("icons/table.gif")); //$NON-NLS-1$
 
         IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
         toolbarMgr.add(toggleTableAction);

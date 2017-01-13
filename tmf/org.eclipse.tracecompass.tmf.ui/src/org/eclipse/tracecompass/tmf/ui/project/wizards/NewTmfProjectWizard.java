@@ -95,7 +95,7 @@ public class NewTmfProjectWizard extends Wizard implements INewWizard, IExecutab
      */
     public NewTmfProjectWizard(String title, String desc) {
         super();
-        setDialogSettings(Activator.getDefault().getDialogSettings());
+        setDialogSettings(Activator.instance().getDialogSettings());
         setNeedsProgressMonitor(true);
         setForcePreviousAndNextButtons(true);
         setWindowTitle(title);

@@ -106,10 +106,10 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
     private static final long DEFAULT_FREQUENCY = 1000000000L;
     private static final int H_SCROLLBAR_MAX = Integer.MAX_VALUE - 1;
 
-    private static final ImageDescriptor ADD_BOOKMARK = Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ADD_BOOKMARK);
-    private static final ImageDescriptor NEXT_BOOKMARK = Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_BOOKMARK);
-    private static final ImageDescriptor PREVIOUS_BOOKMARK = Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREVIOUS_BOOKMARK);
-    private static final ImageDescriptor REMOVE_BOOKMARK = Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_REMOVE_BOOKMARK);
+    private static final ImageDescriptor ADD_BOOKMARK = Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ADD_BOOKMARK);
+    private static final ImageDescriptor NEXT_BOOKMARK = Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_BOOKMARK);
+    private static final ImageDescriptor PREVIOUS_BOOKMARK = Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREVIOUS_BOOKMARK);
+    private static final ImageDescriptor REMOVE_BOOKMARK = Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_REMOVE_BOOKMARK);
 
     private long fMinTimeInterval;
     private ITimeGraphEntry fSelectedEntry;
@@ -1865,7 +1865,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fResetScaleAction.setText(Messages.TmfTimeGraphViewer_ResetScaleActionNameText);
             fResetScaleAction.setToolTipText(Messages.TmfTimeGraphViewer_ResetScaleActionToolTipText);
-            fResetScaleAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_HOME_MENU));
+            fResetScaleAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_HOME_MENU));
         }
         return fResetScaleAction;
     }
@@ -1886,7 +1886,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fShowLegendAction.setText(Messages.TmfTimeGraphViewer_LegendActionNameText);
             fShowLegendAction.setToolTipText(Messages.TmfTimeGraphViewer_LegendActionToolTipText);
-            fShowLegendAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_LEGEND));
+            fShowLegendAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_SHOW_LEGEND));
         }
 
         return fShowLegendAction;
@@ -1909,7 +1909,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
 
             fNextEventAction.setText(Messages.TmfTimeGraphViewer_NextStateChangeActionNameText);
             fNextEventAction.setToolTipText(Messages.TmfTimeGraphViewer_NextStateChangeActionToolTipText);
-            fNextEventAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_STATE_CHANGE));
+            fNextEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_STATE_CHANGE));
         }
 
         return fNextEventAction;
@@ -1932,7 +1932,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
 
             fPrevEventAction.setText(Messages.TmfTimeGraphViewer_PreviousStateChangeActionNameText);
             fPrevEventAction.setToolTipText(Messages.TmfTimeGraphViewer_PreviousStateChangeActionToolTipText);
-            fPrevEventAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREV_STATE_CHANGE));
+            fPrevEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREV_STATE_CHANGE));
         }
 
         return fPrevEventAction;
@@ -1954,7 +1954,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fNextItemAction.setText(Messages.TmfTimeGraphViewer_NextItemActionNameText);
             fNextItemAction.setToolTipText(Messages.TmfTimeGraphViewer_NextItemActionToolTipText);
-            fNextItemAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_ITEM));
+            fNextItemAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_NEXT_ITEM));
         }
         return fNextItemAction;
     }
@@ -1975,7 +1975,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fPreviousItemAction.setText(Messages.TmfTimeGraphViewer_PreviousItemActionNameText);
             fPreviousItemAction.setToolTipText(Messages.TmfTimeGraphViewer_PreviousItemActionToolTipText);
-            fPreviousItemAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREV_ITEM));
+            fPreviousItemAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_PREV_ITEM));
         }
         return fPreviousItemAction;
     }
@@ -1995,7 +1995,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fZoomInAction.setText(Messages.TmfTimeGraphViewer_ZoomInActionNameText);
             fZoomInAction.setToolTipText(Messages.TmfTimeGraphViewer_ZoomInActionToolTipText);
-            fZoomInAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ZOOM_IN_MENU));
+            fZoomInAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ZOOM_IN_MENU));
         }
         return fZoomInAction;
     }
@@ -2015,7 +2015,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fZoomOutAction.setText(Messages.TmfTimeGraphViewer_ZoomOutActionNameText);
             fZoomOutAction.setToolTipText(Messages.TmfTimeGraphViewer_ZoomOutActionToolTipText);
-            fZoomOutAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ZOOM_OUT_MENU));
+            fZoomOutAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_ZOOM_OUT_MENU));
         }
         return fZoomOutAction;
     }
@@ -2049,7 +2049,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
                 }
             };
             fHideArrowsAction.setToolTipText(Messages.TmfTimeGraphViewer_HideArrowsActionToolTipText);
-            fHideArrowsAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_HIDE_ARROWS));
+            fHideArrowsAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_HIDE_ARROWS));
             if (dialogSettings != null) {
                 boolean hideArrows = dialogSettings.getBoolean(HIDE_ARROWS_KEY);
                 fTimeGraphCtrl.hideArrows(hideArrows);
@@ -2082,7 +2082,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fFollowArrowFwdAction.setText(Messages.TmfTimeGraphViewer_FollowArrowForwardActionNameText);
             fFollowArrowFwdAction.setToolTipText(Messages.TmfTimeGraphViewer_FollowArrowForwardActionToolTipText);
-            fFollowArrowFwdAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FOLLOW_ARROW_FORWARD));
+            fFollowArrowFwdAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FOLLOW_ARROW_FORWARD));
             if (fHideArrowsAction != null) {
                 fFollowArrowFwdAction.setEnabled(!fHideArrowsAction.isChecked());
             }
@@ -2107,7 +2107,7 @@ public class TimeGraphViewer implements ITimeDataProvider, IMarkerAxisListener, 
             };
             fFollowArrowBwdAction.setText(Messages.TmfTimeGraphViewer_FollowArrowBackwardActionNameText);
             fFollowArrowBwdAction.setToolTipText(Messages.TmfTimeGraphViewer_FollowArrowBackwardActionToolTipText);
-            fFollowArrowBwdAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FOLLOW_ARROW_BACKWARD));
+            fFollowArrowBwdAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(ITmfImageConstants.IMG_UI_FOLLOW_ARROW_BACKWARD));
             if (fHideArrowsAction != null) {
                 fFollowArrowBwdAction.setEnabled(!fHideArrowsAction.isChecked());
             }

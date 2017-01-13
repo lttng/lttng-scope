@@ -84,7 +84,7 @@ public enum TmfTestTrace {
         if (fTrace != null) {
             fTrace.dispose();
         }
-        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
+        final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(fDirectory + File.separator + fPath), null);
         try {
             File test = new File(FileLocator.toFileURL(location).toURI());
             ITmfTrace trace = new TmfTraceStub(test.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);
@@ -105,7 +105,7 @@ public enum TmfTestTrace {
      */
     public ITmfTrace getTraceAsStub2() {
         ITmfTrace trace = null;
-        final URL location = FileLocator.find(Activator.getDefault().getBundle(), new Path(fDirectory + File.separator + fPath), null);
+        final URL location = FileLocator.find(Activator.instance().getBundle(), new Path(fDirectory + File.separator + fPath), null);
         try {
             File test = new File(FileLocator.toFileURL(location).toURI());
             trace = new TmfTraceStub2(test.toURI().getPath(), ITmfTrace.DEFAULT_TRACE_CACHE_SIZE, false, null);

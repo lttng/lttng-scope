@@ -259,7 +259,7 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             // Reserve space for header
             fRandomAccessFile.setLength(header.getSize());
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.ErrorOpeningIndex, fFile), e);
+            Activator.instance().logError(MessageFormat.format(Messages.ErrorOpeningIndex, fFile), e);
             return null;
         }
 
@@ -279,7 +279,7 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             fRandomAccessFile = new RandomAccessFile(fFile, "rw"); //$NON-NLS-1$
             fFileChannel = fRandomAccessFile.getChannel();
         } catch (FileNotFoundException e) {
-            Activator.logError(MessageFormat.format(Messages.ErrorOpeningIndex, fFile), e);
+            Activator.instance().logError(MessageFormat.format(Messages.ErrorOpeningIndex, fFile), e);
             return null;
         }
 
@@ -294,7 +294,7 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             fRandomAccessFile.seek(0);
             fRandomAccessFile.writeInt(INVALID_VERSION);
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.IOErrorReadingHeader, fFile), e);
+            Activator.instance().logError(MessageFormat.format(Messages.IOErrorReadingHeader, fFile), e);
             return null;
         }
 
@@ -469,7 +469,7 @@ public abstract class AbstractFileCheckpointCollection implements ICheckpointCol
             setCreatedFromScratch(true);
             fRandomAccessFile = null;
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.IOErrorClosingIndex, fFile), e);
+            Activator.instance().logError(MessageFormat.format(Messages.IOErrorClosingIndex, fFile), e);
         }
     }
 }

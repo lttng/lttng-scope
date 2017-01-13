@@ -227,7 +227,7 @@ public class TmfAnalysisManager {
                         providerSet.add(provider);
                     }
                 } catch (IllegalArgumentException | SecurityException | InstantiationException | IllegalAccessException e) {
-                    Activator.logError(Messages.TmfAnalysisManager_ErrorParameterProvider, e);
+                    Activator.instance().logError(Messages.TmfAnalysisManager_ErrorParameterProvider, e);
                 }
             }
         }

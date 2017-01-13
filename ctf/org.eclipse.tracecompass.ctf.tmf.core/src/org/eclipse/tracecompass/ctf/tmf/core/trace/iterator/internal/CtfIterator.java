@@ -205,7 +205,7 @@ public class CtfIterator extends CTFTraceReader
                 ret = super.seek(offsetTimestamp);
             }
         } catch (CTFException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
             return false;
         }
         /*
@@ -253,7 +253,7 @@ public class CtfIterator extends CTFTraceReader
         try {
             ret = super.advance();
         } catch (CTFException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
 
         if (ret) {

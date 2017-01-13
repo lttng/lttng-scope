@@ -166,9 +166,9 @@ public class TmfEventsEditor extends TmfEditor implements ITmfTraceEditor, IReus
             } catch (final PartInitException e) {
                 throw e;
             } catch (final InvalidRegistryObjectException e) {
-                Activator.getDefault().logError("Error initializing TmfEventsEditor", e); //$NON-NLS-1$
+                Activator.instance().logError("Error initializing TmfEventsEditor", e); //$NON-NLS-1$
             } catch (final CoreException e) {
-                Activator.getDefault().logError("Error initializing TmfEventsEditor", e); //$NON-NLS-1$
+                Activator.instance().logError("Error initializing TmfEventsEditor", e); //$NON-NLS-1$
             }
         } else {
             throw new PartInitException("Invalid IEditorInput: " + input.getClass()); //$NON-NLS-1$

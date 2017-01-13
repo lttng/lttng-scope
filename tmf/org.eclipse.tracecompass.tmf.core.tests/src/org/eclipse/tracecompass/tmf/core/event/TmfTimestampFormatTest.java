@@ -76,7 +76,7 @@ public class TmfTimestampFormatTest {
      */
     @Test
     public void testUpdateDefaultFormats() {
-        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId());
 
         String dateTimeTestValue = ITmfTimePreferencesConstants.TIME_HOUR_FMT + ":";
         node.put(ITmfTimePreferencesConstants.DATIME, dateTimeTestValue);

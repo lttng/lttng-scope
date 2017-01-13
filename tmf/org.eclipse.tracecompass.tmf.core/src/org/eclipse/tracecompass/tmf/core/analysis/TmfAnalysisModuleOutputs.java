@@ -92,7 +92,7 @@ public class TmfAnalysisModuleOutputs {
         try {
             IAnalysisOutput output = (IAnalysisOutput) ce.createExecutableExtension(CLASS_ATTR);
             if (output == null) {
-                Activator.logWarning("An output could not be created"); //$NON-NLS-1$
+                Activator.instance().logWarning("An output could not be created"); //$NON-NLS-1$
                 return listener;
             }
             for (IConfigurationElement childCe : ce.getChildren()) {
@@ -105,7 +105,7 @@ public class TmfAnalysisModuleOutputs {
                 }
             }
         } catch (InvalidRegistryObjectException | CoreException | ClassNotFoundException e) {
-            Activator.logError("Error creating module output listener", e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating module output listener", e); //$NON-NLS-1$
         }
         return listener;
     }
@@ -115,7 +115,7 @@ public class TmfAnalysisModuleOutputs {
         try {
             listener = (ITmfNewAnalysisModuleListener) ce.createExecutableExtension(CLASS_ATTR);
         } catch (CoreException e) {
-            Activator.logError("Error creating new module listener", e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating new module listener", e); //$NON-NLS-1$
         }
         return listener;
     }

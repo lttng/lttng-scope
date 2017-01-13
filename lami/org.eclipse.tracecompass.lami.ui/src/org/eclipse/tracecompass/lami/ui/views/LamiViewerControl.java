@@ -55,7 +55,7 @@ public final class LamiViewerControl {
         };
         fToggleAction.setText(Messages.LamiReportView_ActivateTableAction_ButtonName);
         fToggleAction.setToolTipText(Messages.LamiReportView_ActivateTableAction_ButtonTooltip);
-        fToggleAction.setImageDescriptor(Activator.getDefault().getImageDescripterFromPath("icons/table.gif")); //$NON-NLS-1$
+        fToggleAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath("icons/table.gif")); //$NON-NLS-1$
     }
 
     /**
@@ -118,12 +118,12 @@ public final class LamiViewerControl {
     private static @Nullable ImageDescriptor getIconForGraphType(LamiChartModel.ChartType graphType) {
         switch (graphType) {
         case BAR_CHART:
-            return Activator.getDefault().getImageDescripterFromPath("icons/histogram.gif"); //$NON-NLS-1$
+            return Activator.instance().getImageDescripterFromPath("icons/histogram.gif"); //$NON-NLS-1$
         case PIE_CHART:
         case XY_SCATTER:
         default:
             // FIXME Use other icons
-            return Activator.getDefault().getImageDescripterFromPath("icons/histogram.gif"); //$NON-NLS-1$
+            return Activator.instance().getImageDescripterFromPath("icons/histogram.gif"); //$NON-NLS-1$
         }
     }
 

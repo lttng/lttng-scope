@@ -116,7 +116,7 @@ public class TmfOpenTraceHelper {
             MessageBox mb = new MessageBox(shell);
             mb.setMessage(e.getMessage());
             mb.open();
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+            return new Status(IStatus.ERROR, Activator.instance().getPluginId(), e.getMessage());
         }
 
         IFolder folder = destinationFolder.getResource();
@@ -128,7 +128,7 @@ public class TmfOpenTraceHelper {
         IResource linkedTrace = TmfImportHelper.createLink(folder, pathString, traceName);
 
         if (linkedTrace == null || !linkedTrace.exists()) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+            return new Status(IStatus.ERROR, Activator.instance().getPluginId(),
                     Messages.TmfOpenTraceHelper_LinkFailed);
         }
 
@@ -241,7 +241,7 @@ public class TmfOpenTraceHelper {
             }
         }
         if (traceElement == null) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NLS.bind(Messages.TmfOpenTraceHelper_TraceNotFound, traceName));
+            return new Status(IStatus.ERROR, Activator.instance().getPluginId(), NLS.bind(Messages.TmfOpenTraceHelper_TraceNotFound, traceName));
         }
         openTraceFromElement(traceElement);
         return Status.OK_STATUS;
@@ -332,7 +332,7 @@ public class TmfOpenTraceHelper {
         try {
             file = traceElement.createBookmarksFile();
         } catch (final CoreException e) {
-            Activator.getDefault().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
+            Activator.instance().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
             TraceUtils.displayErrorMsg(NLS.bind(Messages.TmfOpenTraceHelper_OpenElement, traceElement.getTypeName()),
                     NLS.bind(Messages.TmfOpenTraceHelper_ErrorElement, traceElement.getTypeName()) + ENDL + ENDL + e.getMessage());
             return;
@@ -383,7 +383,7 @@ public class TmfOpenTraceHelper {
                         } catch (final PartInitException e) {
                             TraceUtils.displayErrorMsg(NLS.bind(Messages.TmfOpenTraceHelper_OpenElement, traceElement.getTypeName()),
                                     NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ENDL + ENDL + e.getMessage());
-                            Activator.getDefault().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
+                            Activator.instance().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
                             trace.dispose();
                         }
                     }
@@ -434,7 +434,7 @@ public class TmfOpenTraceHelper {
         try {
             file = traceElement.createBookmarksFile();
         } catch (final CoreException e) {
-            Activator.getDefault().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
+            Activator.instance().logError(NLS.bind(Messages.TmfOpenTraceHelper_ErrorOpeningElement, traceElement.getTypeName()) + ' ' + traceElement.getName());
             TraceUtils.displayErrorMsg(NLS.bind(Messages.TmfOpenTraceHelper_OpenElement, traceElement.getTypeName()),
                     NLS.bind(Messages.TmfOpenTraceHelper_ErrorElement, traceElement.getTypeName()) + ENDL + ENDL + e.getMessage());
             return;

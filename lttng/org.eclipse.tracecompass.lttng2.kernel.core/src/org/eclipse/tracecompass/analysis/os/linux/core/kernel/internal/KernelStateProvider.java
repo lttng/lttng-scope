@@ -197,14 +197,14 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
              * This would indicate a problem with the logic of the manager here,
              * so it shouldn't happen.
              */
-            Activator.getDefault().logError("Attribute not found: " + ae.getMessage(), ae); //$NON-NLS-1$
+            Activator.instance().logError("Attribute not found: " + ae.getMessage(), ae); //$NON-NLS-1$
 
         } catch (TimeRangeException tre) {
             /*
              * This would happen if the events in the trace aren't ordered
              * chronologically, which should never be the case ...
              */
-            Activator.getDefault().logError("TimeRangeExcpetion caught in the state system's event manager.\n" + //$NON-NLS-1$
+            Activator.instance().logError("TimeRangeExcpetion caught in the state system's event manager.\n" + //$NON-NLS-1$
                     "Are the events in the trace correctly ordered?\n" + tre.getMessage(), tre); //$NON-NLS-1$
 
         } catch (StateValueTypeException sve) {
@@ -212,7 +212,7 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
              * This would happen if we were trying to push/pop attributes not of
              * type integer. Which, once again, should never happen.
              */
-            Activator.getDefault().logError("State value error: " + sve.getMessage(), sve); //$NON-NLS-1$
+            Activator.instance().logError("State value error: " + sve.getMessage(), sve); //$NON-NLS-1$
         }
     }
 

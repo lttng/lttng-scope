@@ -1,11 +1,11 @@
-/*******************************************************************************
- * Copyright (c) 2015, 2016 EfficiOS Inc. and others
+/*
+ * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ */
 
 package org.eclipse.tracecompass.lami.core.activator.internal;
 

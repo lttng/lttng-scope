@@ -344,7 +344,7 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
                     }
 
                 } else {
-                    Activator.getDefault().logError("Error creating link. Invalid trace location " + location); //$NON-NLS-1$
+                    Activator.instance().logError("Error creating link. Invalid trace location " + location); //$NON-NLS-1$
                 }
             } else {
                 IFile file = experiment.getFile(trace.getElementPath());
@@ -356,11 +356,11 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
                         TmfTraceTypeUIUtils.setTraceType(file, traceType, refresh);
                     }
                 } else {
-                    Activator.getDefault().logError("Error creating link. Invalid trace location " + location); //$NON-NLS-1$
+                    Activator.instance().logError("Error creating link. Invalid trace location " + location); //$NON-NLS-1$
                 }
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error creating link to location " + location, e); //$NON-NLS-1$
+            Activator.instance().logError("Error creating link to location " + location, e); //$NON-NLS-1$
         }
 
     }
@@ -456,7 +456,7 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
                 return experiment;
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError(NLS.bind(Messages.TmfExperimentElement_ErrorInstantiatingTrace, getName()), e);
+            Activator.instance().logError(NLS.bind(Messages.TmfExperimentElement_ErrorInstantiatingTrace, getName()), e);
         }
         return null;
     }

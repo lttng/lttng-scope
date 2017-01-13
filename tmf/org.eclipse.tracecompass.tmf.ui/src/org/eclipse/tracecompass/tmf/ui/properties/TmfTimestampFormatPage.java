@@ -193,7 +193,7 @@ public class TmfTimestampFormatPage extends PreferencePage implements IWorkbench
 
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
-        return Activator.getDefault().getCorePreferenceStore();
+        return Activator.instance().getCorePreferenceStore();
     }
 
     @Override
@@ -247,7 +247,7 @@ public class TmfTimestampFormatPage extends PreferencePage implements IWorkbench
                 timeZoneIntervals[i][0] = tz.getDisplayName();
                 timeZoneIntervals[i][1] = tz.getID();
             } catch (NullPointerException e) {
-                Activator.getDefault().logError("TimeZone " + timeZones[i] + " does not exist.", e); //$NON-NLS-1$ //$NON-NLS-2$
+                Activator.instance().logError("TimeZone " + timeZones[i] + " does not exist.", e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

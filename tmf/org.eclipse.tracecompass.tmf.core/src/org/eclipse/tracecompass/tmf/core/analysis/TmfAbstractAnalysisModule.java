@@ -339,7 +339,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
                         module.waitForCompletion(mon);
                     }
                 } catch (TmfAnalysisException e) {
-                    Activator.logError("Error executing analysis with trace " + trace.getName(), e); //$NON-NLS-1$
+                    Activator.instance().logError("Error executing analysis with trace " + trace.getName(), e); //$NON-NLS-1$
                 } finally {
                     synchronized (syncObj) {
                         mon.done();
@@ -369,7 +369,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
         synchronized (syncObj) {
             final ITmfTrace trace = getTrace();
             if (trace == null) {
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, String.format("No trace specified for analysis %s", getName())); //$NON-NLS-1$
+                return new Status(IStatus.ERROR, Activator.instance().getPluginId(), String.format("No trace specified for analysis %s", getName())); //$NON-NLS-1$
             }
             execute(trace);
         }
@@ -402,7 +402,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
                 finishedLatch.await();
             }
         } catch (InterruptedException e) {
-            Activator.logError("Error while waiting for module completion", e); //$NON-NLS-1$
+            Activator.instance().logError("Error while waiting for module completion", e); //$NON-NLS-1$
         }
         return !fAnalysisCancelled;
     }
@@ -417,7 +417,7 @@ public abstract class TmfAbstractAnalysisModule extends TmfComponent
                 }
             }
         } catch (InterruptedException e) {
-            Activator.logError("Error while waiting for module completion", e); //$NON-NLS-1$
+            Activator.instance().logError("Error while waiting for module completion", e); //$NON-NLS-1$
         }
         return !fAnalysisCancelled;
     }

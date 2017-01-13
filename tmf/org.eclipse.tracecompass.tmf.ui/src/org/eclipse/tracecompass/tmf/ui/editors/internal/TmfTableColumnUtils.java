@@ -171,7 +171,7 @@ public final class TmfTableColumnUtils {
             clearColumnElement(traceTypeId, sectionName);
             return;
         }
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         IDialogSettings section = settings.getSection(ROOT_SECTION_NAME);
         if (section == null) {
             section = settings.addNewSection(ROOT_SECTION_NAME);
@@ -191,7 +191,7 @@ public final class TmfTableColumnUtils {
             clearColumnElement(traceTypeId, sectionName);
             return;
         }
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         IDialogSettings section = settings.getSection(ROOT_SECTION_NAME);
         if (section == null) {
             section = settings.addNewSection(ROOT_SECTION_NAME);
@@ -207,7 +207,7 @@ public final class TmfTableColumnUtils {
         if (traceTypeId == null) {
             return;
         }
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         IDialogSettings section = settings.getSection(ROOT_SECTION_NAME);
         if (section == null) {
             return;
@@ -223,7 +223,7 @@ public final class TmfTableColumnUtils {
         if (traceTypeId == null) {
             return null;
         }
-        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        IDialogSettings settings = Activator.instance().getDialogSettings();
         IDialogSettings section = settings.getSection(ROOT_SECTION_NAME);
         if (section == null) {
             return null;

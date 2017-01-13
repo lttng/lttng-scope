@@ -296,7 +296,7 @@ public class CtfTmfTrace extends TmfTrace
         try {
             isMetadataFile = Metadata.preValidate(path);
         } catch (final CTFException e) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.CtfTmfTrace_ReadingError + ": " + e.toString(), e); //$NON-NLS-1$
+            return new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.CtfTmfTrace_ReadingError + ": " + e.toString(), e); //$NON-NLS-1$
         }
 
         if (isMetadataFile) {
@@ -305,9 +305,9 @@ public class CtfTmfTrace extends TmfTrace
                 final CTFTrace trace = new CTFTrace(path);
                 if (!trace.majorIsSet()) {
                     if (isMetadataFile) {
-                        return new TraceValidationStatus(MIN_CONFIDENCE, IStatus.WARNING, Activator.PLUGIN_ID, Messages.CtfTmfTrace_MajorNotSet, null);
+                        return new TraceValidationStatus(MIN_CONFIDENCE, IStatus.WARNING, Activator.instance().getPluginId(), Messages.CtfTmfTrace_MajorNotSet, null);
                     }
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.CtfTmfTrace_MajorNotSet);
+                    return new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.CtfTmfTrace_MajorNotSet);
                 }
 
                 // Validate using reader initialization
@@ -316,14 +316,14 @@ public class CtfTmfTrace extends TmfTrace
                 }
 
                 // Trace is validated, return with confidence
-                return new CtfTraceValidationStatus(CONFIDENCE, Activator.PLUGIN_ID, trace.getEnvironment());
+                return new CtfTraceValidationStatus(CONFIDENCE, Activator.instance().getPluginId(), trace.getEnvironment());
 
             } catch (final CTFException | BufferOverflowException e) {
                 // return warning since it's a CTF trace but with errors in it
-                return new TraceValidationStatus(MIN_CONFIDENCE, IStatus.WARNING, Activator.PLUGIN_ID, Messages.CtfTmfTrace_ReadingError + ": " + e.toString(), e); //$NON-NLS-1$
+                return new TraceValidationStatus(MIN_CONFIDENCE, IStatus.WARNING, Activator.instance().getPluginId(), Messages.CtfTmfTrace_ReadingError + ": " + e.toString(), e); //$NON-NLS-1$
             }
         }
-        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.CtfTmfTrace_ReadingError);
+        return new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.CtfTmfTrace_ReadingError);
     }
 
     @Override
@@ -578,7 +578,7 @@ public class CtfTmfTrace extends TmfTrace
         try {
             return new CtfIterator(fTrace, this);
         } catch (CTFException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
         return null;
     }
@@ -597,7 +597,7 @@ public class CtfTmfTrace extends TmfTrace
         try {
             return new CtfIterator(fTrace, this, ctfLocationData, rank);
         } catch (CTFException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
         return null;
     }
@@ -668,7 +668,7 @@ public class CtfTmfTrace extends TmfTrace
             port = getResource().getPersistentProperty(CtfConstants.LIVE_PORT);
             sessionName = getResource().getPersistentProperty(CtfConstants.LIVE_SESSION_NAME);
         } catch (CoreException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
             // Something happened to the resource, assume we won't get any more
             // data from it
             return true;
@@ -686,7 +686,7 @@ public class CtfTmfTrace extends TmfTrace
                 getResource().setPersistentProperty(CtfConstants.LIVE_SESSION_NAME, null);
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
     }
 

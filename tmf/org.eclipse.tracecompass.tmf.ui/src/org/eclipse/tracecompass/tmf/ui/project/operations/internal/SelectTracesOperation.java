@@ -143,7 +143,7 @@ public class SelectTracesOperation implements IRunnableWithProgress {
                 try {
                     experimentElement.removeTrace(trace);
                 } catch (CoreException e) {
-                    Activator.getDefault().logError(Messages.SelectTracesWizardPage_SelectionError + " " + experimentElement.getName(), e); //$NON-NLS-1$
+                    Activator.instance().logError(Messages.SelectTracesWizardPage_SelectionError + " " + experimentElement.getName(), e); //$NON-NLS-1$
                 }
                 changed = true;
                 subMonitor.worked(1);
@@ -161,8 +161,8 @@ public class SelectTracesOperation implements IRunnableWithProgress {
         } catch (InterruptedException e) {
             setStatus(Status.CANCEL_STATUS);
         } catch (Exception e) {
-            Activator.getDefault().logError(Messages.SelectTracesWizardPage_SelectionError, e);
-            setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SelectTracesWizardPage_SelectionError, e));
+            Activator.instance().logError(Messages.SelectTracesWizardPage_SelectionError, e);
+            setStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.SelectTracesWizardPage_SelectionError, e));
         }
     }
 

@@ -88,13 +88,13 @@ public class OpenAction extends Action {
                 handlerService.executeCommand(OPEN_COMMAND_ID, null);
             }
         } catch (ExecutionException e) {
-            Activator.getDefault().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
         } catch (NotDefinedException e) {
-            Activator.getDefault().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
         } catch (NotEnabledException e) {
-            Activator.getDefault().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
         } catch (NotHandledException e) {
-            Activator.getDefault().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error opening resource " + element.getName(), e); //$NON-NLS-1$
         }
     }
 

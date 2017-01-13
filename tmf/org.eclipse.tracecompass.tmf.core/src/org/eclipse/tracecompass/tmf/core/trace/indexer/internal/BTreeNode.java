@@ -120,7 +120,7 @@ class BTreeNode {
             fIsDirty = false;
 
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.BTreeNode_IOErrorLoading, fFileOffset, fTree.getRandomAccessFile()), e);
+            Activator.instance().logError(MessageFormat.format(Messages.BTreeNode_IOErrorLoading, fFileOffset, fTree.getRandomAccessFile()), e);
         }
     }
 
@@ -148,7 +148,7 @@ class BTreeNode {
 
             fIsDirty = false;
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.BTreeNode_IOErrorWriting, fFileOffset, fTree.getRandomAccessFile()), e);
+            Activator.instance().logError(MessageFormat.format(Messages.BTreeNode_IOErrorWriting, fFileOffset, fTree.getRandomAccessFile()), e);
         }
     }
 

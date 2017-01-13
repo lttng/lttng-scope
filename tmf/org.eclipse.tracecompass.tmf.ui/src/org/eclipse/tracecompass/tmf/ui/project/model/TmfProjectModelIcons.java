@@ -64,7 +64,7 @@ final class TmfProjectModelIcons {
 
     static {
         ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-        Bundle bundle = Activator.getDefault().getBundle();
+        Bundle bundle = Activator.instance().getBundle();
 
         FOLDER_ICON = requireNonNull(sharedImages.getImage(ISharedImages.IMG_OBJ_FOLDER));
         ONDEMAND_ANALYSES_ICON = requireNonNull(loadIcon(bundle, ONDEMAND_ANALYSES_ICON_FILE));
@@ -81,7 +81,7 @@ final class TmfProjectModelIcons {
     }
 
     public static @Nullable Image loadIcon(Bundle bundle, String url) {
-        Activator plugin = Activator.getDefault();
+        Activator plugin = Activator.instance();
         String key = bundle.getSymbolicName() + "/" + url; //$NON-NLS-1$
         Image icon = plugin.getImageRegistry().get(key);
         if (icon == null) {

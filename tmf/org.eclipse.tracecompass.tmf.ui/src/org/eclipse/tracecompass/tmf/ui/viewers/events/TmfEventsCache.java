@@ -343,7 +343,7 @@ public class TmfEventsCache {
             request.waitForCompletion();
             return ((DataRequest) request).getFilteredIndex();
         } catch (InterruptedException e) {
-            Activator.getDefault().logError("Filter request interrupted!", e); //$NON-NLS-1$
+            Activator.instance().logError("Filter request interrupted!", e); //$NON-NLS-1$
         }
         return 0;
     }
@@ -443,7 +443,7 @@ public class TmfEventsCache {
                 try {
                     request.waitForCompletion();
                 } catch (InterruptedException e) {
-                    Activator.getDefault().logError("Wait for completion interrupted for populateCache ", e); //$NON-NLS-1$
+                    Activator.instance().logError("Wait for completion interrupted for populateCache ", e); //$NON-NLS-1$
                 }
 
                 fTable.cacheUpdated(true);

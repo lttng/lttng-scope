@@ -76,7 +76,7 @@ public class RefreshHandler extends AbstractHandler {
                     resource.refreshLocal(IResource.DEPTH_INFINITE, null);
                 }
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error refreshing projects", e); //$NON-NLS-1$
+                Activator.instance().logError("Error refreshing projects", e); //$NON-NLS-1$
             }
         }
 

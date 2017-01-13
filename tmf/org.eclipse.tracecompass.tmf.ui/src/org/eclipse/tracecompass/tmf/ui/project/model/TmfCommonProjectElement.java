@@ -210,7 +210,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         try {
             fTraceTypeId = TmfTraceType.getTraceTypeId(getResource());
         } catch (CoreException e) {
-            Activator.getDefault().logError(NLS.bind(Messages.TmfCommonProjectElement_ErrorRefreshingProperty, getName()), e);
+            Activator.instance().logError(NLS.bind(Messages.TmfCommonProjectElement_ErrorRefreshingProperty, getName()), e);
         }
     }
 
@@ -349,7 +349,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
                             wbPage.closeEditor(editorReference.getEditor(false), false);
                         }
                     } catch (PartInitException e) {
-                        Activator.getDefault().logError(NLS.bind(Messages.TmfCommonProjectElement_ErrorClosingEditor, getName()), e);
+                        Activator.instance().logError(NLS.bind(Messages.TmfCommonProjectElement_ErrorClosingEditor, getName()), e);
                     }
                 }
             }
@@ -430,7 +430,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         try {
             deleteFolder(supplFolder);
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error deleting supplementary folder " + supplFolder, e); //$NON-NLS-1$
+            Activator.instance().logError("Error deleting supplementary folder " + supplFolder, e); //$NON-NLS-1$
         }
     }
 
@@ -463,7 +463,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
             }
             deleteFolder(oldSupplFolder);
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error renaming supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
+            Activator.instance().logError("Error renaming supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
         }
     }
 
@@ -483,7 +483,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
                 IFolder newSupplFolder = prepareTraceSupplementaryFolder(newElementPath + getSuffix(), false);
                 oldSupplFolder.copy(newSupplFolder.getFullPath(), true, new NullProgressMonitor());
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error renaming supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
+                Activator.instance().logError("Error renaming supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
             }
         }
     }
@@ -503,7 +503,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
                 TraceUtils.createFolder((IFolder) destination.getParent(), new NullProgressMonitor());
                 oldSupplFolder.copy(destination.getFullPath(), true, new NullProgressMonitor());
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error copying supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
+                Activator.instance().logError("Error copying supplementary folder " + oldSupplFolder, e); //$NON-NLS-1$
             }
         }
     }
@@ -518,7 +518,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         try {
             supplFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error refreshing supplementary folder " + supplFolder, e); //$NON-NLS-1$
+            Activator.instance().logError("Error refreshing supplementary folder " + supplFolder, e); //$NON-NLS-1$
         }
     }
 
@@ -544,7 +544,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
             try {
                 return supplFolder.members();
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error deleting supplementary folder " + supplFolder, e); //$NON-NLS-1$
+                Activator.instance().logError("Error deleting supplementary folder " + supplFolder, e); //$NON-NLS-1$
             }
         }
         return new IResource[0];
@@ -562,7 +562,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
             try {
                 resources[i].delete(true, new NullProgressMonitor());
             } catch (CoreException e) {
-                Activator.getDefault().logError("Error deleting supplementary resource " + resources[i], e); //$NON-NLS-1$
+                Activator.instance().logError("Error deleting supplementary resource " + resources[i], e); //$NON-NLS-1$
             }
         }
     }
@@ -580,7 +580,7 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         try {
             getResource().setPersistentProperty(TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER, supplFolder.getLocation().toOSString());
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error setting persistant property " + TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER, e); //$NON-NLS-1$
+            Activator.instance().logError("Error setting persistant property " + TmfCommonConstants.TRACE_SUPPLEMENTARY_FOLDER, e); //$NON-NLS-1$
         }
         return supplFolder;
     }

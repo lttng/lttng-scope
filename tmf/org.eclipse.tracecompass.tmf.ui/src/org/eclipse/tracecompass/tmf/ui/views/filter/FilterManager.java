@@ -38,14 +38,14 @@ public class FilterManager {
 
     private static final String SAVED_FILTERS_FILE_NAME = "saved_filters.xml"; //$NON-NLS-1$
     private static final String SAVED_FILTERS_PATH_NAME =
-        Activator.getDefault().getStateLocation().addTrailingSeparator().append(SAVED_FILTERS_FILE_NAME).toString();
+        Activator.instance().getStateLocation().addTrailingSeparator().append(SAVED_FILTERS_FILE_NAME).toString();
 
     /*
      * Legacy path to the XML definitions file (in Linux Tools)
      *  TODO Remove once we feel the transition phase is over.
      */
     private static final IPath SAVED_FILTERS_FILE_NAME_LEGACY =
-            Activator.getDefault().getStateLocation().removeLastSegments(1)
+            Activator.instance().getStateLocation().removeLastSegments(1)
                     .append("org.eclipse.linuxtools.tmf.ui") //$NON-NLS-1$
                     .append(SAVED_FILTERS_FILE_NAME);
 
@@ -69,9 +69,9 @@ public class FilterManager {
             }
         } catch (FileNotFoundException e) {
         } catch (SAXException e) {
-            Activator.getDefault().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_FILE_NAME_LEGACY, e); //$NON-NLS-1$
+            Activator.instance().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_FILE_NAME_LEGACY, e); //$NON-NLS-1$
         } catch (IOException e) {
-            Activator.getDefault().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_FILE_NAME_LEGACY, e); //$NON-NLS-1$
+            Activator.instance().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_FILE_NAME_LEGACY, e); //$NON-NLS-1$
         }
 
         try {
@@ -79,9 +79,9 @@ public class FilterManager {
             fRoot = new TmfFilterXMLParser(SAVED_FILTERS_PATH_NAME).getTree();
         } catch (FileNotFoundException e) {
         } catch (SAXException e) {
-            Activator.getDefault().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
+            Activator.instance().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
         } catch (IOException e) {
-            Activator.getDefault().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
+            Activator.instance().logError("Error parsing saved filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
         }
     }
 
@@ -109,7 +109,7 @@ public class FilterManager {
             TmfFilterXMLWriter writerXML = new TmfFilterXMLWriter(fRoot);
             writerXML.saveTree(SAVED_FILTERS_PATH_NAME);
         } catch (ParserConfigurationException e) {
-            Activator.getDefault().logError("Error saving filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
+            Activator.instance().logError("Error saving filter xml file: " + SAVED_FILTERS_PATH_NAME, e); //$NON-NLS-1$
         }
     }
 }

@@ -254,7 +254,7 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
                 return trace;
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error instantiating ITmfTrace object for trace " + getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error instantiating ITmfTrace object for trace " + getName(), e); //$NON-NLS-1$
         }
         return null;
     }
@@ -277,7 +277,7 @@ public class TmfTraceElement extends TmfCommonProjectElement implements IActionF
                 return event;
             }
         } catch (CoreException e) {
-            Activator.getDefault().logError("Error instantiating ITmfEvent object for trace " + getName(), e); //$NON-NLS-1$
+            Activator.instance().logError("Error instantiating ITmfEvent object for trace " + getName(), e); //$NON-NLS-1$
         }
         return null;
     }

@@ -62,9 +62,9 @@ public final class TmfAnalysisModuleSources {
                         sources.add(source);
                     }
                 } catch (InvalidRegistryObjectException e) {
-                    Activator.logError("Error creating module source", e); //$NON-NLS-1$
+                    Activator.instance().logError("Error creating module source", e); //$NON-NLS-1$
                 } catch (CoreException e) {
-                    Activator.logError("Error creating module source", e); //$NON-NLS-1$
+                    Activator.instance().logError("Error creating module source", e); //$NON-NLS-1$
                 }
 
             }

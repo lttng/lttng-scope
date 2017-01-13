@@ -91,7 +91,7 @@ public class ExportToTextJob extends Job {
             }
             return saveImpl(bw, monitor);
         } catch (IOException ex) {
-            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+            Status status = new Status(IStatus.ERROR, Activator.instance().getPluginId(),
                     MessageFormat.format(Messages.ExportToTextJob_Unable_to_export_trace, destination),
                     ex);
             return status;
@@ -119,7 +119,7 @@ public class ExportToTextJob extends Job {
             }
         }
         if (request.isFailed()) {
-            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+            Status status = new Status(IStatus.ERROR, Activator.instance().getPluginId(),
                     MessageFormat.format(Messages.ExportToTextJob_Unable_to_export_trace, destination),
                     request.getFailureCause());
             return status;

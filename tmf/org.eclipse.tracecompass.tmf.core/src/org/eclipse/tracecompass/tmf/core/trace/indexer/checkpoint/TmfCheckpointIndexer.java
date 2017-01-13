@@ -379,7 +379,7 @@ public class TmfCheckpointIndexer implements ITmfTraceIndexer {
             }
             subMonitor.done();
             monitor.done();
-            return fException != null ? new Status(IStatus.ERROR, Activator.PLUGIN_ID, fException.getMessage(), fException) : Status.OK_STATUS;
+            return fException != null ? new Status(IStatus.ERROR, Activator.instance().getPluginId(), fException.getMessage(), fException) : Status.OK_STATUS;
         }
 
         public void setException(Exception e) {

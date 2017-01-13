@@ -55,7 +55,7 @@ public class OpenFileHandler extends AbstractHandler {
         final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         FileDialog fd = TmfFileDialogFactory.create(shell);
         fd.setText(Messages.OpenFileHandler_SelectTraceFile);
-        IEclipsePreferences defaultPreferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
+        IEclipsePreferences defaultPreferences = InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId());
         String lastLocation = defaultPreferences.get(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, null);
         if (lastLocation != null && !lastLocation.isEmpty()) {
             File parentFile = new File(lastLocation).getParentFile();
@@ -86,10 +86,10 @@ public class OpenFileHandler extends AbstractHandler {
 
             TmfOpenTraceHelper.openTraceFromPath(destinationFolder, filePath, shell);
         } catch (CoreException e) {
-            Activator.getDefault().logError(e.getMessage(), e);
+            Activator.instance().logError(e.getMessage(), e);
         }
 
-        InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).put(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, filePath);
+        InstanceScope.INSTANCE.getNode(Activator.instance().getPluginId()).put(ITmfUIPreferences.PREF_SAVED_OPEN_FILE_LOCATION, filePath);
         return null;
     }
 }

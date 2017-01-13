@@ -384,7 +384,7 @@ public class TmfTraceStub extends TmfTrace implements ITmfPersistentlyIndexable 
         if (fileExists(path)) {
             return Status.OK_STATUS;
         }
-        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "File does not exist: " + path);
+        return new Status(IStatus.ERROR, Activator.instance().getPluginId(), "File does not exist: " + path);
     }
 
     private static int fCheckpointSize = -1;

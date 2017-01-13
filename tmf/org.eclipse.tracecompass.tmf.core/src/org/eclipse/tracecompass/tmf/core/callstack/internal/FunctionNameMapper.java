@@ -142,7 +142,7 @@ public final class FunctionNameMapper {
 
                     @Override
                     public void handleException(Throwable exception) {
-                        Activator.logError("Error creating binary parser", exception); //$NON-NLS-1$
+                        Activator.instance().logError("Error creating binary parser", exception); //$NON-NLS-1$
                     }
                 });
             }
@@ -176,7 +176,7 @@ public final class FunctionNameMapper {
                     hintBuffer = array;
                 }
             } catch (IOException e) {
-                Activator.logError("Error reading initial bytes of binary file", e); //$NON-NLS-1$
+                Activator.instance().logError("Error reading initial bytes of binary file", e); //$NON-NLS-1$
                 return null;
             }
         }
@@ -191,7 +191,7 @@ public final class FunctionNameMapper {
                         return (IBinaryParser.IBinaryObject)binFile;
                     }
                 } catch (IOException e) {
-                    Activator.logError("Error parsing binary file", e); //$NON-NLS-1$
+                    Activator.instance().logError("Error parsing binary file", e); //$NON-NLS-1$
                 }
             }
         }

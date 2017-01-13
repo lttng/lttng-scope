@@ -86,7 +86,7 @@ public final class SymbolProviderManager {
                         }
                         providers.add(new SymbolProviderFactoryWrapper((ISymbolProviderFactory) extension, priority));
                     } catch (CoreException | ClassCastException e) {
-                        Activator.getDefault().logError("Exception while loading extensions", e); //$NON-NLS-1$
+                        Activator.instance().logError("Exception while loading extensions", e); //$NON-NLS-1$
                     }
                 }
             }

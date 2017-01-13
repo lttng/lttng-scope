@@ -148,7 +148,7 @@ public class SelectTraceTypeHandler extends AbstractHandler {
                     }
                     projects.add(trace.getProject());
                 } catch (CoreException e) {
-                    Activator.getDefault().logError(Messages.SelectTraceTypeHandler_ErrorSelectingTrace + trace.getName(), e);
+                    Activator.instance().logError(Messages.SelectTraceTypeHandler_ErrorSelectingTrace + trace.getName(), e);
                 }
             }
             trace.getProject();
@@ -159,10 +159,10 @@ public class SelectTraceTypeHandler extends AbstractHandler {
 
         if (!ok) {
             final Shell shell = window.getShell();
-            MultiStatus info = new MultiStatus(Activator.PLUGIN_ID, 1, Messages.SelectTraceTypeHandler_TraceFailedValidation, null);
+            MultiStatus info = new MultiStatus(Activator.instance().getPluginId(), 1, Messages.SelectTraceTypeHandler_TraceFailedValidation, null);
             if (statuses.size() > 1)
             {
-                info = new MultiStatus(Activator.PLUGIN_ID, 1, Messages.SelectTraceTypeHandler_TracesFailedValidation, null);
+                info = new MultiStatus(Activator.instance().getPluginId(), 1, Messages.SelectTraceTypeHandler_TracesFailedValidation, null);
             }
             for (IStatus status : statuses) {
                 info.add(status);

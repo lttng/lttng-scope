@@ -217,11 +217,11 @@ public class TmfSignalManager {
                 try {
                     method.invoke(entry.getKey(), new Object[] { signal });
                 } catch (IllegalArgumentException e) {
-                    Activator.logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
+                    Activator.instance().logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
                 } catch (IllegalAccessException e) {
-                    Activator.logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
+                    Activator.instance().logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
                 } catch (InvocationTargetException e) {
-                    Activator.logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
+                    Activator.instance().logError("Exception handling signal " + signal + " in method " + method, e); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }

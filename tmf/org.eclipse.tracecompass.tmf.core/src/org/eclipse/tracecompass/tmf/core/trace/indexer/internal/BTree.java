@@ -266,7 +266,7 @@ public class BTree extends AbstractFileCheckpointCollection {
             BTreeNode node = new BTreeNode(this, offset);
             return node;
         } catch (IOException e) {
-            Activator.logError(MessageFormat.format(Messages.BTree_IOErrorAllocatingNode, getFile()), e);
+            Activator.instance().logError(MessageFormat.format(Messages.BTree_IOErrorAllocatingNode, getFile()), e);
         }
         return null;
     }

@@ -120,7 +120,7 @@ public class NewFolderDialog extends SelectionStatusDialog {
         IStatus nameStatus = workspace.validateName(name, IResource.FOLDER);
 
         if ("".equals(name)) { //$NON-NLS-1$
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, Messages.Dialog_EmptyNameError, null));
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR, Messages.Dialog_EmptyNameError, null));
             return;
         }
 
@@ -130,11 +130,11 @@ public class NewFolderDialog extends SelectionStatusDialog {
         }
 
         if (fParentFolder.findMember(name) != null) {
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, Messages.Dialog_ExistingNameError, null));
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR, Messages.Dialog_ExistingNameError, null));
             return;
         }
 
-        updateStatus(new Status(IStatus.OK, Activator.PLUGIN_ID, "")); //$NON-NLS-1$
+        updateStatus(new Status(IStatus.OK, Activator.instance().getPluginId(), "")); //$NON-NLS-1$
     }
 
     // ------------------------------------------------------------------------

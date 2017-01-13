@@ -148,7 +148,7 @@ public class RenameExperimentDialog extends SelectionStatusDialog {
         IStatus nameStatus = workspace.validateName(name, IResource.FOLDER);
 
         if ("".equals(name)) { //$NON-NLS-1$
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, Messages.Dialog_EmptyNameError, null));
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR, Messages.Dialog_EmptyNameError, null));
             return;
         }
 
@@ -159,11 +159,11 @@ public class RenameExperimentDialog extends SelectionStatusDialog {
 
         IPath path = new Path(name);
         if (fExperimentFolder.getFolder(path).exists() || fExperimentFolder.getFile(path).exists()) {
-            updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, Messages.Dialog_ExistingNameError, null));
+            updateStatus(new Status(IStatus.ERROR, Activator.instance().getPluginId(), IStatus.ERROR, Messages.Dialog_ExistingNameError, null));
             return;
         }
 
-        updateStatus(new Status(IStatus.OK, Activator.PLUGIN_ID, "")); //$NON-NLS-1$
+        updateStatus(new Status(IStatus.OK, Activator.instance().getPluginId(), "")); //$NON-NLS-1$
     }
 
     // ------------------------------------------------------------------------

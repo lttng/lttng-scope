@@ -42,9 +42,9 @@ import com.google.common.collect.Multimap;
  */
 public class TimeGraphMarkerAxis extends TimeGraphBaseControl {
 
-    private static final Image COLLAPSED = Activator.getDefault().getImageFromPath("icons/ovr16/collapsed_ovr.gif"); //$NON-NLS-1$
-    private static final Image EXPANDED = Activator.getDefault().getImageFromPath("icons/ovr16/expanded_ovr.gif"); //$NON-NLS-1$
-    private static final Image HIDE = Activator.getDefault().getImageFromPath("icons/etool16/hide.gif"); //$NON-NLS-1$
+    private static final Image COLLAPSED = Activator.instance().getImageFromPath("icons/ovr16/collapsed_ovr.gif"); //$NON-NLS-1$
+    private static final Image EXPANDED = Activator.instance().getImageFromPath("icons/ovr16/expanded_ovr.gif"); //$NON-NLS-1$
+    private static final Image HIDE = Activator.instance().getImageFromPath("icons/etool16/hide.gif"); //$NON-NLS-1$
     private static final int HIDE_BORDER = 4; // transparent border of the hide icon
 
     private static final int HEIGHT;
