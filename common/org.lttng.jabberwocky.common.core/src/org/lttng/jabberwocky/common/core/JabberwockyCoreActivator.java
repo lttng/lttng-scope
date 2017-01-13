@@ -29,15 +29,15 @@ import org.osgi.framework.BundleContext;
  *
  * @author Alexandre Montplaisir
  */
-public abstract class TraceCompassActivator extends Plugin {
+public abstract class JabberwockyCoreActivator extends Plugin {
 
     // ------------------------------------------------------------------------
     // Attributes
     // ------------------------------------------------------------------------
 
     /** Map of all the registered activators, indexed by plugin ID */
-    private static final Map<String, TraceCompassActivator> ACTIVATORS =
-            Collections.synchronizedMap(new HashMap<String, TraceCompassActivator>());
+    private static final Map<String, JabberwockyCoreActivator> CORE_ACTIVATORS =
+            Collections.synchronizedMap(new HashMap<String, JabberwockyCoreActivator>());
 
     /** This instance's plug-in ID */
     private final String fPluginId;
@@ -52,7 +52,7 @@ public abstract class TraceCompassActivator extends Plugin {
      * @param pluginID
      *            The ID of the plugin
      */
-    public TraceCompassActivator(String pluginID) {
+    public JabberwockyCoreActivator(String pluginID) {
         fPluginId = pluginID;
     }
 
@@ -77,8 +77,8 @@ public abstract class TraceCompassActivator extends Plugin {
      *            The activator's plugin ID
      * @return The corresponding activator
      */
-    protected static TraceCompassActivator getInstance(String id) {
-        TraceCompassActivator ret = ACTIVATORS.get(id);
+    protected static JabberwockyCoreActivator getInstance(String id) {
+        JabberwockyCoreActivator ret = CORE_ACTIVATORS.get(id);
         if (ret == null) {
             /* The activator should be registered at this point! */
             throw new IllegalStateException();
@@ -108,11 +108,11 @@ public abstract class TraceCompassActivator extends Plugin {
     public final void start(@Nullable BundleContext context) throws Exception {
         super.start(context);
         String id = this.getPluginId();
-        synchronized (ACTIVATORS) {
-            if (ACTIVATORS.containsKey(id)) {
+        synchronized (CORE_ACTIVATORS) {
+            if (CORE_ACTIVATORS.containsKey(id)) {
                 logError("Duplicate Activator ID : " + id); //$NON-NLS-1$
             }
-            ACTIVATORS.put(id, this);
+            CORE_ACTIVATORS.put(id, this);
         }
         startActions();
     }
@@ -120,7 +120,7 @@ public abstract class TraceCompassActivator extends Plugin {
     @Override
     public final void stop(@Nullable BundleContext context) throws Exception {
         stopActions();
-        ACTIVATORS.remove(this.getPluginId());
+        CORE_ACTIVATORS.remove(this.getPluginId());
         super.stop(context);
     }
 

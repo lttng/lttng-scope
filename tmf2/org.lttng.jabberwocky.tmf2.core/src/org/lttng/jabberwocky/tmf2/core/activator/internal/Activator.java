@@ -9,12 +9,12 @@
 
 package org.lttng.jabberwocky.tmf2.core.activator.internal;
 
-import org.lttng.jabberwocky.common.core.TraceCompassActivator;
+import org.lttng.jabberwocky.common.core.JabberwockyCoreActivator;
 
 /**
  * Plugin activator
  */
-public class Activator extends TraceCompassActivator {
+public class Activator extends JabberwockyCoreActivator {
 
     private static final String PLUGIN_ID = "org.eclipse.tracecompass.tmf2.core"; //$NON-NLS-1$
 
@@ -24,7 +24,7 @@ public class Activator extends TraceCompassActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) TraceCompassActivator.getInstance(PLUGIN_ID);
+        return (Activator) JabberwockyCoreActivator.getInstance(PLUGIN_ID);
     }
 
     /**

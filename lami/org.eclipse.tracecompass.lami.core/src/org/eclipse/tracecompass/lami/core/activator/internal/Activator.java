@@ -17,12 +17,12 @@ import org.eclipse.tracecompass.lami.core.module.LamiAnalysis;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryException;
 import org.eclipse.tracecompass.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;
-import org.lttng.jabberwocky.common.core.TraceCompassActivator;
+import org.lttng.jabberwocky.common.core.JabberwockyCoreActivator;
 
 /**
  * Plugin activator
  */
-public class Activator extends TraceCompassActivator {
+public class Activator extends JabberwockyCoreActivator {
 
     private static final String PLUGIN_ID = "org.eclipse.tracecompass.lami.core"; //$NON-NLS-1$
 
@@ -32,7 +32,7 @@ public class Activator extends TraceCompassActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) TraceCompassActivator.getInstance(PLUGIN_ID);
+        return (Activator) JabberwockyCoreActivator.getInstance(PLUGIN_ID);
     }
 
     /**
