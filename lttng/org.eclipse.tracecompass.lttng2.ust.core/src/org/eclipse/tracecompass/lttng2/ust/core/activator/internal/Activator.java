@@ -13,6 +13,8 @@ import org.lttng.jabberwocky.common.core.JabberwockyCoreActivator;
 
 /**
  * Plugin activator
+ *
+ * @noreference This class should not be accessed outside of this plugin.
  */
 public class Activator extends JabberwockyCoreActivator {
 

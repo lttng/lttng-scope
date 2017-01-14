@@ -13,6 +13,8 @@ import org.lttng.jabberwocky.common.ui.JabberwockyUIActivator;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @noreference This class should not be accessed outside of this plugin.
  */
 public class Activator extends JabberwockyUIActivator {
 

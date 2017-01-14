@@ -25,6 +25,7 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  *
  * @author Bernd Hufmann
+ * @noreference This class should not be accessed outside of this plugin.
  */
 public class TracingRcpPlugin extends AbstractUIPlugin {
 
