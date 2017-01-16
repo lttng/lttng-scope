@@ -126,77 +126,51 @@ public abstract class JabberwockyCoreActivator extends Plugin {
     // ------------------------------------------------------------------------
 
     /**
-     * Logs a message with severity INFO in the runtime log of the plug-in.
+     * Log a message with severity INFO.
      *
      * @param message
-     *            A message to log
-     */
-    public void logInfo(@Nullable String message) {
-        getLog().log(new Status(IStatus.INFO, fPluginId, nullToEmptyString(message)));
-    }
-
-    /**
-     * Logs a message and exception with severity INFO in the runtime log of the
-     * plug-in.
-     *
-     * @param message
-     *            A message to log
+     *            The message to log
      * @param exception
-     *            A exception to log
+     *            Optional exception to attach to the message
      */
-    public void logInfo(@Nullable String message, Throwable exception) {
-        getLog().log(new Status(IStatus.INFO, fPluginId, nullToEmptyString(message), exception));
+    public void logInfo(@Nullable String message, Throwable... exception) {
+        if (exception.length < 1) {
+            getLog().log(new Status(IStatus.INFO, fPluginId, nullToEmptyString(message)));
+        } else {
+            getLog().log(new Status(IStatus.INFO, fPluginId, nullToEmptyString(message), exception[0]));
+        }
     }
 
-    /**
-     * Logs a message and exception with severity WARNING in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
-     */
-    public void logWarning(@Nullable String message) {
-        getLog().log(new Status(IStatus.WARNING, fPluginId, nullToEmptyString(message)));
-    }
 
     /**
-     * Logs a message and exception with severity WARNING in the runtime log of
-     * the plug-in.
+     * Log a message with severity WARNING.
      *
      * @param message
-     *            A message to log
+     *            The message to log
      * @param exception
-     *            A exception to log
+     *            Optional exception to attach to the message
      */
-    public void logWarning(@Nullable String message, Throwable exception) {
-        getLog().log(new Status(IStatus.WARNING, fPluginId, nullToEmptyString(message), exception));
+    public void logWarning(@Nullable String message, Throwable... exception) {
+        if (exception.length < 1) {
+            getLog().log(new Status(IStatus.WARNING, fPluginId, nullToEmptyString(message)));
+        } else {
+            getLog().log(new Status(IStatus.WARNING, fPluginId, nullToEmptyString(message), exception[0]));
+        }
     }
 
     /**
-     * Logs a message and exception with severity ERROR in the runtime log of
-     * the plug-in.
+     * Log a message with severity ERROR.
      *
      * @param message
-     *            A message to log
-     */
-    public void logError(@Nullable String message) {
-        getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message)));
-    }
-
-    /**
-     * Logs a message and exception with severity ERROR in the runtime log of
-     * the plug-in.
-     *
-     * @param message
-     *            A message to log
+     *            The message to log
      * @param exception
-     *            A exception to log
+     *            Optional exception to attach to the message
      */
-    public void logError(@Nullable String message, @Nullable Throwable exception) {
-        if (exception == null) {
+    public void logError(@Nullable String message, Throwable... exception) {
+        if (exception.length < 1) {
             getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message)));
         } else {
-            getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message), exception));
+            getLog().log(new Status(IStatus.ERROR, fPluginId, nullToEmptyString(message), exception[0]));
         }
     }
 
