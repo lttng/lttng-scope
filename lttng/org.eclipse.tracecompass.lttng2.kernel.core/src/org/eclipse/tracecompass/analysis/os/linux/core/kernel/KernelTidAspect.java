@@ -12,13 +12,14 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
 
+import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.analysis.os.linux.core.event.aspect.LinuxTidAspect;
-import org.eclipse.tracecompass.analysis.os.linux.core.tid.TidAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 
@@ -28,7 +29,7 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
  *
  * @author Geneviève Bastien
  */
-public final class KernelTidAspect extends LinuxTidAspect {
+public final class KernelTidAspect implements ITmfEventAspect<Integer> {
 
     /** The singleton instance */
     public static final KernelTidAspect INSTANCE = new KernelTidAspect();
@@ -36,6 +37,16 @@ public final class KernelTidAspect extends LinuxTidAspect {
     private static final IProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
     private KernelTidAspect() {
+    }
+
+    @Override
+    public String getName() {
+        return nullToEmptyString(Messages.AspectName_Tid);
+    }
+
+    @Override
+    public String getHelpText() {
+        return nullToEmptyString(Messages.AspectHelpText_Tid);
     }
 
     @Override
@@ -53,8 +64,8 @@ public final class KernelTidAspect extends LinuxTidAspect {
         }
 
         /* Find the analysis module for the trace */
-        TidAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(event.getTrace(),
-                TidAnalysisModule.class, TidAnalysisModule.ID);
+        KernelAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(event.getTrace(),
+                KernelAnalysisModule.class, KernelAnalysisModule.ID);
         if (analysis == null) {
             return null;
         }
@@ -66,7 +77,7 @@ public final class KernelTidAspect extends LinuxTidAspect {
                 e.printStackTrace();
             }
         }
-        return analysis.getThreadOnCpuAtTime(cpu, ts);
+        return KernelThreadInformationProvider.getThreadOnCpu(analysis, cpu, ts);
     }
 
 }

@@ -27,6 +27,9 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
+    public static String AspectName_Tid;
+    public static String AspectHelpText_Tid;
+
     public static String LttngKernelAnalysisModule_Help;
 
     static {
