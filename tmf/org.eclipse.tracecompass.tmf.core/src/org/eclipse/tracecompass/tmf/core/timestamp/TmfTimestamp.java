@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfNanoTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.internal.TmfSecondTimestamp;
-import org.lttng.jabberwocky.common.core.math.SaturatedArithmetic;
+import org.lttng.scope.common.core.math.SaturatedArithmetic;
 
 /**
  * A generic timestamp implementation. The timestamp is represented by the tuple

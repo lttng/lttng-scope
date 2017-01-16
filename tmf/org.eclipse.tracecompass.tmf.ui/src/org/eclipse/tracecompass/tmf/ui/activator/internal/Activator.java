@@ -22,14 +22,14 @@ import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.TmfEventAdapterFactory;
 import org.eclipse.tracecompass.tmf.ui.views.internal.TmfAlignmentSynchronizer;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.lttng.jabberwocky.common.ui.JabberwockyUIActivator;
+import org.lttng.scope.common.ui.ScopeUIActivator;
 
 /**
  * Plugin activator
  *
  * @noreference This class should not be accessed outside of this plugin.
  */
-public class Activator extends JabberwockyUIActivator {
+public class Activator extends ScopeUIActivator {
 
     private static final String PLUGIN_ID = "org.eclipse.tracecompass.tmf.ui"; //$NON-NLS-1$
 
@@ -44,7 +44,7 @@ public class Activator extends JabberwockyUIActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) JabberwockyUIActivator.getInstance(PLUGIN_ID);
+        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
     }
 
     /**

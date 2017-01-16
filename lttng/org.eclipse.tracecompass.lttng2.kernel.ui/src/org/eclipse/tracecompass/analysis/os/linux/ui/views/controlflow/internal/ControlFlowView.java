@@ -83,7 +83,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.TimeGraphContro
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.Resolution;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.TimeFormat;
-import org.lttng.jabberwocky.common.core.StreamUtils.StreamFlattener;
+import org.lttng.scope.common.core.StreamUtils.StreamFlattener;
 
 import com.google.common.collect.ImmutableList;
 

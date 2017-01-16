@@ -12,7 +12,7 @@
 
 package org.eclipse.tracecompass.ctf.tmf.core;
 
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.tracecompass.tmf.core.util.Pair;
 

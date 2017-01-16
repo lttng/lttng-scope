@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.analysis.os.linux.ui.views.resources.internal;
 
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
 

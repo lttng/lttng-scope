@@ -13,7 +13,7 @@
 package org.eclipse.tracecompass.tmf.core.event.aspect;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;

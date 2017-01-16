@@ -21,7 +21,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.TmfEvent;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.jabberwocky.common.core.collect.BufferedBlockingQueue;
+import org.lttng.scope.common.core.collect.BufferedBlockingQueue;
 
 /**
  * Instead of using IStateChangeInput directly, one can extend this class, which

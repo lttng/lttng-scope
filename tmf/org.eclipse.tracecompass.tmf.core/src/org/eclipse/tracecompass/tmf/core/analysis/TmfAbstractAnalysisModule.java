@@ -43,7 +43,7 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfTraceClosedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceSelectedSignal;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.jabberwocky.common.core.NonNullUtils;
+import org.lttng.scope.common.core.NonNullUtils;
 
 /**
  * Base class that analysis modules main class may extend. It provides default

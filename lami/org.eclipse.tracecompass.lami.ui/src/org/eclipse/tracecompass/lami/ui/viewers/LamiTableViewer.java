@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.viewers;
 
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.HashSet;
 import java.util.List;

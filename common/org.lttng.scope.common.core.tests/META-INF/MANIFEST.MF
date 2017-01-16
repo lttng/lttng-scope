@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Version: 1.1.1.qualifier
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.lttng.scope.common.core.tests;singleton:=true
+Fragment-Host: org.lttng.scope.common.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.0.0"
+Import-Package: com.google.common.primitives
+Export-Package: org.lttng.scope.common.core;x-internal:=true,
+ org.lttng.scope.common.core.collect;x-internal:=true,
+ org.lttng.scope.common.core.format;x-internal:=true,
+ org.lttng.scope.common.core.math;x-internal:=true

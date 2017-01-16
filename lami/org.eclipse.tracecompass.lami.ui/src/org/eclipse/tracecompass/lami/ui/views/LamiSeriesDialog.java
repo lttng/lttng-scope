@@ -10,7 +10,7 @@
 package org.eclipse.tracecompass.lami.ui.views;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
 import java.util.Arrays;

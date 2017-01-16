@@ -14,7 +14,7 @@ import java.text.FieldPosition;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.lami.ui.viewers.LamiGraphRange;
-import org.lttng.jabberwocky.common.core.format.DecimalUnitFormat;
+import org.lttng.scope.common.core.format.DecimalUnitFormat;
 
 /**
  * Decimal formatter for Lami graph

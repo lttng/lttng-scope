@@ -33,7 +33,7 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimePreferences;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
-import org.lttng.jabberwocky.common.core.format.DecimalUnitFormat;
+import org.lttng.scope.common.core.format.DecimalUnitFormat;
 
 /**
  * General utilities and definitions used by the time graph widget

@@ -28,7 +28,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
-import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
+import org.lttng.scope.common.core.log.TraceCompassLog;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;

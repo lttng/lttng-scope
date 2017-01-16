@@ -28,7 +28,7 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
-import org.lttng.jabberwocky.common.core.NonNullUtils;
+import org.lttng.scope.common.core.NonNullUtils;
 
 /**
  * This aspect finds the priority of the thread running from this event using

@@ -33,7 +33,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ILinkEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.IMarkerEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.TimeGraphEntry;
-import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
+import org.lttng.scope.common.core.log.TraceCompassLog;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

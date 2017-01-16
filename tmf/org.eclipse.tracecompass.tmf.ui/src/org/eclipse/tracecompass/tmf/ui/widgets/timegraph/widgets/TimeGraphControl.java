@@ -94,7 +94,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.Resolution;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.TimeFormat;
-import org.lttng.jabberwocky.common.core.math.SaturatedArithmetic;
+import org.lttng.scope.common.core.math.SaturatedArithmetic;
 
 import com.google.common.collect.Iterables;
 

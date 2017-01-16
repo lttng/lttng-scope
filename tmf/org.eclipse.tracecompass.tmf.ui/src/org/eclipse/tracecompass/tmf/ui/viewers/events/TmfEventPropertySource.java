@@ -13,7 +13,7 @@
 
 package org.eclipse.tracecompass.tmf.ui.viewers.events;
 
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.ArrayList;
 import java.util.List;

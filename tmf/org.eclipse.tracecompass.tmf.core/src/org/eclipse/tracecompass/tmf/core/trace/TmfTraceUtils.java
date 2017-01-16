@@ -32,7 +32,7 @@ import org.eclipse.tracecompass.tmf.core.component.ITmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
-import org.lttng.jabberwocky.common.core.StreamUtils;
+import org.lttng.scope.common.core.StreamUtils;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

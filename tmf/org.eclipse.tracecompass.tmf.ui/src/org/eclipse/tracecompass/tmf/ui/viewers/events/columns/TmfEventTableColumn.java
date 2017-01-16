@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
-import org.lttng.jabberwocky.common.core.NonNullUtils;
+import org.lttng.scope.common.core.NonNullUtils;
 
 /**
  * A column in the

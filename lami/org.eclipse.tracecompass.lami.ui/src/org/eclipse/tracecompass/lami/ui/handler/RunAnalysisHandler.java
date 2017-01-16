@@ -9,7 +9,7 @@
 
 package org.eclipse.tracecompass.lami.ui.handler;
 
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.List;
 

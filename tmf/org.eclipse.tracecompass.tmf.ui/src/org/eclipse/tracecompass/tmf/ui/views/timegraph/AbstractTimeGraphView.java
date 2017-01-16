@@ -133,7 +133,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
+import org.lttng.scope.common.core.log.TraceCompassLog;
 
 /**
  * An abstract view all time graph views can inherit

@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.tracecompass.tmf.core,
  org.eclipse.update.configurator;bundle-version="3.3.200",
  org.eclipse.equinox.p2.ui.sdk,
- org.lttng.jabberwocky.common.ui
+ org.lttng.scope.common.ui
 Export-Package: org.eclipse.tracecompass.rcp.ui.activator.internal;x-internal:=true,
  org.eclipse.tracecompass.rcp.ui.cli.internal;x-internal:=true,
  org.eclipse.tracecompass.rcp.ui.internal;x-internal:=true,

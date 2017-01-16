@@ -10,7 +10,7 @@
 package org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.internal;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

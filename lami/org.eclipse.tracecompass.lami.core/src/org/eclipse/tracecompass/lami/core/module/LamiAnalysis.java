@@ -10,8 +10,8 @@
 package org.eclipse.tracecompass.lami.core.module;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.checkNotNullContents;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.checkNotNullContents;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -62,9 +62,9 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
-import org.lttng.jabberwocky.common.core.process.ProcessUtils;
-import org.lttng.jabberwocky.common.core.process.ProcessUtils.OutputReaderFunction;
+import org.lttng.scope.common.core.log.TraceCompassLog;
+import org.lttng.scope.common.core.process.ProcessUtils;
+import org.lttng.scope.common.core.process.ProcessUtils.OutputReaderFunction;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;

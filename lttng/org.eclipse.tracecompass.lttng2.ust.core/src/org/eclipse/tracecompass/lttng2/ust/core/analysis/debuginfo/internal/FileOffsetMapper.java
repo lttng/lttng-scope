@@ -22,8 +22,8 @@ import java.util.logging.Logger;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
-import org.lttng.jabberwocky.common.core.log.TraceCompassLog;
-import org.lttng.jabberwocky.common.core.process.ProcessUtils;
+import org.lttng.scope.common.core.log.TraceCompassLog;
+import org.lttng.scope.common.core.process.ProcessUtils;
 
 import com.google.common.base.Objects;
 import com.google.common.cache.CacheBuilder;

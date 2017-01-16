@@ -40,7 +40,7 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimePreferences;
 import org.eclipse.tracecompass.tmf.ui.activator.internal.Messages;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.Resolution;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.TimeFormat;
-import org.lttng.jabberwocky.common.core.math.SaturatedArithmetic;
+import org.lttng.scope.common.core.math.SaturatedArithmetic;
 
 import com.google.common.collect.ImmutableList;
 

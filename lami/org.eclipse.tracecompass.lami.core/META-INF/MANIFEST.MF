@@ -10,7 +10,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.tmf.core,
- org.lttng.jabberwocky.common.core
+ org.lttng.scope.common.core
 Export-Package: org.eclipse.tracecompass.lami.core,
  org.eclipse.tracecompass.lami.core.activator.internal;x-internal:=true,
  org.eclipse.tracecompass.lami.core.aspect,

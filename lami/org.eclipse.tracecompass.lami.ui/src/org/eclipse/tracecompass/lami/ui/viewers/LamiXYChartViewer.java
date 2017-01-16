@@ -10,7 +10,7 @@
 package org.eclipse.tracecompass.lami.ui.viewers;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.jabberwocky.common.core.NonNullUtils.nullToEmptyString;
+import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.math.BigDecimal;
 import java.text.Format;
@@ -51,7 +51,7 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
 import org.eclipse.tracecompass.tmf.ui.viewers.TmfViewer;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.lttng.jabberwocky.common.core.format.DecimalUnitFormat;
+import org.lttng.scope.common.core.format.DecimalUnitFormat;
 import org.swtchart.Chart;
 import org.swtchart.ITitle;
 

@@ -13,14 +13,14 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.rcp.ui.cli.internal.CliParser;
 import org.eclipse.tracecompass.rcp.ui.cli.internal.TracingRCPCliException;
-import org.lttng.jabberwocky.common.ui.JabberwockyUIActivator;
+import org.lttng.scope.common.ui.ScopeUIActivator;
 
 /**
  * Plugin activator
  *
  * @noreference This class should not be accessed outside of this plugin.
  */
-public class Activator extends JabberwockyUIActivator {
+public class Activator extends ScopeUIActivator {
 
     private static final String PLUGIN_ID = "org.eclipse.tracecompass.rcp.ui"; //$NON-NLS-1$
 
@@ -32,7 +32,7 @@ public class Activator extends JabberwockyUIActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) JabberwockyUIActivator.getInstance(PLUGIN_ID);
+        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
     }
 
     /**
