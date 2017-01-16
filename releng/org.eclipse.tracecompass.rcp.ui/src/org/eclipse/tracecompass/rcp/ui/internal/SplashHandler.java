@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tracing.rcp.ui.messages.internal.Messages;
 import org.eclipse.ui.branding.IProductConstants;
 import org.eclipse.ui.splash.BasicSplashHandler;
@@ -61,7 +62,7 @@ public class SplashHandler extends BasicSplashHandler {
                 e.gc.setForeground(getForeground());
                 e.gc.drawText(
                         NLS.bind(Messages.SplahScreen_VersionString,
-                                TracingRcpPlugin.getDefault().getBundle().getVersion().toString()),
+                                Activator.instance().getBundle().getVersion().toString()),
                         VERSION_LOCATION.x, VERSION_LOCATION.y, true);
             }
         });

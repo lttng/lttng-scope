@@ -9,6 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
+
 package org.eclipse.tracecompass.rcp.ui.internal;
 
 import java.io.File;
@@ -31,7 +32,31 @@ import org.eclipse.ui.PlatformUI;
  */
 public class Application implements IApplication {
 
+    /**
+     * The default workspace name
+     */
+    private static final String WORKSPACE_NAME = ".tracecompass"; //$NON-NLS-1$
+
     private Location fInstanceLoc = null;
+
+    /**
+     * Gets the tracing workspace root directory. By default it uses the user's
+     * home directory. This value can be overwritten by using the global
+     * TRACING_RCP_ROOT environment variable.
+     *
+     * @return the tracing workspace root directory
+     */
+    private static String getWorkspaceRoot() {
+        /*
+         * Look for the environment variable in the global environment variables
+         */
+        String workspaceRoot = System.getenv().get("TRACING_RCP_ROOT"); //$NON-NLS-1$
+        if (workspaceRoot == null) {
+            /* Use the user's home directory */
+            workspaceRoot = System.getProperty("user.home"); //$NON-NLS-1$
+        }
+        return workspaceRoot;
+    }
 
     @Override
     public Object start(IApplicationContext context) throws Exception {
@@ -45,23 +70,23 @@ public class Application implements IApplication {
             // @noDefault to a specific location or remove -data @noDefault for
             // default location
             if (!fInstanceLoc.allowsDefault() && !fInstanceLoc.isSet()) {
-                File workspaceRoot = new File(TracingRcpPlugin.getWorkspaceRoot());
+                File workspaceRoot = new File(getWorkspaceRoot());
 
                 if (!workspaceRoot.exists()) {
                     MessageDialog.openError(display.getActiveShell(),
                             Messages.Application_WorkspaceCreationError,
-                            MessageFormat.format(Messages.Application_WorkspaceRootNotExistError, new Object[] { TracingRcpPlugin.getWorkspaceRoot() }));
+                            MessageFormat.format(Messages.Application_WorkspaceRootNotExistError, new Object[] { getWorkspaceRoot() }));
                     return IApplication.EXIT_OK;
                 }
 
                 if (!workspaceRoot.canWrite()) {
                     MessageDialog.openError(display.getActiveShell(),
                             Messages.Application_WorkspaceCreationError,
-                            MessageFormat.format(Messages.Application_WorkspaceRootPermissionError, new Object[] { TracingRcpPlugin.getWorkspaceRoot() }));
+                            MessageFormat.format(Messages.Application_WorkspaceRootPermissionError, new Object[] { getWorkspaceRoot() }));
                     return IApplication.EXIT_OK;
                 }
 
-                String workspace = TracingRcpPlugin.getWorkspaceRoot() + File.separator + TracingRcpPlugin.WORKSPACE_NAME;
+                String workspace = getWorkspaceRoot() + File.separator + WORKSPACE_NAME;
                 // set location to workspace
                 fInstanceLoc.set(new URL("file", null, workspace), false); //$NON-NLS-1$
             }

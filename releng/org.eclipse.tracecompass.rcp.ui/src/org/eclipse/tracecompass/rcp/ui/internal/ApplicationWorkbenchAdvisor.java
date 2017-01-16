@@ -30,6 +30,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.tracing.rcp.ui.messages.internal.Messages;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -97,7 +98,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     @Override
     public void postShutdown() {
         // Save workspace
-        final MultiStatus status = new MultiStatus(TracingRcpPlugin.PLUGIN_ID, 1, Messages.Application_WorkspaceSavingError, null);
+        final MultiStatus status = new MultiStatus(Activator.instance().getPluginId(), 1, Messages.Application_WorkspaceSavingError, null);
         try {
             IRunnableWithProgress runnable = new IRunnableWithProgress() {
                 @Override
@@ -112,13 +113,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             };
             new ProgressMonitorDialog(null).run(true, true, runnable);
         } catch (InvocationTargetException e) {
-            status.merge(new Status(IStatus.ERROR, TracingRcpPlugin.PLUGIN_ID, Messages.Application_InternalError, e.getTargetException()));
+            status.merge(new Status(IStatus.ERROR, Activator.instance().getPluginId(), Messages.Application_InternalError, e.getTargetException()));
         } catch (InterruptedException e) {
             status.merge(Status.CANCEL_STATUS);
         }
         if (!status.isOK()) {
             ErrorDialog.openError(null, Messages.Application_WorkspaceSavingError, null, status, IStatus.ERROR | IStatus.WARNING);
-            TracingRcpPlugin.getDefault().getLog().log(status);
+            Activator.instance().getLog().log(status);
         }
     }
 

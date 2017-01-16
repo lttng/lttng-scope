@@ -15,6 +15,7 @@ package org.eclipse.tracecompass.rcp.ui.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.rcp.ui.cli.internal.CliParser;
 import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfOpenTraceHelper;
@@ -98,7 +99,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     @Override
     public void postWindowCreate() {
         super.postWindowOpen();
-        TracingRcpPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(new PerspectiveListener());
+        Activator.instance().getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(new PerspectiveListener());
         IProject defaultProject = createDefaultProject();
         hideActionSets();
         openTraceIfNecessary(defaultProject);
@@ -107,7 +108,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 
     private static void openTraceIfNecessary(IProject project) {
-        String traceToOpen = TracingRcpPlugin.getDefault().getCli().getArgument(CliParser.OPEN_FILE_LOCATION);
+        CliParser cli = Activator.instance().getCli();
+        if (cli == null) {
+            return;
+        }
+
+        String traceToOpen = cli.getArgument(CliParser.OPEN_FILE_LOCATION);
         String userHome = System.getProperty("user.home"); //$NON-NLS-1$
         // In case the application was not started on the shell, expand ~ to home directory
         if ((traceToOpen != null) && traceToOpen.startsWith("~/") && (userHome != null)) { //$NON-NLS-1$
@@ -117,9 +123,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         if (traceToOpen != null) {
             try {
                 TmfTraceFolder destinationFolder = TmfProjectRegistry.getProject(project, true).getTracesFolder();
-                TmfOpenTraceHelper.openTraceFromPath(destinationFolder, traceToOpen, TracingRcpPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell());
+                TmfOpenTraceHelper.openTraceFromPath(destinationFolder, traceToOpen, Activator.instance().getWorkbench().getActiveWorkbenchWindow().getShell());
             } catch (CoreException e) {
-                TracingRcpPlugin.getDefault().logError(e.getMessage());
+                Activator.instance().logError(e.getMessage());
             }
 
         }
@@ -133,8 +139,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
      * Hides the unwanted action sets
      */
     private static void hideActionSets() {
-
-        IWorkbenchPage page = TracingRcpPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IWorkbenchPage page = Activator.instance().getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
         for (int i = 0; i < UNWANTED_ACTION_SET.length; i++) {
             page.hideActionSet(UNWANTED_ACTION_SET[i]);
