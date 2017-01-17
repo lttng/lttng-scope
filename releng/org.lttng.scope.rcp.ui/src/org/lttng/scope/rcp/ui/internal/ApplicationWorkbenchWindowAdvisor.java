@@ -10,13 +10,11 @@
  *   Bernd Hufmann - Initial API and implementation
  *   Marc-Andre Laperle - Bug 459835
  **********************************************************************/
-package org.eclipse.tracecompass.rcp.ui.internal;
+package org.lttng.scope.rcp.ui.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
-import org.eclipse.tracecompass.rcp.ui.cli.internal.CliParser;
 import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfOpenTraceHelper;
 import org.eclipse.tracecompass.tmf.ui.project.model.TmfProjectRegistry;
@@ -28,6 +26,8 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.lttng.scope.rcp.ui.activator.internal.Activator;
+import org.lttng.scope.rcp.ui.cli.internal.CliParser;
 
 /**
  * The WorkbenchAdvisor implementation of the LTTng RCP.

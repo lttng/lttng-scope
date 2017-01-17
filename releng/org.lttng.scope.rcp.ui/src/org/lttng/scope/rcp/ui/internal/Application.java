@@ -10,7 +10,7 @@
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
 
-package org.eclipse.tracecompass.rcp.ui.internal;
+package org.lttng.scope.rcp.ui.internal;
 
 import java.io.File;
 import java.net.URL;
@@ -22,9 +22,9 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.tracecompass.tracing.rcp.ui.messages.internal.Messages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.lttng.scope.rcp.ui.messages.internal.Messages;
 
 /**
  * This class controls all aspects of the application's execution
@@ -35,7 +35,7 @@ public class Application implements IApplication {
     /**
      * The default workspace name
      */
-    private static final String WORKSPACE_NAME = ".tracecompass"; //$NON-NLS-1$
+    private static final String WORKSPACE_NAME = ".lttng-scope"; //$NON-NLS-1$
 
     private Location fInstanceLoc = null;
 
@@ -50,7 +50,7 @@ public class Application implements IApplication {
         /*
          * Look for the environment variable in the global environment variables
          */
-        String workspaceRoot = System.getenv().get("TRACING_RCP_ROOT"); //$NON-NLS-1$
+        String workspaceRoot = System.getenv().get("LTTNG_SCOPE_HOME"); //$NON-NLS-1$
         if (workspaceRoot == null) {
             /* Use the user's home directory */
             workspaceRoot = System.getProperty("user.home"); //$NON-NLS-1$

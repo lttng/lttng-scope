@@ -10,7 +10,7 @@
  *   Matthew Khouzam- Initial API and implementation
  **********************************************************************/
 
-package org.eclipse.tracecompass.rcp.ui.cli.internal;
+package org.lttng.scope.rcp.ui.cli.internal;
 
 /**
  * Command line exceptions.

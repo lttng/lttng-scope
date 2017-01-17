@@ -7,13 +7,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.eclipse.tracecompass.rcp.ui.activator.internal;
+package org.lttng.scope.rcp.ui.activator.internal;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.rcp.ui.cli.internal.CliParser;
-import org.eclipse.tracecompass.rcp.ui.cli.internal.TracingRCPCliException;
 import org.lttng.scope.common.ui.ScopeUIActivator;
+import org.lttng.scope.rcp.ui.cli.internal.CliParser;
+import org.lttng.scope.rcp.ui.cli.internal.TracingRCPCliException;
 
 /**
  * Plugin activator
@@ -22,7 +22,7 @@ import org.lttng.scope.common.ui.ScopeUIActivator;
  */
 public class Activator extends ScopeUIActivator {
 
-    private static final String PLUGIN_ID = "org.eclipse.tracecompass.rcp.ui"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "org.lttng.scope.rcp.ui"; //$NON-NLS-1$
 
     private static @Nullable CliParser fCli;
 

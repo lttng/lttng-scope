@@ -10,7 +10,7 @@
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
 
-package org.eclipse.tracecompass.rcp.ui.internal;
+package org.lttng.scope.rcp.ui.internal;
 
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
@@ -22,10 +22,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
-import org.eclipse.tracecompass.tracing.rcp.ui.messages.internal.Messages;
 import org.eclipse.ui.branding.IProductConstants;
 import org.eclipse.ui.splash.BasicSplashHandler;
+import org.lttng.scope.rcp.ui.activator.internal.Activator;
+import org.lttng.scope.rcp.ui.messages.internal.Messages;
 
 /**
  * Custom splash handler

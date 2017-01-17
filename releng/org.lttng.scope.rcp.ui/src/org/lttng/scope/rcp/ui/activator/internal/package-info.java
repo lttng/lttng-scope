@@ -8,4 +8,4 @@
  */
 
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.eclipse.tracecompass.rcp.ui.activator.internal;
+package org.lttng.scope.rcp.ui.activator.internal;

@@ -9,7 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
-package org.eclipse.tracecompass.rcp.ui.internal;
+package org.lttng.scope.rcp.ui.internal;
 
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;

@@ -5,7 +5,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 2.3.0.qualifier
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.lttng.scope.rcp.ui;singleton:=true
-Bundle-Activator: org.eclipse.tracecompass.rcp.ui.activator.internal.Activator
+Bundle-Activator: org.lttng.scope.rcp.ui.activator.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.commands,
@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.commands,
  org.eclipse.update.configurator;bundle-version="3.3.200",
  org.eclipse.equinox.p2.ui.sdk,
  org.lttng.scope.common.ui
-Export-Package: org.eclipse.tracecompass.rcp.ui.activator.internal;x-internal:=true,
- org.eclipse.tracecompass.rcp.ui.cli.internal;x-internal:=true,
- org.eclipse.tracecompass.rcp.ui.internal;x-internal:=true,
- org.eclipse.tracecompass.tracing.rcp.ui.messages.internal;x-internal:=true
+Export-Package: org.lttng.scope.rcp.ui.activator.internal;x-internal:=true,
+ org.lttng.scope.rcp.ui.cli.internal;x-internal:=true,
+ org.lttng.scope.rcp.ui.internal;x-internal:=true,
+ org.lttng.scope.rcp.ui.messages.internal;x-internal:=true

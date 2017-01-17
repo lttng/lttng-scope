@@ -6,7 +6,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.eclipse.tracecompass.rcp.ui.internal.Application">
+               class="org.lttng.scope.rcp.ui.internal.Application">
          </run>
       </application>
    </extension>
@@ -143,12 +143,12 @@
    <extension
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="org.eclipse.tracecompass.rcp.ui.internal.SplashHandler"
-            id="org.eclipse.tracecompass.rcp.ui.splashHandler">
+            class="org.lttng.scope.rcp.ui.internal.SplashHandler"
+            id="org.lttng.scope.rcp.ui.splashHandler">
       </splashHandler>
       <splashHandlerProductBinding
-            productId="org.eclipse.tracecompass.rcp.branding.product"
-            splashId="org.eclipse.tracecompass.rcp.ui.splashHandler">
+            productId="org.lttng.scope.rcp.branding.product"
+            splashId="org.lttng.scope.rcp.ui.splashHandler">
       </splashHandlerProductBinding>
    </extension>
 </plugin>

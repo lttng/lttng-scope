@@ -9,7 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
-package org.eclipse.tracecompass.rcp.ui.internal;
+package org.lttng.scope.rcp.ui.internal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -30,8 +30,6 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.tracecompass.rcp.ui.activator.internal.Activator;
-import org.eclipse.tracecompass.tracing.rcp.ui.messages.internal.Messages;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -39,6 +37,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.lttng.scope.rcp.ui.activator.internal.Activator;
+import org.lttng.scope.rcp.ui.messages.internal.Messages;
 import org.osgi.framework.Bundle;
 
 

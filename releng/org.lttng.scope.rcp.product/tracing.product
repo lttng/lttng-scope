@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="LTTng Scope" uid="org.lttng.scope.rcp" id="org.lttng.scope.rcp.product" application="org.lttng.scope.rcp.ui.application" version="2.3.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="LTTng Scope" uid="org.lttng.scope.rcp" id="org.lttng.scope.rcp.branding.product" application="org.lttng.scope.rcp.ui.application" version="2.3.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.lttng.scope.rcp.branding/icons/tc_about.png"/>
       <text>
-         Trace Compass
+         LTTng Scope
 
 Version: 2.3.0
 
-Copyright (c) 2013, 2016 Ericsson and others.
+Copyright (C) 2017 EfficiOS Inc. and others
 
 All rights reserved. This program and the accompanying materials are
 made available under the terms of the Eclipse Public License v1.0 which
@@ -39,7 +39,7 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <splash
       location="org.lttng.scope.rcp.branding" />
-   <launcher name="tracecompass">
+   <launcher name="lttng-scope">
       <linux icon="../org.lttng.scope.rcp.branding/icons/xpm/tc_icon_256x256.xpm"/>
       <macosx icon="../org.lttng.scope.rcp.branding/icons/icns/tc_icon.icns"/>
       <win useIco="true">
@@ -47,6 +47,7 @@ http://www.eclipse.org/legal/epl-v10.html
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
@@ -215,8 +216,8 @@ Java and all Java-based trademarks are trademarks of Oracle Corporation in the U
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <plugin id="org.lttng.scope.rcp.ui" autoStart="false" startLevel="5" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
+      <plugin id="org.lttng.scope.rcp.ui" autoStart="false" startLevel="5" />
    </configurations>
 
    <repositories>

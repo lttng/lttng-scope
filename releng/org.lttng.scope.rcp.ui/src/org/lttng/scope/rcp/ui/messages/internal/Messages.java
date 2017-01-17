@@ -9,7 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  **********************************************************************/
-package org.eclipse.tracecompass.tracing.rcp.ui.messages.internal;
+package org.lttng.scope.rcp.ui.messages.internal;
 
 import org.eclipse.osgi.util.NLS;
 
