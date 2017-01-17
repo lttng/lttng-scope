@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="LTTng Scope" uid="org.lttng.scope.rcp" id="org.lttng.scope.rcp.branding.product" application="org.lttng.scope.rcp.ui.application" version="2.3.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="LTTng Scope" uid="org.lttng.scope.rcp" id="org.lttng.scope.rcp.branding.product" application="org.lttng.scope.rcp.ui.application" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.lttng.scope.rcp.branding/icons/tc_about.png"/>
       <text>
          LTTng Scope
 
-Version: 2.3.0
+Version: 0.1.0
 
 Copyright (C) 2017 EfficiOS Inc. and others
 
