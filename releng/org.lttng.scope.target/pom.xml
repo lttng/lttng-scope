@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <artifactId>org.eclipse.tracecompass.releng-parent</artifactId>
-      <groupId>org.eclipse.tracecompass</groupId>
+      <artifactId>org.lttng.scope.releng-parent</artifactId>
+      <groupId>org.lttng.scope</groupId>
       <version>2.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>org.eclipse.tracecompass.target</artifactId>
-    <name>Trace Compass Target Platform</name>
+    <artifactId>org.lttng.scope.target</artifactId>
+    <name>LTTng Scope Target Platform</name>
     <packaging>pom</packaging>
 
     <build>
@@ -29,9 +29,9 @@
               <configuration>
                 <artifacts>
                   <artifact>
-                    <file>tracecompass-e4.6.target</file>
+                    <file>lttng-scope-e4.6.target</file>
                     <type>target</type>
-                    <classifier>tracecompass-e4.6</classifier>
+                    <classifier>lttng-scope-e4.6</classifier>
                   </artifact>
                   <!-- More targets could be added here -->
                 </artifacts>

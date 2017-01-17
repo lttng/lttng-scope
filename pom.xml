@@ -17,11 +17,11 @@
     <maven>${required-maven-version}</maven>
   </prerequisites>
 
-  <groupId>org.eclipse.tracecompass</groupId>
-  <artifactId>org.eclipse.tracecompass</artifactId>
+  <groupId>org.lttng.scope</groupId>
+  <artifactId>org.lttng.scope</artifactId>
   <version>2.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Trace Compass Parent</name>
+  <name>LTTng Scope Parent</name>
 
   <licenses>
     <license>
@@ -48,7 +48,7 @@
     <tycho-extras-version>0.26.0</tycho-extras-version>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/tracecompass/org.eclipse.tracecompass.git</tycho.scmUrl>
     <cbi-plugins.version>1.1.3</cbi-plugins.version>
-    <target-platform>tracecompass-e4.6</target-platform>
+    <target-platform>lttng-scope-e4.6</target-platform>
 
     <!-- Disable GTK3 because it's not quite usable yet and it can make the tests hang (bug in IcedTea http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=1736) -->
     <SWT_GTK3>0</SWT_GTK3>
@@ -189,8 +189,8 @@
           </environments>
           <target>
             <artifact>
-              <groupId>org.eclipse.tracecompass</groupId>
-              <artifactId>org.eclipse.tracecompass.target</artifactId>
+              <groupId>org.lttng.scope</groupId>
+              <artifactId>org.lttng.scope.target</artifactId>
               <classifier>${target-platform}</classifier>
               <version>2.3.0-SNAPSHOT</version>
             </artifact>

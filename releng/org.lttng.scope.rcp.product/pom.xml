@@ -5,21 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <artifactId>org.eclipse.tracecompass.releng-parent</artifactId>
-      <groupId>org.eclipse.tracecompass</groupId>
+      <artifactId>org.lttng.scope.releng-parent</artifactId>
+      <groupId>org.lttng.scope</groupId>
       <version>2.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>org.eclipse.tracecompass.rcp.product</artifactId>
+    <artifactId>org.lttng.scope.rcp.product</artifactId>
     <packaging>eclipse-repository</packaging>
 
-    <name>Trace Compass RCP Product</name>
+    <name>LTTng Scope RCP Product</name>
 
     <properties>
-        <productId>org.eclipse.tracecompass.rcp</productId>
+        <productId>org.lttng.scope.rcp</productId>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-        <archiveFileName>trace-compass-${unqualifiedVersion}-${build.timestamp}</archiveFileName>
-        <rootFolder>trace-compass</rootFolder>
+        <archiveFileName>lttng-scope-${unqualifiedVersion}-${build.timestamp}</archiveFileName>
+        <rootFolder>lttng-scope</rootFolder>
         <!-- for MacOSX, make sure you use a folder ending with .app , see bug 463670 -->
         <rootFolderMac>${rootFolder}.app</rootFolderMac>
     </properties>
@@ -70,6 +70,7 @@
     </build>
 
   <profiles>
+  <!-- Gotta be on Eclipse servers to sign
     <profile>
       <id>sign-update-site</id>
       <build>
@@ -135,7 +136,10 @@
         </plugins>
       </build>
     </profile>
+    -->
+
   <!-- Deploy RCP builds and update site to the downloads area -->
+  <!--
     <profile>
       <id>deploy-rcp</id>
       <properties>
@@ -155,7 +159,7 @@
                 </goals>
                 <configuration>
                   <target>
-                    <!-- Cleanup the "rcp" destination, and copy over the new archives -->
+                    <!- Cleanup the "rcp" destination, and copy over the new archives ->
                     <delete includeemptydirs="false">
                       <fileset dir="${rcpDestination}">
                         <include name="*.tar.gz" />
@@ -168,7 +172,7 @@
                       </fileset>
                     </copy>
 
-                    <!-- Cleanup the "rcp-repository" update site, and copy over the new one -->
+                    <!- Cleanup the "rcp-repository" update site, and copy over the new one ->
                     <delete includeemptydirs="false">
                       <fileset
                         dir="${rcpSiteDestination}">
@@ -188,25 +192,7 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>build-one-rcp</id>
-        <build>
-          <plugins>
-            <plugin>
-              <groupId>org.eclipse.tycho</groupId>
-              <artifactId>target-platform-configuration</artifactId>
-              <configuration>
-                <environments>
-                  <environment>
-                    <os>linux</os>
-                    <ws>gtk</ws>
-                    <arch>x86_64</arch>
-                  </environment>
-                </environments>
-              </configuration>
-            </plugin>
-         </plugins>
-        </build>
-      </profile>
-    </profiles>
+    -->
+
+  </profiles>
 </project>

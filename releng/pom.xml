@@ -14,23 +14,23 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>org.eclipse.tracecompass</artifactId>
-    <groupId>org.eclipse.tracecompass</groupId>
+    <artifactId>org.lttng.scope</artifactId>
+    <groupId>org.lttng.scope</groupId>
     <version>2.3.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.tracecompass.releng-parent</artifactId>
+  <artifactId>org.lttng.scope.releng-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Trace Compass Release Engineering Parent</name>
+  <name>LTTng Scope Release Engineering Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.rcp.branding</module>
-    <module>org.eclipse.tracecompass.rcp.branding.feature</module>
-    <module>org.eclipse.tracecompass.rcp</module>
-    <module>org.eclipse.tracecompass.rcp.product</module>
-    <module>org.eclipse.tracecompass.rcp.ui</module>
-    <module>org.eclipse.tracecompass.target</module>
+    <module>org.lttng.scope.rcp.branding</module>
+    <module>org.lttng.scope.rcp.branding.feature</module>
+    <module>org.lttng.scope.rcp</module>
+    <module>org.lttng.scope.rcp.product</module>
+    <module>org.lttng.scope.rcp.ui</module>
+    <module>org.lttng.scope.target</module>
   </modules>
 
 </project>

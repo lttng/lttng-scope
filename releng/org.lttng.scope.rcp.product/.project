@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.tracecompass.target</name>
+	<name>org.lttng.scope.rcp.product</name>
 	<comment></comment>
 	<projects>
 	</projects>
