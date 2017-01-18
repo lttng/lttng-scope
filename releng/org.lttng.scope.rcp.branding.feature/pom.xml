@@ -24,10 +24,10 @@
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho-version}</version>
         <executions>
           <execution>
             <id>source-feature</id>
@@ -43,6 +43,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-plugin</artifactId>
@@ -56,6 +57,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 

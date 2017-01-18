@@ -4,70 +4,71 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-      <artifactId>org.lttng.scope.releng-parent</artifactId>
-      <groupId>org.lttng.scope</groupId>
-      <version>0.1.0-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <artifactId>org.lttng.scope.releng-parent</artifactId>
+    <groupId>org.lttng.scope</groupId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>org.lttng.scope.rcp.product</artifactId>
-    <packaging>eclipse-repository</packaging>
+  <artifactId>org.lttng.scope.rcp.product</artifactId>
+  <packaging>eclipse-repository</packaging>
 
-    <name>LTTng Scope RCP Product</name>
+  <name>LTTng Scope RCP Product</name>
 
-    <properties>
-        <productId>org.lttng.scope.rcp</productId>
-        <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-        <archiveFileName>lttng-scope-${unqualifiedVersion}-${build.timestamp}</archiveFileName>
-        <rootFolder>lttng-scope</rootFolder>
-        <!-- for MacOSX, make sure you use a folder ending with .app , see bug 463670 -->
-        <rootFolderMac>${rootFolder}.app</rootFolderMac>
-    </properties>
+  <properties>
+    <productId>org.lttng.scope.rcp</productId>
+    <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+    <archiveFileName>lttng-scope-${unqualifiedVersion}-${build.timestamp}</archiveFileName>
+    <rootFolder>lttng-scope</rootFolder>
+    <!-- for MacOSX, make sure you use a folder ending with .app , see bug 463670 -->
+    <rootFolderMac>${rootFolder}.app</rootFolderMac>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-p2-director-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <executions>
-                    <execution>
-                        <id>materialize-products</id>
-                        <goals>
-                            <goal>materialize-products</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>archive-products</id>
-                        <goals>
-                            <goal>archive-products</goal>
-                        </goals>
-                        <configuration>
-                            <formats>
-                                <linux>tar.gz</linux>
-                                <macosx>tar.gz</macosx>
-                                <solaris>zip</solaris>
-                                <win32>zip</win32>
-                            </formats>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <products>
-                        <product>
-                            <archiveFileName>${archiveFileName}</archiveFileName>
-                            <id>${productId}</id>
-                            <rootFolder>${rootFolder}</rootFolder>
-                            <rootFolders>
-                                <macosx>${rootFolderMac}</macosx>
-                            </rootFolders>
-                        </product>
-                    </products>
-                    <source>repository</source>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-director-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>materialize-products</id>
+            <goals>
+              <goal>materialize-products</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>archive-products</id>
+            <goals>
+              <goal>archive-products</goal>
+            </goals>
+            <configuration>
+              <formats>
+                <linux>tar.gz</linux>
+                <macosx>tar.gz</macosx>
+                <solaris>zip</solaris>
+                <win32>zip</win32>
+              </formats>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <products>
+            <product>
+              <archiveFileName>${archiveFileName}</archiveFileName>
+              <id>${productId}</id>
+              <rootFolder>${rootFolder}</rootFolder>
+              <rootFolders>
+                <macosx>${rootFolderMac}</macosx>
+              </rootFolders>
+            </product>
+          </products>
+          <source>repository</source>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 
   <profiles>
   <!-- Gotta be on Eclipse servers to sign
