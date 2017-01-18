@@ -37,10 +37,10 @@
          <menu
                id="org.eclipse.tracecompass.rcp.ui.menu.file"
                label="%menu.main.file"
-               mnemonic="%menu.mnemonic">
+               mnemonic="%menu.main.file.mnemonic">
             <command
                   commandId="org.eclipse.linuxtools.tmf.ui.openDirectory"
-                  label="%command.OpenDirectory.name"
+                  label="%command.openDirectory.name"
                   style="push">
             </command>
             <separator
@@ -68,11 +68,8 @@
                id="org.eclipse.tracecompass.rcp.ui.menu.window"
                label="%menu.main.window">
             <command
-                  commandId="org.eclipse.ui.perspectives.showPerspective"
-                  style="push">
-            </command>
-            <command
                   commandId="org.eclipse.ui.views.showView"
+                  label="%command.showView.name"
                   style="push">
             </command>
             <separator
@@ -80,11 +77,18 @@
                   visible="true">
             </separator>
             <command
+                  commandId="org.eclipse.ui.perspectives.showPerspective"
+                  label="%command.showPerspective.name"
+                  style="push">
+            </command>
+            <command
                   commandId="org.eclipse.ui.window.savePerspective"
+                  label="%command.savePerspective.name"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.ui.window.resetPerspective"
+                  label="%command.resetPerspective.name"
                   style="push">
             </command>
             <separator
@@ -103,7 +107,7 @@
          <menu
                id="org.eclipse.tracecompass.rcp.ui.menu.help"
                label="%menu.main.help"
-               mnemonic="%menu.mnemonic.0">
+               mnemonic="%menu.main.help.mnemonic">
             <command
                   commandId="org.eclipse.ui.help.helpContents"
                   style="push">
