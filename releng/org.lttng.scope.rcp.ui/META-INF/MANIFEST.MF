@@ -21,5 +21,4 @@ Require-Bundle: org.eclipse.core.commands,
  org.lttng.scope.common.ui
 Export-Package: org.lttng.scope.rcp.ui.activator.internal;x-internal:=true,
  org.lttng.scope.rcp.ui.cli.internal;x-internal:=true,
- org.lttng.scope.rcp.ui.internal;x-internal:=true,
- org.lttng.scope.rcp.ui.messages.internal;x-internal:=true
+ org.lttng.scope.rcp.ui.internal;x-internal:=true

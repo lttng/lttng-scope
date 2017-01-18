@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.branding.IProductConstants;
 import org.eclipse.ui.splash.BasicSplashHandler;
 import org.lttng.scope.rcp.ui.activator.internal.Activator;
-import org.lttng.scope.rcp.ui.messages.internal.Messages;
 
 /**
  * Custom splash handler

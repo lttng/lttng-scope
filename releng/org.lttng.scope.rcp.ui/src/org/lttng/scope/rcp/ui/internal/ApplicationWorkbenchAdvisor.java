@@ -38,7 +38,6 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ide.IDEInternalWorkbenchImages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.lttng.scope.rcp.ui.activator.internal.Activator;
-import org.lttng.scope.rcp.ui.messages.internal.Messages;
 import org.osgi.framework.Bundle;
 
 

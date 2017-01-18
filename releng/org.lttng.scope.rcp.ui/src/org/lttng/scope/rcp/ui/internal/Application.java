@@ -24,7 +24,6 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.lttng.scope.rcp.ui.messages.internal.Messages;
 
 /**
  * This class controls all aspects of the application's execution
