@@ -7,5 +7,4 @@ Bundle-Localization: plugin
 Bundle-SymbolicName: org.lttng.scope.rcp.branding;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui.intro
+Require-Bundle: org.eclipse.core.runtime
