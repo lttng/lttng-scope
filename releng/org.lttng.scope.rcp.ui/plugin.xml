@@ -10,24 +10,24 @@
          </run>
       </application>
    </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-   </extension>
    <extension point="org.eclipse.ui.activities">
-      <activity name="%activity.name"                    id="org.eclipse.tracecompass.rcp.ui"      description="%activity.description" />
-      <activity name="%activity.name.javaPerspective"      id="org.eclipse.unwantedJavaPerspective"     description="%activity.description.javaPerspective" />
-      <activity name="%activity.name.teamPerspective"      id="org.eclipse.unwantedTeamPerspective"     description="%activity.description.teamPerspective" />
-      <activity name="%activity.name.debugPerspective"     id="org.eclipse.unwantedDebugPerspective"    description="%activity.description.debugPerspective" />
-      <activity name="%activity.name.pluginDevPerspective" id="org.eclipse.unwantedPluginDevPerspective" description="%activity.description.pluginDevPerspective" />
-      <activity name="%activity.name.resourcePerspective"  id="org.eclipse.unwantedResourcePerspective"  description="%activity.description.resourcePerspective" />
-      <activity name="%activity.name.search"  id="org.eclipse.unwantedSearch"  description="%activity.description.search" />
-      <activityPatternBinding activityId="org.eclipse.tracecompass.rcp.ui"      pattern="org\.eclipse\.tracecompass.*" />
-      <activityPatternBinding activityId="org.eclipse.unwantedJavaPerspective"     pattern="org\.eclipse\.jdt.*" />
-      <activityPatternBinding activityId="org.eclipse.unwantedTeamPerspective"     pattern="org\.eclipse\.team.*" />
-      <activityPatternBinding activityId="org.eclipse.unwantedDebugPerspective"    pattern="org\.eclipse\.debug.*" />
-      <activityPatternBinding activityId="org.eclipse.unwantedSearch" pattern="org\.eclipse\.search.*" />
-      <activityPatternBinding activityId="org.eclipse.unwantedResourcePerspective"  pattern="org\.eclipse\.ui\.[r]*" />
-      <defaultEnablement id="org.eclipse.tracecompass.rcp.ui" />
+      <activity
+            id="org.lttng.scope.activity.disabled"
+            name="%activity.disabled.name">
+         <enabledWhen>
+            <with
+                  variable="true">
+               <equals
+                     value="false">
+               </equals>
+            </with>
+         </enabledWhen>
+      </activity>
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"     pattern="org\.eclipse\.jdt.*" />
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"     pattern="org\.eclipse\.team.*" />
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"    pattern="org\.eclipse\.debug.*" />
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled" pattern="org\.eclipse\.search.*" />
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"  pattern="org\.eclipse\.ui\.resource*" />
    </extension>
    <extension
          point="org.eclipse.ui.menus">
