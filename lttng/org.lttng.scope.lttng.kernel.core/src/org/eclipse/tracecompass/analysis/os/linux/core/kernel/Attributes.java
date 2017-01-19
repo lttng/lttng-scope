@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  ******************************************************************************/
 
-package org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal;
+package org.eclipse.tracecompass.analysis.os.linux.core.kernel;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
