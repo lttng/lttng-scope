@@ -7,21 +7,18 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.eclipse.tracecompass.lttng2.kernel.core.activator.internal;
+package org.lttng.scope.lami.ui.activator.internal;
 
-import java.io.IOException;
-
-import org.lttng.scope.common.core.ScopeCoreActivator;
-import org.lttng.scope.lami.core.module.LamiAnalysisFactoryException;
+import org.lttng.scope.common.ui.ScopeUIActivator;
 
 /**
  * Plugin activator
  *
  * @noreference This class should not be accessed outside of this plugin.
  */
-public class Activator extends ScopeCoreActivator {
+public class Activator extends ScopeUIActivator {
 
-    private static final String PLUGIN_ID = "org.eclipse.tracecompass.lttng2.kernel.core"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "org.lttng.scope.lami.ui"; //$NON-NLS-1$
 
     /**
      * Return the singleton instance of this activator.
@@ -29,7 +26,7 @@ public class Activator extends ScopeCoreActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeCoreActivator.getInstance(PLUGIN_ID);
+        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
     }
 
     /**
@@ -41,12 +38,6 @@ public class Activator extends ScopeCoreActivator {
 
     @Override
     protected void startActions() {
-        try {
-            LttngAnalysesLoader.load();
-        } catch (LamiAnalysisFactoryException | IOException e) {
-            // Not the end of the world if the analyses are not available
-            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
-        }
     }
 
     @Override

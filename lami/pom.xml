@@ -19,15 +19,15 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.tracecompass.lami-parent</artifactId>
+  <artifactId>org.lttng.scope.lami-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>LAMI Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.lami.core</module>
-    <module>org.eclipse.tracecompass.lami.core.tests</module>
-    <module>org.eclipse.tracecompass.lami.ui</module>
+    <module>org.lttng.scope.lami.core</module>
+    <module>org.lttng.scope.lami.core.tests</module>
+    <module>org.lttng.scope.lami.ui</module>
   </modules>
 
 </project>
