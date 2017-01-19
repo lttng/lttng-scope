@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModule;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelTidAspect;
 import org.eclipse.tracecompass.analysis.os.linux.core.kernel.internal.Attributes;
-import org.eclipse.tracecompass.analysis.os.linux.ui.internal.Messages;
 import org.eclipse.tracecompass.lttng2.kernel.ui.activator.internal.Activator;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
@@ -226,15 +225,15 @@ public class ControlFlowView extends AbstractStateSystemTimeGraphView {
         followArrowFwdAction.setToolTipText(Messages.ControlFlowView_followCPUFwdText);
         manager.add(followArrowFwdAction);
 
-        IAction previousEventAction = new SearchEventAction(false, PackageMessages.ControlFlowView_PreviousEventJobName);
-        previousEventAction.setText(PackageMessages.ControlFlowView_PreviousEventActionName);
-        previousEventAction.setToolTipText(PackageMessages.ControlFlowView_PreviousEventActionTooltip);
+        IAction previousEventAction = new SearchEventAction(false, Messages.ControlFlowView_PreviousEventJobName);
+        previousEventAction.setText(Messages.ControlFlowView_PreviousEventActionName);
+        previousEventAction.setToolTipText(Messages.ControlFlowView_PreviousEventActionTooltip);
         previousEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(PREV_EVENT_ICON_PATH));
         manager.add(previousEventAction);
 
-        IAction nextEventAction = new SearchEventAction(true, PackageMessages.ControlFlowView_NextEventJobName);
-        nextEventAction.setText(PackageMessages.ControlFlowView_NextEventActionName);
-        nextEventAction.setToolTipText(PackageMessages.ControlFlowView_NextEventActionTooltip);
+        IAction nextEventAction = new SearchEventAction(true, Messages.ControlFlowView_NextEventJobName);
+        nextEventAction.setText(Messages.ControlFlowView_NextEventActionName);
+        nextEventAction.setToolTipText(Messages.ControlFlowView_NextEventActionTooltip);
         nextEventAction.setImageDescriptor(Activator.instance().getImageDescripterFromPath(NEXT_EVENT_ICON_PATH));
         manager.add(nextEventAction);
     }

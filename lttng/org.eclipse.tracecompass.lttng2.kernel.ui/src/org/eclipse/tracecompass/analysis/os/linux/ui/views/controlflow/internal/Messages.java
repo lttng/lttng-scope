@@ -1,21 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Ericsson
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016 EfficiOS Inc. and others
  *
- * Contributors:
- *     Patrick Tassé - Initial API and implementation
- *     Mahdi Zolnouri - Add new String for ControlFlowView
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.eclipse.tracecompass.analysis.os.linux.ui.internal;
+package org.eclipse.tracecompass.analysis.os.linux.ui.views.controlflow.internal;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
- * Message bundle
+ * Message bundle for the package
  *
  * @noreference Messages class
  */
@@ -23,6 +20,14 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+
+    public static String ControlFlowView_NextEventActionName;
+    public static String ControlFlowView_NextEventActionTooltip;
+    public static String ControlFlowView_NextEventJobName;
+
+    public static String ControlFlowView_PreviousEventActionName;
+    public static String ControlFlowView_PreviousEventActionTooltip;
+    public static String ControlFlowView_PreviousEventJobName;
 
     public static String ControlFlowView_birthTimeColumn;
     public static String ControlFlowView_threadPresentation;
@@ -53,20 +58,6 @@ public class Messages extends NLS {
     public static String ControlFlowView_hierarchicalViewToolTip;
     public static String ControlFlowView_optimizeLabel;
     public static String ControlFlowView_optimizeToolTip;
-
-    public static String ResourcesView_stateTypeName;
-    public static String ResourcesView_multipleStates;
-    public static String ResourcesView_nextResourceActionNameText;
-    public static String ResourcesView_nextResourceActionToolTipText;
-    public static String ResourcesView_previousResourceActionNameText;
-    public static String ResourcesView_previousResourceActionToolTipText;
-    public static String ResourcesView_attributeCpuName;
-    public static String ResourcesView_attributeIrqName;
-    public static String ResourcesView_attributeSoftIrqName;
-    public static String ResourcesView_attributeHoverTime;
-    public static String ResourcesView_attributeTidName;
-    public static String ResourcesView_attributeProcessName;
-    public static String ResourcesView_attributeSyscallName;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
