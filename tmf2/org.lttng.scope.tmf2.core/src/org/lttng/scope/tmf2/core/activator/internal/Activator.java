@@ -18,7 +18,7 @@ import org.lttng.scope.common.core.ScopeCoreActivator;
  */
 public class Activator extends ScopeCoreActivator {
 
-    private static final String PLUGIN_ID = "org.eclipse.scope.tmf2.core"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "org.lttng.scope.tmf2.core"; //$NON-NLS-1$
 
     /**
      * Return the singleton instance of this activator.
