@@ -4,8 +4,8 @@ Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 0.1.0.qualifier
 Bundle-Localization: plugin
-Bundle-SymbolicName: org.eclipse.tracecompass.lttng2.kernel.ui.tests;singleton:=true
-Fragment-Host: org.eclipse.tracecompass.lttng2.kernel.ui
+Bundle-SymbolicName: org.lttng.scope.lttng.kernel.ui.tests;singleton:=true
+Fragment-Host: org.lttng.scope.lttng.kernel.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.0.0"
 Import-Package: org.eclipse.tracecompass.testtraces.ctf

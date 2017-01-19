@@ -19,20 +19,20 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.tracecompass.lttng-parent</artifactId>
+  <artifactId>org.lttng.scope.lttng-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>Trace Compass LTTng Support Parent</name>
 
   <modules>
-    <module>org.eclipse.tracecompass.lttng2.kernel.core</module>
-    <module>org.eclipse.tracecompass.lttng2.kernel.core.tests</module>
-    <module>org.eclipse.tracecompass.lttng2.kernel.ui</module>
-    <module>org.eclipse.tracecompass.lttng2.kernel.ui.tests</module>
+    <module>org.lttng.scope.lttng.kernel.core</module>
+    <module>org.lttng.scope.lttng.kernel.core.tests</module>
+    <module>org.lttng.scope.lttng.kernel.ui</module>
+    <module>org.lttng.scope.lttng.kernel.ui.tests</module>
 
-    <module>org.eclipse.tracecompass.lttng2.ust.core</module>
-    <module>org.eclipse.tracecompass.lttng2.ust.core.tests</module>
-    <module>org.eclipse.tracecompass.lttng2.ust.ui</module>
+    <module>org.lttng.scope.lttng.ust.core</module>
+    <module>org.lttng.scope.lttng.ust.core.tests</module>
+    <module>org.lttng.scope.lttng.ust.ui</module>
   </modules>
 
 </project>

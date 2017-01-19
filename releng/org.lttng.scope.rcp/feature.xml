@@ -83,28 +83,28 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tracecompass.lttng2.kernel.core"
+         id="org.lttng.scope.lttng.kernel.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tracecompass.lttng2.kernel.ui"
+         id="org.lttng.scope.lttng.kernel.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tracecompass.lttng2.ust.core"
+         id="org.lttng.scope.lttng.ust.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tracecompass.lttng2.ust.ui"
+         id="org.lttng.scope.lttng.ust.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

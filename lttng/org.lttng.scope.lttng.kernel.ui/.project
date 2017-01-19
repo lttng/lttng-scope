@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.tracecompass.lttng2.kernel.ui</name>
+	<name>org.lttng.scope.lttng.kernel.ui</name>
 	<comment></comment>
 	<projects>
 	</projects>
