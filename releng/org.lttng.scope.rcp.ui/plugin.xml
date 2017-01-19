@@ -27,7 +27,7 @@
       <activityPatternBinding activityId="org.lttng.scope.activity.disabled"     pattern="org\.eclipse\.team.*" />
       <activityPatternBinding activityId="org.lttng.scope.activity.disabled"    pattern="org\.eclipse\.debug.*" />
       <activityPatternBinding activityId="org.lttng.scope.activity.disabled" pattern="org\.eclipse\.search.*" />
-      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"  pattern="org\.eclipse\.ui\.resource*" />
+      <activityPatternBinding activityId="org.lttng.scope.activity.disabled"  pattern="org\.eclipse\.ui\.resource.*" />
    </extension>
    <extension
          point="org.eclipse.ui.menus">
