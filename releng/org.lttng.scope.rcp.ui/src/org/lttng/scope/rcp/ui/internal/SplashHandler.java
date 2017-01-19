@@ -35,7 +35,7 @@ public class SplashHandler extends BasicSplashHandler {
 
     private static final Point VERSION_LOCATION = new Point(10, 280);
     private static final Rectangle PROCESS_BAR_RECTANGLE = new Rectangle(10, 300, 480, 15);
-    private static final RGB FOREGROUND_COLOR = new RGB(255, 255, 255);
+    private static final RGB FOREGROUND_COLOR = new RGB(0, 0, 0);
 
     @Override
     public void init(Shell splash) {
