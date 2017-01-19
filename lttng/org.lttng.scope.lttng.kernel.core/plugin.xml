@@ -4,13 +4,13 @@
    <extension
          point="org.eclipse.linuxtools.tmf.core.analysis">
       <module
-            analysis_module="org.eclipse.tracecompass.analysis.os.linux.core.kernel.KernelAnalysisModule"
+            analysis_module="org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule"
             automatic="true"
             id="org.eclipse.tracecompass.analysis.os.linux.kernel"
             name="%analysis.linuxkernel">
          <tracetype
                applies="true"
-               class="org.eclipse.tracecompass.analysis.os.linux.core.trace.IKernelTrace">
+               class="org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelTrace">
          </tracetype>
       </module>
    </extension>
@@ -22,7 +22,7 @@
             id="org.eclipse.linuxtools.lttng2.kernel.tracetype"
             isDirectory="true"
             name="%tracetype.type.kernel"
-            trace_type="org.eclipse.tracecompass.lttng2.kernel.core.trace.LttngKernelTrace">
+            trace_type="org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace">
       </type>
    </extension>
 </plugin>

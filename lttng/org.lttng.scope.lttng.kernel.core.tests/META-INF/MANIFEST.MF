@@ -9,8 +9,8 @@ Fragment-Host: org.lttng.scope.lttng.kernel.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.0.0"
 Import-Package: org.eclipse.tracecompass.testtraces.ctf;version="1.6.0"
-Export-Package: org.eclipse.tracecompass.lttng2.kernel.core.analysis.kernel;x-internal:=true,
- org.eclipse.tracecompass.lttng2.kernel.core.analysis.kernel.statesystem;x-internal:=true,
- org.eclipse.tracecompass.lttng2.kernel.core.synchronization;x-internal:=true,
- org.eclipse.tracecompass.lttng2.kernel.core.tests.shared,
- org.eclipse.tracecompass.lttng2.kernel.core.tests.stubs;x-internal:=true
+Export-Package: org.lttng.scope.lttng.kernel.core.analysis.os;x-internal:=true,
+ org.lttng.scope.lttng.kernel.core.analysis.os.statesystem;x-internal:=true,
+ org.lttng.scope.lttng.kernel.core.synchronization;x-internal:=true,
+ org.lttng.scope.lttng.kernel.core.tests.shared,
+ org.lttng.scope.lttng.kernel.core.tests.stubs;x-internal:=true

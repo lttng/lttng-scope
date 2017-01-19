@@ -5,23 +5,23 @@
          point="org.eclipse.linuxtools.tmf.core.tracetype">
       <type
             category="org.eclipse.linuxtools.ctf.tmf.core.category.ctf"
-            event_type="org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstEvent"
+            event_type="org.lttng.scope.lttng.ust.core.trace.LttngUstEvent"
             id="org.eclipse.linuxtools.lttng2.ust.tracetype"
             isDirectory="true"
             name="%tracetype.type.ust"
-            trace_type="org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstTrace">
+            trace_type="org.lttng.scope.lttng.ust.core.trace.LttngUstTrace">
       </type>
    </extension>
    <extension
          point="org.eclipse.linuxtools.tmf.core.analysis">
       <module
-            analysis_module="org.eclipse.tracecompass.lttng2.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule"
+            analysis_module="org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule"
             automatic="true"
             id="org.eclipse.linuxtools.lttng2.ust.analysis.debuginfo"
             name="Debug Info">
          <tracetype
                applies="true"
-               class="org.eclipse.tracecompass.lttng2.ust.core.trace.LttngUstTrace">
+               class="org.lttng.scope.lttng.ust.core.trace.LttngUstTrace">
          </tracetype>
       </module>
    </extension>
