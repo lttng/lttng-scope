@@ -21,9 +21,9 @@ import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.lttng.kernel.core.analysis.os.internal.KernelStateProvider;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.DefaultEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.IKernelTrace;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.internal.LttngEventLayout;
 
 /**
  * State System Module for lttng kernel traces
@@ -44,7 +44,7 @@ public class KernelAnalysisModule extends TmfStateSystemAnalysisModule {
             layout = ((IKernelTrace) trace).getKernelEventLayout();
         } else {
             /* Fall-back to the base LttngEventLayout */
-            layout = DefaultEventLayout.getInstance();
+            layout = LttngEventLayout.getInstance();
         }
 
         return new KernelStateProvider(trace, layout);

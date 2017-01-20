@@ -18,9 +18,7 @@ Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:
  org.lttng.scope.lttng.kernel.core.analysis.os,
  org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.analysis.os.internal;x-internal:=true,
- org.lttng.scope.lttng.kernel.core.analysis.os.trace,
  org.lttng.scope.lttng.kernel.core.event.aspect,
- org.lttng.scope.lttng.kernel.core.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.trace,
  org.lttng.scope.lttng.kernel.core.trace.layout,
  org.lttng.scope.lttng.kernel.core.trace.layout.internal;x-internal:=true
