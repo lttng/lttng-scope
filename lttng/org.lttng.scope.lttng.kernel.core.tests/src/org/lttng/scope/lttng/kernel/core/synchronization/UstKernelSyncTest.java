@@ -30,6 +30,7 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -46,6 +47,7 @@ import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
  *
  * @author Alexandre Montplaisir
  */
+@Ignore("Collection-wide synchronization is unsupported at the moment")
 public class UstKernelSyncTest {
 
     /** Time-out tests after 60 seconds */
