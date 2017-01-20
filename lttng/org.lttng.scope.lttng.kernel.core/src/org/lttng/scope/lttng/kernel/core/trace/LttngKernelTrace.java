@@ -31,7 +31,7 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.lttng.scope.lttng.kernel.core.activator.internal.Activator;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelTidAspect;
+import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.lttng.kernel.core.event.aspect.ThreadPriorityAspect;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng26EventLayout;

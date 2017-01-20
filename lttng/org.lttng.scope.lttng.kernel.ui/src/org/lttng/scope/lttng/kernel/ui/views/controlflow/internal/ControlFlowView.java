@@ -81,7 +81,7 @@ import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.widgets.Utils.TimeForma
 import org.lttng.scope.common.core.StreamUtils.StreamFlattener;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelTidAspect;
+import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.lttng.kernel.ui.activator.internal.Activator;
 
 import com.google.common.collect.ImmutableList;

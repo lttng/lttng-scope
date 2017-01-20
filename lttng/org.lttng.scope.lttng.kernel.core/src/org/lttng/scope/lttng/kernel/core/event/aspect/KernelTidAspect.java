@@ -10,7 +10,7 @@
  *   Geneviève Bastien - Initial API and implementation
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.analysis.os;
+package org.lttng.scope.lttng.kernel.core.event.aspect;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
@@ -22,6 +22,8 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelThreadInformationProvider;
 
 /**
  * This aspect finds the ID of the thread running from this event using the
@@ -41,12 +43,12 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
 
     @Override
     public String getName() {
-        return nullToEmptyString(Messages.AspectName_Tid);
+        return nullToEmptyString(Messages.KernelTidAspect_Name);
     }
 
     @Override
     public String getHelpText() {
-        return nullToEmptyString(Messages.AspectHelpText_Tid);
+        return nullToEmptyString(Messages.KernelTidAspect_HelpText);
     }
 
     @Override

@@ -28,7 +28,6 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.common.core.NonNullUtils;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelTidAspect;
 
 /**
  * This aspect finds the priority of the thread running from this event using
@@ -46,12 +45,12 @@ public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
 
     @Override
     public final String getName() {
-        return NonNullUtils.nullToEmptyString(Messages.AspectName_Prio);
+        return NonNullUtils.nullToEmptyString(Messages.ThreadPriorityAspect_Name);
     }
 
     @Override
     public final String getHelpText() {
-        return NonNullUtils.nullToEmptyString(Messages.AspectHelpText_Prio);
+        return NonNullUtils.nullToEmptyString(Messages.ThreadPriorityAspect_HelpText);
     }
 
     @Override
