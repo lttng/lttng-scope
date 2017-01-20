@@ -422,14 +422,6 @@
             <!-- Default configuration, UI tests may have to override these -->
             <useUIHarness>false</useUIHarness>
             <useUIThread>false</useUIThread>
-            <dependencies>
-               <dependency>
-                 <type>p2-installable-unit</type>
-                 <artifactId>org.eclipse.platform.feature.group</artifactId>
-                 <version>${sdk-version}</version>
-               </dependency>
-            </dependencies>
-            <product>org.eclipse.platform.ide</product>
             <argLine>${testArgLine} ${base.ui.test.vmargs} -Xms512m -Xmx1024m</argLine>
             <appArgLine>-consoleLog</appArgLine>
           </configuration>

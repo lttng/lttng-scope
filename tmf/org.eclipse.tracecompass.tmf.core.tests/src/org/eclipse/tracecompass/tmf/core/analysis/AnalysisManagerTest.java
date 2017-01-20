@@ -42,8 +42,6 @@ public class AnalysisManagerTest {
     public static final @NonNull String MODULE_PARAM_DEFAULT = "org.eclipse.linuxtools.tmf.core.tests.analysis.test2";
     /** ID of analysis module for trace 2 classes only */
     public static final @NonNull String MODULE_SECOND = "org.eclipse.linuxtools.tmf.core.tests.analysis.testother";
-    /** Id of analysis module with requirements */
-    public static final @NonNull String MODULE_REQ = "org.eclipse.linuxtools.tmf.core.tests.analysis.reqtest";
 
     private ITmfTrace fTrace;
 

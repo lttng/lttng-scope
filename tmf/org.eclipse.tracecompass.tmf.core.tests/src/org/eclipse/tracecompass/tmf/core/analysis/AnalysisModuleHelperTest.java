@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
@@ -40,6 +41,7 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 /**
@@ -51,13 +53,13 @@ public class AnalysisModuleHelperTest {
 
     private IAnalysisModuleHelper fModule;
     private IAnalysisModuleHelper fModuleOther;
-    private IAnalysisModuleHelper fReqModule;
     private ITmfTrace fTrace;
 
     private static IAnalysisModuleHelper getModuleHelper(@NonNull String moduleId) {
         Multimap<String, IAnalysisModuleHelper> helpers = TmfAnalysisManager.getAnalysisModules();
-        assertEquals(1, helpers.get(moduleId).size());
-        return helpers.get(moduleId).iterator().next();
+        Collection<IAnalysisModuleHelper> applicableHelpers = helpers.get(moduleId);
+        assertEquals(1, applicableHelpers.size());
+        return Iterables.getOnlyElement(applicableHelpers);
     }
 
     /**
@@ -71,9 +73,6 @@ public class AnalysisModuleHelperTest {
         fModuleOther = getModuleHelper(AnalysisManagerTest.MODULE_SECOND);
         assertNotNull(fModuleOther);
         assertTrue(fModuleOther instanceof TmfAnalysisModuleHelperConfigElement);
-        fReqModule = getModuleHelper(AnalysisManagerTest.MODULE_REQ);
-        assertNotNull(fReqModule);
-        assertTrue(fReqModule instanceof TmfAnalysisModuleHelperConfigElement);
         fTrace = TmfTestTrace.A_TEST_10K2.getTraceAsStub2();
     }
 
@@ -178,79 +177,6 @@ public class AnalysisModuleHelperTest {
         }
     }
 
-
-    /**
-     * Test the analysis modules with a differing result for experiments
-     */
-    @Test
-    public void testAppliesToExperiment() {
-        ITmfTrace trace1 = TmfTestTrace.A_TEST_10K.getTrace();
-        ITmfTrace trace2 = TmfTestTrace.A_TEST_10K2.getTrace();
-        ITmfTrace trace3 = TmfTestTrace.A_TEST_10K2.getTraceAsStub2();
-
-        /* Create an experiment with TmfTraceStub */
-        ITmfTrace[] tracesExp1 = { trace1, trace2 };
-        TmfExperiment exp1 = new TmfExperiment(tracesExp1[0].getEventType(), "Experiment 1", tracesExp1, TmfExperiment.DEFAULT_INDEX_PAGE_SIZE, null);
-
-        /* Create an experiment containing some TmfTraceStub2 */
-        ITmfTrace[] tracesExp2 = { trace1, trace3 };
-        TmfExperiment exp2 = new TmfExperiment(tracesExp2[0].getEventType(), "Experiment 1", tracesExp2, TmfExperiment.DEFAULT_INDEX_PAGE_SIZE, null);
-
-        try {
-
-            /* fModule should return null for both experiments */
-            IAnalysisModule module = null;
-            try {
-                module = fModule.newModule(exp1);
-                assertNull(module);
-            } catch (TmfAnalysisException e) {
-                fail();
-            } finally {
-                if (module != null) {
-                    module.dispose();
-                }
-            }
-
-            try {
-                module = fModule.newModule(exp2);
-                assertNull(module);
-            } catch (TmfAnalysisException e) {
-                fail();
-            } finally {
-                if (module != null) {
-                    module.dispose();
-                }
-            }
-
-            /* fModuleOther should throw exception for exp1, but not exp2 */
-            try {
-                module = fModuleOther.newModule(exp1);
-                assertNull(module);
-            } catch (TmfAnalysisException e) {
-                fail();
-            } finally {
-                if (module != null) {
-                    module.dispose();
-                }
-            }
-
-            try {
-                module = fModuleOther.newModule(exp2);
-                assertNotNull(module);
-            } catch (TmfAnalysisException e) {
-                fail();
-            } finally {
-                if (module != null) {
-                    module.dispose();
-                }
-            }
-
-        } finally {
-            exp2.dispose();
-            exp1.dispose();
-        }
-    }
-
     /**
      * Test for the initialization of parameters from the extension points
      */
@@ -336,8 +262,8 @@ public class AnalysisModuleHelperTest {
      */
     @Test
     public void testGetValidTraceTypes() {
-        Set<Class<? extends ITmfTrace>> expected = ImmutableSet.of((Class<? extends ITmfTrace>) TmfTraceStub.class, TmfTraceStub2.class, TmfTraceStub3.class);
-        Iterable<Class<? extends ITmfTrace>> traceTypes = fReqModule.getValidTraceTypes();
+        Set<Class<? extends ITmfTrace>> expected = ImmutableSet.of(TmfTraceStub.class, TmfTraceStub2.class);
+        Iterable<Class<? extends ITmfTrace>> traceTypes = fModule.getValidTraceTypes();
         assertEquals(expected, traceTypes);
     }
 }

@@ -74,7 +74,7 @@ public class TmfTraceTest {
     private static final int    NB_EVENTS   = 10000;
     private TmfTraceStub fTrace      = null;
 
-    private static int SCALE = -3;
+    private static final int SCALE = -9;
 
     // ------------------------------------------------------------------------
     // Housekeeping

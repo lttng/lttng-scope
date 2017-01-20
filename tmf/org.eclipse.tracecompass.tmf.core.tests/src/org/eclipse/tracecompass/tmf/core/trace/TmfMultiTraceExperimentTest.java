@@ -64,7 +64,7 @@ public class TmfMultiTraceExperimentTest {
 
     private static TmfExperimentStub fExperiment;
 
-    private static byte SCALE = (byte) -3;
+    private static final int SCALE = -9;
 
     // ------------------------------------------------------------------------
     // Housekeeping
@@ -768,15 +768,15 @@ public class TmfMultiTraceExperimentTest {
 
     @Test
     public void testGetTimestamp() {
-        assertEquals("getTimestamp", TmfTimestamp.create(    1, (byte) -3), fExperiment.getTimestamp(    0));
-        assertEquals("getTimestamp", TmfTimestamp.create(    2, (byte) -3), fExperiment.getTimestamp(    1));
-        assertEquals("getTimestamp", TmfTimestamp.create(   11, (byte) -3), fExperiment.getTimestamp(   10));
-        assertEquals("getTimestamp", TmfTimestamp.create(  101, (byte) -3), fExperiment.getTimestamp(  100));
-        assertEquals("getTimestamp", TmfTimestamp.create( 1001, (byte) -3), fExperiment.getTimestamp( 1000));
-        assertEquals("getTimestamp", TmfTimestamp.create( 2001, (byte) -3), fExperiment.getTimestamp( 2000));
-        assertEquals("getTimestamp", TmfTimestamp.create( 2501, (byte) -3), fExperiment.getTimestamp( 2500));
-        assertEquals("getTimestamp", TmfTimestamp.create(10000, (byte) -3), fExperiment.getTimestamp( 9999));
-        assertEquals("getTimestamp", TmfTimestamp.create(20000, (byte) -3), fExperiment.getTimestamp(19999));
+        assertEquals("getTimestamp", TmfTimestamp.create(    1, -9), fExperiment.getTimestamp(    0));
+        assertEquals("getTimestamp", TmfTimestamp.create(    2, -9), fExperiment.getTimestamp(    1));
+        assertEquals("getTimestamp", TmfTimestamp.create(   11, -9), fExperiment.getTimestamp(   10));
+        assertEquals("getTimestamp", TmfTimestamp.create(  101, -9), fExperiment.getTimestamp(  100));
+        assertEquals("getTimestamp", TmfTimestamp.create( 1001, -9), fExperiment.getTimestamp( 1000));
+        assertEquals("getTimestamp", TmfTimestamp.create( 2001, -9), fExperiment.getTimestamp( 2000));
+        assertEquals("getTimestamp", TmfTimestamp.create( 2501, -9), fExperiment.getTimestamp( 2500));
+        assertEquals("getTimestamp", TmfTimestamp.create(10000, -9), fExperiment.getTimestamp( 9999));
+        assertEquals("getTimestamp", TmfTimestamp.create(20000, -9), fExperiment.getTimestamp(19999));
         assertNull("getTimestamp", fExperiment.getTimestamp(20000));
     }
 

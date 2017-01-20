@@ -461,7 +461,7 @@ public class TmfCoalescedEventRequestTest {
      */
     @TmfSignalHandler
     public void trigger(final TmfTestTriggerSignal2 signal) {
-        TmfTimeRange range = new TmfTimeRange(TmfTimestamp.create(100, -3), TmfTimestamp.BIG_CRUNCH);
+        TmfTimeRange range = new TmfTimeRange(TmfTimestamp.create(100, -9), TmfTimestamp.BIG_CRUNCH);
         requestedEvents1 = new Vector<>();
         request1 = new TmfEventRequest(ITmfEvent.class, range, 0, 1, ExecutionType.FOREGROUND) {
             @Override
