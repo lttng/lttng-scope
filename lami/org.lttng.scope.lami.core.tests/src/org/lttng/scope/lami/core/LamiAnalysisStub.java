@@ -36,6 +36,8 @@ import com.google.common.collect.Multimap;
  */
 public class LamiAnalysisStub extends LamiAnalysis {
 
+    private static final String TEST_PLUGIN_ID = "org.lttng.scope.lami.core.tests";
+
     private final String fMetaDatafilename;
     private final String fResultFilename;
 
@@ -88,7 +90,7 @@ public class LamiAnalysisStub extends LamiAnalysis {
     private static String readLamiFile(String filename) {
         String fileContent = "";
         try {
-            URL url = new URL("platform:/plugin/org.eclipse.tracecompass.analysis.lami.core.tests/testfiles/" + filename);
+            URL url = new URL("platform:/plugin/" + TEST_PLUGIN_ID + "/testfiles/" + filename);
 
             try (InputStream inputStream = url.openConnection().getInputStream()) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
