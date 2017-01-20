@@ -17,7 +17,7 @@ import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundExc
 import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Soft Irq Entry handler
@@ -30,7 +30,7 @@ public class SoftIrqEntryHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public SoftIrqEntryHandler(IKernelAnalysisEventLayout layout) {
+    public SoftIrqEntryHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

@@ -13,7 +13,7 @@ import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
 import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * IPI Exit Handler
@@ -28,7 +28,7 @@ public class IPIExitHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public IPIExitHandler(IKernelAnalysisEventLayout layout) {
+    public IPIExitHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

@@ -16,7 +16,7 @@ import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
 import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Irq Exit handler
@@ -29,7 +29,7 @@ public class IrqExitHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public IrqExitHandler(IKernelAnalysisEventLayout layout) {
+    public IrqExitHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

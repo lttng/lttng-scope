@@ -32,9 +32,8 @@ import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.lttng.scope.lttng.kernel.core.activator.internal.Activator;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelTidAspect;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelTrace;
 import org.lttng.scope.lttng.kernel.core.event.aspect.ThreadPriorityAspect;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng26EventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng27EventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng28EventLayout;
@@ -63,9 +62,9 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
         LTTNG29(Lttng29EventLayout.getInstance()),
         PERF(PerfEventLayout.getInstance());
 
-        private final @NonNull IKernelAnalysisEventLayout fLayout;
+        private final @NonNull ILttngKernelEventLayout fLayout;
 
-        private OriginTracer(@NonNull IKernelAnalysisEventLayout layout) {
+        private OriginTracer(@NonNull ILttngKernelEventLayout layout) {
             fLayout = layout;
         }
     }
@@ -100,7 +99,7 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
     }
 
     @Override
-    public @NonNull IKernelAnalysisEventLayout getKernelEventLayout() {
+    public @NonNull ILttngKernelEventLayout getKernelEventLayout() {
         OriginTracer tracer = fOriginTracer;
         if (tracer == null) {
             throw new IllegalStateException("Cannot get the layout of a non-initialized trace!"); //$NON-NLS-1$

@@ -19,7 +19,7 @@ import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Set Prio handler
@@ -30,7 +30,7 @@ public class PiSetprioHandler extends KernelEventHandler {
      * Constructor
      * @param layout event layout
      */
-    public PiSetprioHandler(IKernelAnalysisEventLayout layout) {
+    public PiSetprioHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

@@ -42,7 +42,7 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SoftIrqRa
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.StateDumpHandler;
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SysEntryHandler;
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SysExitHandler;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -87,7 +87,7 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
     // ------------------------------------------------------------------------
 
     private final Map<String, KernelEventHandler> fEventNames;
-    private final IKernelAnalysisEventLayout fLayout;
+    private final ILttngKernelEventLayout fLayout;
 
     private final KernelEventHandler fSysEntryHandler;
     private final KernelEventHandler fSysExitHandler;
@@ -105,7 +105,7 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
      *            The event layout to use for this state provider. Usually
      *            depending on the tracer implementation.
      */
-    public KernelStateProvider(ITmfTrace trace, IKernelAnalysisEventLayout layout) {
+    public KernelStateProvider(ITmfTrace trace, ILttngKernelEventLayout layout) {
         super(trace, "Kernel"); //$NON-NLS-1$
         fLayout = layout;
         fEventNames = buildEventNames(layout);
@@ -118,7 +118,7 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
     // Event names management
     // ------------------------------------------------------------------------
 
-    private static Map<String, KernelEventHandler> buildEventNames(IKernelAnalysisEventLayout layout) {
+    private static Map<String, KernelEventHandler> buildEventNames(ILttngKernelEventLayout layout) {
         ImmutableMap.Builder<String, KernelEventHandler> builder = ImmutableMap.builder();
 
         builder.put(layout.eventIrqHandlerEntry(), new IrqEntryHandler(layout));

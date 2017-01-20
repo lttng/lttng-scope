@@ -15,14 +15,14 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Base class for all kernel event handlers.
  */
 public abstract class KernelEventHandler {
 
-    private final IKernelAnalysisEventLayout fLayout;
+    private final ILttngKernelEventLayout fLayout;
 
     /**
      * Constructor
@@ -30,7 +30,7 @@ public abstract class KernelEventHandler {
      * @param layout
      *            the analysis layout
      */
-    public KernelEventHandler(IKernelAnalysisEventLayout layout) {
+    public KernelEventHandler(ILttngKernelEventLayout layout) {
         fLayout = layout;
     }
 
@@ -39,7 +39,7 @@ public abstract class KernelEventHandler {
      *
      * @return the analysis layout
      */
-    protected IKernelAnalysisEventLayout getLayout() {
+    protected ILttngKernelEventLayout getLayout() {
         return fLayout;
     }
 

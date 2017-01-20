@@ -19,7 +19,7 @@ import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * System call entry handler
@@ -32,7 +32,7 @@ public class SysEntryHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public SysEntryHandler(IKernelAnalysisEventLayout layout) {
+    public SysEntryHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

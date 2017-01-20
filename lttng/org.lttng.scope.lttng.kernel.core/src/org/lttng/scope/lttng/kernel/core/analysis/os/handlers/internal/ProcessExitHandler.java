@@ -15,7 +15,7 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
 import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Process Exit handler
@@ -28,7 +28,7 @@ public class ProcessExitHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public ProcessExitHandler(IKernelAnalysisEventLayout layout) {
+    public ProcessExitHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

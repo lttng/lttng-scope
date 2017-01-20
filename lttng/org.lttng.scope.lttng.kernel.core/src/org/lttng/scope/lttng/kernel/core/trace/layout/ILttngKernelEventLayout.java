@@ -10,7 +10,7 @@
  *   Alexandre Montplaisir - Initial API and implementation
  ******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.analysis.os.trace;
+package org.lttng.scope.lttng.kernel.core.trace.layout;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Alexandre Montplaisir
  * @author Matthew Khouzam - Javadoc
  */
-public interface IKernelAnalysisEventLayout {
+public interface ILttngKernelEventLayout {
 
     // ------------------------------------------------------------------------
     // Common definitions

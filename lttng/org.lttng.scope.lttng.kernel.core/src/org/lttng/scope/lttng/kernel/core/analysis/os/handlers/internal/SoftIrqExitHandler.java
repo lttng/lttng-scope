@@ -21,7 +21,7 @@ import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Soft Irq exit handler
@@ -34,7 +34,7 @@ public class SoftIrqExitHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public SoftIrqExitHandler(IKernelAnalysisEventLayout layout) {
+    public SoftIrqExitHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

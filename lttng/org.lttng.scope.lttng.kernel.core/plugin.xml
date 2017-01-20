@@ -10,7 +10,7 @@
             name="%analysis.linuxkernel">
          <tracetype
                applies="true"
-               class="org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelTrace">
+               class="org.lttng.scope.lttng.kernel.core.trace.IKernelTrace">
          </tracetype>
       </module>
    </extension>

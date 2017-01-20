@@ -10,9 +10,11 @@
  *   Alexandre Montplaisir - Initial API and implementation
  ******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.analysis.os.trace;
+package org.lttng.scope.lttng.kernel.core.trace;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Trace type that represents a Linux kernel trace.
@@ -22,6 +24,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
  *
  * @author Alexandre Montplaisir
  */
+@NonNullByDefault
 public interface IKernelTrace extends ITmfTrace {
 
     /**
@@ -30,6 +33,6 @@ public interface IKernelTrace extends ITmfTrace {
      *
      * @return The event layout
      */
-    IKernelAnalysisEventLayout getKernelEventLayout();
+    ILttngKernelEventLayout getKernelEventLayout();
 
 }

@@ -18,8 +18,8 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.lami.core.module.LamiAnalysis;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryException;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryFromConfigFile;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng27EventLayout;
 
 /**
@@ -38,7 +38,7 @@ final class LttngAnalysesLoader {
         /* LTTng-Analysis is supported only on LTTng >= 2.7 kernel traces */
         if (trace instanceof LttngKernelTrace) {
             final LttngKernelTrace kernelTrace = (LttngKernelTrace) trace;
-            final IKernelAnalysisEventLayout layout = kernelTrace.getKernelEventLayout();
+            final ILttngKernelEventLayout layout = kernelTrace.getKernelEventLayout();
 
             if (layout instanceof Lttng27EventLayout) {
                 return true;

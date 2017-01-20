@@ -16,7 +16,7 @@ import java.util.Collection;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @author Alexandre Montplaisir
  */
-public final class PerfEventLayout implements IKernelAnalysisEventLayout {
+public final class PerfEventLayout implements ILttngKernelEventLayout {
 
     private PerfEventLayout() {
     }

@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 import com.google.common.collect.ImmutableList;
 
@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableList;
  * @author Alexandre Montplaisir
  */
 @SuppressWarnings("nls")
-public class LttngEventLayout implements IKernelAnalysisEventLayout {
+public class LttngEventLayout implements ILttngKernelEventLayout {
 
     /* Event names */
     private static final String IRQ_HANDLER_ENTRY = "irq_handler_entry";
@@ -122,7 +122,7 @@ public class LttngEventLayout implements IKernelAnalysisEventLayout {
     protected LttngEventLayout() {
     }
 
-    private static final IKernelAnalysisEventLayout INSTANCE = new LttngEventLayout();
+    private static final ILttngKernelEventLayout INSTANCE = new LttngEventLayout();
 
     /**
      * Get an instance of this event layout
@@ -132,7 +132,7 @@ public class LttngEventLayout implements IKernelAnalysisEventLayout {
      *
      * @return The instance
      */
-    public static IKernelAnalysisEventLayout getInstance() {
+    public static ILttngKernelEventLayout getInstance() {
         return INSTANCE;
     }
 

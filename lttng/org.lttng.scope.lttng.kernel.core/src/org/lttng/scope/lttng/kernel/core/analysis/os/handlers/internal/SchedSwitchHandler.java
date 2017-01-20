@@ -23,7 +23,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.LinuxValues;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Scheduler switch event handler
@@ -36,7 +36,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public SchedSwitchHandler(IKernelAnalysisEventLayout layout) {
+    public SchedSwitchHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 

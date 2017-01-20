@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 import com.google.common.collect.ImmutableList;
 
@@ -28,7 +29,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @author Alexandre Montplaisir
  */
-public class DefaultEventLayout implements IKernelAnalysisEventLayout {
+public class DefaultEventLayout implements ILttngKernelEventLayout {
 
     private static @Nullable DefaultEventLayout INSTANCE;
 

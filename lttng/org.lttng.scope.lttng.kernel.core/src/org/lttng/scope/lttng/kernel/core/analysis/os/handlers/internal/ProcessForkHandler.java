@@ -20,7 +20,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.analysis.os.trace.IKernelAnalysisEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Fork Handler
@@ -33,7 +33,7 @@ public class ProcessForkHandler extends KernelEventHandler {
      * @param layout
      *            event layout
      */
-    public ProcessForkHandler(IKernelAnalysisEventLayout layout) {
+    public ProcessForkHandler(ILttngKernelEventLayout layout) {
         super(layout);
     }
 
