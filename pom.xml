@@ -42,7 +42,10 @@
     <required-maven-version>3.3</required-maven-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     <maven.test.skip>true</maven.test.skip>
+    <tycho.localArtifacts>ignore</tycho.localArtifacts>
+
     <testArgLine></testArgLine>
 
     <tycho-version>0.27.0-SNAPSHOT</tycho-version>
@@ -110,8 +113,27 @@
             <configuration>
               <useUIHarness>true</useUIHarness>
               <useUIThread>true</useUIThread>
+              <testRuntime>default</testRuntime>
             </configuration>
           </plugin>
+
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <dependency-resolution>
+                <extraRequirements>
+                  <requirement>
+                    <type>eclipse-feature</type>
+                    <id>org.lttng.scope.rcp</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                </extraRequirements>
+              </dependency-resolution>
+            </configuration>
+          </plugin>
+
+
         </plugins>
       </build>
     </profile>
@@ -424,6 +446,7 @@
             <useUIThread>false</useUIThread>
             <argLine>${testArgLine} ${base.ui.test.vmargs} -Xms512m -Xmx1024m</argLine>
             <appArgLine>-consoleLog</appArgLine>
+            <failIfNoTests>false</failIfNoTests>
           </configuration>
         </plugin>
 
