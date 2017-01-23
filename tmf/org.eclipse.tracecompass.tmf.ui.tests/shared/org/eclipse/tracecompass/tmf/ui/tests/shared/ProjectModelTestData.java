@@ -244,7 +244,7 @@ public class ProjectModelTestData {
             TmfCommonProjectElement traceElement = (TmfCommonProjectElement) projectElement;
             WaitUtils.waitUntil(new IWaitCondition() {
                 @Override
-                public boolean test() throws Exception {
+                public boolean test() {
                     return traceElement.getTrace() != null;
                 }
 

@@ -179,7 +179,7 @@ public class ProjectModelOutputTest {
         }
 
         @Override
-        public boolean test() throws Exception {
+        public boolean test() {
             fCurNumChildren = fProjectElement.getChildren().size();
             return fCurNumChildren == fExpectedChildNum;
         }

@@ -33,7 +33,7 @@ public final class WaitUtils {
     public static void waitForJobs() {
         waitUntil(new IWaitCondition() {
             @Override
-            public boolean test() throws Exception {
+            public boolean test() {
                 return Job.getJobManager().isIdle();
             }
 
@@ -105,33 +105,31 @@ public final class WaitUtils {
     public static void waitUntil(IWaitCondition condition, long maxWait) {
         long waitStart = System.currentTimeMillis();
         Display display = Display.getCurrent();
-        try {
-            while (!condition.test()) {
-                if (System.currentTimeMillis() - waitStart > maxWait) {
-                    throw new WaitTimeoutException(condition.getFailureMessage()); //$NON-NLS-1$
-                }
+        while (!condition.test()) {
+            if (System.currentTimeMillis() - waitStart > maxWait) {
+                throw new WaitTimeoutException(condition.getFailureMessage()); // $NON-NLS-1$
+            }
 
-                if (display != null) {
-                    if (!display.readAndDispatch()) {
-                        // We do not use Display.sleep because it might never wake up
-                        // if there is no user interaction
-                        try {
-                            Thread.sleep(UI_THREAD_SLEEP_INTERVAL_MS);
-                        } catch (final InterruptedException e) {
-                            // Ignored
-                        }
-                    }
-                    display.update();
-                } else {
+            if (display != null) {
+                if (!display.readAndDispatch()) {
+                    // We do not use Display.sleep because it might never wake
+                    // up
+                    // if there is no user interaction
                     try {
-                        Thread.sleep(SLEEP_INTERVAL_MS);
+                        Thread.sleep(UI_THREAD_SLEEP_INTERVAL_MS);
                     } catch (final InterruptedException e) {
                         // Ignored
                     }
                 }
+                display.update();
+            } else {
+                try {
+                    Thread.sleep(SLEEP_INTERVAL_MS);
+                } catch (final InterruptedException e) {
+                    // Ignored
+                }
             }
-        } catch (Exception e) {
-            throw new WaitTimeoutException(condition.getFailureMessage()); //$NON-NLS-1$
         }
     }
+
 }

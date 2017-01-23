@@ -17,13 +17,14 @@ package org.eclipse.tracecompass.tmf.ui.tests.shared;
  * timeout, a failure message is provided.
  */
 public interface IWaitCondition {
+
     /**
      * Tests if the condition has been met.
      *
-     * @return <code>true</code> if the condition is satisfied, <code>false</code> otherwise.
-     * @throws Exception if the test encounters an error while processing the check.
+     * @return <code>true</code> if the condition is satisfied,
+     *         <code>false</code> otherwise.
      */
-    boolean test() throws Exception;
+    boolean test();
 
     /**
      * Gets the failure message when a test fails (returns <code>false</code>).
