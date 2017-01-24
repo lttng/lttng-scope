@@ -20,7 +20,7 @@
 
   <groupId>org.lttng.scope</groupId>
   <artifactId>org.lttng.scope</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>LTTng Scope Parent</name>
 
@@ -214,7 +214,7 @@
               <groupId>org.lttng.scope</groupId>
               <artifactId>org.lttng.scope.target</artifactId>
               <classifier>${target-platform}</classifier>
-              <version>0.1.0-SNAPSHOT</version>
+              <version>0.2.0-SNAPSHOT</version>
             </artifact>
           </target>
         </configuration>
