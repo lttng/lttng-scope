@@ -22,6 +22,7 @@ import org.eclipse.tracecompass.tmf.ui.project.model.TmfTraceElement;
 import org.eclipse.tracecompass.tmf.ui.viewers.events.TmfEventAdapterFactory;
 import org.eclipse.tracecompass.tmf.ui.views.internal.TmfAlignmentSynchronizer;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.lttng.scope.common.core.ScopeCoreActivator;
 import org.lttng.scope.common.ui.ScopeUIActivator;
 
 /**
@@ -31,9 +32,8 @@ import org.lttng.scope.common.ui.ScopeUIActivator;
  */
 public class Activator extends ScopeUIActivator {
 
-    private static final String PLUGIN_ID = "org.eclipse.tracecompass.tmf.ui"; //$NON-NLS-1$
-
-    private static final String CORE_PLUGIN_ID = "org.eclipse.tracecompass.tmf.core"; //$NON-NLS-1$
+    @SuppressWarnings("restriction")
+    private static final ScopeCoreActivator CORE_PLUGIN_ACTIVATOR = org.eclipse.tracecompass.tmf.core.activator.internal.Activator.instance();
 
     private @Nullable TmfEventAdapterFactory fTmfEventAdapterFactory;
     private @Nullable IPreferenceStore fCorePreferenceStore;
@@ -44,14 +44,7 @@ public class Activator extends ScopeUIActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
-    }
-
-    /**
-     * Constructor
-     */
-    public Activator() {
-        super(PLUGIN_ID);
+        return ScopeUIActivator.getInstance(Activator.class);
     }
 
     @Override
@@ -94,7 +87,7 @@ public class Activator extends ScopeUIActivator {
      public synchronized IPreferenceStore getCorePreferenceStore() {
          IPreferenceStore store = fCorePreferenceStore;
          if (store == null) {
-             store = new ScopedPreferenceStore(InstanceScope.INSTANCE, CORE_PLUGIN_ID);
+             store = new ScopedPreferenceStore(InstanceScope.INSTANCE, CORE_PLUGIN_ACTIVATOR.getPluginId());
              fCorePreferenceStore = store;
          }
          return store;

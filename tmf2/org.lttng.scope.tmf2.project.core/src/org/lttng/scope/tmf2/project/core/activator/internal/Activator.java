@@ -18,22 +18,13 @@ import org.lttng.scope.common.core.ScopeCoreActivator;
  */
 public class Activator extends ScopeCoreActivator {
 
-    private static final String PLUGIN_ID = "org.lttng.scope.tmf2.project.core"; //$NON-NLS-1$
-
     /**
      * Return the singleton instance of this activator.
      *
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeCoreActivator.getInstance(PLUGIN_ID);
-    }
-
-    /**
-     * Constructor
-     */
-    public Activator() {
-        super(PLUGIN_ID);
+        return ScopeCoreActivator.getInstance(Activator.class);
     }
 
     @Override

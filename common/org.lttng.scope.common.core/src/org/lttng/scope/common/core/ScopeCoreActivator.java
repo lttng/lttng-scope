@@ -9,6 +9,7 @@
 
 package org.lttng.scope.common.core;
 
+import static java.util.Objects.requireNonNull;
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Collections;
@@ -32,9 +33,9 @@ public abstract class ScopeCoreActivator extends Plugin {
     // Attributes
     // ------------------------------------------------------------------------
 
-    /** Map of all the registered activators, indexed by plugin ID */
-    private static final Map<String, ScopeCoreActivator> CORE_ACTIVATORS =
-            Collections.synchronizedMap(new HashMap<String, ScopeCoreActivator>());
+    /** Map of all the registered activators, indexed by activator classes */
+    private static final Map<Class<? extends ScopeCoreActivator>, ScopeCoreActivator> CORE_ACTIVATORS =
+            Collections.synchronizedMap(new HashMap<Class<? extends ScopeCoreActivator>, ScopeCoreActivator>());
 
     /** This instance's plug-in ID */
     private final String fPluginId;
@@ -44,13 +45,10 @@ public abstract class ScopeCoreActivator extends Plugin {
     // ------------------------------------------------------------------------
 
     /**
-     * The constructor
-     *
-     * @param pluginID
-     *            The ID of the plugin
+     * Constructor
      */
-    public ScopeCoreActivator(String pluginID) {
-        fPluginId = pluginID;
+    public ScopeCoreActivator() {
+        fPluginId = requireNonNull(getBundle().getSymbolicName());
     }
 
     // ------------------------------------------------------------------------
@@ -70,16 +68,22 @@ public abstract class ScopeCoreActivator extends Plugin {
      * Get a registered activator. Subclasses should implement their own public
      * getInstance() method, which returns the result of this.
      *
-     * @param id
-     *            The activator's plugin ID
+     * @param activatorClass
+     *            The activator's runtime class
      * @return The corresponding activator
      */
-    protected static ScopeCoreActivator getInstance(String id) {
-        ScopeCoreActivator ret = CORE_ACTIVATORS.get(id);
-        if (ret == null) {
+    protected static <T extends ScopeCoreActivator> T getInstance(Class<T> activatorClass) {
+        ScopeCoreActivator activator = CORE_ACTIVATORS.get(activatorClass);
+        if (activator == null) {
             /* The activator should be registered at this point! */
             throw new IllegalStateException();
         }
+        /*
+         * We inserted the corresponding class into the map ourselves, cast
+         * should always be safe.
+         */
+        @SuppressWarnings("unchecked")
+        T ret = (T) activator;
         return ret;
     }
 
@@ -104,12 +108,12 @@ public abstract class ScopeCoreActivator extends Plugin {
     @Override
     public final void start(@Nullable BundleContext context) throws Exception {
         super.start(context);
-        String id = this.getPluginId();
+        Class<? extends ScopeCoreActivator> activatorClass = this.getClass();
         synchronized (CORE_ACTIVATORS) {
-            if (CORE_ACTIVATORS.containsKey(id)) {
-                logError("Duplicate Activator ID : " + id); //$NON-NLS-1$
+            if (CORE_ACTIVATORS.containsKey(activatorClass)) {
+                logError("Duplicate Activator : " + activatorClass.getCanonicalName()); //$NON-NLS-1$
             }
-            CORE_ACTIVATORS.put(id, this);
+            CORE_ACTIVATORS.put(activatorClass, this);
         }
         startActions();
     }
@@ -117,7 +121,7 @@ public abstract class ScopeCoreActivator extends Plugin {
     @Override
     public final void stop(@Nullable BundleContext context) throws Exception {
         stopActions();
-        CORE_ACTIVATORS.remove(this.getPluginId());
+        CORE_ACTIVATORS.remove(this.getClass());
         super.stop(context);
     }
 

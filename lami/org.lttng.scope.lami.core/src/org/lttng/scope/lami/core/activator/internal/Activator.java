@@ -26,22 +26,13 @@ import org.lttng.scope.lami.core.module.LamiAnalysisFactoryFromConfigFile;
  */
 public class Activator extends ScopeCoreActivator {
 
-    private static final String PLUGIN_ID = "org.lttng.scope.lami.core"; //$NON-NLS-1$
-
     /**
      * Return the singleton instance of this activator.
      *
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeCoreActivator.getInstance(PLUGIN_ID);
-    }
-
-    /**
-     * Constructor
-     */
-    public Activator() {
-        super(PLUGIN_ID);
+        return ScopeCoreActivator.getInstance(Activator.class);
     }
 
     private void loadUserDefinedAnalyses() {

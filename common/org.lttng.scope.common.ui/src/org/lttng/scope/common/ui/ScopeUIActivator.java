@@ -9,6 +9,7 @@
 
 package org.lttng.scope.common.ui;
 
+import static java.util.Objects.requireNonNull;
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Collections;
@@ -34,9 +35,9 @@ public abstract class ScopeUIActivator extends AbstractUIPlugin {
     // Attributes
     // ------------------------------------------------------------------------
 
-    /** Map of all the registered activators, indexed by plugin ID */
-    private static final Map<String, ScopeUIActivator> UI_ACTIVATORS =
-            Collections.synchronizedMap(new HashMap<String, ScopeUIActivator>());
+    /** Map of all the registered activators, indexed by activator classes */
+    private static final Map<Class<? extends ScopeUIActivator>, ScopeUIActivator> UI_ACTIVATORS =
+            Collections.synchronizedMap(new HashMap<Class<? extends ScopeUIActivator>, ScopeUIActivator>());
 
     /** This instance's plug-in ID */
     private final String fPluginId;
@@ -46,13 +47,10 @@ public abstract class ScopeUIActivator extends AbstractUIPlugin {
     // ------------------------------------------------------------------------
 
     /**
-     * The constructor
-     *
-     * @param pluginID
-     *            The ID of the plugin
+     * Constructor
      */
-    public ScopeUIActivator(String pluginID) {
-        fPluginId = pluginID;
+    public ScopeUIActivator() {
+        fPluginId = requireNonNull(getBundle().getSymbolicName());
     }
 
     // ------------------------------------------------------------------------
@@ -70,18 +68,24 @@ public abstract class ScopeUIActivator extends AbstractUIPlugin {
 
     /**
      * Get a registered activator. Subclasses should implement their own public
-     * static getInstance() method, which returns the result of this.
+     * getInstance() method, which returns the result of this.
      *
-     * @param id
-     *            The activator's plugin ID
+     * @param activatorClass
+     *            The activator's runtime class
      * @return The corresponding activator
      */
-    protected static ScopeUIActivator getInstance(String id) {
-        ScopeUIActivator ret = UI_ACTIVATORS.get(id);
-        if (ret == null) {
+    protected static <T extends ScopeUIActivator> T getInstance(Class<T> activatorClass) {
+        ScopeUIActivator activator = UI_ACTIVATORS.get(activatorClass);
+        if (activator == null) {
             /* The activator should be registered at this point! */
             throw new IllegalStateException();
         }
+        /*
+         * We inserted the corresponding class into the map ourselves, cast
+         * should always be safe.
+         */
+        @SuppressWarnings("unchecked")
+        T ret = (T) activator;
         return ret;
     }
 
@@ -134,12 +138,12 @@ public abstract class ScopeUIActivator extends AbstractUIPlugin {
     @Override
     public final void start(@Nullable BundleContext context) throws Exception {
         super.start(context);
-        String id = this.getPluginId();
+        Class<? extends ScopeUIActivator> activatorClass = this.getClass();
         synchronized (UI_ACTIVATORS) {
-            if (UI_ACTIVATORS.containsKey(id)) {
-                logError("Duplicate Activator ID : " + id); //$NON-NLS-1$
+            if (UI_ACTIVATORS.containsKey(activatorClass)) {
+                logError("Duplicate Activator : " + activatorClass.getCanonicalName()); //$NON-NLS-1$
             }
-            UI_ACTIVATORS.put(id, this);
+            UI_ACTIVATORS.put(activatorClass, this);
         }
         startActions();
     }
@@ -147,7 +151,7 @@ public abstract class ScopeUIActivator extends AbstractUIPlugin {
     @Override
     public final void stop(@Nullable BundleContext context) throws Exception {
         stopActions();
-        UI_ACTIVATORS.remove(this.getPluginId());
+        UI_ACTIVATORS.remove(this.getClass());
         super.stop(context);
     }
 

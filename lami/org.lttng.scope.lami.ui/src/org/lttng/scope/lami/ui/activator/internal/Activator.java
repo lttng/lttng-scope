@@ -18,22 +18,13 @@ import org.lttng.scope.common.ui.ScopeUIActivator;
  */
 public class Activator extends ScopeUIActivator {
 
-    private static final String PLUGIN_ID = "org.lttng.scope.lami.ui"; //$NON-NLS-1$
-
     /**
      * Return the singleton instance of this activator.
      *
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
-    }
-
-    /**
-     * Constructor
-     */
-    public Activator() {
-        super(PLUGIN_ID);
+        return ScopeUIActivator.getInstance(Activator.class);
     }
 
     @Override

@@ -22,8 +22,6 @@ import org.lttng.scope.rcp.ui.cli.internal.TracingRCPCliException;
  */
 public class Activator extends ScopeUIActivator {
 
-    private static final String PLUGIN_ID = "org.lttng.scope.rcp.ui"; //$NON-NLS-1$
-
     private static @Nullable CliParser fCli;
 
     /**
@@ -32,14 +30,7 @@ public class Activator extends ScopeUIActivator {
      * @return The singleton instance
      */
     public static Activator instance() {
-        return (Activator) ScopeUIActivator.getInstance(PLUGIN_ID);
-    }
-
-    /**
-     * Constructor
-     */
-    public Activator() {
-        super(PLUGIN_ID);
+        return ScopeUIActivator.getInstance(Activator.class);
     }
 
     /**
