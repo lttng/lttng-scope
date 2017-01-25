@@ -25,11 +25,11 @@
   <name>LTTng Scope TMF2 Parent</name>
 
   <modules>
-    <module>org.lttng.scope.tmf2.core</module>
-    <module>org.lttng.scope.tmf2.core.tests</module>
-
+    <module>org.lttng.scope.tmf2.project.core</module>
+    <module>org.lttng.scope.tmf2.project.core.tests</module>
     <module>org.lttng.scope.tmf2.project.ui</module>
     <module>org.lttng.scope.tmf2.project.ui.tests</module>
+
     <module>org.lttng.scope.tmf2.views.ui</module>
     <module>org.lttng.scope.tmf2.views.ui.tests</module>
   </modules>

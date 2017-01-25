@@ -8,4 +8,4 @@
  */
 
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.lttng.scope.tmf2.core.activator.internal;
+package org.lttng.scope.tmf2.project.core.activator.internal;

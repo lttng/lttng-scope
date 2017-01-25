@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.core.activator.internal;
+package org.lttng.scope.tmf2.project.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
 
@@ -18,7 +18,7 @@ import org.lttng.scope.common.core.ScopeCoreActivator;
  */
 public class Activator extends ScopeCoreActivator {
 
-    private static final String PLUGIN_ID = "org.lttng.scope.tmf2.core"; //$NON-NLS-1$
+    private static final String PLUGIN_ID = "org.lttng.scope.tmf2.project.core"; //$NON-NLS-1$
 
     /**
      * Return the singleton instance of this activator.
