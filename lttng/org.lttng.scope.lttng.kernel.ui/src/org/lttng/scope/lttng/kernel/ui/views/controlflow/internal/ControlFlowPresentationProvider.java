@@ -21,13 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
-import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.StateItem;
@@ -42,6 +35,14 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.IKernelTrace;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.ui.activator.internal.Activator;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Presentation provider for the control flow view
@@ -173,8 +174,10 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
         }
         int status = ((TimeEvent) event).getValue();
         if (status == StateValues.PROCESS_STATUS_RUN_SYSCALL) {
-            int syscallQuark = ssq.optQuarkRelative(entry.getThreadQuark(), Attributes.SYSTEM_CALL);
-            if (syscallQuark == ITmfStateSystem.INVALID_ATTRIBUTE) {
+            int syscallQuark;
+            try {
+                syscallQuark = ssq.getQuarkRelative(entry.getThreadQuark(), Attributes.SYSTEM_CALL);
+            } catch (AttributeNotFoundException e) {
                 return retMap;
             }
             try {
@@ -215,10 +218,7 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
         if (status != StateValues.PROCESS_STATUS_RUN_SYSCALL) {
             return;
         }
-        int syscallQuark = ss.optQuarkRelative(entry.getThreadQuark(), Attributes.SYSTEM_CALL);
-        if (syscallQuark == ITmfStateSystem.INVALID_ATTRIBUTE) {
-            return;
-        }
+        int syscallQuark = ss.getQuarkRelative(entry.getThreadQuark(), Attributes.SYSTEM_CALL);
         try {
             ITmfStateInterval value = ss.querySingleState(event.getTime(), syscallQuark);
             if (!value.getStateValue().isNull()) {
@@ -240,7 +240,7 @@ public class ControlFlowPresentationProvider extends TimeGraphPresentationProvid
             }
         } catch (TimeRangeException e) {
             Activator.instance().logError("Error in ControlFlowPresentationProvider", e); //$NON-NLS-1$
-        } catch (StateSystemDisposedException e) {
+        } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             /* Ignored */
         }
     }

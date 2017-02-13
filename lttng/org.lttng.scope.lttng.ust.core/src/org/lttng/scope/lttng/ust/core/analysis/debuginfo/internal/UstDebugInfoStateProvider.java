@@ -17,10 +17,6 @@ import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
@@ -32,6 +28,11 @@ import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst28EventLayou
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.BaseEncoding;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * State provider for the debuginfo analysis. It tracks the layout of shared
@@ -294,7 +295,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
             } else {
                 ss.modifyAttribute(ts, TmfStateValue.nullValue(), debugLinkQuark);
             }
-        } catch (StateValueTypeException e) {
+        } catch (StateValueTypeException | AttributeNotFoundException e) {
             /* Something went very wrong. */
             throw new IllegalStateException(e);
         }

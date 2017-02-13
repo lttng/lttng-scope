@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.tmf.core,
  org.eclipse.tracecompass.ctf.tmf.core,
  org.lttng.scope.common.core,
- org.lttng.scope.lami.core
+ org.lttng.scope.lami.core,
+ ca.polymtl.dorsal.libdelorean
 Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.analysis.os,
  org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;x-internal:=true,

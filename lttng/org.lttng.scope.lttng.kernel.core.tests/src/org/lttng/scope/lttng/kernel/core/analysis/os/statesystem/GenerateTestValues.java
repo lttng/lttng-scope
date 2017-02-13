@@ -20,13 +20,14 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.junit.Test;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Small program to regenerate the values used in "TestValues.java" from the
@@ -131,7 +132,6 @@ public class GenerateTestValues {
                 case STRING:
                     writer.println("TmfStateValue.newValueString(\"" + val.unboxStr() + "\"),");
                     break;
-                case CUSTOM:
                 default:
                     writer.println(val.toString());
                     break;

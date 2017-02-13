@@ -14,16 +14,18 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
 import static java.util.Objects.requireNonNull;
 
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.LinuxValues;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * LTTng Specific state dump event handler
@@ -71,7 +73,8 @@ public class StateDumpHandler extends KernelEventHandler {
         setStatus(ss, status, curThreadNode, timestamp);
     }
 
-    private static void setStatus(ITmfStateSystemBuilder ss, int status, int curThreadNode, long timestamp) {
+    private static void setStatus(ITmfStateSystemBuilder ss, int status, int curThreadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         ITmfStateValue value;
         if (ss.queryOngoingState(curThreadNode).isNull()) {
             switch (status) {
@@ -94,7 +97,8 @@ public class StateDumpHandler extends KernelEventHandler {
         }
     }
 
-    private static void setPpid(ITmfStateSystemBuilder ss, int tid, int pid, int ppid, int curThreadNode, long timestamp) {
+    private static void setPpid(ITmfStateSystemBuilder ss, int tid, int pid, int ppid, int curThreadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         ITmfStateValue value;
         int quark;
         quark = ss.getQuarkRelativeAndAdd(curThreadNode, Attributes.PPID);
@@ -110,7 +114,8 @@ public class StateDumpHandler extends KernelEventHandler {
         }
     }
 
-    private static void setProcessName(ITmfStateSystemBuilder ss, String name, int curThreadNode, long timestamp) {
+    private static void setProcessName(ITmfStateSystemBuilder ss, String name, int curThreadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         ITmfStateValue value;
         int quark = ss.getQuarkRelativeAndAdd(curThreadNode, Attributes.EXEC_NAME);
         if (ss.queryOngoingState(quark).isNull()) {

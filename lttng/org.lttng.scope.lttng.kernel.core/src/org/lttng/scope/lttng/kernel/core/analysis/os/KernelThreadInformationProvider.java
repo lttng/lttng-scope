@@ -21,15 +21,15 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.StateSystemUtils;
-import org.eclipse.tracecompass.statesystem.core.StateSystemUtils.QuarkIterator;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
-import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue.Type;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue.Type;
 
 /**
  * Information provider utility class that retrieves thread-related information
@@ -147,16 +147,20 @@ public final class KernelThreadInformationProvider {
         if (ss == null) {
             return null;
         }
-        int execNameNode = ss.optQuarkAbsolute(Attributes.THREADS, threadId.toString(), Attributes.EXEC_NAME);
-        if (execNameNode == ITmfStateSystem.INVALID_ATTRIBUTE) {
-            return null;
-        }
-        QuarkIterator reversedIterator = new QuarkIterator(ss, execNameNode, ss.getCurrentEndTime());
-        while (reversedIterator.hasPrevious()) {
-            ITmfStateValue nameInterval = reversedIterator.previous().getStateValue();
-            if (nameInterval.getType() == Type.STRING) {
-                return nameInterval.unboxStr();
+        try {
+            Integer  execNameNode = ss.getQuarkAbsolute(Attributes.THREADS, threadId.toString(), Attributes.EXEC_NAME);
+            List<ITmfStateInterval> execNameIntervals = StateSystemUtils.queryHistoryRange(ss, execNameNode, ss.getStartTime(), ss.getCurrentEndTime());
+
+            ITmfStateValue execNameValue;
+            String execName = null;
+            for (ITmfStateInterval interval : execNameIntervals) {
+                execNameValue = interval.getStateValue();
+                if (execNameValue.getType().equals(Type.STRING)) {
+                    execName = execNameValue.unboxStr();
+                }
             }
+            return execName;
+        } catch (AttributeNotFoundException | StateSystemDisposedException | TimeRangeException e) {
         }
         return null;
     }
@@ -177,17 +181,13 @@ public final class KernelThreadInformationProvider {
         if (ss == null) {
             return -1;
         }
-        int prioQuark = ss.optQuarkAbsolute(Attributes.THREADS, String.valueOf(threadId), Attributes.PRIO);
-        if (prioQuark == ITmfStateSystem.INVALID_ATTRIBUTE) {
-            return -1;
-        }
         try {
+            int prioQuark = ss.getQuarkAbsolute(Attributes.THREADS, String.valueOf(threadId), Attributes.PRIO);
             return ss.querySingleState(ts, prioQuark).getStateValue().unboxInt();
-        } catch (StateSystemDisposedException e) {
+        } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             return -1;
         }
     }
-
     /**
      * Get the status intervals for a given thread with a resolution
      *
@@ -217,7 +217,7 @@ public final class KernelThreadInformationProvider {
 
         try {
             int threadQuark = ss.getQuarkAbsolute(Attributes.THREADS, threadId.toString());
-            List<ITmfStateInterval> statusIntervals = StateSystemUtils.queryHistoryRange(ss, threadQuark, Math.max(start, ss.getStartTime()), Math.min(end - 1, ss.getCurrentEndTime()), resolution, monitor);
+            List<ITmfStateInterval> statusIntervals = StateSystemUtils.queryHistoryRange(ss, threadQuark, Math.max(start, ss.getStartTime()), Math.min(end - 1, ss.getCurrentEndTime()), resolution);
             return statusIntervals;
         } catch (AttributeNotFoundException | StateSystemDisposedException | TimeRangeException e) {
         }

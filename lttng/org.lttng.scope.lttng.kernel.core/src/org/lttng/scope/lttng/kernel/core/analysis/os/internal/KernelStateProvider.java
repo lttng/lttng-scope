@@ -17,10 +17,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -45,6 +41,11 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SysExitHa
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 
 import com.google.common.collect.ImmutableMap;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
 
 /**
  * This is the state change input plugin for the state system which handles the

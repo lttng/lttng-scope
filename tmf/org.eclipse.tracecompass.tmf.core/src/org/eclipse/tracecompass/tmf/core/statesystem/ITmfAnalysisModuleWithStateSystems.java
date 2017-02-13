@@ -13,8 +13,9 @@
 package org.eclipse.tracecompass.tmf.core.statesystem;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * Interface for analysis modules providing state systems.

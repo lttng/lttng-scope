@@ -12,8 +12,8 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.statesystem;
 
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * Expected return values of querying test trace #1's state system at time

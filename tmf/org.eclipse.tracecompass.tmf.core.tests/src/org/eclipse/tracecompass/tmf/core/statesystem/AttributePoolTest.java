@@ -14,17 +14,18 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.StateSystemFactory;
-import org.eclipse.tracecompass.statesystem.core.backend.IStateHistoryBackend;
-import org.eclipse.tracecompass.statesystem.core.backend.StateHistoryBackendFactory;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfAttributePool.QueueType;
 import org.junit.After;
 import org.junit.Test;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.StateSystemFactory;
+import ca.polymtl.dorsal.libdelorean.backend.IStateHistoryBackend;
+import ca.polymtl.dorsal.libdelorean.backend.StateHistoryBackendFactory;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * Test the {@link TmfAttributePool} class
@@ -73,7 +74,7 @@ public class AttributePoolTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBad() {
-        new TmfAttributePool(fStateSystem, ITmfStateSystem.INVALID_ATTRIBUTE);
+        new TmfAttributePool(fStateSystem, -10);
     }
 
     /**

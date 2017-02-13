@@ -12,8 +12,8 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os;
 
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * State values that are used in the kernel event handler. It's much better to

@@ -14,16 +14,18 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
 import static java.util.Objects.requireNonNull;
 
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.LinuxValues;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * Scheduler switch event handler
@@ -91,7 +93,8 @@ public class SchedSwitchHandler extends KernelEventHandler {
         setCpuStatus(ss, nextTid, newCurrentThreadNode, timestamp, currentCPUNode);
     }
 
-    private static void setOldProcessStatus(ITmfStateSystemBuilder ss, Long prevState, Integer formerThreadNode, long timestamp) {
+    private static void setOldProcessStatus(ITmfStateSystemBuilder ss, Long prevState, Integer formerThreadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         ITmfStateValue value;
         /*
          * Empirical observations and look into the linux code have
@@ -132,7 +135,8 @@ public class SchedSwitchHandler extends KernelEventHandler {
         return state == 0;
     }
 
-    private static void setCpuStatus(ITmfStateSystemBuilder ss, Integer nextTid, Integer newCurrentThreadNode, long timestamp, int currentCPUNode) {
+    private static void setCpuStatus(ITmfStateSystemBuilder ss, Integer nextTid, Integer newCurrentThreadNode, long timestamp, int currentCPUNode)
+            throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
         if (nextTid > 0) {
@@ -150,7 +154,8 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, currentCPUNode);
     }
 
-    private static void setCpuProcess(ITmfStateSystemBuilder ss, Integer nextTid, long timestamp, int currentCPUNode) {
+    private static void setCpuProcess(ITmfStateSystemBuilder ss, Integer nextTid, long timestamp, int currentCPUNode)
+            throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
         quark = ss.getQuarkRelativeAndAdd(currentCPUNode, Attributes.CURRENT_THREAD);
@@ -158,7 +163,8 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, quark);
     }
 
-    private static void setProcessPrio(ITmfStateSystemBuilder ss, Integer prio, Integer threadNode, long timestamp) {
+    private static void setProcessPrio(ITmfStateSystemBuilder ss, Integer prio, Integer threadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
         quark = ss.getQuarkRelativeAndAdd(threadNode, Attributes.PRIO);
@@ -166,7 +172,8 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, quark);
     }
 
-    private static void setProcessExecName(ITmfStateSystemBuilder ss, String processName, Integer threadNode, long timestamp) {
+    private static void setProcessExecName(ITmfStateSystemBuilder ss, String processName, Integer threadNode, long timestamp)
+            throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
         quark = ss.getQuarkRelativeAndAdd(threadNode, Attributes.EXEC_NAME);

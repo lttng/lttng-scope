@@ -15,11 +15,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeEvent;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.ITimeGraphEntry;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.model.TimeEvent;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * Internal entry of the aggregate kind, it is one without a state system value,
@@ -59,7 +60,7 @@ class AggregateResourcesEntry extends ResourcesEntry {
      */
     public AggregateResourcesEntry(@NonNull ITmfTrace trace,
             long startTime, long endTime, Type type, int id) {
-        super(ITmfStateSystem.INVALID_ATTRIBUTE, trace, startTime, endTime, type, id);
+        super(ITmfStateSystem.ROOT_ATTRIBUTE, trace, startTime, endTime, type, id);
     }
 
     /**
@@ -79,7 +80,7 @@ class AggregateResourcesEntry extends ResourcesEntry {
      *            The id of this entry
      */
     public AggregateResourcesEntry(@NonNull ITmfTrace trace, String name, long startTime, long endTime, Type type, int id) {
-        super(ITmfStateSystem.INVALID_ATTRIBUTE, trace, name, startTime, endTime, type, id);
+        super(ITmfStateSystem.ROOT_ATTRIBUTE, trace, name, startTime, endTime, type, id);
     }
 
     @Override

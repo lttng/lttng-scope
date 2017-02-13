@@ -23,7 +23,6 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestHelper;
@@ -31,9 +30,10 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * Test the {@link KernelAnalysisModule} class

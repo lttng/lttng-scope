@@ -12,16 +12,18 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
-import org.eclipse.tracecompass.statesystem.core.statevalue.TmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 /**
  * Kernel Event Handler Utils is a collection of static methods to be used in
@@ -115,10 +117,11 @@ public final class KernelEventHandlerUtils {
      *             the time is out of range
      * @throws StateValueTypeException
      *             the attribute was not set with int values
+     * @throws AttributeNotFoundException
+     *             If the attribute is invalid
      */
     public static void setProcessToRunning(long timestamp, int currentThreadNode, ITmfStateSystemBuilder ssb)
-            throws TimeRangeException,
-            StateValueTypeException {
+            throws TimeRangeException, StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
 
@@ -195,9 +198,11 @@ public final class KernelEventHandlerUtils {
      *             the attribute is not set as an int
      * @throws TimeRangeException
      *             the time is out of range
+     * @throws AttributeNotFoundException
+     *             If the attribute is invalid
      */
     public static void cpuExitInterrupt(long timestamp, Integer cpuNumber, ITmfStateSystemBuilder ssb)
-            throws StateValueTypeException, TimeRangeException {
+            throws StateValueTypeException, TimeRangeException, AttributeNotFoundException {
         int currentCPUNode = getCurrentCPUNode(cpuNumber, ssb);
 
         ITmfStateValue value = getCpuStatus(ssb, currentCPUNode);
@@ -224,8 +229,10 @@ public final class KernelEventHandlerUtils {
      *            The *quark* of the CPU we are looking for. Careful, this is
      *            NOT the CPU number (or attribute name)!
      * @return The state value that represents the status of the given CPU
+     * @throws AttributeNotFoundException
      */
-    private static ITmfStateValue getCpuStatus(ITmfStateSystemBuilder ssb, int cpuQuark) {
+    private static ITmfStateValue getCpuStatus(ITmfStateSystemBuilder ssb, int cpuQuark)
+            throws AttributeNotFoundException {
 
         /* Check if there is a IRQ running */
         int irqQuarks = ssb.getQuarkRelativeAndAdd(cpuQuark, Attributes.IRQS);

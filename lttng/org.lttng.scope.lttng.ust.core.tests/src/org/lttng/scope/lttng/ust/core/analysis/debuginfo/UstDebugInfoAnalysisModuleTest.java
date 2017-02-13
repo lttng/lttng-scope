@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
@@ -35,15 +34,13 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryFile;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoLoadedBinaryFile;
 import org.lttng.scope.lttng.ust.core.tests.shared.LttngUstTestTraceUtils;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstEvent;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
 import com.google.common.collect.Lists;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * Tests for the {@link UstDebugInfoAnalysisModule}

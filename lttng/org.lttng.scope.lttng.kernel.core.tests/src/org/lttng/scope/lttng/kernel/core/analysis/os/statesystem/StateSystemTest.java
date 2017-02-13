@@ -12,26 +12,14 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.statesystem;
 
-import static org.eclipse.tracecompass.statesystem.core.ITmfStateSystem.INVALID_ATTRIBUTE;
-import static org.eclipse.tracecompass.statesystem.core.ITmfStateSystem.ROOT_ATTRIBUTE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.StateSystemUtils;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
-import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +27,15 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Base unit tests for the StateHistorySystem. Extension can be made to test
@@ -194,7 +191,7 @@ public abstract class StateSystemTest {
 
         try {
             quark = ss.getQuarkAbsolute(Attributes.CPUS, "0", Attributes.CURRENT_THREAD);
-            intervals = StateSystemUtils.queryHistoryRange(ss, quark, time1, time2, resolution, null);
+            intervals = StateSystemUtils.queryHistoryRange(ss, quark, time1, time2, resolution);
             assertEquals(126, intervals.size()); /* Number of context switches! */
             assertEquals(1452, intervals.get(50).getStateValue().unboxInt());
             assertEquals(1331668248815698779L, intervals.get(100).getEndTime());
@@ -331,49 +328,6 @@ public abstract class StateSystemTest {
     }
 
     @Test
-    public void testOptQuarkAbsolute() {
-        int quark = fixture.optQuarkAbsolute();
-        assertEquals(ROOT_ATTRIBUTE, quark);
-
-        quark = fixture.optQuarkAbsolute(Attributes.THREADS, "1432", Attributes.EXEC_NAME);
-        assertNotEquals(INVALID_ATTRIBUTE, quark);
-        assertEquals(Attributes.EXEC_NAME, fixture.getAttributeName(quark));
-
-        quark = fixture.optQuarkAbsolute(Attributes.THREADS, "1432", "absent");
-        assertEquals(INVALID_ATTRIBUTE, quark);
-
-        quark = fixture.optQuarkAbsolute(Attributes.THREADS, "absent", Attributes.EXEC_NAME);
-        assertEquals(INVALID_ATTRIBUTE, quark);
-
-        quark = fixture.optQuarkAbsolute("absent", "1432", Attributes.EXEC_NAME);
-        assertEquals(INVALID_ATTRIBUTE, quark);
-    }
-
-    @Test
-    public void testOptQuarkRelative() {
-        int threadsQuark = INVALID_ATTRIBUTE;
-        try {
-            threadsQuark = fixture.getQuarkAbsolute(Attributes.THREADS);
-        } catch (AttributeNotFoundException e) {
-            fail();
-        }
-        assertNotEquals(INVALID_ATTRIBUTE, threadsQuark);
-
-        int quark = fixture.optQuarkRelative(threadsQuark);
-        assertEquals(threadsQuark, quark);
-
-        quark = fixture.optQuarkRelative(threadsQuark, "1432", Attributes.EXEC_NAME);
-        assertNotEquals(INVALID_ATTRIBUTE, quark);
-        assertEquals(Attributes.EXEC_NAME, fixture.getAttributeName(quark));
-
-        quark = fixture.optQuarkRelative(threadsQuark, "1432", "absent");
-        assertEquals(INVALID_ATTRIBUTE, quark);
-
-        quark = fixture.optQuarkRelative(threadsQuark, "absent", Attributes.EXEC_NAME);
-        assertEquals(INVALID_ATTRIBUTE, quark);
-    }
-
-    @Test
     public void testFullAttributeName() {
         try {
             int quark = fixture.getQuarkAbsolute(Attributes.CPUS, "0", Attributes.CURRENT_THREAD);
@@ -414,62 +368,6 @@ public abstract class StateSystemTest {
 
         /* There should be 716 attributes as not all have a system call or priority at this point*/
         assertEquals(547, list.size());
-    }
-
-    @Test
-    public void testGetQuarks_empty() {
-        List<Integer> list = fixture.getQuarks();
-
-        assertEquals(Arrays.asList(ITmfStateSystem.ROOT_ATTRIBUTE), list);
-    }
-
-    @Test
-    public void testGetQuarks_relative() {
-        int threadsQuark = INVALID_ATTRIBUTE;
-        try {
-            threadsQuark = fixture.getQuarkAbsolute(Attributes.THREADS);
-        } catch (AttributeNotFoundException e) {
-            fail();
-        }
-        assertNotEquals(INVALID_ATTRIBUTE, threadsQuark);
-
-        List<Integer> list = fixture.getQuarks(threadsQuark, "*", Attributes.EXEC_NAME);
-
-        /* Number of different kernel threads in the trace */
-        assertEquals(169, list.size());
-    }
-
-    @Test
-    public void testGetQuarks_relative_up_wildcard() {
-        int threadsQuark = INVALID_ATTRIBUTE;
-        try {
-            threadsQuark = fixture.getQuarkAbsolute(Attributes.THREADS);
-        } catch (AttributeNotFoundException e) {
-            fail();
-        }
-        assertNotEquals(INVALID_ATTRIBUTE, threadsQuark);
-
-        List<Integer> list = fixture.getQuarks(threadsQuark, "..", Attributes.CPUS, "*");
-
-        /* There should be 2 CPUs */
-        assertEquals(2, list.size());
-    }
-
-    @Test
-    public void testGetQuarks_relative_empty() {
-        int threadsQuark = INVALID_ATTRIBUTE;
-        try {
-            threadsQuark = fixture.getQuarkAbsolute(Attributes.THREADS);
-        } catch (AttributeNotFoundException e) {
-            fail();
-        }
-        assertNotEquals(INVALID_ATTRIBUTE, threadsQuark);
-
-        List<Integer> list = fixture.getQuarks(threadsQuark, new String[0]);
-        assertEquals(Arrays.asList(threadsQuark), list);
-
-        list = fixture.getQuarks(threadsQuark);
-        assertEquals(Arrays.asList(threadsQuark), list);
     }
 
     @Test
@@ -550,9 +448,9 @@ public abstract class StateSystemTest {
                 assertEquals(path[i], name);
                 q = fixture.getParentAttributeQuark(q);
             }
-            assertEquals(ROOT_ATTRIBUTE, q);
+            assertEquals(ITmfStateSystem.ROOT_ATTRIBUTE, q);
             q = fixture.getParentAttributeQuark(q);
-            assertEquals(ROOT_ATTRIBUTE, q);
+            assertEquals(ITmfStateSystem.ROOT_ATTRIBUTE, q);
         } catch (AttributeNotFoundException e) {
             fail();
         }

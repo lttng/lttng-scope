@@ -37,6 +37,8 @@
             </goals>
             <configuration>
               <excludes>
+                <plugin id="ca.polymtl.dorsal.libdelorean"/>
+
                 <plugin id="org.apache.commons.compress"/>
                 <plugin id="org.apache.xerces"/>
                 <plugin id="org.apache.xml.resolver"/>

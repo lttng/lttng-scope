@@ -22,13 +22,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.exceptions.AttributeNotFoundException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateValueTypeException;
-import org.eclipse.tracecompass.statesystem.core.exceptions.TimeRangeException;
-import org.eclipse.tracecompass.statesystem.core.interval.ITmfStateInterval;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.ui.widgets.timegraph.StateItem;
@@ -48,6 +41,14 @@ import org.lttng.scope.lttng.kernel.core.trace.IKernelTrace;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.ui.activator.internal.Activator;
 import org.lttng.scope.lttng.kernel.ui.views.resources.internal.ResourcesEntry.Type;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Presentation provider for the Resource view, based on the generic TMF
@@ -245,8 +246,10 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                                     retMap.put(Messages.ResourcesView_attributeProcessName, value.unboxStr());
                                 }
                                 if (status == StateValues.CPU_STATUS_RUN_SYSCALL) {
-                                    int syscallQuark = ss.optQuarkAbsolute(Attributes.THREADS, Integer.toString(currentThreadId), Attributes.SYSTEM_CALL);
-                                    if (syscallQuark == ITmfStateSystem.INVALID_ATTRIBUTE) {
+                                    int syscallQuark;
+                                    try {
+                                        syscallQuark = ss.getQuarkAbsolute(Attributes.THREADS, Integer.toString(currentThreadId), Attributes.SYSTEM_CALL);
+                                    } catch (AttributeNotFoundException e) {
                                         return retMap;
                                     }
                                     interval = ss.querySingleState(hoverTime, syscallQuark);
@@ -344,8 +347,10 @@ public class ResourcesPresentationProvider extends TimeGraphPresentationProvider
                                 }
                             }
                             if (attribute != null) {
-                                int quark = ss.optQuarkAbsolute(Attributes.THREADS, Integer.toString(currentThreadId), attribute);
-                                if (quark == ITmfStateSystem.INVALID_ATTRIBUTE) {
+                                int quark;
+                                try {
+                                    quark = ss.getQuarkAbsolute(Attributes.THREADS, Integer.toString(currentThreadId), attribute);
+                                } catch (AttributeNotFoundException e) {
                                     return;
                                 }
                                 ITmfStateInterval interval = ss.querySingleState(time, quark);

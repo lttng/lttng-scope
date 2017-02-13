@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="29">
+<target name="lttng-scope-e4.6" sequenceNumber="30">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -74,15 +74,15 @@
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.tracecompass.ctf.core" version="0.0.0"/>
       <unit id="org.eclipse.tracecompass.ctf.parser" version="0.0.0"/>
+      <unit id="org.eclipse.tracecompass.common.core" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tracecompass/releases/2.2.0/repository"/>
     </location>
 
-    <!-- State system from Trace Compass -->
+    <!-- State system library -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.tracecompass.statesystem.core" version="0.0.0"/>
-      <unit id="org.eclipse.tracecompass.datastore.core" version="0.0.0"/>
-      <unit id="org.eclipse.tracecompass.common.core" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/tracecompass/master/repository"/>
+      <unit id="ca.polymtl.dorsal.libdelorean" version="0.0.0"/>
+      <!-- TODO Put real URL here -->
+      <repository location="http://localhost/libdelorean/repository/latest"/>
     </location>
 
     <!-- CDT -->
@@ -108,7 +108,6 @@
 
       <!-- Dependencies of CDT -->
       <unit id="com.google.gson" version="0.0.0"/>
-      
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
     </location>
 

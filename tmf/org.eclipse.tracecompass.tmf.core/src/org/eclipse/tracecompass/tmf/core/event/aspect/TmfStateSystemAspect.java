@@ -18,10 +18,12 @@ import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.exceptions.StateSystemDisposedException;
-import org.eclipse.tracecompass.statesystem.core.statevalue.ITmfStateValue;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
+import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Aspect representing a query in a given state system, at the timestamp of the
@@ -77,7 +79,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
         try {
             ITmfStateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
             return requireNonNull(value.toString());
-        } catch (StateSystemDisposedException e) {
+        } catch (StateSystemDisposedException | AttributeNotFoundException e) {
             return null;
         }
     }

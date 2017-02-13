@@ -27,11 +27,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystem;
-import org.eclipse.tracecompass.statesystem.core.ITmfStateSystemBuilder;
-import org.eclipse.tracecompass.statesystem.core.StateSystemFactory;
-import org.eclipse.tracecompass.statesystem.core.backend.IStateHistoryBackend;
-import org.eclipse.tracecompass.statesystem.core.backend.StateHistoryBackendFactory;
 import org.eclipse.tracecompass.tmf.core.analysis.TmfAbstractAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
@@ -47,6 +42,12 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.eclipse.tracecompass.tmf.core.trace.experiment.TmfExperiment;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+import ca.polymtl.dorsal.libdelorean.StateSystemFactory;
+import ca.polymtl.dorsal.libdelorean.backend.IStateHistoryBackend;
+import ca.polymtl.dorsal.libdelorean.backend.StateHistoryBackendFactory;
 
 /**
  * Abstract analysis module to generate a state system. It is a base class that
@@ -357,7 +358,7 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
         }
         fStateProvider = null;
         if (deleteFiles && (fStateSystem != null)) {
-            fStateSystem.removeFiles();
+            fStateSystem.dispose();
         }
     }
 
