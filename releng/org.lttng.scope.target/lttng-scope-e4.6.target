@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="31">
+<target name="lttng-scope-e4.6" sequenceNumber="32">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -76,6 +76,13 @@
       <unit id="org.eclipse.tracecompass.ctf.parser" version="0.0.0"/>
       <unit id="org.eclipse.tracecompass.common.core" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tracecompass/releases/2.2.0/repository"/>
+    </location>
+
+    <!-- Jabberwocky library -->
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="com.efficios.jabberwocky.lib" version="0.1.0"/>
+      <!-- TODO Put real URL here -->
+      <repository location="http://localhost/jabberwocky/repository/latest"/>
     </location>
 
     <!-- State system library -->
