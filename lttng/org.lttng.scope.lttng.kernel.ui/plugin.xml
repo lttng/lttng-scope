@@ -25,6 +25,13 @@
             id="org.eclipse.tracecompass.lttng2.views.category"
             name="%views.category.lttng.name">
       </category>
+      <view
+            category="org.eclipse.tracecompass.lttng2.views.category"
+            class="org.lttng.scope.lttng.kernel.ui.views.controlflow2.SwtJfxControlFlowView"
+            id="org.lttng.scope.lttng.kernel.ui.views.controlflow2.swtfjx"
+            name="%controlflow2.swtjfx.view.name"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.linuxtools.tmf.core.analysis">

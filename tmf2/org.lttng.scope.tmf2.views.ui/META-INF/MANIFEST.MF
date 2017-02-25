@@ -11,5 +11,12 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.lttng.scope.common.core,
- org.lttng.scope.common.ui
-Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=true
+ org.lttng.scope.common.ui,
+ org.lttng.scope.tmf2.views.core,
+ org.eclipse.tracecompass.tmf.core,
+ org.eclipse.tracecompass.tmf.ui
+Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=true,
+ org.lttng.scope.tmf2.views.ui.timegraph.swtjfx,
+ org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.examples
+Import-Package: com.google.common.annotations,
+ com.google.common.collect;version="15.0.0"

@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.ctf.tmf.core,
  org.lttng.scope.common.core,
  org.lttng.scope.lami.core,
- ca.polymtl.dorsal.libdelorean
+ ca.polymtl.dorsal.libdelorean,
+ org.lttng.scope.tmf2.views.core
 Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.analysis.os,
  org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;x-internal:=true,
@@ -22,7 +23,9 @@ Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:
  org.lttng.scope.lttng.kernel.core.event.aspect,
  org.lttng.scope.lttng.kernel.core.trace,
  org.lttng.scope.lttng.kernel.core.trace.layout,
- org.lttng.scope.lttng.kernel.core.trace.layout.internal;x-internal:=true
-Import-Package: com.google.common.cache,
+ org.lttng.scope.lttng.kernel.core.trace.layout.internal;x-internal:=true,
+ org.lttng.scope.lttng.kernel.core.views.controlflow2
+Import-Package: com.google.common.annotations,
+ com.google.common.cache,
  com.google.common.collect,
  com.google.common.hash
