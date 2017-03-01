@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="33">
+<target name="lttng-scope-e4.6" sequenceNumber="34">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -70,14 +70,6 @@
       <repository location="http://download.eclipse.org/eclipse/updates/4.6/"/>
     </location>
 
-    <!-- Trace Compass CTF parser -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.tracecompass.ctf.core" version="0.0.0"/>
-      <unit id="org.eclipse.tracecompass.ctf.parser" version="0.0.0"/>
-      <unit id="org.eclipse.tracecompass.common.core" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/tracecompass/releases/2.2.0/repository"/>
-    </location>
-
     <!-- e(fx)clipse for JavaFX integration -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="2.5.0.201610130503"/>
@@ -96,6 +88,13 @@
       <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.1"/>
       <!-- TODO Put real URL here -->
       <repository location="http://localhost/libdelorean/repository/latest"/>
+    </location>
+
+    <!-- CTF reader -->
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.tracecompass.ctfreader" version="0.1.0"/>
+      <!-- TODO Put real URL here -->
+      <repository location="http://localhost/ctfreader/repository/latest"/>
     </location>
 
     <!-- CDT -->

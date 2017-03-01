@@ -45,7 +45,6 @@ import org.junit.Test;
  * @author Matthew Khouzam
  * @version 1.0
  */
-@SuppressWarnings("restriction") // Upstream ctf.core does not expose some things we use (ByteArrayDefinition)
 public class CtfTmfEventFieldTest {
 
     private static final @NonNull String ROOT = "root";

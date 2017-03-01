@@ -47,7 +47,6 @@ import org.eclipse.tracecompass.tmf.core.event.TmfEventField;
  * @author Matthew Khouzam
  * @author Alexandre Montplaisir
  */
-@SuppressWarnings("restriction") // Upstream ctf.core does not expose some things we use (ByteArrayDefinition)
 public abstract class CtfTmfEventField extends TmfEventField {
 
     /**

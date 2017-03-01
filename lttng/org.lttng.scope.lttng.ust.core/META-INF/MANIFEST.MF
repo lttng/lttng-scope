@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.tracecompass.tmf.core,
  org.eclipse.tracecompass.ctf.tmf.core,
- org.eclipse.tracecompass.ctf.core,
+ org.eclipse.tracecompass.ctfreader,
  org.lttng.scope.common.core,
  ca.polymtl.dorsal.libdelorean
 Import-Package: com.google.common.annotations;version="15.0.0",
