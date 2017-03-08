@@ -17,8 +17,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -172,6 +174,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private final VerticalPosition fVerticalPosition = new VerticalPosition();
 
+    private final AtomicLong fTaskSeq = new AtomicLong();
     private final Timer fUiUpdateTimer = new Timer();
     private final TimerTask fUiUpdateTimerTask = new TimerTask() {
 
@@ -203,7 +206,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fPreviousVerticalPosition.fBottomPos = bottomPos;
             fPreviousVerticalPosition.fContentHeight = contentHeight;
 
-            paintArea(start, end);
+            paintArea(start, end, fTaskSeq.getAndIncrement());
         }
     };
 
@@ -368,7 +371,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphScrollPane.setHvalue(newValue);
     }
 
-    private void paintArea(long windowStartTime, long windowEndTime) {
+    private void paintArea(long windowStartTime, long windowEndTime, long taskSeqNb) {
         final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
         final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
 
@@ -403,14 +406,20 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
             protected @Nullable Void call() {
+
+                long start = System.nanoTime();
+                System.err.println("Starting paint task #" + taskSeqNb);
+
                 ITimeGraphModelRenderProvider renderProvider = getControl().getModelRenderProvider();
                 TimeGraphTreeRender treeRender = renderProvider.getTreeRender(windowStartTime, windowEndTime);
                 final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
 
                 if (isCancelled()) {
-                    System.err.println("job was cancelled before generating the states");
+                    System.err.println("task #" + taskSeqNb + " was cancelled before generating the states");
                     return null;
                 }
+
+                long afterTreeRender = System.nanoTime();
 
                 final int nbElements = allTreeElements.size();
 
@@ -434,7 +443,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                             final long renderEnd = Math.min(renderStart + renderTimeRange, renderingEndTime);
 
                             if (isCancelled()) {
-                                System.err.println("rendering job unit cancelled");
+                                System.err.println("rendering job unit of task #" + taskSeqNb + " cancelled");
                                 return;
                             }
 
@@ -449,9 +458,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                         .allMatch(i -> ((i + renderTimeRange) <= renderingEndTime));
 
                 if (isCancelled()) {
-                    System.err.println("job was cancelled before generating the contents");
+                    System.err.println("task #" + taskSeqNb + " was cancelled before generating the contents");
                     return null;
                 }
+
+                long afterStateRenders = System.nanoTime();
 
                 /* Prepare the tree part */
                 Node treeContents = prepareTreeContents(treeRender, treePaneWidth);
@@ -460,24 +471,43 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 Node timeGraphContents = prepareTimeGraphContents(areaRenders);
 
                 if (isCancelled()) {
-                    System.err.println("job was cancelled before updating the view");
+                    System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
                     return null;
                 }
+
+                long afterJavaFXObjects = System.nanoTime();
+
+                StringJoiner sj = new StringJoiner(", ", "Repaint breakdown (#" + taskSeqNb + "): ", "")
+                        .add("Generating tree render=" + String.format("%,d", afterTreeRender - start) + " ns")
+                        .add("Generating state renders= " + String.format("%,d", afterStateRenders - afterTreeRender) + " ns")
+                        .add("Generating JavaFX objects=" + String.format("%,d", afterJavaFXObjects - afterStateRenders) + " ns");
+                System.err.println(sj.toString());
 
                 /* Update the view! */
                 // Display.getDefault().syncExec( () -> {
                 Platform.runLater(() -> {
+                    long startUI = System.nanoTime();
+
                     fTreePane.getChildren().clear();
                     fTreePane.getChildren().add(treeContents);
 
+                    long afterTreeUI = System.nanoTime();
+
                     fTimeGraphStatesLayer.getChildren().clear();
                     fTimeGraphStatesLayer.getChildren().add(timeGraphContents);
+
+                    long endUI = System.nanoTime();
+                    StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
+                            .add("Drawing tree=" + String.format("%,d", afterTreeUI - startUI) + " ns")
+                            .add("Drawing states= " + String.format("%,d", endUI - afterTreeUI) + " ns");
+                    System.err.println(sjui.toString());
                 });
 
                 return null;
             }
         };
 
+        System.err.println("Queueing task #" + taskSeqNb);
         fTaskExecutor.schedule(task);
     }
 
