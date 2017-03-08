@@ -9,7 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
-import static org.lttng.scope.common.core.NonNullUtils.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,6 +90,25 @@ import javafx.scene.shape.StrokeLineCap;
  */
 public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
+    // ------------------------------------------------------------------------
+    // Helper classes
+    // ------------------------------------------------------------------------
+
+    private static class HorizontalPosition {
+        public long fStartTime = 0L;
+        public long fEndTime = 0L;
+    }
+
+    private static class VerticalPosition {
+        public double fTopPos = 0.0;
+        public double fBottomPos = 0.0;
+        public double fContentHeight = 0.0;
+    }
+
+    // ------------------------------------------------------------------------
+    // Class fields
+    // ------------------------------------------------------------------------
+
     private static final double MAX_CANVAS_WIDTH = 2000.0;
     private static final double MAX_CANVAS_HEIGHT = 2000.0;
 
@@ -98,12 +117,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // (Could eventually be moved to separate .css file?)
     // ------------------------------------------------------------------------
 
-    private static final Color BACKGROUD_LINES_COLOR = checkNotNull(Color.LIGHTBLUE);
+    private static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
     private static final String BACKGROUND_STYLE = "-fx-background-color: rgba(255, 255, 255, 255);"; //$NON-NLS-1$
 
     private static final double SELECTION_STROKE_WIDTH = 1;
-    private static final Color SELECTION_STROKE_COLOR = checkNotNull(Color.BLUE);
-    private static final Color SELECTION_FILL_COLOR = checkNotNull(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.4));
+    private static final Color SELECTION_STROKE_COLOR = requireNonNull(Color.BLUE);
+    private static final Color SELECTION_FILL_COLOR = requireNonNull(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.4));
 
     private static final int LABEL_SIDE_MARGIN = 10;
 
@@ -121,7 +140,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private static final int UI_UPDATE_DELAY = 250;
 
     // ------------------------------------------------------------------------
-    // Class fields
+    // Instance fields
     // ------------------------------------------------------------------------
 
     private final SelectionContext fSelectionCtx = new SelectionContext();
@@ -151,22 +170,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final Rectangle fOngoingSelectionRect;
 
 
-    private static class VerticalPosition {
-        public double fTopPos = 0.0;
-        public double fBottomPos = 0.0;
-        public double fContentHeight = 0.0;
-    }
     private final VerticalPosition fVerticalPosition = new VerticalPosition();
 
     private final Timer fUiUpdateTimer = new Timer();
     private final TimerTask fUiUpdateTimerTask = new TimerTask() {
 
-        // TODO Condense into one (or 2) convenience classes ?
-        private long fPreviousStartTime = getControl().getVisibleTimeRangeStart();
-        private long fPreviousEndTime = getControl().getVisibleTimeRangeEnd();
-        private double fPreviousTopPos = fVerticalPosition.fTopPos;
-        private double fPreviousBottomPos = fVerticalPosition.fBottomPos;
-        private double fPreviousContentHeight = fVerticalPosition.fContentHeight;
+        private final HorizontalPosition fPreviousHorizontalPos = new HorizontalPosition();
+        private final VerticalPosition fPreviousVerticalPosition = new VerticalPosition();
 
         @Override
         public void run() {
@@ -176,22 +186,22 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             double bottomPos = fVerticalPosition.fBottomPos;
             double contentHeight = fVerticalPosition.fContentHeight;
 
-            if (start == fPreviousStartTime
-                    && end == fPreviousEndTime
-                    && topPos == fPreviousTopPos
-                    && bottomPos == fPreviousBottomPos
-                    && contentHeight == fPreviousContentHeight) {
+            if (start == fPreviousHorizontalPos.fStartTime
+                    && end == fPreviousHorizontalPos.fEndTime
+                    && topPos == fPreviousVerticalPosition.fTopPos
+                    && bottomPos == fPreviousVerticalPosition.fBottomPos
+                    && contentHeight == fPreviousVerticalPosition.fContentHeight) {
                 /*
                  * Exact same position as the last one we've seen, no need to
                  * repaint.
                  */
                 return;
             }
-            fPreviousStartTime = start;
-            fPreviousEndTime = end;
-            fPreviousTopPos = topPos;
-            fPreviousBottomPos = bottomPos;
-            fPreviousContentHeight = contentHeight;
+            fPreviousHorizontalPos.fStartTime = start;
+            fPreviousHorizontalPos.fEndTime = end;
+            fPreviousVerticalPosition.fTopPos = topPos;
+            fPreviousVerticalPosition.fBottomPos = bottomPos;
+            fPreviousVerticalPosition.fContentHeight = contentHeight;
 
             paintArea(start, end);
         }
