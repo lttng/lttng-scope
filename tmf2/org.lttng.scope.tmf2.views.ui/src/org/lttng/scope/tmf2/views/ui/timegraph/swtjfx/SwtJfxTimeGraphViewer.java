@@ -13,18 +13,15 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -35,7 +32,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
@@ -432,32 +429,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
-                /*
-                 * Get the vertical "slices" of state renders.
-                 *
-                 * FIXME iterate/peek/allMatch can be replaced by the more
-                 * intuitive iterate/takeWhile/map/collect with Java 9.
-                 */
-                Collection<TimeGraphAreaRender> areaRenders = new LinkedList<>();
-                LongStream
-                        .iterate(renderingStartTime, i -> i + renderTimeRange)
-                        .peek(renderStart -> {
-                            final long renderEnd = Math.min(renderStart + renderTimeRange, renderingEndTime);
-
-                            if (isCancelled()) {
-                                System.err.println("rendering job unit of task #" + taskSeqNb + " cancelled");
-                                return;
-                            }
-
-                            System.out.printf("requesting render from %,d to %,d, resolution=%d%n",
-                                    renderStart, renderEnd, resolution);
-
-                            TimeGraphAreaRender areaRender = TimeGraphAreaRender.getFromProvider(renderProvider, treeRender,
-                                    renderStart, renderEnd, resolution, topEntry, bottomEntry);
-
-                            areaRenders.add(areaRender);
-                        })
-                        .allMatch(i -> ((i + renderTimeRange) <= renderingEndTime));
+                List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
+                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingStartTime, renderingEndTime, resolution))
+                        .collect(Collectors.toList());
 
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before generating the contents");
@@ -476,7 +450,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 }
 
                 /* Prepare the time graph part */
-                Node timeGraphContents = prepareTimeGraphContents(areaRenders);
+                Node timeGraphContents = prepareTimeGraphContents(stateRenders, topEntry);
 
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
@@ -582,13 +556,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // Methods related to the Time Graph area
     // ------------------------------------------------------------------------
 
-    private Node prepareTimeGraphContents(Collection<TimeGraphAreaRender> renders) {
-        Set<Node> canvases = renders.stream()
-                .parallel() // order doesn't matter here
-                .flatMap(render -> getCanvasesForAreaRender(render).stream())
+    private Node prepareTimeGraphContents(List<TimeGraphStateRender> stateRenders, int topEntry) {
+        Collection<Node> rectangles = IntStream.range(0, stateRenders.size()).parallel()
+                .mapToObj(idx -> getRectanglesForStateRender(stateRenders.get(idx), idx + topEntry))
+                .flatMap(Function.identity())
                 .collect(Collectors.toSet());
 
-        return new Group(canvases);
+        return new Group(rectangles);
     }
 
     /**
@@ -600,93 +574,31 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      *            The render
      * @return The vertical set of canvases
      */
-    private Collection<Canvas> getCanvasesForAreaRender(TimeGraphAreaRender areaRender) {
-        List<List<TimeGraphStateInterval>> stateIntervals = areaRender.getStateRenders().stream()
-                .map(stateRender -> stateRender.getStateIntervals())
-                .collect(Collectors.toList());
+    private Stream<Rectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
+        return stateRender.getStateIntervals().stream()
+                .map(interval -> {
+                    double xStart = timestampToPaneXPos(interval.getStartEvent().getTimestamp());
+                    double xEnd = timestampToPaneXPos(interval.getEndEvent().getTimestamp());
+                    double width = Math.max(1.0, xEnd - xStart) + 1.0;
 
-        if (stateIntervals.isEmpty()) {
-            return Collections.EMPTY_SET;
-        }
-
-        /* The canvas will be put on the Pane at this offset */
-        final double xOffset = timestampToPaneXPos(areaRender.getStartTime());
-        final double xEnd = timestampToPaneXPos(areaRender.getEndTime());
-        final double canvasWidth = xEnd - xOffset;
-        final int maxEntriesPerCanvas = (int) (MAX_CANVAS_HEIGHT / ENTRY_HEIGHT);
-
-        /*
-         * Split the full list of intervals into smaller partitions, and draw
-         * one Canvas per partition.
-         */
-        List<Canvas> canvases = new ArrayList<>();
-        double yOffset = areaRender.getFirstEntryIndex() * ENTRY_HEIGHT;
-        List<List<List<TimeGraphStateInterval>>> partitionedIntervals =
-                Lists.partition(stateIntervals, maxEntriesPerCanvas);
-        for (int i = 0; i < partitionedIntervals.size(); i++) {
-            /* "states" represent the subset of intervals to draw on this Canvas */
-            List<List<TimeGraphStateInterval>> states = partitionedIntervals.get(i);
-            final double canvasHeight = ENTRY_HEIGHT * states.size();
-
-            Canvas canvas = new Canvas(canvasWidth, canvasHeight);
-            drawBackgroundLines(canvas, ENTRY_HEIGHT);
-            drawStates(states, canvas.getGraphicsContext2D(), xOffset);
-
-//            System.out.println("relocating canvas of size + (" + canvasWidth + ", " + canvasHeight + ") to " + xOffset + ", " + yOffset);
-            canvas.relocate(xOffset, yOffset);
-            canvas.setCache(true); // TODO Test?
-            canvases.add(canvas);
-
-            yOffset += canvasHeight;
-        }
-        return canvases;
-    }
-
-    private void drawStates(List<List<TimeGraphStateInterval>> stateIntervalsToDraw, GraphicsContext gc, double xOffset) {
-        IntStream.range(0, stateIntervalsToDraw.size()).forEach(index -> {
-            /*
-             * The base (top) of each full-thickness rectangle object we will
-             * draw for this entry
-             */
-            final double xBase = index * ENTRY_HEIGHT;
-
-            List<TimeGraphStateInterval> intervals = stateIntervalsToDraw.get(index);
-            for (TimeGraphStateInterval interval : intervals) {
-                try {
-                    /*
-                     * These coordinates are relative to the canvas itself, so
-                     * we need to substract the value of the offset of the
-                     * canvas relative to the Pane.
-                     */
-                    final double xStart = timestampToPaneXPos(interval.getStartEvent().getTimestamp()) - xOffset;
-                    final double xEnd = timestampToPaneXPos(interval.getEndEvent().getTimestamp()) - xOffset;
-                    final double xWidth = Math.max(1.0, xEnd - xStart) + 1.0;
-
-                    double yStart, yHeight;
+                    double height;
                     switch (interval.getLineThickness()) {
                     case NORMAL:
                     default:
-                        yStart = xBase + 4;
-                        yHeight = ENTRY_HEIGHT - 4;
+                        height = ENTRY_HEIGHT - 4;
                         break;
                     case SMALL:
-                        yStart = xBase + 8;
-                        yHeight = ENTRY_HEIGHT - 8;
+                        height = ENTRY_HEIGHT - 8;
                         break;
                     }
 
-                    gc.setFill(JfxColorFactory.getColorFromDef(interval.getColorDefinition()));
-                    gc.fillRect(xStart, yStart, xWidth, yHeight);
+                    // TODO Calculate value for small thickness too
+                    double y = entryIndex * ENTRY_HEIGHT + 2;
 
-                } catch (IllegalArgumentException iae) { // TODO Temp
-                    System.out.println("out of bounds interval:" + interval.toString());
-                    continue;
-                }
-
-                // TODO Paint the state's name if applicable
-            }
-        });
-
+                    Rectangle rect = new Rectangle(xStart, y, width, height);
+                    rect.setFill(JfxColorFactory.getColorFromDef(interval.getColorDefinition()));
+                    return rect;
+                });
     }
 
     // ------------------------------------------------------------------------
