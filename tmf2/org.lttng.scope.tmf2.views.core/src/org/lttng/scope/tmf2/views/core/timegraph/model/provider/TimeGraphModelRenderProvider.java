@@ -71,7 +71,7 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
     // ------------------------------------------------------------------------
 
     @Override
-    public abstract TimeGraphTreeRender getTreeRender(long startTime, long endTime);
+    public abstract TimeGraphTreeRender getTreeRender();
 
     @Override
     public abstract TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,

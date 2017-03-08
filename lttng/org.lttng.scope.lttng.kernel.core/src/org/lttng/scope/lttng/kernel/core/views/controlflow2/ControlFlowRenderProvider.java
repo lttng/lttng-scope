@@ -14,7 +14,6 @@ import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,7 +29,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
@@ -38,7 +36,6 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
-import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
 
 public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
 
@@ -53,12 +50,12 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
      * State values that are considered inactive, for purposes of filtering out
      * when the "filter inactive entries" mode is enabled.
      */
-    private static final Set<ITmfStateValue> INACTIVE_STATE_VALUES = ImmutableSet.of(
-            TmfStateValue.nullValue(),
-            StateValues.PROCESS_STATUS_UNKNOWN_VALUE,
-            StateValues.PROCESS_STATUS_WAIT_UNKNOWN_VALUE,
-            StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE
-            );
+//    private static final Set<ITmfStateValue> INACTIVE_STATE_VALUES = ImmutableSet.of(
+//            TmfStateValue.nullValue(),
+//            StateValues.PROCESS_STATUS_UNKNOWN_VALUE,
+//            StateValues.PROCESS_STATUS_WAIT_UNKNOWN_VALUE,
+//            StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE
+//            );
 
     /**
      * Each "Thread" attribute has the following children:
@@ -85,7 +82,7 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
     @VisibleForTesting
     public static final Function<TreeRenderContext, TimeGraphTreeRender> SS_TO_TREE_RENDER_FUNCTION = (treeContext) -> {
         ITmfStateSystem ss = treeContext.ss;
-        List<ITmfStateInterval> fullState = treeContext.fullQueryAtRangeStart;
+//        List<ITmfStateInterval> fullState = treeContext.fullQueryAtRangeStart;
 
         Stream<ControlFlowTreeElement> treeElems = ss.getQuarks(BASE_QUARK_PATTERN).stream()
                 .map(baseQuark -> {
@@ -113,21 +110,21 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
                 });
 
         /* Run the entries through the active filter modes */
-        Set<FilterMode> filterModes = treeContext.filterModes;
-        if (filterModes.contains(ControlFlowConfigModes.FILTERING_INACTIVE_ENTRIES)) {
-            /*
-             * Filter out the tree elements whose state is considered inactive
-             * for the whole duration of the configured time range.
-             */
-            treeElems = treeElems.filter(elem -> {
-                ITmfStateInterval interval = fullState.get(elem.getSourceQuark());
-                if (interval.getEndTime() > treeContext.renderTimeRangeEnd &&
-                        INACTIVE_STATE_VALUES.contains(interval.getStateValue())) {
-                    return false;
-                }
-                return true;
-            });
-        }
+//        Set<FilterMode> filterModes = treeContext.filterModes;
+//        if (filterModes.contains(ControlFlowConfigModes.FILTERING_INACTIVE_ENTRIES)) {
+//            /*
+//             * Filter out the tree elements whose state is considered inactive
+//             * for the whole duration of the configured time range.
+//             */
+//            treeElems = treeElems.filter(elem -> {
+//                ITmfStateInterval interval = fullState.get(elem.getSourceQuark());
+//                if (interval.getEndTime() > treeContext.renderTimeRangeEnd &&
+//                        INACTIVE_STATE_VALUES.contains(interval.getStateValue())) {
+//                    return false;
+//                }
+//                return true;
+//            });
+//        }
 
         /* Sort entries according to the active sorting mode */
         SortingMode sortingMode = treeContext.sortingMode;
@@ -140,7 +137,7 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
         }
 
         List<TimeGraphTreeElement> treeElemsList = treeElems.collect(Collectors.toList());
-        return new TimeGraphTreeRender(treeElemsList, treeContext.renderTimeRangeStart, treeContext.renderTimeRangeEnd);
+        return new TimeGraphTreeRender(treeElemsList);
     };
 
 

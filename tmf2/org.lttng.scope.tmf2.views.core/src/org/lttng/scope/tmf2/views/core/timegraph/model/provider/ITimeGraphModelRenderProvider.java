@@ -61,14 +61,12 @@ public interface ITimeGraphModelRenderProvider {
     // Render generation methods
     // ------------------------------------------------------------------------
 
-    TimeGraphTreeRender getTreeRender(long startTime, long endTime);
+    TimeGraphTreeRender getTreeRender();
 
     TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
             long rangeStart, long rangeEnd, long resolution);
 
-    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, long resolution) {
-        long start = treeRender.getStartTime();
-        long end = treeRender.getEndTime();
+    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, long start, long end, long resolution) {
         return treeRender.getAllTreeElements().stream()
                 .map(treeElem -> getStateRender(treeElem, start, end, resolution))
                 .collect(Collectors.toList());

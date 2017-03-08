@@ -28,7 +28,7 @@ public class ModelRenderProviderStub extends TimeGraphModelRenderProvider {
     }
 
     @Override
-    public TimeGraphTreeRender getTreeRender(long startTime, long endTime) {
+    public TimeGraphTreeRender getTreeRender() {
         return TimeGraphTreeRender.EMPTY_RENDER;
     }
 

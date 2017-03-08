@@ -116,7 +116,7 @@ public class ControlFlowRenderProviderTest {
 
 
             /* Check that the list of attributes (tree render) are the same */
-            TimeGraphTreeRender treeRender = provider.getTreeRender(start, end);
+            TimeGraphTreeRender treeRender = provider.getTreeRender();
             List<TimeGraphTreeElement> treeElems = treeRender.getAllTreeElements();
 
             List<String> tidsFromRender = treeElems.stream()

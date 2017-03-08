@@ -11,33 +11,44 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.tree;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
 public class TimeGraphTreeRender {
 
-    public static final TimeGraphTreeRender EMPTY_RENDER = new TimeGraphTreeRender(Collections.emptyList(), 0L, 0L);
+    public static final TimeGraphTreeRender EMPTY_RENDER = new TimeGraphTreeRender(Collections.emptyList());
 
     private final List<TimeGraphTreeElement> fTreeElements;
-    private final long fStartTime;
-    private final long fEndTime;
 
-    public TimeGraphTreeRender(List<TimeGraphTreeElement> elements,
-            long startTime, long endTime) {
+    public TimeGraphTreeRender(List<TimeGraphTreeElement> elements) {
         fTreeElements = ImmutableList.copyOf(elements);
-        fStartTime = startTime;
-        fEndTime = endTime;
     }
 
     public List<TimeGraphTreeElement> getAllTreeElements() {
         return fTreeElements;
     }
 
-    public long getStartTime() {
-        return fStartTime;
+    @Override
+    public int hashCode() {
+        return Objects.hash(fTreeElements);
     }
 
-    public long getEndTime() {
-        return fEndTime;
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TimeGraphTreeRender other = (TimeGraphTreeRender) obj;
+        return (Objects.equals(fTreeElements, other.fTreeElements));
     }
+
 }

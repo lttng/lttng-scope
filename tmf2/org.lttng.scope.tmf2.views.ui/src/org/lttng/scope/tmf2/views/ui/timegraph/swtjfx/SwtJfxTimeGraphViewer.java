@@ -210,6 +210,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         }
     };
 
+    private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
+
     /** Current zoom level */
     private double fNanosPerPixel = 1.0;
 
@@ -411,7 +413,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.err.println("Starting paint task #" + taskSeqNb);
 
                 ITimeGraphModelRenderProvider renderProvider = getControl().getModelRenderProvider();
-                TimeGraphTreeRender treeRender = renderProvider.getTreeRender(windowStartTime, windowEndTime);
+                TimeGraphTreeRender treeRender = renderProvider.getTreeRender();
                 final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
 
                 if (isCancelled()) {
@@ -464,8 +466,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 long afterStateRenders = System.nanoTime();
 
-                /* Prepare the tree part */
-                Node treeContents = prepareTreeContents(treeRender, treePaneWidth);
+                /* Prepare the tree part, if needed */
+                @Nullable Node treeContents;
+                if (treeRender.equals(fLatestTreeRender)) {
+                    treeContents = null;
+                } else {
+                    fLatestTreeRender = treeRender;
+                    treeContents = prepareTreeContents(treeRender, treePaneWidth);
+                }
 
                 /* Prepare the time graph part */
                 Node timeGraphContents = prepareTimeGraphContents(areaRenders);
@@ -487,9 +495,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 // Display.getDefault().syncExec( () -> {
                 Platform.runLater(() -> {
                     long startUI = System.nanoTime();
-
-                    fTreePane.getChildren().clear();
-                    fTreePane.getChildren().add(treeContents);
+                    if (treeContents != null) {
+                        fTreePane.getChildren().clear();
+                        fTreePane.getChildren().add(treeContents);
+                    }
 
                     long afterTreeUI = System.nanoTime();
 

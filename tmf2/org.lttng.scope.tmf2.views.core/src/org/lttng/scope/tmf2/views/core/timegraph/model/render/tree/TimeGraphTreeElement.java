@@ -10,8 +10,10 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.tree;
 
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
+import org.eclipse.jdt.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
 
 public class TimeGraphTreeElement {
@@ -34,10 +36,33 @@ public class TimeGraphTreeElement {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return com.google.common.base.Objects.toStringHelper(this)
             .add("fName", fName) //$NON-NLS-1$
             .add("fChildElements", fChildElements.toString()) //$NON-NLS-1$
             .toString();
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fName, fChildElements);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TimeGraphTreeElement other = (TimeGraphTreeElement) obj;
+        return Objects.equals(fName, other.fName)
+                && Objects.equals(fChildElements, other.fChildElements);
+    }
+
+
 
 }
