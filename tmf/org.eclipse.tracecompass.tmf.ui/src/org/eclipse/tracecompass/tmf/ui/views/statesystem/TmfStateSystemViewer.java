@@ -427,6 +427,7 @@ public class TmfStateSystemViewer extends AbstractTmfTreeViewer {
                 return Messages.OutOfRangeMsg;
             }
             switch (fValue.getType()) {
+            case BOOLEAN:
             case INTEGER:
             case LONG:
             case DOUBLE:
@@ -443,6 +444,8 @@ public class TmfStateSystemViewer extends AbstractTmfTreeViewer {
                 return EMPTY_STRING;
             }
             switch (fValue.getType()) {
+            case BOOLEAN:
+                return Messages.TypeBoolean;
             case INTEGER:
                 return Messages.TypeInteger;
             case LONG:

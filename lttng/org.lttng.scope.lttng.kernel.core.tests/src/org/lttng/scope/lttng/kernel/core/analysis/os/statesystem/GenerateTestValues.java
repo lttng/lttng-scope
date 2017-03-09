@@ -120,6 +120,9 @@ public class GenerateTestValues {
                 case NULL:
                     writer.println("TmfStateValue.nullValue(),");
                     break;
+                case BOOLEAN:
+                    writer.println("TmfStateValue.newValueBoolean(" + val.unboxBoolean() + "),");
+                    break;
                 case INTEGER:
                     writer.println("TmfStateValue.newValueInt(" + val.unboxInt() + "),");
                     break;
@@ -132,6 +135,7 @@ public class GenerateTestValues {
                 case STRING:
                     writer.println("TmfStateValue.newValueString(\"" + val.unboxStr() + "\"),");
                     break;
+
                 default:
                     writer.println(val.toString());
                     break;

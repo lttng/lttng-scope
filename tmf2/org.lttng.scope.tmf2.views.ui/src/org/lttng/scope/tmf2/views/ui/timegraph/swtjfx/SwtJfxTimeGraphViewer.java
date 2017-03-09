@@ -430,7 +430,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
                 List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
-                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingStartTime, renderingEndTime, resolution))
+                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingStartTime, renderingEndTime, resolution, this))
                         .collect(Collectors.toList());
 
                 if (isCancelled()) {

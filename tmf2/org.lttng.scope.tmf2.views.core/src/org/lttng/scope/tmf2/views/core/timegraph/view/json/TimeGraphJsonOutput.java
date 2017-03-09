@@ -29,7 +29,7 @@ public class TimeGraphJsonOutput extends TimeGraphModelView {
         ITimeGraphModelRenderProvider provider = getControl().getModelRenderProvider();
 
         TimeGraphTreeRender treeRender = provider.getTreeRender();
-        List<TimeGraphStateRender> stateRenders = provider.getStateRenders(treeRender, visibleWindowStartTime, visibleWindowEndTime, 1);
+        List<TimeGraphStateRender> stateRenders = provider.getStateRenders(treeRender, visibleWindowStartTime, visibleWindowEndTime, 1, null);
 
         RenderToJson.printRenderTo(stateRenders);
     }

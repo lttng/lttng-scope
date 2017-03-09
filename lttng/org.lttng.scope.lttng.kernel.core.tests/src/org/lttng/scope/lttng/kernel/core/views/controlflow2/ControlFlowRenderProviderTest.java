@@ -159,7 +159,7 @@ public class ControlFlowRenderProviderTest {
                         .findFirst()
                         .get();
 
-                TimeGraphStateRender stateRender = provider.getStateRender(elem, start, end, 1);
+                TimeGraphStateRender stateRender = provider.getStateRender(elem, start, end, 1, null);
                 List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
 
                 verifySameIntervals(intervalsFromSS, intervalsFromRender);

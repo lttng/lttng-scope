@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -64,11 +65,11 @@ public interface ITimeGraphModelRenderProvider {
     TimeGraphTreeRender getTreeRender();
 
     TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution);
+            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task);
 
-    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, long start, long end, long resolution) {
+    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, long start, long end, long resolution, @Nullable FutureTask<?> task) {
         return treeRender.getAllTreeElements().stream()
-                .map(treeElem -> getStateRender(treeElem, start, end, resolution))
+                .map(treeElem -> getStateRender(treeElem, start, end, resolution, task))
                 .collect(Collectors.toList());
     }
 

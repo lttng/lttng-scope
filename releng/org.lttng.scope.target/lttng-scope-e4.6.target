@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="34">
+<target name="lttng-scope-e4.6" sequenceNumber="35">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -85,7 +85,7 @@
 
     <!-- State system library -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.1"/>
+      <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.2"/>
       <!-- TODO Put real URL here -->
       <repository location="http://localhost/libdelorean/repository/latest"/>
     </location>

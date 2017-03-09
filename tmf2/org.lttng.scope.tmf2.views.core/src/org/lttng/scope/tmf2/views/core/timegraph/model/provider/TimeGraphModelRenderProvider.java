@@ -14,6 +14,7 @@ import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -75,7 +76,7 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     @Override
     public abstract TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution);
+            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task);
 
     @Override
     public abstract TimeGraphDrawnEventRender getDrawnEventRender(

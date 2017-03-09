@@ -217,7 +217,8 @@ public final class KernelThreadInformationProvider {
 
         try {
             int threadQuark = ss.getQuarkAbsolute(Attributes.THREADS, threadId.toString());
-            List<ITmfStateInterval> statusIntervals = StateSystemUtils.queryHistoryRange(ss, threadQuark, Math.max(start, ss.getStartTime()), Math.min(end - 1, ss.getCurrentEndTime()), resolution);
+            List<ITmfStateInterval> statusIntervals = StateSystemUtils.queryHistoryRange(ss, threadQuark,
+                    Math.max(start, ss.getStartTime()), Math.min(end - 1, ss.getCurrentEndTime()), resolution, null);
             return statusIntervals;
         } catch (AttributeNotFoundException | StateSystemDisposedException | TimeRangeException e) {
         }

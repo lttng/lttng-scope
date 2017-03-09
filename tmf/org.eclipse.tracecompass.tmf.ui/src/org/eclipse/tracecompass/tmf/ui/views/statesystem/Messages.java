@@ -35,6 +35,7 @@ public class Messages extends NLS {
 
     public static String OutOfRangeMsg;
     public static String FilterButton;
+    public static String TypeBoolean;
     public static String TypeInteger;
     public static String TypeLong;
     public static String TypeDouble;

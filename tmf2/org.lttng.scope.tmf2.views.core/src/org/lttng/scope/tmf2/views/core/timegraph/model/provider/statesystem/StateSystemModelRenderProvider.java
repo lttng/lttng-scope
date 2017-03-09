@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -191,7 +192,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution) {
+            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task) {
 
         ITmfStateSystem ss = getSSOfCurrentTrace();
         if (ss == null) {
@@ -209,7 +210,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
          */
         List<ITmfStateInterval> intervals;
         try {
-            intervals = StateSystemUtils.queryHistoryRange(ss, treeElem.getSourceQuark(), rangeStart, rangeEnd, resolution);
+            intervals = StateSystemUtils.queryHistoryRange(ss, treeElem.getSourceQuark(), rangeStart, rangeEnd, resolution, task);
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             intervals = Collections.emptyList();
             e.printStackTrace();

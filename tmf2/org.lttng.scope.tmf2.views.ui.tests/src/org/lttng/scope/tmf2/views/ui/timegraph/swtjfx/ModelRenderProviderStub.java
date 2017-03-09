@@ -10,8 +10,10 @@
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import java.util.Collections;
+import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
@@ -34,7 +36,7 @@ public class ModelRenderProviderStub extends TimeGraphModelRenderProvider {
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution) {
+            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task) {
         return new TimeGraphStateRender(rangeStart, rangeEnd, treeElement, Collections.EMPTY_LIST);
     }
 
