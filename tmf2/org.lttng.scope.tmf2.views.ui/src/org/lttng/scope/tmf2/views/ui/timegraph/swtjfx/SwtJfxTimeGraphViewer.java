@@ -130,7 +130,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      *
      * TODO Make this configurable (vertical zoom feature)
      */
-    private static final double ENTRY_HEIGHT = 20;
+    public static final double ENTRY_HEIGHT = 20;
 
     /** Number of tree elements to print above *and* below the visible range */
     private static final int ENTRY_PREFETCHING = 5;
@@ -574,31 +574,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      *            The render
      * @return The vertical set of canvases
      */
-    private Stream<Rectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
+    private Stream<StateRectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
         return stateRender.getStateIntervals().stream()
-                .map(interval -> {
-                    double xStart = timestampToPaneXPos(interval.getStartEvent().getTimestamp());
-                    double xEnd = timestampToPaneXPos(interval.getEndEvent().getTimestamp());
-                    double width = Math.max(1.0, xEnd - xStart) + 1.0;
-
-                    double height;
-                    switch (interval.getLineThickness()) {
-                    case NORMAL:
-                    default:
-                        height = ENTRY_HEIGHT - 4;
-                        break;
-                    case SMALL:
-                        height = ENTRY_HEIGHT - 8;
-                        break;
-                    }
-
-                    // TODO Calculate value for small thickness too
-                    double y = entryIndex * ENTRY_HEIGHT + 2;
-
-                    Rectangle rect = new Rectangle(xStart, y, width, height);
-                    rect.setFill(JfxColorFactory.getColorFromDef(interval.getColorDefinition()));
-                    return rect;
-                });
+                .map(interval -> new StateRectangle(this, interval, entryIndex));
     }
 
     // ------------------------------------------------------------------------
@@ -784,7 +762,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         gc.restore();
     }
 
-    private double timestampToPaneXPos(long timestamp) {
+    double timestampToPaneXPos(long timestamp) {
         long fullTimeGraphStartTime = getControl().getFullTimeGraphStartTime();
         long fullTimeGraphEndTime = getControl().getFullTimeGraphEndTime();
         return timestampToPaneXPos(timestamp, fullTimeGraphStartTime, fullTimeGraphEndTime, fNanosPerPixel);
@@ -807,7 +785,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return Math.round(xPos);
     }
 
-    private long paneXPosToTimestamp(double x) {
+    long paneXPosToTimestamp(double x) {
         long fullTimeGraphStartTime = getControl().getFullTimeGraphStartTime();
         return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel);
     }
