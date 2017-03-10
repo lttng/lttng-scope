@@ -1,4 +1,4 @@
-= LTTng Scope
+= LTTng Scope (Alpha Version)
 
 _**LTTng Scope**_ is a trace viewer and analyzer for
 http://diamon.org/ctf/[CTF] traces, with a focus on
