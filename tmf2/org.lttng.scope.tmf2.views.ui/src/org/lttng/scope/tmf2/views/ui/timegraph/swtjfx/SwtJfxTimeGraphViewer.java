@@ -11,8 +11,8 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.Timer;
@@ -40,7 +40,6 @@ import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPositio
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -51,8 +50,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -61,6 +58,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 
@@ -90,13 +88,6 @@ import javafx.scene.shape.StrokeLineCap;
  * @author Alexandre Montplaisir
  */
 public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
-
-    // ------------------------------------------------------------------------
-    // Class fields
-    // ------------------------------------------------------------------------
-
-    private static final double MAX_CANVAS_WIDTH = 2000.0;
-    private static final double MAX_CANVAS_HEIGHT = 2000.0;
 
     // ------------------------------------------------------------------------
     // Style definitions
@@ -144,8 +135,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * Children of the time graph pane are split into groups, so we can easily
      * redraw or add only some of them.
      */
-    private final Group fTimeGraphStatesLayer;
+    private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphSelectionLayer;
+    private final Group fTimeGraphStatesLayer;
     // TODO Layers for markers, arrows
 
     private final Rectangle fSelectionRect;
@@ -177,6 +169,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fPreviousHorizontalPos = currentHorizontalPos;
             fPreviousVerticalPosition = currentVerticalPos;
 
+            paintBackground(currentVerticalPos);
             paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
         }
     };
@@ -230,10 +223,17 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             rect.setFill(SELECTION_FILL_COLOR);
         });
 
-        fTimeGraphStatesLayer = new Group();
+        fTimeGraphBackgroundLayer = new Group();
         fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
+        fTimeGraphStatesLayer = new Group();
 
-        fTimeGraphPane = new Pane(fTimeGraphStatesLayer, fTimeGraphSelectionLayer);
+        /*
+         * The order of the layers is important here, it will go from back to
+         * front.
+         */
+        fTimeGraphPane = new Pane(fTimeGraphBackgroundLayer,
+                fTimeGraphStatesLayer,
+                fTimeGraphSelectionLayer);
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);
@@ -382,12 +382,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final long timeRangePadding = Math.round(windowTimeRange * fDebugOptions.fRenderRangePadding);
         final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + timeRangePadding);
-        final long renderTimeRange = (long) (MAX_CANVAS_WIDTH * fNanosPerPixel);
         final long resolution = Math.max(1, Math.round(fNanosPerPixel));
-
-        if (renderTimeRange < 1) {
-            return;
-        }
 
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
@@ -481,6 +476,34 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTaskExecutor.schedule(task);
     }
 
+    private void paintBackground(VerticalPosition vPos) {
+        final int entriesToPrefetch = fDebugOptions.fEntryPrefetching;
+
+        final double timeGraphWidth = fTimeGraphPane.getWidth();
+        final double timeGraphHeight = fTimeGraphPane.getHeight();
+        final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * ENTRY_HEIGHT);
+        final double paintBottomPos = Math.min(timeGraphHeight, vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT);
+
+        List<Line> lines = new LinkedList<>();
+        /* average+2 gives the best-looking output */
+        DoubleStream.iterate((ENTRY_HEIGHT / 2) + 2, y -> y + ENTRY_HEIGHT)
+                // TODO Java 9 will allow using dropWhile()/takeWhile()/collect
+                .filter(y -> y > paintTopPos)
+                .peek(y -> {
+                    Line line = new Line(0, y, timeGraphWidth, y);
+                    line.setStroke(BACKGROUD_LINES_COLOR);
+                    line.setStrokeWidth(1.0);
+
+                    lines.add(line);
+                })
+                .allMatch(y -> y < paintBottomPos);
+
+        Platform.runLater(() -> {
+            fTimeGraphBackgroundLayer.getChildren().clear();
+            fTimeGraphBackgroundLayer.getChildren().addAll(lines);
+        });
+    }
+
     @Override
     public void drawSelection(long selectionStartTime, long selectionEndTime) {
         double xStart = timestampToPaneXPos(selectionStartTime);
@@ -518,23 +541,22 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         VBox treeElemsBox = new VBox(); // Change to TreeView eventually ?
         treeElemsBox.getChildren().addAll(treeElements);
 
-        /* Prepare the Canvases with the horizontal alignment lines */
-        List<Canvas> canvases = new ArrayList<>();
-        int maxEntriesPerCanvas = (int) (MAX_CANVAS_HEIGHT / ENTRY_HEIGHT);
-        Lists.partition(treeElements, maxEntriesPerCanvas).forEach(subList -> {
-            int nbElements = subList.size();
-            double height = nbElements * ENTRY_HEIGHT;
+        /* Prepare the background layer with the horizontal alignment lines */
+        /* Using the same alignment as the time graph's background */
+        List<Line> lines = DoubleStream.iterate((ENTRY_HEIGHT / 2) + 2, y -> y + ENTRY_HEIGHT)
+                .limit(treeElements.size())
+                .mapToObj(y -> {
+                    Line line = new Line(0, y, paneWidth, y);
+                    line.setStroke(BACKGROUD_LINES_COLOR);
+                    line.setStrokeWidth(1.0);
+                    return line;
+                })
+                .collect(Collectors.toList());
+        Pane background = new Pane();
+        background.getChildren().addAll(lines);
 
-            Canvas canvas = new Canvas(paneWidth, height);
-            drawBackgroundLines(canvas, ENTRY_HEIGHT);
-            canvas.setCache(true);
-            canvases.add(canvas);
-        });
-        VBox canvasBox = new VBox();
-        canvasBox.getChildren().addAll(canvases);
-
-        /* Put the background Canvas and the Tree View into their containers */
-        StackPane stackPane = new StackPane(canvasBox, treeElemsBox);
+        /* Put the background layer and the Tree View into their containers */
+        StackPane stackPane = new StackPane(background, treeElemsBox);
         stackPane.setStyle(BACKGROUND_STYLE);
         return stackPane;
     }
@@ -721,25 +743,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // ------------------------------------------------------------------------
     // Common utils
     // ------------------------------------------------------------------------
-
-    private static void drawBackgroundLines(Canvas canvas, double entryHeight) {
-        double width = canvas.getWidth();
-        int nbLines = (int) (canvas.getHeight() / entryHeight);
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.save();
-
-        gc.setStroke(BACKGROUD_LINES_COLOR);
-        gc.setLineWidth(1);
-        /* average+2 gives the best-looking output */
-        DoubleStream.iterate((ENTRY_HEIGHT / 2) + 2, i -> i + entryHeight)
-                .limit(nbLines)
-                .forEach(yPos -> {
-                    gc.strokeLine(0, yPos, width, yPos);
-                });
-
-        gc.restore();
-    }
 
     /**
      * Determine the timestamps currently represented by the left and right
