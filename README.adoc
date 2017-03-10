@@ -45,8 +45,8 @@ Maven outputs the platform-specific application packages in the
 The LTTng Scope build system defines the following Maven profiles
 and properties:
 
-+-Dtarget-platform=__target__+::
-    Use target +__target__+.
+`-Dtarget-platform=TARGET`::
+    Use target `TARGET`.
 +
 Use this property to build LTTng Scope against various versions of the
 Eclipse platform. The available targets are listed in
