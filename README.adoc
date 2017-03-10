@@ -1,0 +1,59 @@
+= LTTng Scope
+
+_**LTTng Scope**_ is a trace viewer and analyzer for
+http://diamon.org/ctf/[CTF] traces, with a focus on
+https://lttng.org/[LTTng] kernel and user space traces.
+
+LTTng Scope supports Windows, macOS, and Linux. The source code is
+available under the https://www.eclipse.org/legal/epl-v10.html[Eclipse
+Public License].
+
+
+== Build from source
+
+You need http://maven.apache.org[Maven] version 3.3 or later to build
+this project from source.
+
+To build LTTng Scope from source:
+
+* From the project's root directory, run:
++
+--
+[role="term"]
+----
+mvn clean install
+----
+--
+
+To build LTTng Scope from source and run the unit tests:
+
+* From the project's root directory, run:
++
+--
+[role="term"]
+----
+mvn clean install -Dmaven.test.skip=false
+----
+--
+
+Maven outputs the platform-specific application packages in the
+`releng/org.lttng.scope.rcp.product/target/products` directory.
+
+
+=== Maven profiles and properties
+
+The LTTng Scope build system defines the following Maven profiles
+and properties:
+
++-Dtarget-platform=__target__+::
+    Use target +__target__+.
++
+Use this property to build LTTng Scope against various versions of the
+Eclipse platform. The available targets are listed in
+`releng/org.lttng.scope.target`. The default is usually the latest
+stable platform.
+
+
+== User documentation
+
+NOTE: Not available yet.
