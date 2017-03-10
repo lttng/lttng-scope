@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="35">
+<target name="lttng-scope-e4.6" sequenceNumber="36">
 
   <locations>
     <!-- Eclispe Common Build Infrastructure (still needed?) -->
@@ -76,25 +76,12 @@
       <repository location="http://download.eclipse.org/efxclipse/runtime-released/2.5.0/site/"/>
     </location>
 
-    <!-- Jabberwocky library -->
+    <!-- Core Java libraries -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="com.efficios.jabberwocky.lib" version="0.1.0"/>
-      <!-- TODO Put real URL here -->
-      <repository location="http://localhost/jabberwocky/repository/latest"/>
-    </location>
-
-    <!-- State system library -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.2"/>
-      <!-- TODO Put real URL here -->
-      <repository location="http://localhost/libdelorean/repository/latest"/>
-    </location>
-
-    <!-- CTF reader -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.tracecompass.ctfreader" version="0.1.0"/>
-      <!-- TODO Put real URL here -->
-      <repository location="http://localhost/ctfreader/repository/latest"/>
+      <unit id="com.efficios.jabberwocky.lib" version="0.1.2"/>
+      <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.3"/>
+      <unit id="org.eclipse.tracecompass.ctfreader" version="0.1.2"/>
+      <repository location="https://mvn.efficios.com/p2/releases"/>
     </location>
 
     <!-- CDT -->
@@ -106,7 +93,7 @@
 
     <!-- Dependencies packaged in Orbit -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-      <unit id="com.google.guava" version="15.0.0.v201403281430"/>
+      <unit id="com.google.guava" version="21.0.0.v20170206-1425"/>
       <unit id="org.apache.commons.io" version="0.0.0"/>
       <unit id="org.json" version="0.0.0"/>
       <unit id="org.swtchart" version="0.7.0.v201201201914"/>
@@ -120,7 +107,7 @@
 
       <!-- Dependencies of CDT -->
       <unit id="com.google.gson" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20170307180635/repository/"/>
     </location>
 
     <!-- Trace Compass test traces -->

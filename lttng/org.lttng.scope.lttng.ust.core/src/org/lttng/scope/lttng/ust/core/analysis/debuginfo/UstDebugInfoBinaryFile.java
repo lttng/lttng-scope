@@ -13,6 +13,8 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Wrapper class to reference to a particular binary, which can be an
  * executable or library. It contains both the complete file path (at the
@@ -95,7 +97,7 @@ public class UstDebugInfoBinaryFile implements Comparable<UstDebugInfoBinaryFile
 
     @Override
     public String toString() {
-        return com.google.common.base.Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
             .add("path", fFilePath) //$NON-NLS-1$
             .add("build_id", fBuildId) //$NON-NLS-1$
             .add("debug_link", fDebugLink) //$NON-NLS-1$

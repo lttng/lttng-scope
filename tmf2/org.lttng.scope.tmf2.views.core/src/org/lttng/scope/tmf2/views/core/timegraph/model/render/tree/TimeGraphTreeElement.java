@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 public class TimeGraphTreeElement {
@@ -36,7 +37,7 @@ public class TimeGraphTreeElement {
 
     @Override
     public String toString() {
-        return com.google.common.base.Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
             .add("fName", fName) //$NON-NLS-1$
             .add("fChildElements", fChildElements.toString()) //$NON-NLS-1$
             .toString();

@@ -25,6 +25,7 @@ import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
 import org.lttng.scope.common.core.log.TraceCompassLog;
 import org.lttng.scope.common.core.process.ProcessUtils;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -87,7 +88,7 @@ public final class FileOffsetMapper {
 
         @Override
         public String toString() {
-            return Objects.toStringHelper(this)
+            return MoreObjects.toStringHelper(this)
                     .add("fFilePath", fFilePath) //$NON-NLS-1$
                     .add("fBuildId", fBuildId) //$NON-NLS-1$
                     .add("fOffset", String.format("0x%h", fOffset)) //$NON-NLS-1$ //$NON-NLS-2$
@@ -200,7 +201,7 @@ public final class FileOffsetMapper {
 
         @Override
         public String toString() {
-            return Objects.toStringHelper(this)
+            return MoreObjects.toStringHelper(this)
                     .add("fSourceFileName", fSourceFileName) //$NON-NLS-1$
                     .add("fSourceLineNumber", fSourceLineNumber) //$NON-NLS-1$
                     .add("fFunctionName", fFunctionName) //$NON-NLS-1$

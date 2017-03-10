@@ -13,7 +13,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 public class TimeGraphStateInterval {
 
@@ -67,7 +67,7 @@ public class TimeGraphStateInterval {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("start", fStartEvent.getTimestamp())
                 .add("end", fEndEvent.getTimestamp())
                 .add("name", fStateName)
