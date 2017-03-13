@@ -19,13 +19,18 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
+import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
+import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
+import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,12 +59,36 @@ public class LamiJsonParserTest {
     private LamiTmfTraceStub fTrace;
 
     /**
-     * Extend TmfTraceStub to return a fake path.
+     * Extend TmfTrace to return a fake path.
      */
-    private static class LamiTmfTraceStub extends TmfTraceStub {
+    private static class LamiTmfTraceStub extends TmfTrace {
         @Override
         public String getPath() {
             return TRACEPATH;
+        }
+        @Override
+        public IStatus validate(IProject project, String path) {
+            return null;
+        }
+        @Override
+        public ITmfLocation getCurrentLocation() {
+            return null;
+        }
+        @Override
+        public double getLocationRatio(ITmfLocation location) {
+            return 0;
+        }
+        @Override
+        public ITmfContext seekEvent(ITmfLocation location) {
+            return null;
+        }
+        @Override
+        public ITmfContext seekEvent(double ratio) {
+            return null;
+        }
+        @Override
+        public ITmfEvent parseEvent(ITmfContext context) {
+            return null;
         }
     }
 

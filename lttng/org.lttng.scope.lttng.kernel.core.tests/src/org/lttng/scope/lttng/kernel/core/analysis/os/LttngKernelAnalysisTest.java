@@ -18,14 +18,18 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
+import org.eclipse.tracecompass.tmf.core.analysis.TmfAbstractAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
-import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestHelper;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.junit.After;
 import org.junit.Before;
@@ -83,7 +87,7 @@ public class LttngKernelAnalysisTest {
         ITmfStateSystem ss = fKernelAnalysisModule.getStateSystem();
         assertNull(ss);
 
-        assertTrue(TmfTestHelper.executeAnalysis(fKernelAnalysisModule));
+        assertTrue(executeAnalysis(fKernelAnalysisModule));
 
         ss = fKernelAnalysisModule.getStateSystem();
         assertNotNull(ss);
@@ -109,6 +113,34 @@ public class LttngKernelAnalysisTest {
          */
         assertTrue(fKernelAnalysisModule.canExecute(trace));
         CtfTmfTestTraceUtils.dispose(CtfTestTrace.CYG_PROFILE);
+    }
+
+    /**
+     * Calls the {@link TmfAbstractAnalysisModule#executeAnalysis} method of an
+     * analysis module. This method does not return until the analysis is
+     * completed and it returns the result of the method. It allows to execute
+     * the analysis without requiring an Eclipse job and waiting for completion.
+     *
+     * Note that executing an analysis using this method will not automatically
+     * execute the dependent analyses module. The execution of those modules is
+     * left to the caller.
+     *
+     * @param module
+     *            The analysis module to execute
+     * @return The return value of the
+     *         {@link TmfAbstractAnalysisModule#executeAnalysis} method
+     */
+    private static boolean executeAnalysis(TmfAbstractAnalysisModule module) {
+        try {
+            Class<?>[] argTypes = new Class[] { IProgressMonitor.class };
+            Method method = TmfAbstractAnalysisModule.class.getDeclaredMethod("executeAnalysis", argTypes);
+            method.setAccessible(true);
+            Object obj = method.invoke(module, new NullProgressMonitor());
+            return (Boolean) obj;
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            fail(e.toString());
+            throw new RuntimeException(e);
+        }
     }
 
 }
