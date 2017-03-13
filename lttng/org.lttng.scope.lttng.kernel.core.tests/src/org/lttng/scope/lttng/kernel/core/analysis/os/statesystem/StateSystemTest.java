@@ -363,14 +363,6 @@ public abstract class StateSystemTest {
     }
 
     @Test
-    public void testGetQuarks_middle_end() {
-        List<Integer> list = fixture.getQuarks(Attributes.THREADS, "*", "*");
-
-        /* There should be 716 attributes as not all have a system call or priority at this point*/
-        assertEquals(547, list.size());
-    }
-
-    @Test
     public void testGetQuarksNoMatch() {
         List<Integer> list = fixture.getQuarks("invalid");
         assertEquals(0, list.size());
