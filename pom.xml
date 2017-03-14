@@ -67,6 +67,15 @@
       <id>tycho-snapshots</id>
       <url>https://repo.eclipse.org/content/repositories/tycho-snapshots/</url>
     </pluginRepository>
+
+    <!-- The "org.eclipse.fx.osgi" frameworkExtension used below is only
+     available in a p2 repo upstream, but was mirrored as a Maven artifact
+     at m.e.c. -->
+    <pluginRepository>
+      <id>efficios-releases-repo</id>
+      <name>EfficiOS Releases</name>
+      <url>https://mvn.efficios.com/maven/releases/</url>
+    </pluginRepository>
   </pluginRepositories>
 
   <profiles>
@@ -114,6 +123,13 @@
               <useUIHarness>true</useUIHarness>
               <useUIThread>true</useUIThread>
               <testRuntime>default</testRuntime>
+              <frameworkExtensions>
+                <frameworkExtension>
+                  <groupId>org.eclipse.fx.runtime</groupId>
+                  <artifactId>org.eclipse.fx.osgi</artifactId>
+                  <version>2.5.0</version>
+                </frameworkExtension>
+              </frameworkExtensions>
             </configuration>
           </plugin>
 
@@ -132,7 +148,6 @@
               </dependency-resolution>
             </configuration>
           </plugin>
-
 
         </plugins>
       </build>

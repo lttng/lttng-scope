@@ -220,6 +220,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     public SwtJfxTimeGraphViewer(Composite parent, TimeGraphModelControl control) {
         super(control);
+        Platform.setImplicitExit(false);
 
         // TODO Convert this sash to JavaFX too?
         fBaseControl = new SashForm(parent, SWT.NONE);

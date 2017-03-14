@@ -36,7 +36,7 @@ public class SwtJfxTimeGraphViewerTest {
 
     @Before
     public void setup() {
-        Shell shell = requireNonNull(Display.getDefault().getActiveShell());
+        Shell shell = requireNonNull(Display.getCurrent().getActiveShell());
         TimeGraphModelControl control = new TimeGraphModelControl(new ModelRenderProviderStub());
         SwtJfxTimeGraphViewerStub viewer = new SwtJfxTimeGraphViewerStub(shell, control);
         control.attachViewer(viewer);
