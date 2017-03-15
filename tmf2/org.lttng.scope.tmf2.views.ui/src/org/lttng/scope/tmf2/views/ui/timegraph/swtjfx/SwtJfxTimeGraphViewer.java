@@ -310,20 +310,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     // ------------------------------------------------------------------------
-    // Test accessors
-    // ------------------------------------------------------------------------
-
-    @VisibleForTesting
-    protected Pane getTimeGraphPane() {
-        return fTimeGraphPane;
-    }
-
-    @VisibleForTesting
-    protected ScrollPane getTimeGraphScrollPane() {
-        return fTimeGraphScrollPane;
-    }
-
-    // ------------------------------------------------------------------------
     // Operations
     // ------------------------------------------------------------------------
 
@@ -770,7 +756,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     @VisibleForTesting
-    public static double timestampToPaneXPos(long timestamp, long start, long end, double nanosPerPixel) {
+    static double timestampToPaneXPos(long timestamp, long start, long end, double nanosPerPixel) {
         if (timestamp < start) {
             throw new IllegalArgumentException(timestamp + " is smaller than trace start time " + start); //$NON-NLS-1$
         }
@@ -792,7 +778,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     @VisibleForTesting
-    public static long paneXPosToTimestamp(double x, double totalWidth, long startTimestamp, double nanosPerPixel) {
+    static long paneXPosToTimestamp(double x, double totalWidth, long startTimestamp, double nanosPerPixel) {
         if (x < 0.0 || totalWidth < 1.0 || x > totalWidth) {
             throw new IllegalArgumentException("Invalid position arguments: pos=" + x + ", width=" + totalWidth);
         }
@@ -805,4 +791,19 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         double ratio = yPos / yMax;
         return (int) (ratio * nbEntries);
     }
+
+    // ------------------------------------------------------------------------
+    // Test accessors
+    // ------------------------------------------------------------------------
+
+    @VisibleForTesting
+    Pane getTimeGraphPane() {
+        return fTimeGraphPane;
+    }
+
+    @VisibleForTesting
+    ScrollPane getTimeGraphScrollPane() {
+        return fTimeGraphScrollPane;
+    }
+
 }

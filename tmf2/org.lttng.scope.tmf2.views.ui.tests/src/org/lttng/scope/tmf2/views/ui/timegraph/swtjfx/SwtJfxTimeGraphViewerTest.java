@@ -32,13 +32,13 @@ public class SwtJfxTimeGraphViewerTest {
     private static final long FULL_TRACE_END_TIME = 200000L;
 
     private @Nullable TimeGraphModelControl fControl;
-    private @Nullable SwtJfxTimeGraphViewerStub fViewer;
+    private @Nullable SwtJfxTimeGraphViewer fViewer;
 
     @Before
     public void setup() {
         Shell shell = requireNonNull(Display.getCurrent().getActiveShell());
         TimeGraphModelControl control = new TimeGraphModelControl(new ModelRenderProviderStub());
-        SwtJfxTimeGraphViewerStub viewer = new SwtJfxTimeGraphViewerStub(shell, control);
+        SwtJfxTimeGraphViewer viewer = new SwtJfxTimeGraphViewer(shell, control);
         control.attachViewer(viewer);
 
         control.setTimeGraphAreaRange(FULL_TRACE_START_TIME, FULL_TRACE_END_TIME);
@@ -50,20 +50,16 @@ public class SwtJfxTimeGraphViewerTest {
 
     @After
     public void tearDown() {
-        if (fViewer != null) {
-            fViewer.dispose();
-        }
         if (fControl != null) {
             fControl.dispose();
         }
-
         fControl = null;
         fViewer = null;
     }
 
     @Test
     public void testSeekVisibleRange() {
-        SwtJfxTimeGraphViewerStub viewer = requireNonNull(fViewer);
+        SwtJfxTimeGraphViewer viewer = requireNonNull(fViewer);
 
         TmfTimeRange range = createTimeRange(150000L, 160000L);
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
