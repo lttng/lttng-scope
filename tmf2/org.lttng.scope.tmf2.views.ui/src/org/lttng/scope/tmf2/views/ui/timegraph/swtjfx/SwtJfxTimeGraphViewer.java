@@ -36,10 +36,11 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -89,21 +90,6 @@ import javafx.scene.shape.StrokeLineCap;
  * @author Alexandre Montplaisir
  */
 public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
-
-    // ------------------------------------------------------------------------
-    // Helper classes
-    // ------------------------------------------------------------------------
-
-    private static class HorizontalPosition {
-        public long fStartTime = 0L;
-        public long fEndTime = 0L;
-    }
-
-    private static class VerticalPosition {
-        public double fTopPos = 0.0;
-        public double fBottomPos = 0.0;
-        public double fContentHeight = 0.0;
-    }
 
     // ------------------------------------------------------------------------
     // Class fields
@@ -170,41 +156,34 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final Rectangle fOngoingSelectionRect;
 
 
-    private final VerticalPosition fVerticalPosition = new VerticalPosition();
+    private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
 
     private final AtomicLong fTaskSeq = new AtomicLong();
     private final Timer fUiUpdateTimer = new Timer();
     private final TimerTask fUiUpdateTimerTask = new TimerTask() {
 
-        private final HorizontalPosition fPreviousHorizontalPos = new HorizontalPosition();
-        private final VerticalPosition fPreviousVerticalPosition = new VerticalPosition();
+        private HorizontalPosition fPreviousHorizontalPos = new HorizontalPosition(0, 0);
+        private VerticalPosition fPreviousVerticalPosition = new VerticalPosition(0, 0, 0);
 
         @Override
         public void run() {
-            long start = getControl().getVisibleTimeRangeStart();
-            long end = getControl().getVisibleTimeRangeEnd();
-            double topPos = fVerticalPosition.fTopPos;
-            double bottomPos = fVerticalPosition.fBottomPos;
-            double contentHeight = fVerticalPosition.fContentHeight;
+            HorizontalPosition currentHorizontalPos = getCurrentHorizontalPosition();
+            VerticalPosition currentVerticalPos = fVerticalPosition;
 
-            if (start == fPreviousHorizontalPos.fStartTime
-                    && end == fPreviousHorizontalPos.fEndTime
-                    && topPos == fPreviousVerticalPosition.fTopPos
-                    && bottomPos == fPreviousVerticalPosition.fBottomPos
-                    && contentHeight == fPreviousVerticalPosition.fContentHeight) {
+            if (currentHorizontalPos.equals(fPreviousHorizontalPos)
+                    && currentVerticalPos.equals(fPreviousVerticalPosition)) {
                 /*
                  * Exact same position as the last one we've seen, no need to
                  * repaint.
                  */
                 return;
             }
-            fPreviousHorizontalPos.fStartTime = start;
-            fPreviousHorizontalPos.fEndTime = end;
-            fPreviousVerticalPosition.fTopPos = topPos;
-            fPreviousVerticalPosition.fBottomPos = bottomPos;
-            fPreviousVerticalPosition.fContentHeight = contentHeight;
+            fPreviousHorizontalPos = currentHorizontalPos;
+            fPreviousVerticalPosition = currentVerticalPos;
 
-            paintArea(start, end, fTaskSeq.getAndIncrement());
+            paintArea(currentHorizontalPos.fStartTime,
+                    currentHorizontalPos.fEndTime,
+                    fTaskSeq.getAndIncrement());
         }
     };
 
@@ -358,6 +337,16 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         fTimeGraphPane.setPrefWidth(timeGraphAreaWidth);
         fTimeGraphScrollPane.setHvalue(newValue);
+    }
+
+    /**
+     * The current horizontal position is tracked by the control. This method
+     * just wraps it into a {@link HorizontalPosition}.
+     */
+    private HorizontalPosition getCurrentHorizontalPosition() {
+        long start = getControl().getVisibleTimeRangeStart();
+        long end = getControl().getVisibleTimeRangeEnd();
+        return new HorizontalPosition(start, end);
     }
 
     private void paintArea(long windowStartTime, long windowEndTime, long taskSeqNb) {
@@ -676,18 +665,22 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
 
             /* We need to specify the new value here, or else the old one will be used */
-            Range<Long> timeRange = getCurrentTimeGraphEdgeTimestamps(newValue.doubleValue());
-            long tsStart = timeRange.lowerEndpoint();
-            long tsEnd = timeRange.upperEndpoint();
+            HorizontalPosition timeRange = getCurrentTimeGraphEdgeTimestamps(newValue.doubleValue());
+            long tsStart = timeRange.fStartTime;
+            long tsEnd = timeRange.fEndTime;
 
             System.out.printf("Sending visible range update: %,d to %,d%n", tsStart, tsEnd);
 
             getControl().updateVisibleTimeRange(tsStart, tsEnd);
 
             /*
-             * The control will not send this signal back to us (to avoid
-             * jitter while scrolling), but the next UI update should refresh
-             * the view accordingly.
+             * The control will not send this signal back to us (to avoid jitter
+             * while scrolling), but the next UI update should refresh the view
+             * accordingly.
+             *
+             * It is not our responsibility to update to this
+             * HorizontalPosition. The control will update accordingly upon
+             * managing the signal we just sent.
              */
         };
 
@@ -707,9 +700,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             double vtop = Math.max(0, contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin);
             double vbottom = vtop + viewportHeight;
 
-            fVerticalPosition.fTopPos = vtop;
-            fVerticalPosition.fBottomPos = vbottom;
-            fVerticalPosition.fContentHeight = contentHeight;
+            /*
+             * Unlike the HScrollListener, it *is* our responsibility here to
+             * update the vertical position, because this is tracked solely in
+             * the view.
+             */
+            fVerticalPosition = new VerticalPosition(vtop, vbottom, contentHeight);
 
             /* Next UI update will take these coordinates in consideration */
         };
@@ -743,15 +739,20 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * edges of the time graph pane. In other words, the current "visible range"
      * the view is showing.
      *
+     * Note that this method gets its information from UI objects only, so there
+     * might be discrepancies between this and the results of
+     * {@link #getCurrentHorizontalPosition()}.
+     *
      * @param newHValue
      *            The "hvalue" property of the horizontal scrollbar to use. If
      *            null, the current value will be retrieved from the scenegraph
      *            object. For example, a scrolling listener might want to pass
      *            its newValue here, since the scenegraph object will not have
      *            been updated yet.
-     * @return A range with the start and end times as bounds
+     * @return The corresponding timestamps, wrapped in a
+     *         {@link HorizontalPosition}.
      */
-    Range<Long> getCurrentTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
+    HorizontalPosition getCurrentTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
         double hvalue = (newHValue == null ? fTimeGraphScrollPane.getHvalue() : newHValue.doubleValue());
 
         /*
@@ -769,7 +770,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         long tsStart = paneXPosToTimestamp(hoffset);
         long tsEnd = paneXPosToTimestamp(hoffset + viewportWidth);
 
-        return Range.closed(tsStart, tsEnd);
+        return new HorizontalPosition(tsStart, tsEnd);
     }
 
     double timestampToPaneXPos(long timestamp) {

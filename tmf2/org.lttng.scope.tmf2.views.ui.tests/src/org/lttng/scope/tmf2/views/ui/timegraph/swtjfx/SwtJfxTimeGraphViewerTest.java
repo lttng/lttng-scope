@@ -28,8 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-
-import com.google.common.collect.Range;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
 
 public class SwtJfxTimeGraphViewerTest {
 
@@ -100,9 +99,9 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        Range<Long> timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.lowerEndpoint();
-        long tsEnd = timeRange.upperEndpoint();
+        HorizontalPosition timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.fStartTime;
+        long tsEnd = timeRange.fEndTime;
 
         assertEquals(expectedStart, tsStart);
         assertEquals(expectedEnd, tsEnd);
@@ -131,9 +130,9 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(endTime, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        Range<Long> timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.lowerEndpoint();
-        long tsEnd = timeRange.upperEndpoint();
+        HorizontalPosition timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.fStartTime;
+        long tsEnd = timeRange.fEndTime;
 
         assertEquals(startTime, tsStart);
         assertEquals(endTime, tsEnd);
