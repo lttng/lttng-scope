@@ -29,6 +29,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
+import com.google.common.collect.Range;
+
 public class SwtJfxTimeGraphViewerTest {
 
     private static @Nullable ITmfTrace sfTrace;
@@ -98,15 +100,9 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        // FIXME Copy-pasted from the runtime code, extract to a common function?
-        double hmin = viewer.getTimeGraphScrollPane().getHmin();
-        double hmax = viewer.getTimeGraphScrollPane().getHmax();
-        double hvalue = viewer.getTimeGraphScrollPane().getHvalue();
-        double contentWidth = viewer.getTimeGraphPane().getLayoutBounds().getWidth();
-        double viewportWidth = viewer.getTimeGraphScrollPane().getViewportBounds().getWidth();
-        double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
-        long tsStart = viewer.paneXPosToTimestamp(hoffset);
-        long tsEnd = viewer.paneXPosToTimestamp(hoffset + viewportWidth);
+        Range<Long> timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.lowerEndpoint();
+        long tsEnd = timeRange.upperEndpoint();
 
         assertEquals(expectedStart, tsStart);
         assertEquals(expectedEnd, tsEnd);
@@ -135,21 +131,9 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(endTime, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        // FIXME Copy-pasted from the runtime code, extract to a common function?
-        double hmin = viewer.getTimeGraphScrollPane().getHmin();
-        double hmax = viewer.getTimeGraphScrollPane().getHmax();
-        double hvalue = viewer.getTimeGraphScrollPane().getHvalue();
-        double contentWidth = viewer.getTimeGraphPane().getLayoutBounds().getWidth();
-        double viewportWidth = viewer.getTimeGraphScrollPane().getViewportBounds().getWidth();
-        double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
-
-        System.out.println("hvalue=" + hvalue);
-        System.out.println("contentWidth=" + contentWidth);
-        System.out.println("viewportWidth=" + viewportWidth);
-        System.out.println("hoffset=" + hoffset);
-
-        long tsStart = viewer.paneXPosToTimestamp(hoffset);
-        long tsEnd = viewer.paneXPosToTimestamp(hoffset + viewportWidth);
+        Range<Long> timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.lowerEndpoint();
+        long tsEnd = timeRange.upperEndpoint();
 
         assertEquals(startTime, tsStart);
         assertEquals(endTime, tsEnd);

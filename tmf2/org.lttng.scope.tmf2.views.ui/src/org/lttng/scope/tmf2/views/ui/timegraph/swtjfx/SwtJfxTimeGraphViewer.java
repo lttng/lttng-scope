@@ -39,6 +39,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -674,25 +675,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
 
-            /*
-             * Determine the X position represented by the left edge of the pane
-             */
-            double hmin = fTimeGraphScrollPane.getHmin();
-            double hmax = fTimeGraphScrollPane.getHmax();
-            /* scrollPane.getHvalue() would return the *old* value here! */
-            double hvalue = newValue.doubleValue();
-            double contentWidth = fTimeGraphPane.getLayoutBounds().getWidth();
-            double viewportWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
-            double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
+            /* We need to specify the new value here, or else the old one will be used */
+            Range<Long> timeRange = getCurrentTimeGraphEdgeTimestamps(newValue.doubleValue());
+            long tsStart = timeRange.lowerEndpoint();
+            long tsEnd = timeRange.upperEndpoint();
 
-            /*
-             * Convert the positions of the left and right edges to timestamps,
-             * and send a window range update signal
-             */
-            long tsStart = paneXPosToTimestamp(hoffset);
-            long tsEnd = paneXPosToTimestamp(hoffset + viewportWidth);
-
-            System.out.printf("Offset: %.1f, width: %.1f %n", hoffset, viewportWidth);
             System.out.printf("Sending visible range update: %,d to %,d%n", tsStart, tsEnd);
 
             getControl().updateVisibleTimeRange(tsStart, tsEnd);
@@ -749,6 +736,40 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 });
 
         gc.restore();
+    }
+
+    /**
+     * Determine the timestamps currently represented by the left and right
+     * edges of the time graph pane. In other words, the current "visible range"
+     * the view is showing.
+     *
+     * @param newHValue
+     *            The "hvalue" property of the horizontal scrollbar to use. If
+     *            null, the current value will be retrieved from the scenegraph
+     *            object. For example, a scrolling listener might want to pass
+     *            its newValue here, since the scenegraph object will not have
+     *            been updated yet.
+     * @return A range with the start and end times as bounds
+     */
+    Range<Long> getCurrentTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
+        double hvalue = (newHValue == null ? fTimeGraphScrollPane.getHvalue() : newHValue.doubleValue());
+
+        /*
+         * Determine the X positions represented by the edges.
+         */
+        double hmin = fTimeGraphScrollPane.getHmin();
+        double hmax = fTimeGraphScrollPane.getHmax();
+        double contentWidth = fTimeGraphPane.getLayoutBounds().getWidth();
+        double viewportWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
+        double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
+
+        /*
+         * Convert the positions of the left and right edges to timestamps.
+         */
+        long tsStart = paneXPosToTimestamp(hoffset);
+        long tsEnd = paneXPosToTimestamp(hoffset + viewportWidth);
+
+        return Range.closed(tsStart, tsEnd);
     }
 
     double timestampToPaneXPos(long timestamp) {

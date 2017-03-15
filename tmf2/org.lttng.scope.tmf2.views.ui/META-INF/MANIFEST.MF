@@ -19,4 +19,4 @@ Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=tru
  org.lttng.scope.tmf2.views.ui.timegraph.swtjfx,
  org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.examples
 Import-Package: com.google.common.annotations,
- com.google.common.collect;version="15.0.0"
+ com.google.common.collect
