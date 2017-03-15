@@ -99,7 +99,7 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        HorizontalPosition timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
         long tsStart = timeRange.fStartTime;
         long tsEnd = timeRange.fEndTime;
 
@@ -130,7 +130,7 @@ public class SwtJfxTimeGraphViewerTest {
         assertEquals(endTime, viewer.getControl().getVisibleTimeRangeEnd());
 
         /* Check the view itself */
-        HorizontalPosition timeRange = viewer.getCurrentTimeGraphEdgeTimestamps(null);
+        HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
         long tsStart = timeRange.fStartTime;
         long tsEnd = timeRange.fEndTime;
 

@@ -665,7 +665,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
 
             /* We need to specify the new value here, or else the old one will be used */
-            HorizontalPosition timeRange = getCurrentTimeGraphEdgeTimestamps(newValue.doubleValue());
+            HorizontalPosition timeRange = getTimeGraphEdgeTimestamps(newValue.doubleValue());
             long tsStart = timeRange.fStartTime;
             long tsEnd = timeRange.fEndTime;
 
@@ -690,22 +690,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 return;
             }
 
-            /* Get the Y position of the top/bottom edges of the pane */
-            double vmin = fTreeScrollPane.getVmin();
-            double vmax = fTreeScrollPane.getVmax();
-            double vvalue = newValue.doubleValue();
-            double contentHeight = fTreePane.getLayoutBounds().getHeight();
-            double viewportHeight = fTreeScrollPane.getViewportBounds().getHeight();
-
-            double vtop = Math.max(0, contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin);
-            double vbottom = vtop + viewportHeight;
-
+            VerticalPosition newVerticalPos = getTimeGraphVerticalPos(newValue.doubleValue());
             /*
              * Unlike the HScrollListener, it *is* our responsibility here to
-             * update the vertical position, because this is tracked solely in
+             * update the vertical position, because this is tracked solely by
              * the view.
              */
-            fVerticalPosition = new VerticalPosition(vtop, vbottom, contentHeight);
+            fVerticalPosition = newVerticalPos;
 
             /* Next UI update will take these coordinates in consideration */
         };
@@ -752,7 +743,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * @return The corresponding timestamps, wrapped in a
      *         {@link HorizontalPosition}.
      */
-    HorizontalPosition getCurrentTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
+    HorizontalPosition getTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
         double hvalue = (newHValue == null ? fTimeGraphScrollPane.getHvalue() : newHValue.doubleValue());
 
         /*
@@ -809,6 +800,36 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         long ts = Math.round(x * nanosPerPixel);
         return ts + startTimestamp;
+    }
+
+    /**
+     * Get the current vertical position of the timegraph.
+     *
+     * In general, the results returned by this should be the same as
+     * {@link #fVerticalPosition}, unless a different newVValue parameter is
+     * provided.
+     *
+     * @param newVValue
+     *            The "vvalue" property of the vertical scrollbar to use for
+     *            calculations. If null, the current value will be retrieved
+     *            from the scenegraph object. For example, a scrolling listener
+     *            might want to pass its newValue here, since the scenegraph
+     *            object will not have been updated yet.
+     * @return The corresponding VerticalPosition
+     */
+    VerticalPosition getTimeGraphVerticalPos(@Nullable Double newVValue) {
+        double vvalue = (newVValue == null ? fTimeGraphScrollPane.getVvalue() : newVValue.doubleValue());
+
+        /* Get the Y position of the top/bottom edges of the pane */
+        double vmin = fTreeScrollPane.getVmin();
+        double vmax = fTreeScrollPane.getVmax();
+        double contentHeight = fTreePane.getLayoutBounds().getHeight();
+        double viewportHeight = fTreeScrollPane.getViewportBounds().getHeight();
+
+        double vtop = Math.max(0, contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin);
+        double vbottom = vtop + viewportHeight;
+
+        return new VerticalPosition(vtop, vbottom, contentHeight);
     }
 
     private static int paneYPosToEntryListIndex(double yPos, double yMax, int nbEntries) {
