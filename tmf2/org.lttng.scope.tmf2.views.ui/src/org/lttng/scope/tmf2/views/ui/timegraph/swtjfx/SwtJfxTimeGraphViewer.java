@@ -313,11 +313,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         /* Update the zoom level */
         long windowTimeRange = visibleWindowEndTime - visibleWindowStartTime;
-        double timeGraphWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
-        fNanosPerPixel = windowTimeRange / timeGraphWidth;
+        double timeGraphVisibleWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
+        fNanosPerPixel = windowTimeRange / timeGraphVisibleWidth;
 
-        double timeGraphAreaWidth = timestampToPaneXPos(fullTimeGraphEnd) - timestampToPaneXPos(fullTimeGraphStart);
-        if (timeGraphAreaWidth < 1.0) {
+        double timeGraphTotalWidth = timestampToPaneXPos(fullTimeGraphEnd) - timestampToPaneXPos(fullTimeGraphStart);
+        if (timeGraphTotalWidth < 1.0) {
             // FIXME
             return;
         }
@@ -328,14 +328,35 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         } else if (visibleWindowEndTime == fullTimeGraphEnd) {
             newValue = fTimeGraphScrollPane.getHmax();
         } else {
-            // FIXME Not aligned perfectly yet, see how the scrolling
-            // listener does it?
-            long targetTs = (visibleWindowStartTime + visibleWindowEndTime) / 2;
-            double xPos = timestampToPaneXPos(targetTs);
-            newValue = xPos / timeGraphAreaWidth;
+            /*
+             * The "hvalue" is in reference to the beginning of the pane, not
+             * the middle point as one could think.
+             *
+             * Also note that the "scrollable distance" is not simply
+             * "timeGraphTotalWidth", it's
+             * "timeGraphTotalWidth - timeGraphVisibleWidth". The view does not
+             * allow scrolling the start and end edges up to the middle point
+             * for example.
+             *
+             * See http://stackoverflow.com/a/23518314/4227853 for a great
+             * explanation.
+             */
+            double startPos = timestampToPaneXPos(visibleWindowStartTime);
+            newValue = startPos / (timeGraphTotalWidth - timeGraphVisibleWidth);
         }
 
-        fTimeGraphPane.setPrefWidth(timeGraphAreaWidth);
+        /*
+         * Remember min/max are bound to the "pref" width, so this will change
+         * the actual size right away.
+         */
+        fTimeGraphPane.setPrefWidth(timeGraphTotalWidth);
+        /*
+         * Since we potentially changed the size of a child of the scrollpane,
+         * it's important to call layout() on it before setHvalue(). If we
+         * don't, the setHvalue() will apply to the old layout, and the upcoming
+         * pulse will simply revert our changes.
+         */
+        fTimeGraphScrollPane.layout();
         fTimeGraphScrollPane.setHvalue(newValue);
     }
 
@@ -840,6 +861,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // ------------------------------------------------------------------------
     // Test accessors
     // ------------------------------------------------------------------------
+
+    @VisibleForTesting
+    double getCurrentNanosPerPixel() {
+        return fNanosPerPixel;
+    }
 
     @VisibleForTesting
     Pane getTimeGraphPane() {

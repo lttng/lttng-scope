@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -25,7 +26,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
@@ -33,9 +33,10 @@ import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPositio
 public class SwtJfxTimeGraphViewerTest {
 
     private static @Nullable ITmfTrace sfTrace;
-    private static @Nullable SwtJfxTimeGraphViewStub sfView;
     private static @Nullable Display sfDisplay;
+    private static @Nullable SwtJfxTimeGraphViewStub sfView;
     private static @Nullable SwtJfxTimeGraphViewer sfViewer;
+    private static @Nullable TimeGraphModelControl sfControl;
 
     @BeforeClass
     public static void setupClass() {
@@ -63,6 +64,7 @@ public class SwtJfxTimeGraphViewerTest {
 
         sfView = view;
         sfViewer = viewer;
+        sfControl = control;
     }
 
     @AfterClass
@@ -108,39 +110,68 @@ public class SwtJfxTimeGraphViewerTest {
     }
 
     @Test
-    @Ignore("not yet functional")
-    public void testSeekVisibleRange() throws InterruptedException {
+    public void testSeekVisibleRangeBegin() {
+        testSeekVisibleRange(100000L, 110000L);
+    }
+
+    @Test
+    public void testSeekVisibleRange1() {
+        testSeekVisibleRange(120000L, 150000L);
+    }
+
+    @Test
+    public void testSeekVisibleRange2() {
+        testSeekVisibleRange(110000L, 180000L);
+    }
+
+    @Test
+    public void testSeekVisibleRange3() {
+        testSeekVisibleRange(150000L, 170000L);
+    }
+
+    @Test
+    public void testSeekVisibleRangeEnd() {
+        testSeekVisibleRange(170000L, 200000L);
+    }
+
+    private void testSeekVisibleRange(long startTime, long endTime) {
         SwtJfxTimeGraphViewer viewer = sfViewer;
+        TimeGraphModelControl control = sfControl;
         assertNotNull(viewer);
-
-        final long startTime = 150000L;
-        final long endTime = 160000L;
-
-        viewer.getTimeGraphScrollPane().hvalueProperty().addListener((observable, oldVal, newVal) -> {
-            System.out.println("old hvalue=" + oldVal + ", new hvalue=" + newVal);
-            (new Throwable()).printStackTrace();
-        });
+        assertNotNull(control);
 
         TmfTimeRange range = createTimeRange(startTime, endTime);
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
         TmfSignalManager.dispatchSignal(signal);
 
+        control.waitForNextSignalHandled();
+        updateUI();
+
         /* Check the control */
-        assertEquals(startTime, viewer.getControl().getVisibleTimeRangeStart());
-        assertEquals(endTime, viewer.getControl().getVisibleTimeRangeEnd());
+        assertEquals(startTime, control.getVisibleTimeRangeStart());
+        assertEquals(endTime, control.getVisibleTimeRangeEnd());
 
         /* Check the view itself */
         HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
         long tsStart = timeRange.fStartTime;
         long tsEnd = timeRange.fEndTime;
 
-        assertEquals(startTime, tsStart);
-        assertEquals(endTime, tsEnd);
+        /* We will tolerate being off by at most 1 pixel */
+        double delta = viewer.getCurrentNanosPerPixel();
+
+        assertEqualsWithin(startTime, tsStart, delta);
+        assertEqualsWithin(endTime, tsEnd, delta);
     }
 
     @Test
     public void testZoomOut() {
 
+    }
+
+    private static void assertEqualsWithin(long expected, long actual, double delta) {
+        String errMsg = "" + actual + " not within margin (" + delta + ") of " + expected;
+        assertTrue(errMsg, actual < expected + delta);
+        assertTrue(errMsg, actual > expected - delta);
     }
 
     private static void updateUI() {

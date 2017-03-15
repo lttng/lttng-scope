@@ -17,6 +17,8 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
+import com.google.common.annotations.VisibleForTesting;
+
 public final class TimeGraphModelControl {
 
     private static final long UNINITIALIZED = -1;
@@ -199,4 +201,12 @@ public final class TimeGraphModelControl {
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Test utils
+    // ------------------------------------------------------------------------
+
+    @VisibleForTesting
+    public void waitForNextSignalHandled() {
+        fSignallingContext.waitForNextSignalHandled();
+    }
 }

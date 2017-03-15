@@ -9,10 +9,12 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.control;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSelectionRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
@@ -27,6 +29,8 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.common.core.log.TraceCompassLog;
+
+import com.google.common.annotations.VisibleForTesting;
 
 // TODO Needs to be public only because of TmfSignalManager
 public class SignallingContext {
@@ -197,6 +201,29 @@ public class SignallingContext {
                 fControl.updateLatestVisibleRange(windowStart, windowEnd);
             }
 
+            if (fCurrentSignalLatch != null) {
+                fCurrentSignalLatch.countDown();
+                fCurrentSignalLatch = null;
+            }
+
         });
+    }
+
+    // ------------------------------------------------------------------------
+    // Test utilities
+    // ------------------------------------------------------------------------
+
+    private volatile @Nullable CountDownLatch fCurrentSignalLatch = null;
+
+    @VisibleForTesting
+    void waitForNextSignalHandled() {
+        if (fCurrentSignalLatch != null) {
+            throw new IllegalStateException("Do not call this method concurrently!"); //$NON-NLS-1$
+        }
+        fCurrentSignalLatch = new CountDownLatch(1);
+        try {
+            fCurrentSignalLatch.await();
+        } catch (InterruptedException e) {
+        }
     }
 }
