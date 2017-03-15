@@ -1,77 +1,171 @@
-/*******************************************************************************
- * Copyright (c) 2016 EfficiOS Inc., Alexandre Montplaisir
+/*
+ * Copyright (C) 2016-2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ */
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
-import static java.util.Objects.requireNonNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.junit.After;
-import org.junit.Before;
+import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 public class SwtJfxTimeGraphViewerTest {
 
-//    private static final double DELTA = 0.1;
+    private static @Nullable ITmfTrace sfTrace;
+    private static @Nullable SwtJfxTimeGraphViewStub sfView;
+    private static @Nullable Display sfDisplay;
+    private static @Nullable SwtJfxTimeGraphViewer sfViewer;
 
-    private static final long FULL_TRACE_START_TIME = 100000L;
-    private static final long FULL_TRACE_END_TIME = 200000L;
+    @BeforeClass
+    public static void setupClass() {
+        sfTrace = new TraceFixture();
 
-    private @Nullable TimeGraphModelControl fControl;
-    private @Nullable SwtJfxTimeGraphViewer fViewer;
+        SwtJfxTimeGraphViewStub view;
+        try {
+             view = (SwtJfxTimeGraphViewStub) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SwtJfxTimeGraphViewStub.VIEW_ID);
+        } catch (PartInitException e) {
+            fail(e.getMessage());
+            throw new RuntimeException(e);
+        }
 
-    @Before
-    public void setup() {
-        Shell shell = requireNonNull(Display.getCurrent().getActiveShell());
-        TimeGraphModelControl control = new TimeGraphModelControl(new ModelRenderProviderStub());
-        SwtJfxTimeGraphViewer viewer = new SwtJfxTimeGraphViewer(shell, control);
-        control.attachViewer(viewer);
+        Display display = view.getViewSite().getShell().getDisplay();
+        assertNotNull(display);
+        sfDisplay = display;
 
-        control.setTimeGraphAreaRange(FULL_TRACE_START_TIME, FULL_TRACE_END_TIME);
-        viewer.getTimeGraphScrollPane().setMinWidth(1000.0);
+        TimeGraphModelControl control = view.getControl();
+        SwtJfxTimeGraphViewer viewer = view.getViewer();
+        assertNotNull(viewer);
 
-        fControl = control;
-        fViewer = viewer;
+        updateUI();
+        control.initializeForTrace(sfTrace);
+        updateUI();
+
+        sfView = view;
+        sfViewer = viewer;
     }
 
-    @After
-    public void tearDown() {
-        if (fControl != null) {
-            fControl.dispose();
+    @AfterClass
+    public static void teardownClass() {
+        if (sfView != null) {
+            /* Disposing the view disposes everything underneath */
+            sfView.dispose();
         }
-        fControl = null;
-        fViewer = null;
+
+        if (sfTrace != null) {
+            sfTrace.dispose();
+        }
+
+        sfTrace = null;
+        sfView = null;
+        sfDisplay = null;
+        sfViewer = null;
     }
 
     @Test
-    public void testSeekVisibleRange() {
-        SwtJfxTimeGraphViewer viewer = requireNonNull(fViewer);
+    public void testInitialPosition() {
+        SwtJfxTimeGraphViewer viewer = sfViewer;
+        assertNotNull(viewer);
 
-        TmfTimeRange range = createTimeRange(150000L, 160000L);
+        /*
+         * The initial range of the trace is from 100000 to 150000, the viewer
+         * should be showing that initially.
+         */
+        final long expectedStart = TraceFixture.FULL_TRACE_START_TIME;
+        final long expectedEnd = TraceFixture.FULL_TRACE_START_TIME + TraceFixture.INITIAL_RANGE_OFFSET;
+
+        /* Check the control */
+        assertEquals(expectedStart, viewer.getControl().getVisibleTimeRangeStart());
+        assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRangeEnd());
+
+        /* Check the view itself */
+        // FIXME Copy-pasted from the runtime code, extract to a common function?
+        double hmin = viewer.getTimeGraphScrollPane().getHmin();
+        double hmax = viewer.getTimeGraphScrollPane().getHmax();
+        double hvalue = viewer.getTimeGraphScrollPane().getHvalue();
+        double contentWidth = viewer.getTimeGraphPane().getLayoutBounds().getWidth();
+        double viewportWidth = viewer.getTimeGraphScrollPane().getViewportBounds().getWidth();
+        double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
+        long tsStart = viewer.paneXPosToTimestamp(hoffset);
+        long tsEnd = viewer.paneXPosToTimestamp(hoffset + viewportWidth);
+
+        assertEquals(expectedStart, tsStart);
+        assertEquals(expectedEnd, tsEnd);
+    }
+
+    @Test
+    @Ignore("not yet functional")
+    public void testSeekVisibleRange() throws InterruptedException {
+        SwtJfxTimeGraphViewer viewer = sfViewer;
+        assertNotNull(viewer);
+
+        final long startTime = 150000L;
+        final long endTime = 160000L;
+
+        viewer.getTimeGraphScrollPane().hvalueProperty().addListener((observable, oldVal, newVal) -> {
+            System.out.println("old hvalue=" + oldVal + ", new hvalue=" + newVal);
+            (new Throwable()).printStackTrace();
+        });
+
+        TmfTimeRange range = createTimeRange(startTime, endTime);
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
         TmfSignalManager.dispatchSignal(signal);
 
-        double visibleWidth = viewer.getTimeGraphScrollPane().getWidth();
-        System.out.println("width=" + visibleWidth);
+        /* Check the control */
+        assertEquals(startTime, viewer.getControl().getVisibleTimeRangeStart());
+        assertEquals(endTime, viewer.getControl().getVisibleTimeRangeEnd());
+
+        /* Check the view itself */
+        // FIXME Copy-pasted from the runtime code, extract to a common function?
+        double hmin = viewer.getTimeGraphScrollPane().getHmin();
+        double hmax = viewer.getTimeGraphScrollPane().getHmax();
+        double hvalue = viewer.getTimeGraphScrollPane().getHvalue();
+        double contentWidth = viewer.getTimeGraphPane().getLayoutBounds().getWidth();
+        double viewportWidth = viewer.getTimeGraphScrollPane().getViewportBounds().getWidth();
+        double hoffset = Math.max(0, contentWidth - viewportWidth) * (hvalue - hmin) / (hmax - hmin);
+
+        System.out.println("hvalue=" + hvalue);
+        System.out.println("contentWidth=" + contentWidth);
+        System.out.println("viewportWidth=" + viewportWidth);
+        System.out.println("hoffset=" + hoffset);
+
+        long tsStart = viewer.paneXPosToTimestamp(hoffset);
+        long tsEnd = viewer.paneXPosToTimestamp(hoffset + viewportWidth);
+
+        assertEquals(startTime, tsStart);
+        assertEquals(endTime, tsEnd);
     }
 
     @Test
     public void testZoomOut() {
 
+    }
+
+    private static void updateUI() {
+        Display display = sfDisplay;
+        if (display == null) {
+            return;
+        }
+        while (display.readAndDispatch()) {}
     }
 
     private static TmfTimeRange createTimeRange(long start, long end) {

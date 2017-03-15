@@ -16,10 +16,14 @@ import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 
+import com.google.common.annotations.VisibleForTesting;
+
 public abstract class SwtJfxTimeGraphView extends TmfView {
 
     private final ITimeGraphModelRenderProvider fModelRenderProvider;
     private final TimeGraphModelControl fModelControl;
+
+    private @Nullable SwtJfxTimeGraphViewer fViewer;
 
     protected SwtJfxTimeGraphView(String viewName, ITimeGraphModelRenderProvider modelRenderProvider) {
         super(viewName);
@@ -38,6 +42,8 @@ public abstract class SwtJfxTimeGraphView extends TmfView {
         IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
         toolbarMgr.add(ActionFactory.getSelectSortingModeAction(viewer));
         toolbarMgr.add(ActionFactory.getSelectFilterModesAction(viewer));
+
+        fViewer = viewer;
     }
 
     @Override
@@ -49,4 +55,13 @@ public abstract class SwtJfxTimeGraphView extends TmfView {
     public void setFocus() {
     }
 
+    @VisibleForTesting
+    TimeGraphModelControl getControl() {
+        return fModelControl;
+    }
+
+    @VisibleForTesting
+    @Nullable SwtJfxTimeGraphViewer getViewer() {
+        return fViewer;
+    }
 }

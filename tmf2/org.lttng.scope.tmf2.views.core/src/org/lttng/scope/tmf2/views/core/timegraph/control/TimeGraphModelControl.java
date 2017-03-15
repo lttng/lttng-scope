@@ -17,8 +17,6 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
-import com.google.common.annotations.VisibleForTesting;
-
 public final class TimeGraphModelControl {
 
     private static final long UNINITIALIZED = -1;
@@ -142,8 +140,7 @@ public final class TimeGraphModelControl {
      * Should be called when the trace changes, or the trace's total time range
      * is updated (while indexing, or in live cases).
      */
-    @VisibleForTesting
-    public void setTimeGraphAreaRange(long fullAreaStartTime, long fullAreaEndTime) {
+    void setTimeGraphAreaRange(long fullAreaStartTime, long fullAreaEndTime) {
         checkTimeRange(fullAreaStartTime, fullAreaEndTime);
 
         if (fFullTimeGraphStartTime == fullAreaStartTime &&
@@ -201,4 +198,5 @@ public final class TimeGraphModelControl {
                     " is greater than trace end time " + fFullTimeGraphEndTime);
         }
     }
+
 }

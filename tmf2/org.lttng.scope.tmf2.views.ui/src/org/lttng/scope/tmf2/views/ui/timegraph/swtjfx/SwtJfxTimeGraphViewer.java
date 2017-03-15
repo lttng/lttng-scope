@@ -283,6 +283,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphScrollPane = new ScrollPane(fTimeGraphPane);
         fTimeGraphScrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
         fTimeGraphScrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+        fTimeGraphScrollPane.setFitToHeight(true);
+        fTimeGraphScrollPane.setFitToWidth(true);
 
 //        fTimeGraphScrollPane.viewportBoundsProperty().addListener(fScrollingCtx.fHScrollChangeListener);
         fTimeGraphScrollPane.setOnMouseEntered(fScrollingCtx.fMouseEnteredEventHandler);
@@ -331,7 +333,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         /* Update the zoom level */
         long windowTimeRange = visibleWindowEndTime - visibleWindowStartTime;
-        double timeGraphWidth = fTimeGraphScrollPane.getWidth();
+        double timeGraphWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
         fNanosPerPixel = windowTimeRange / timeGraphWidth;
 
         double timeGraphAreaWidth = timestampToPaneXPos(fullTimeGraphEnd) - timestampToPaneXPos(fullTimeGraphStart);
@@ -696,7 +698,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             getControl().updateVisibleTimeRange(tsStart, tsEnd);
 
             /*
-             * The control will not send thisn signal back to us (to avoid
+             * The control will not send this signal back to us (to avoid
              * jitter while scrolling), but the next UI update should refresh
              * the view accordingly.
              */

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewStub"
+            id="org.lttng.scope.tmf2.views.ui.tests.timegraph.swtjfx"
+            name="Test Timegraph Model View"
+            restorable="true">
+      </view>
+   </extension>
+
+</fragment>

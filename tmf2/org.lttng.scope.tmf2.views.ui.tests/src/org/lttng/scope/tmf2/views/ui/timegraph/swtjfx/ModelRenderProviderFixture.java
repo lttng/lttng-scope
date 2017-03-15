@@ -1,16 +1,19 @@
-/*******************************************************************************
- * Copyright (c) 2016 EfficiOS Inc., Alexandre Montplaisir
+/*
+ * Copyright (C) 2016-2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ */
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -23,15 +26,24 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip.TimeGraphT
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
-public class ModelRenderProviderStub extends TimeGraphModelRenderProvider {
+class ModelRenderProviderFixture extends TimeGraphModelRenderProvider {
 
-    protected ModelRenderProviderStub() {
+    private static final TimeGraphTreeRender TREE_RENDER;
+
+    static {
+        List<TimeGraphTreeElement> treeElements = IntStream.range(0, 20)
+            .mapToObj(i -> new TimeGraphTreeElement("Entry #" + i, Collections.emptyList()))
+            .collect(Collectors.toList());
+        TREE_RENDER = new TimeGraphTreeRender(treeElements);
+    }
+
+    protected ModelRenderProviderFixture() {
         super(null, null);
     }
 
     @Override
     public TimeGraphTreeRender getTreeRender() {
-        return TimeGraphTreeRender.EMPTY_RENDER;
+        return TREE_RENDER;
     }
 
     @Override
