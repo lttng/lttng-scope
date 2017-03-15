@@ -24,4 +24,9 @@ before_install:
   - export M2_HOME=$PWD/apache-maven-3.3.9
   - export PATH=$M2_HOME/bin:$PATH
 
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+
 script: mvn verify -B -Dmaven.test.skip=false
