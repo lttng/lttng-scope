@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
@@ -47,12 +46,14 @@ import javafx.concurrent.Task;
 import javafx.embed.swt.FXCanvas;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -121,10 +122,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
-    private final SashForm fBaseControl;
-
-    private final FXCanvas fTreeFXCanvas;
-    private final FXCanvas fTimeGraphFXCanvas;
+    private final FXCanvas fBaseCanvas;
+    private final SplitPane fBaseSplitPane;
 
     private final Pane fTreePane;
     private final ScrollPane fTreeScrollPane;
@@ -189,14 +188,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         super(control);
         Platform.setImplicitExit(false);
 
-        // TODO Convert this sash to JavaFX too?
-        fBaseControl = new SashForm(parent, SWT.NONE);
-
-        fTreeFXCanvas = new FXCanvas(fBaseControl, SWT.NONE);
-        fTimeGraphFXCanvas = new FXCanvas(fBaseControl, SWT.NONE);
-
-        // TODO Base on time-alignment
-        fBaseControl.setWeights(new int[] { 15, 85 });
+        fBaseCanvas = new FXCanvas(parent, SWT.NONE);
 
         // --------------------------------------------------------------------
         // Prepare the tree part's scene graph
@@ -270,11 +262,19 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
 
         // --------------------------------------------------------------------
-        // Hook the parts into the SWT window
+        // Prepare the top-level area
         // --------------------------------------------------------------------
 
-        fTreeFXCanvas.setScene(new Scene(fTreeScrollPane));
-        fTimeGraphFXCanvas.setScene(new Scene(fTimeGraphScrollPane));
+        fBaseSplitPane = new SplitPane(fTreeScrollPane, fTimeGraphScrollPane);
+        fBaseSplitPane.setOrientation(Orientation.HORIZONTAL);
+
+        fBaseCanvas.setScene(new Scene(fBaseSplitPane));
+
+        /*
+         * setDividerPositions() needs to be called *after* the Stage/Scene is
+         * initialized.
+         */
+        fBaseSplitPane.setDividerPositions(0.2);
 
         /*
          * Initially populate the viewer with the context of the current trace.
