@@ -58,6 +58,9 @@ public class SwtJfxTimeGraphViewerTest {
         SwtJfxTimeGraphViewer viewer = view.getViewer();
         assertNotNull(viewer);
 
+        /* Disable mouse listeners in case the mouse dwells inside the view. */
+        viewer.getDebugOptions().fScrollingListenersEnabled = false;
+
         updateUI();
         control.initializeForTrace(sfTrace);
         updateUI();

@@ -119,15 +119,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     public static final double ENTRY_HEIGHT = 20;
 
-    /** Number of tree elements to print above *and* below the visible range */
-    private static final int ENTRY_PREFETCHING = 5;
-
-    /** Time between UI updates, in milliseconds */
-    private static final int UI_UPDATE_DELAY = 250;
-
     // ------------------------------------------------------------------------
     // Instance fields
     // ------------------------------------------------------------------------
+
+    private final DebugOptions fDebugOptions = new DebugOptions();
 
     private final SelectionContext fSelectionCtx = new SelectionContext();
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
@@ -288,7 +284,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         ITmfTrace trace = TmfTraceManager.getInstance().getActiveTrace();
         getControl().initializeForTrace(trace);
 
-        fUiUpdateTimer.schedule(fUiUpdateTimerTask, UI_UPDATE_DELAY, UI_UPDATE_DELAY);
+        long period = fDebugOptions.fUIUpdateDelay;
+        fUiUpdateTimer.schedule(fUiUpdateTimerTask, period, period);
     }
 
     // ------------------------------------------------------------------------
@@ -422,10 +419,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 final int nbElements = allTreeElements.size();
 
+                int entriesToPrefetch = fDebugOptions.fEntryPrefetching;
                 int topEntry = Math.max(0,
-                        paneYPosToEntryListIndex(vertical.fTopPos, vertical.fContentHeight, nbElements) - ENTRY_PREFETCHING);
+                        paneYPosToEntryListIndex(vertical.fTopPos, vertical.fContentHeight, nbElements) - entriesToPrefetch);
                 int bottomEntry = Math.min(nbElements,
-                        paneYPosToEntryListIndex(vertical.fBottomPos, vertical.fContentHeight, nbElements) + ENTRY_PREFETCHING);
+                        paneYPosToEntryListIndex(vertical.fBottomPos, vertical.fContentHeight, nbElements) + entriesToPrefetch);
 
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
@@ -678,6 +676,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * Listener for the horizontal scrollbar changes
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
+            if (!fDebugOptions.fScrollingListenersEnabled) {
+                System.out.println("HScroll event ignored due to debug option");
+                return;
+            }
             if (!fUserActionOngoing) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
@@ -706,8 +708,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
 
         private final ChangeListener<Number> fVScrollChangeListener = (observable, oldValue, newValue) -> {
+            if (!fDebugOptions.fScrollingListenersEnabled) {
+                System.out.println("VScroll event ignored due to debug option");
+                return;
+            }
             if (!fUserActionOngoing) {
-                System.out.println("HScroll listener triggered but inactive");
+                System.out.println("VScroll listener triggered but inactive");
                 return;
             }
 
@@ -861,6 +867,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // ------------------------------------------------------------------------
     // Test accessors
     // ------------------------------------------------------------------------
+
+    // could eventually be exposed to the user, as "advanced preferences"
+    DebugOptions getDebugOptions() {
+        return fDebugOptions;
+    }
 
     @VisibleForTesting
     double getCurrentNanosPerPixel() {
