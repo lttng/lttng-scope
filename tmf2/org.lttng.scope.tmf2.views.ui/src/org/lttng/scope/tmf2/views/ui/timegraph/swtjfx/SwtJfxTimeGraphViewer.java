@@ -14,6 +14,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,6 +52,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
@@ -62,6 +64,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /**
  * Viewer for the {@link SwtJfxTimeGraphView}, encapsulating all the view's
@@ -110,6 +114,17 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * TODO Make this configurable (vertical zoom feature)
      */
     public static final double ENTRY_HEIGHT = 20;
+
+    private static final Font TEXT_FONT = requireNonNull(new Text().getFont());
+    /* Note, don't use the "…" character, JavaFX seems to not like it */
+    private static final String ELLIPSIS = "..."; //$NON-NLS-1$
+    private static final double ELLIPSIS_WIDTH;
+    static {
+        Text text = new Text(ELLIPSIS);
+        text.setFont(TEXT_FONT);
+        text.applyCss();
+        ELLIPSIS_WIDTH = text.getLayoutBounds().getWidth();
+    }
 
     // ------------------------------------------------------------------------
     // Instance fields
@@ -433,7 +448,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 }
 
                 /* Prepare the time graph part */
-                Node timeGraphContents = prepareTimeGraphContents(stateRenders, topEntry);
+                Node timeGraphContents = prepareTimeGraphContents(horizontalPos, stateRenders, topEntry);
 
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
@@ -565,13 +580,54 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // Methods related to the Time Graph area
     // ------------------------------------------------------------------------
 
-    private Node prepareTimeGraphContents(List<TimeGraphStateRender> stateRenders, int topEntry) {
-        Collection<Node> rectangles = IntStream.range(0, stateRenders.size()).parallel()
+    private Node prepareTimeGraphContents(HorizontalPosition horizontalPos,
+            List<TimeGraphStateRender> stateRenders, int topEntry) {
+        double minX = timestampToPaneXPos(horizontalPos.fStartTime);
+
+        /* Prepare the colored state rectangles */
+        Collection<StateRectangle> rectangles = IntStream.range(0, stateRenders.size()).parallel()
                 .mapToObj(idx -> getRectanglesForStateRender(stateRenders.get(idx), idx + topEntry))
                 .flatMap(Function.identity())
                 .collect(Collectors.toSet());
 
-        return new Group(rectangles);
+        /*
+         * Prepare the labels to add on top of the rectangles, where appropriate.
+         */
+        final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
+        Collection<Node> texts = rectangles.stream()
+                /* Only try to annotate rectangles that are large enough */
+                .filter(stateRect -> stateRect.getWidth() > ELLIPSIS_WIDTH)
+                .filter(stateRect -> stateRect.getStateInterval().getLabel() != null)
+                .map(stateRect -> {
+                    String labelText = requireNonNull(stateRect.getStateInterval().getLabel());
+                    /* A small offset looks better here */
+                    double textX = Math.max(minX, stateRect.getX()) + 4.0;
+                    double textY = stateRect.getY() + yOffset;
+
+                    double rectEndX = stateRect.getX() + stateRect.getWidth();
+                    double minWidth = rectEndX - textX;
+
+                    String ellipsedText = Utils.computeClippedText(TEXT_FONT,
+                            labelText,
+                            minWidth,
+                            OverrunStyle.ELLIPSIS, ELLIPSIS);
+
+                    if (ellipsedText.equals(ELLIPSIS)) {
+                        return null;
+                    }
+
+                    Text text = new Text(textX, textY, ellipsedText);
+                    text.setFont(TEXT_FONT);
+                    text.setFill(Color.WHITE);
+                    return text;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        Group group = new Group();
+        group.getChildren().addAll(rectangles);
+        group.getChildren().addAll(texts);
+        return group;
     }
 
     /**
@@ -852,6 +908,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     private static int paneYPosToEntryListIndex(double yPos, double yMax, int nbEntries) {
+        if (yPos < 0.0 || yMax < 0.0 || yPos > yMax || nbEntries < 0) {
+            throw new IllegalArgumentException();
+        }
+
         double ratio = yPos / yMax;
         return (int) (ratio * nbEntries);
     }
