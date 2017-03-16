@@ -124,6 +124,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
             String stateSystemModuleId,
             Function<TreeRenderContext, TimeGraphTreeRender> treeRenderFunction,
             Function<StateIntervalContext, String> stateNameMappingFunction,
+            Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ColorDefinition> colorMappingFunction,
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction) {
 
@@ -138,6 +139,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
                     ssCtx.sourceInterval.getEndTime(),
                     ssCtx.baseTreeElement,
                     stateNameMappingFunction.apply(ssCtx),
+                    labelMappingFunction.apply(ssCtx),
                     colorMappingFunction.apply(ssCtx),
                     lineThicknessMappingFunction.apply(ssCtx));
         };

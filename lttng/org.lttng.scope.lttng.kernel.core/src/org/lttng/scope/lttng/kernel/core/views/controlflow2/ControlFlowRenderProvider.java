@@ -18,6 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
@@ -38,6 +39,10 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
+
+    // ------------------------------------------------------------------------
+    // Tree render
+    // ------------------------------------------------------------------------
 
     private static final List<SortingMode> SORTING_MODES = ImmutableList.of(
             ControlFlowConfigModes.SORTING_BY_TID,
@@ -140,7 +145,9 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
         return new TimeGraphTreeRender(treeElemsList);
     };
 
-
+    // ------------------------------------------------------------------------
+    // State name mapping
+    // ------------------------------------------------------------------------
 
     /**
      * Function mapping state names
@@ -181,6 +188,40 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
         return mapStateValueToStateName(status);
     };
 
+    // ------------------------------------------------------------------------
+    // Label mapping
+    // ------------------------------------------------------------------------
+
+    /** Prefix to strip from syscall names in the labels */
+    private static final String SYSCALL_PREFIX = "sys_"; //$NON-NLS-1$
+
+    private static final Function<StateIntervalContext, @Nullable String> LABEL_MAPPING_FUNCTION = ssCtx -> {
+        int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
+        ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
+
+        /* If the status is "syscall", use the name of the syscall as label */
+        if (!val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
+            return null;
+        }
+
+        String syscallName;
+        try {
+            int syscallQuark = ssCtx.ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
+            syscallName = ssCtx.fullQueryAtIntervalStart.get(syscallQuark).getStateValue().unboxStr();
+        } catch (AttributeNotFoundException | StateValueTypeException e) {
+            return null;
+        }
+
+        /* Strip the "sys_" part if there is one, it's not useful in the label */
+        if (syscallName.startsWith(SYSCALL_PREFIX)) {
+            syscallName = syscallName.substring(SYSCALL_PREFIX.length());
+        }
+        return syscallName;
+    };
+
+    // ------------------------------------------------------------------------
+    // Color mapping
+    // ------------------------------------------------------------------------
 
     private static final ColorDefinition NO_COLOR           = new ColorDefinition(  0,   0,   0,  0);
     private static final ColorDefinition COLOR_UNKNOWN      = new ColorDefinition(100, 100, 100);
@@ -223,6 +264,10 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
         }
     };
 
+    // ------------------------------------------------------------------------
+    // Line thickness
+    // ------------------------------------------------------------------------
+
     /* No variation for now */
     private static final Function<StateIntervalContext, LineThickness> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> {
 //        int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
@@ -235,6 +280,10 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
 
         return LineThickness.NORMAL;
     };
+
+    // ------------------------------------------------------------------------
+    // Properties
+    // ------------------------------------------------------------------------
 
     // TODO
 //    private static final Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> PROPERTY_MAPPING_FUNCTION = ssCtx -> {
@@ -251,6 +300,7 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
                 KernelAnalysisModule.ID,
                 SS_TO_TREE_RENDER_FUNCTION,
                 STATE_NAME_MAPPING_FUNCTION,
+                LABEL_MAPPING_FUNCTION,
                 COLOR_MAPPING_FUNCTION,
                 LINE_THICKNESS_MAPPING_FUNCTION);
 

@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -26,6 +27,7 @@ public class TimeGraphStateInterval {
     private final TimeGraphEvent fEndEvent;
 
     private final String fStateName;
+    private final @Nullable String fLabel;
     private final ColorDefinition fColor;
     private final LineThickness fLineThickness;
 
@@ -33,6 +35,7 @@ public class TimeGraphStateInterval {
             long end,
             TimeGraphTreeElement treeElement,
             String stateName,
+            @Nullable String label,
             ColorDefinition color,
             LineThickness lineThickness) {
 
@@ -40,6 +43,7 @@ public class TimeGraphStateInterval {
         fEndEvent = new TimeGraphEvent(end, treeElement);
 
         fStateName = stateName;
+        fLabel = label;
         fColor = color;
         fLineThickness = lineThickness;
 
@@ -55,6 +59,10 @@ public class TimeGraphStateInterval {
 
     public String getStateName() {
         return fStateName;
+    }
+
+    public @Nullable String getLabel() {
+        return fLabel;
     }
 
     public ColorDefinition getColorDefinition() {
