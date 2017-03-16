@@ -139,8 +139,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * redraw or add only some of them.
      */
     private final Group fTimeGraphBackgroundLayer;
-    private final Group fTimeGraphSelectionLayer;
     private final Group fTimeGraphStatesLayer;
+    private final Group fTimeGraphTextLabelsLayer;
+    private final Group fTimeGraphSelectionLayer;
     // TODO Layers for markers, arrows
 
     private final Rectangle fSelectionRect;
@@ -220,8 +221,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         });
 
         fTimeGraphBackgroundLayer = new Group();
-        fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
         fTimeGraphStatesLayer = new Group();
+        fTimeGraphTextLabelsLayer = new Group();
+        fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
 
         /*
          * The order of the layers is important here, it will go from back to
@@ -229,6 +231,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          */
         fTimeGraphPane = new Pane(fTimeGraphBackgroundLayer,
                 fTimeGraphStatesLayer,
+                fTimeGraphTextLabelsLayer,
                 fTimeGraphSelectionLayer);
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
@@ -437,7 +440,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 }
 
                 /* Prepare the time graph part */
-                Node timeGraphContents = prepareTimeGraphContents(horizontalPos, stateRenders, topEntry);
+                Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
+                Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
+                Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, horizontalPos);
 
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
@@ -463,7 +468,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     long afterTreeUI = System.nanoTime();
 
                     fTimeGraphStatesLayer.getChildren().clear();
-                    fTimeGraphStatesLayer.getChildren().add(timeGraphContents);
+                    fTimeGraphTextLabelsLayer.getChildren().clear();
+                    fTimeGraphStatesLayer.getChildren().add(statesLayerContents);
+                    fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
 
                     long endUI = System.nanoTime();
                     StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
@@ -569,26 +576,38 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // Methods related to the Time Graph area
     // ------------------------------------------------------------------------
 
-    private Node prepareTimeGraphContents(HorizontalPosition horizontalPos,
+    private Collection<StateRectangle> prepareStateRectangles(
             List<TimeGraphStateRender> stateRenders, int topEntry) {
-        double minX = timestampToPaneXPos(horizontalPos.fStartTime);
-
         /* Prepare the colored state rectangles */
         Collection<StateRectangle> rectangles = IntStream.range(0, stateRenders.size()).parallel()
                 .mapToObj(idx -> getRectanglesForStateRender(stateRenders.get(idx), idx + topEntry))
                 .flatMap(Function.identity())
                 .collect(Collectors.toSet());
+        return rectangles;
+    }
 
-        /*
-         * Prepare the labels to add on top of the rectangles, where appropriate.
-         */
+    private Stream<StateRectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
+        return stateRender.getStateIntervals().stream()
+                .map(interval -> new StateRectangle(this, interval, entryIndex));
+    }
+
+    private static Node prepareTimeGraphStatesContents(Collection<StateRectangle> stateRectangles) {
+        Group group = new Group();
+        group.getChildren().addAll(stateRectangles);
+        return group;
+    }
+
+    private Node prepareTimeGrahLabelsContents(Collection<StateRectangle> stateRectangles,
+            HorizontalPosition horizontalPos) {
+        double minX = timestampToPaneXPos(horizontalPos.fStartTime);
+
         final String ellipsisStr = fDebugOptions.getEllipsisString();
         final Font textFont = fDebugOptions.getTextFont();
         final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
         final Color textColor = Color.WHITE;
 
         final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
-        Collection<Node> texts = rectangles.stream()
+        Collection<Node> texts = stateRectangles.stream()
                 /* Only try to annotate rectangles that are large enough */
                 .filter(stateRect -> stateRect.getWidth() > fDebugOptions.getEllipsisWidth())
                 .filter(stateRect -> stateRect.getStateInterval().getLabel() != null)
@@ -619,24 +638,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        Group group = new Group();
-        group.getChildren().addAll(rectangles);
-        group.getChildren().addAll(texts);
-        return group;
-    }
-
-    /**
-     * Get the vertically-tiled Canvas's for a single render. They will
-     * be already relocated correctly, so the collection's order does not
-     * matter.
-     *
-     * @param render
-     *            The render
-     * @return The vertical set of canvases
-     */
-    private Stream<StateRectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
-        return stateRender.getStateIntervals().stream()
-                .map(interval -> new StateRectangle(this, interval, entryIndex));
+        return new Group(texts);
     }
 
     // ------------------------------------------------------------------------
