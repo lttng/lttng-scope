@@ -177,9 +177,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fPreviousHorizontalPos = currentHorizontalPos;
             fPreviousVerticalPosition = currentVerticalPos;
 
-            paintArea(currentHorizontalPos.fStartTime,
-                    currentHorizontalPos.fEndTime,
-                    fTaskSeq.getAndIncrement());
+            paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
         }
     };
 
@@ -367,20 +365,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return new HorizontalPosition(start, end);
     }
 
-    private void paintArea(long windowStartTime, long windowEndTime, long taskSeqNb) {
+    private void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
         final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
         final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
+        final long windowStartTime = horizontalPos.fStartTime;
+        final long windowEndTime = horizontalPos.fEndTime;
+        final long windowTimeRange = windowEndTime - windowStartTime;
 
-        /*
-         * Get the current target width of the viewer, so we know at which
-         * resolution we must do state system queries.
-         *
-         * Yes! We can query the size of visible components outside of the UI
-         * thread! Praise the JavaFX!
-         */
-        long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
-
-        long windowTimeRange = windowEndTime - windowStartTime;
+        final long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
 
         /*
          * Request the needed renders and prepare the corresponding UI objects.
@@ -396,8 +388,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         if (renderTimeRange < 1) {
             return;
         }
-
-        final VerticalPosition vertical = fVerticalPosition;
 
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
@@ -421,9 +411,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 int entriesToPrefetch = fDebugOptions.fEntryPrefetching;
                 int topEntry = Math.max(0,
-                        paneYPosToEntryListIndex(vertical.fTopPos, vertical.fContentHeight, nbElements) - entriesToPrefetch);
+                        paneYPosToEntryListIndex(verticalPos.fTopPos, verticalPos.fContentHeight, nbElements) - entriesToPrefetch);
                 int bottomEntry = Math.min(nbElements,
-                        paneYPosToEntryListIndex(vertical.fBottomPos, vertical.fContentHeight, nbElements) + entriesToPrefetch);
+                        paneYPosToEntryListIndex(verticalPos.fBottomPos, verticalPos.fContentHeight, nbElements) + entriesToPrefetch);
 
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
@@ -464,7 +454,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.err.println(sj.toString());
 
                 /* Update the view! */
-                // Display.getDefault().syncExec( () -> {
                 Platform.runLater(() -> {
                     long startUI = System.nanoTime();
                     if (treeContents != null) {
