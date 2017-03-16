@@ -383,13 +383,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         long windowTimeRange = windowEndTime - windowStartTime;
 
         /*
-         * Request the needed renders and prepare the corresponding
-         * canvases. We target at most one "window width" before and
-         * after the current window, clamped by the trace's start and
-         * end.
+         * Request the needed renders and prepare the corresponding UI objects.
+         * We may ask for some padding on each side, clamped by the trace's
+         * start and end.
          */
-        final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - windowTimeRange);
-        final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + windowTimeRange);
+        final long timeRangePadding = Math.round(windowTimeRange * fDebugOptions.fRenderRangePadding);
+        final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - timeRangePadding);
+        final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + timeRangePadding);
         final long renderTimeRange = (long) (MAX_CANVAS_WIDTH * fNanosPerPixel);
         final long resolution = Math.max(1, Math.round(fNanosPerPixel));
 

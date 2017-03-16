@@ -20,6 +20,13 @@ public class DebugOptions {
     /** Number of tree elements to print above *and* below the visible range */
     public int fEntryPrefetching = 5;
 
+    /**
+     * How much "padding" around the current visible window, on the left and
+     * right, should be pre-rendered. Expressed as a fraction of the current
+     * window (for example, 1.0 would render one "page" on each side).
+     */
+    public double fRenderRangePadding = 0.1;
+
     /** Time between UI updates, in milliseconds */
     public int fUIUpdateDelay = 250;
 
