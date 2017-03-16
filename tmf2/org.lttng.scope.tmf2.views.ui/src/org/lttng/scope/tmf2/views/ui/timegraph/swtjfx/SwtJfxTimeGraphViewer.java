@@ -297,8 +297,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         ITmfTrace trace = TmfTraceManager.getInstance().getActiveTrace();
         getControl().initializeForTrace(trace);
 
-        long period = fDebugOptions.fUIUpdateDelay;
-        fUiUpdateTimer.schedule(fUiUpdateTimerTask, period, period);
+        long delay = fDebugOptions.getUIUpdateDelay();
+        fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
 
     // ------------------------------------------------------------------------
@@ -394,7 +394,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * We may ask for some padding on each side, clamped by the trace's
          * start and end.
          */
-        final long timeRangePadding = Math.round(windowTimeRange * fDebugOptions.fRenderRangePadding);
+        final long timeRangePadding = Math.round(windowTimeRange * fDebugOptions.getRenderRangePadding());
         final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + timeRangePadding);
         final long resolution = Math.max(1, Math.round(fNanosPerPixel));
@@ -419,7 +419,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 final int nbElements = allTreeElements.size();
 
-                int entriesToPrefetch = fDebugOptions.fEntryPrefetching;
+                int entriesToPrefetch = fDebugOptions.getEntryPadding();
                 int topEntry = Math.max(0,
                         paneYPosToEntryListIndex(verticalPos.fTopPos, verticalPos.fContentHeight, nbElements) - entriesToPrefetch);
                 int bottomEntry = Math.min(nbElements,
@@ -492,7 +492,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     private void paintBackground(VerticalPosition vPos) {
-        final int entriesToPrefetch = fDebugOptions.fEntryPrefetching;
+        final int entriesToPrefetch = fDebugOptions.getEntryPadding();
 
         final double timeGraphWidth = fTimeGraphPane.getWidth();
         final double timeGraphHeight = fTimeGraphPane.getHeight();
@@ -743,7 +743,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * Listener for the horizontal scrollbar changes
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!fDebugOptions.fScrollingListenersEnabled) {
+            if (!fDebugOptions.isScrollingListenersEnabled()) {
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
@@ -775,7 +775,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
 
         private final ChangeListener<Number> fVScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!fDebugOptions.fScrollingListenersEnabled) {
+            if (!fDebugOptions.isScrollingListenersEnabled()) {
                 System.out.println("VScroll event ignored due to debug option");
                 return;
             }
