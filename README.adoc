@@ -1,5 +1,8 @@
 = LTTng Scope (Alpha Version)
 
+image:https://travis-ci.org/lttng/lttng-scope.svg?branch=master["Build Status", link="https://travis-ci.org/lttng/lttng-scope"]
+image:https://scan.coverity.com/projects/12046/badge.svg["Coverity Scan Build Status", link="https://scan.coverity.com/projects/lttng-scope"]
+
 _**LTTng Scope**_ is a trace viewer and analyzer for
 http://diamon.org/ctf/[CTF] traces, with a focus on
 https://lttng.org/[LTTng] kernel and user space traces.
@@ -38,20 +41,6 @@ mvn clean install -Dmaven.test.skip=false
 
 Maven outputs the platform-specific application packages in the
 `releng/org.lttng.scope.rcp.product/target/products` directory.
-
-
-=== Maven profiles and properties
-
-The LTTng Scope build system defines the following Maven profiles
-and properties:
-
-`-Dtarget-platform=TARGET`::
-    Use target `TARGET`.
-+
-Use this property to build LTTng Scope against various versions of the
-Eclipse platform. The available targets are listed in
-`releng/org.lttng.scope.target`. The default is usually the latest
-stable platform.
 
 
 == User documentation
