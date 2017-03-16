@@ -115,17 +115,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     public static final double ENTRY_HEIGHT = 20;
 
-    private static final Font TEXT_FONT = requireNonNull(new Text().getFont());
-    /* Note, don't use the "…" character, JavaFX seems to not like it */
-    private static final String ELLIPSIS = "..."; //$NON-NLS-1$
-    private static final double ELLIPSIS_WIDTH;
-    static {
-        Text text = new Text(ELLIPSIS);
-        text.setFont(TEXT_FONT);
-        text.applyCss();
-        ELLIPSIS_WIDTH = text.getLayoutBounds().getWidth();
-    }
-
     // ------------------------------------------------------------------------
     // Instance fields
     // ------------------------------------------------------------------------
@@ -593,10 +582,15 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         /*
          * Prepare the labels to add on top of the rectangles, where appropriate.
          */
+        final String ellipsisStr = fDebugOptions.getEllipsisString();
+        final Font textFont = fDebugOptions.getTextFont();
+        final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
+        final Color textColor = Color.WHITE;
+
         final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
         Collection<Node> texts = rectangles.stream()
                 /* Only try to annotate rectangles that are large enough */
-                .filter(stateRect -> stateRect.getWidth() > ELLIPSIS_WIDTH)
+                .filter(stateRect -> stateRect.getWidth() > fDebugOptions.getEllipsisWidth())
                 .filter(stateRect -> stateRect.getStateInterval().getLabel() != null)
                 .map(stateRect -> {
                     String labelText = requireNonNull(stateRect.getStateInterval().getLabel());
@@ -607,18 +601,19 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     double rectEndX = stateRect.getX() + stateRect.getWidth();
                     double minWidth = rectEndX - textX;
 
-                    String ellipsedText = Utils.computeClippedText(TEXT_FONT,
+                    String ellipsedText = Utils.computeClippedText(textFont,
                             labelText,
                             minWidth,
-                            OverrunStyle.ELLIPSIS, ELLIPSIS);
+                            overrunStyle,
+                            ellipsisStr);
 
-                    if (ellipsedText.equals(ELLIPSIS)) {
+                    if (ellipsedText.equals(ellipsisStr)) {
                         return null;
                     }
 
                     Text text = new Text(textX, textY, ellipsedText);
-                    text.setFont(TEXT_FONT);
-                    text.setFill(Color.WHITE);
+                    text.setFont(textFont);
+                    text.setFill(textColor);
                     return text;
                 })
                 .filter(Objects::nonNull)

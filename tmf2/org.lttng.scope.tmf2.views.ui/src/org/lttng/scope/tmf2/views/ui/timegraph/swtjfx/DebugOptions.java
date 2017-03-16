@@ -9,6 +9,11 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
+import static java.util.Objects.requireNonNull;
+
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 /**
  * Debug options for the {@link SwtJfxTimeGraphViewer}. Advanced users or unit
  * tests might want to modify these.
@@ -22,10 +27,15 @@ class DebugOptions {
     private int fUIUpdateDelay = 250;
     private boolean fScrollingListenersEnabled = true;
 
+    private Font fTextFont = requireNonNull(new Text().getFont());
+    private String fEllipsisString = "..."; //$NON-NLS-1$
+    private transient double fEllipsisWidth;
+
     /**
      * Constructor using the default options
      */
     public DebugOptions() {
+        recomputeEllipsisWidth();
     }
 
     /**
@@ -69,6 +79,36 @@ class DebugOptions {
 
     void setScrollingListenersEnabled(boolean bool) {
         fScrollingListenersEnabled = bool;
+    }
+
+    public Font getTextFont() {
+        return fTextFont;
+    }
+
+    synchronized void setTextFont(Font font) {
+        fTextFont = font;
+        recomputeEllipsisWidth();
+    }
+
+    public String getEllipsisString() {
+        return fEllipsisString;
+    }
+
+    /* Note, don't use the "…" character, JavaFX seems to not like it */
+    synchronized void setEllipsisString(String ellipsisString) {
+        fEllipsisString = ellipsisString;
+        recomputeEllipsisWidth();
+    }
+
+    public double getEllipsisWidth() {
+        return fEllipsisWidth;
+    }
+
+    private synchronized void recomputeEllipsisWidth() {
+        Text text = new Text(getEllipsisString());
+        text.setFont(getTextFont());
+        text.applyCss();
+        fEllipsisWidth = text.getLayoutBounds().getWidth();
     }
 
 }
