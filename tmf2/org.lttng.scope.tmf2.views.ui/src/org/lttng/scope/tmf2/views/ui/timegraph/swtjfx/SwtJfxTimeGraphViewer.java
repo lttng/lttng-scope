@@ -20,6 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -258,6 +259,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphScrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
         fTimeGraphScrollPane.setFitToHeight(true);
         fTimeGraphScrollPane.setFitToWidth(true);
+        fTimeGraphScrollPane.setPannable(true);
 
 //        fTimeGraphScrollPane.viewportBoundsProperty().addListener(fScrollingCtx.fHScrollChangeListener);
         fTimeGraphScrollPane.setOnMouseEntered(fScrollingCtx.fMouseEnteredEventHandler);
@@ -646,6 +648,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // ------------------------------------------------------------------------
 
     /**
+     * These events are to be ignored by the time graph pane, they should
+     * "bubble up" to the scrollpane to be used for panning.
+     */
+    private static final Predicate<MouseEvent> MOUSE_EVENT_IGNORED = e -> {
+        return (e.isSecondaryButtonDown() ||e.isMiddleButtonDown() || e.isControlDown());
+    };
+
+    /**
      * Class encapsulating the time range selection, related drawing and
      * listeners.
      */
@@ -655,12 +665,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         private double fMouseOriginX;
 
         public final EventHandler<MouseEvent> fMousePressedEventHandler = e -> {
-            if (e.isShiftDown() ||
-                    e.isControlDown() ||
-                    e.isSecondaryButtonDown() ||
-                    e.isMiddleButtonDown()) {
-                /* Do other things! */
-                // TODO!
+            if (MOUSE_EVENT_IGNORED.test(e)) {
                 return;
             }
 
@@ -686,6 +691,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
 
         public final EventHandler<MouseEvent> fMouseDraggedEventHandler = e -> {
+            if (MOUSE_EVENT_IGNORED.test(e)) {
+                return;
+            }
+
             double newX = e.getX();
             double offsetX = newX - fMouseOriginX;
 
@@ -701,6 +710,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
 
         public final EventHandler<MouseEvent> fMouseReleasedEventHandler = e -> {
+            if (MOUSE_EVENT_IGNORED.test(e)) {
+                return;
+            }
+
             fOngoingSelectionRect.setVisible(false);
 
             e.consume();
