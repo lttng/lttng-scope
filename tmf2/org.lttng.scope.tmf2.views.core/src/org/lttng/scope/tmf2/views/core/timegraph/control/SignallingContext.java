@@ -67,9 +67,10 @@ public class SignallingContext {
         TmfSignalManager.dispatchSignal(signal);
     }
 
-    public void sendVisibleWindowRangeUpdate(long startTs, long endTs) {
+    public void sendVisibleWindowRangeUpdate(long startTs, long endTs, boolean echo) {
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this,
-                new TmfTimeRange(TmfTimestamp.fromNanos(startTs), TmfTimestamp.fromNanos(endTs)));
+                new TmfTimeRange(TmfTimestamp.fromNanos(startTs), TmfTimestamp.fromNanos(endTs)),
+                echo);
         fVisibleRangeSignalThrottler.queue(signal);
     }
 
@@ -188,13 +189,14 @@ public class SignallingContext {
 
             fControl.setTimeGraphAreaRange(traceStart, traceEnd);
 
-            if (signal.getSource() != this) {
+            if (signal.getSource() != this || signal.echo()) {
                 /*
                  * If the signal came from the time graph's own scrollbar, then
                  * the zoom level did not change, and the view is already at the
                  * position we want it.
                  *
-                 * TODO May not be true when it comes from a zoom in/out event
+                 * Zoom events for instance will set "echo" to true, which means
+                 * the view wants to receive the signal back.
                  */
                 fControl.seekVisibleRange(windowStart, windowEnd);
             } else {
@@ -204,7 +206,6 @@ public class SignallingContext {
             if (fCurrentSignalLatch != null) {
                 fCurrentSignalLatch.countDown();
             }
-
         });
     }
 

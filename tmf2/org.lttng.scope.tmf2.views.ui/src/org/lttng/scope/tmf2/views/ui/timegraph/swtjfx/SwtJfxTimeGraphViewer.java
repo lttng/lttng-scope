@@ -42,6 +42,9 @@ import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
@@ -58,6 +61,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -67,6 +71,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
+import javafx.util.Duration;
 
 /**
  * Viewer for the {@link SwtJfxTimeGraphView}, encapsulating all the view's
@@ -124,6 +130,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private final SelectionContext fSelectionCtx = new SelectionContext();
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
+    private final ZoomActions fZoomActions = new ZoomActions();
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -240,7 +247,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_RELEASED, fSelectionCtx.fMouseReleasedEventHandler);
 
         /*
-         * We control the width of the time graph pane programatically, so
+         * We control the width of the time graph pane programmatically, so
          * ensure that calls to setPrefWidth set the actual width right away.
          */
         fTimeGraphPane.minWidthProperty().bind(fTimeGraphPane.prefWidthProperty());
@@ -261,11 +268,18 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphScrollPane.setFitToWidth(true);
         fTimeGraphScrollPane.setPannable(true);
 
-//        fTimeGraphScrollPane.viewportBoundsProperty().addListener(fScrollingCtx.fHScrollChangeListener);
+        /* Attach the mouse/scrollbar listeners */
         fTimeGraphScrollPane.setOnMouseEntered(fScrollingCtx.fMouseEnteredEventHandler);
         fTimeGraphScrollPane.setOnMouseExited(fScrollingCtx.fMouseExitedEventHandler);
         fTimeGraphScrollPane.hvalueProperty().addListener(fScrollingCtx.fHScrollChangeListener);
         fTimeGraphScrollPane.vvalueProperty().addListener(fScrollingCtx.fVScrollChangeListener);
+
+        /*
+         * Mouse scroll handlers (for zooming) are attached to the time graph
+         * itself: events let through will be used by the scrollpane as normal
+         * scroll actions.
+         */
+        fTimeGraphPane.setOnScroll(fMouseScrollListener);
 
         /* Synchronize the two scrollpanes' vertical scroll bars together */
         fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
@@ -349,19 +363,29 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             newValue = startPos / (timeGraphTotalWidth - timeGraphVisibleWidth);
         }
 
-        /*
-         * Remember min/max are bound to the "pref" width, so this will change
-         * the actual size right away.
-         */
-        fTimeGraphPane.setPrefWidth(timeGraphTotalWidth);
-        /*
-         * Since we potentially changed the size of a child of the scrollpane,
-         * it's important to call layout() on it before setHvalue(). If we
-         * don't, the setHvalue() will apply to the old layout, and the upcoming
-         * pulse will simply revert our changes.
-         */
-        fTimeGraphScrollPane.layout();
-        fTimeGraphScrollPane.setHvalue(newValue);
+        fScrollingCtx.fListenersEnabled = false;
+        try {
+
+            fZoomActions.resetZoomFactor();
+            fTimeGraphPane.getTransforms().clear();
+
+            /*
+             * Remember min/max are bound to the "pref" width, so this will
+             * change the actual size right away.
+             */
+            fTimeGraphPane.setPrefWidth(timeGraphTotalWidth);
+            /*
+             * Since we potentially changed the size of a child of the
+             * scrollpane, it's important to call layout() on it before
+             * setHvalue(). If we don't, the setHvalue() will apply to the old
+             * layout, and the upcoming pulse will simply revert our changes.
+             */
+            fTimeGraphScrollPane.layout();
+            fTimeGraphScrollPane.setHvalue(newValue);
+
+        } finally {
+            fScrollingCtx.fListenersEnabled = true;
+        }
     }
 
     /**
@@ -739,6 +763,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     private class ScrollingContext {
 
+        /** Knob to programmatically disable the scrolling listeners */
+        public boolean fListenersEnabled = true;
+
         private boolean fUserActionOngoing = false;
 
         private final EventHandler<MouseEvent> fMouseEnteredEventHandler = e -> {
@@ -757,7 +784,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing) {
+            if (!fUserActionOngoing || !fListenersEnabled) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }
@@ -771,12 +798,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             System.out.printf("Sending visible range update: %,d to %,d%n", tsStart, tsEnd);
 
-            getControl().updateVisibleTimeRange(tsStart, tsEnd);
+            getControl().updateVisibleTimeRange(tsStart, tsEnd, false);
 
             /*
-             * The control will not send this signal back to us (to avoid jitter
-             * while scrolling), but the next UI update should refresh the view
-             * accordingly.
+             * We ask the control to not send this signal back to us (to avoid
+             * jitter while scrolling), but the next UI update should refresh
+             * the view accordingly.
              *
              * It is not our responsibility to update to this
              * HorizontalPosition. The control will update accordingly upon
@@ -789,7 +816,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("VScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing) {
+            if (!fUserActionOngoing || !fListenersEnabled) {
                 System.out.println("VScroll listener triggered but inactive");
                 return;
             }
@@ -804,6 +831,165 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             /* Next UI update will take these coordinates in consideration */
         };
+    }
+
+    /**
+     * The default scroll value seems to be in increments of 40.0 units.
+     * Consider one (default) scroll to correspond to one zoom in/out action.
+     */
+    private static final double SCROLL_FACTOR = 40.0;
+
+    /**
+     * Event handler attached to the *time graph pane*, to execute zooming
+     * operations when the control key is down (otherwise, it just lets the even
+     * bubble to the ScrollPane, which will do a standard scroll).
+     */
+    private final EventHandler<ScrollEvent> fMouseScrollListener = e -> {
+        if (!e.isControlDown()) {
+            return;
+        }
+        double delta = e.getDeltaY();
+        boolean zoomIn = (delta > 0.0); // false means a zoom-out
+        int nbActions = (int) Math.abs(Math.round(delta / SCROLL_FACTOR));
+
+        /*
+         * getX() corresponds to the X position of the mouse on the time graph.
+         * This is seriously awesome.
+         */
+        // TODO Support passing a pivotX to the zoom*() methods below
+//        double originX = e.getX();
+
+        if (zoomIn) {
+            for (int i = 0; i < nbActions; i++) {
+                fZoomActions.zoomIn(null);
+            }
+        } else {
+            for (int i = 0; i < nbActions; i++) {
+                fZoomActions.zoomOut(null);
+            }
+        }
+
+        e.consume();
+    };
+
+    // ------------------------------------------------------------------------
+    // View-specific actions
+    // These do not come from the control, but from the view itself
+    // ------------------------------------------------------------------------
+
+    private class ZoomActions {
+
+        private static final long ANIMATION_SPEED = 50;
+        private static final double ZOOM_STEP = 0.08;
+
+        private double fCurrentTemporaryZoomFactor = 1.0;
+
+        public void zoomIn(@Nullable Double pivotX) {
+            /*
+             * Compute and add a new temporary transform on the pane, for the
+             * zoom animation. It's fine to accumulate those here, the next
+             * "real" UI update with clear() them, and resize the pane
+             * accordingly.
+             */
+            double visibleXStart = -fTimeGraphScrollPane.getViewportBounds().getMinX();
+            double pivotPos;
+            if (pivotX == null) {
+                double visibleWidth = fTimeGraphScrollPane.getWidth();
+                pivotPos = visibleXStart + (visibleWidth / 2);
+            } else {
+                pivotPos = pivotX;
+            }
+
+            double initialScaleFactor = fCurrentTemporaryZoomFactor;
+            double newScaleFactor = initialScaleFactor * (1 + ZOOM_STEP);
+            fCurrentTemporaryZoomFactor = newScaleFactor;
+
+            Scale scale = new Scale();
+            scale.setPivotX(pivotPos);
+            scale.setX(initialScaleFactor);
+            fTimeGraphPane.getTransforms().setAll(scale);
+
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
+                    new KeyFrame(new Duration(ANIMATION_SPEED), new KeyValue(scale.xProperty(), newScaleFactor))
+                    );
+            timeline.play();
+
+            // TODO Update the fTimeGraphScrollPane.hValue() so that the
+            // scrollpane stays centered on the pivot. This is not done
+            // automatically unfortunately.
+
+            /* Send a corresponding window-range signal to the control */
+            TimeGraphModelControl control = getControl();
+            long curStart = control.getVisibleTimeRangeStart();
+            long curEnd = control.getVisibleTimeRangeEnd();
+            long curRange = curEnd - curStart;
+            /* Shrink the time range by half the ZOOM_FACTOR on each side */
+            double newRange = curRange * (1.0 / newScaleFactor);
+            double diff = curRange - newRange;
+            if (diff < 0.0) {
+                // FIXME
+                throw new IllegalStateException();
+            }
+            long newStart = curStart + Math.round(diff / 2.0);
+            long newEnd = curEnd - Math.round(diff / 2.0);
+
+            control.updateVisibleTimeRange(newStart, newEnd, true);
+        }
+
+        public void zoomOut(@Nullable Double pivotX) {
+            double visibleXStart = -fTimeGraphScrollPane.getViewportBounds().getMinX();
+            double pivotPos;
+            if (pivotX == null) {
+                double visibleWidth = fTimeGraphScrollPane.getWidth();
+                pivotPos = visibleXStart + (visibleWidth / 2);
+            } else {
+                pivotPos = pivotX;
+            }
+
+            double initialScaleFactor = fCurrentTemporaryZoomFactor;
+            double newScaleFactor = initialScaleFactor * (1 - ZOOM_STEP);
+            fCurrentTemporaryZoomFactor = newScaleFactor;
+
+            Scale scale = new Scale();
+            scale.setPivotX(pivotPos);
+            scale.setX(initialScaleFactor);
+            fTimeGraphPane.getTransforms().setAll(scale);
+
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
+                    new KeyFrame(new Duration(ANIMATION_SPEED), new KeyValue(scale.xProperty(), newScaleFactor))
+                    );
+            timeline.play();
+
+            // TODO Update the fTimeGraphScrollPane.hValue() so that the
+            // scrollpane stays centered on the pivot. This is not done
+            // automatically unfortunately.
+
+            /* Send a corresponding window-range signal to the control */
+            TimeGraphModelControl control = getControl();
+            long curStart = control.getVisibleTimeRangeStart();
+            long curEnd = control.getVisibleTimeRangeEnd();
+            long curRange = curEnd - curStart;
+            /* Embiggen the time range by half the ZOOM_FACTOR on each side */
+            double newRange = curRange * (1.0 / newScaleFactor);
+            double diff = newRange - curRange;
+            if (diff < 0.0) {
+                // FIXME
+                throw new IllegalStateException();
+            }
+            long newStart = curStart - Math.round(diff / 2.0);
+            long newEnd = curEnd + Math.round(diff / 2.0);
+
+            control.updateVisibleTimeRange(newStart, newEnd, true);
+        }
+
+        public void resetZoomFactor() {
+            fCurrentTemporaryZoomFactor = 1.00;
+        }
+
     }
 
     // ------------------------------------------------------------------------

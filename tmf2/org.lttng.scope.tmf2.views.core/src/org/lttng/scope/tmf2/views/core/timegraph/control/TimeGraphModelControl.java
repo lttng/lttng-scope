@@ -44,6 +44,10 @@ public final class TimeGraphModelControl {
         fViewers.add(viewer);
     }
 
+    Iterable<TimeGraphModelView> getViews() {
+        return fViewers;
+    }
+
     public void dispose() {
         fViewers.forEach(TimeGraphModelView::dispose);
         fSignallingContext.dispose();
@@ -163,8 +167,9 @@ public final class TimeGraphModelControl {
         fSignallingContext.sendTimeRangeSelectionUpdate(startTime, endTime);
     }
 
-    public void updateVisibleTimeRange(long startTime, long endTime) {
-        fSignallingContext.sendVisibleWindowRangeUpdate(startTime, endTime);
+    public void updateVisibleTimeRange(long startTime, long endTime, boolean echo) {
+        checkTimeRange(startTime, endTime);
+        fSignallingContext.sendVisibleWindowRangeUpdate(startTime, endTime, echo);
     }
 
     // ------------------------------------------------------------------------
@@ -173,7 +178,7 @@ public final class TimeGraphModelControl {
 
     private static void checkTimeRange(long rangeStart, long rangeEnd) {
         if (rangeStart > rangeEnd) {
-            throw new IllegalArgumentException("Time range start " + rangeStart + "is after its end time " + rangeEnd); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("Time range start " + rangeStart + " is after its end time " + rangeEnd); //$NON-NLS-1$ //$NON-NLS-2$
         }
         if (rangeStart < 0 || rangeEnd < 0) {
             throw new IllegalArgumentException("One of the time range bounds is negative"); //$NON-NLS-1$

@@ -26,6 +26,7 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 public class TmfWindowRangeUpdatedSignal extends TmfSignal {
 
     private final TmfTimeRange fCurrentRange;
+    private final boolean fEcho;
 
     /**
      * Constructor
@@ -36,8 +37,13 @@ public class TmfWindowRangeUpdatedSignal extends TmfSignal {
      *            The new time range
      */
     public TmfWindowRangeUpdatedSignal(Object source, TmfTimeRange range) {
+        this(source, range, false);
+    }
+
+    public TmfWindowRangeUpdatedSignal(Object source, TmfTimeRange range, boolean echo) {
         super(source);
         fCurrentRange = range;
+        fEcho = echo;
     }
 
     /**
@@ -45,6 +51,10 @@ public class TmfWindowRangeUpdatedSignal extends TmfSignal {
      */
     public TmfTimeRange getCurrentRange() {
         return fCurrentRange;
+    }
+
+    public boolean echo() {
+        return fEcho;
     }
 
     @Override
