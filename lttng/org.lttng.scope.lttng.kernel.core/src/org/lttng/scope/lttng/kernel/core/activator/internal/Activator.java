@@ -9,10 +9,7 @@
 
 package org.lttng.scope.lttng.kernel.core.activator.internal;
 
-import java.io.IOException;
-
 import org.lttng.scope.common.core.ScopeCoreActivator;
-import org.lttng.scope.lami.core.module.LamiAnalysisFactoryException;
 
 /**
  * Plugin activator
@@ -32,12 +29,12 @@ public class Activator extends ScopeCoreActivator {
 
     @Override
     protected void startActions() {
-        try {
-            LttngAnalysesLoader.load();
-        } catch (LamiAnalysisFactoryException | IOException e) {
-            // Not the end of the world if the analyses are not available
-            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
-        }
+//        try {
+//            LttngAnalysesLoader.load();
+//        } catch (LamiAnalysisFactoryException | IOException e) {
+//            // Not the end of the world if the analyses are not available
+//            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
+//        }
     }
 
     @Override
