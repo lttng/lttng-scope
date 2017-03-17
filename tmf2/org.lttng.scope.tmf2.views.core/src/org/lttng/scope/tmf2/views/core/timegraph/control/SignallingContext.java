@@ -203,7 +203,6 @@ public class SignallingContext {
 
             if (fCurrentSignalLatch != null) {
                 fCurrentSignalLatch.countDown();
-                fCurrentSignalLatch = null;
             }
 
         });
@@ -216,14 +215,23 @@ public class SignallingContext {
     private volatile @Nullable CountDownLatch fCurrentSignalLatch = null;
 
     @VisibleForTesting
-    void waitForNextSignalHandled() {
+    void prepareWaitForNextSignal() {
         if (fCurrentSignalLatch != null) {
             throw new IllegalStateException("Do not call this method concurrently!"); //$NON-NLS-1$
         }
         fCurrentSignalLatch = new CountDownLatch(1);
+    }
+
+    @VisibleForTesting
+    void waitForNextSignal() {
+        CountDownLatch latch = fCurrentSignalLatch;
+        if (latch == null) {
+            throw new IllegalStateException("Do not call this method concurrently!"); //$NON-NLS-1$
+        }
         try {
-            fCurrentSignalLatch.await();
+            latch.await();
         } catch (InterruptedException e) {
         }
+        fCurrentSignalLatch = null;
     }
 }

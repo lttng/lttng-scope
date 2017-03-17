@@ -145,9 +145,11 @@ public class SwtJfxTimeGraphViewerTest {
 
         TmfTimeRange range = createTimeRange(startTime, endTime);
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
-        TmfSignalManager.dispatchSignal(signal);
 
-        control.waitForNextSignalHandled();
+        control.prepareWaitForNextSignal();
+        TmfSignalManager.dispatchSignal(signal);
+        control.waitForNextSignal();
+
         updateUI();
 
         /* Check the control */

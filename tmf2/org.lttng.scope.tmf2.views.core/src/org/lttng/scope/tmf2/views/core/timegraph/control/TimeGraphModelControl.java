@@ -206,7 +206,12 @@ public final class TimeGraphModelControl {
     // ------------------------------------------------------------------------
 
     @VisibleForTesting
-    public void waitForNextSignalHandled() {
-        fSignallingContext.waitForNextSignalHandled();
+    public void prepareWaitForNextSignal() {
+        fSignallingContext.prepareWaitForNextSignal();
+    }
+
+    @VisibleForTesting
+    public void waitForNextSignal() {
+        fSignallingContext.waitForNextSignal();
     }
 }
