@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -367,7 +368,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             newValue = startPos / (timeGraphTotalWidth - timeGraphVisibleWidth);
         }
 
-        fScrollingCtx.fHListenerEnabled = false;
+        fScrollingCtx.fHListenerStatus.disable();
         try {
 
             fZoomActions.resetZoomFactor();
@@ -388,7 +389,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fTimeGraphScrollPane.setHvalue(newValue);
 
         } finally {
-            fScrollingCtx.fHListenerEnabled = true;
+            fScrollingCtx.fHListenerStatus.enable();
         }
     }
 
@@ -759,6 +760,24 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
     }
 
+    private static class ListenerStatus {
+
+        private final AtomicInteger fDisabledCount = new AtomicInteger(0);
+
+        public void disable() {
+            fDisabledCount.incrementAndGet();
+        }
+
+        public void enable() {
+            /* Decrement the count but only if it is currently above 0 */
+            fDisabledCount.updateAndGet(value -> value > 0 ? value - 1 : 0);
+        }
+
+        public boolean isEnabled() {
+            return (fDisabledCount.get() == 0);
+        }
+    }
+
     /**
      * Class encapsulating the scrolling operations of the time graph pane.
      *
@@ -768,8 +787,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private class ScrollingContext {
 
         /* Knobs to programmatically disable the scrolling listeners */
-        public boolean fHListenerEnabled = true;
-        public boolean fVListenerEnabled = true;
+        public final ListenerStatus fHListenerStatus = new ListenerStatus();
+        public final ListenerStatus fVlistenerStatus = new ListenerStatus();
 
         private boolean fUserActionOngoing = false;
 
@@ -789,7 +808,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing || !fHListenerEnabled) {
+            if (!fUserActionOngoing || !fHListenerStatus.isEnabled()) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }
@@ -821,7 +840,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("VScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing || !fVListenerEnabled) {
+            if (!fUserActionOngoing || !fVlistenerStatus.isEnabled()) {
                 System.out.println("VScroll listener triggered but inactive");
                 return;
             }
@@ -912,8 +931,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             Timeline timeline = new Timeline();
             /* Disable the HScroll listener during the animation */
-            fScrollingCtx.fHListenerEnabled = false;
-            timeline.setOnFinished(e -> fScrollingCtx.fHListenerEnabled = true);
+            fScrollingCtx.fHListenerStatus.disable();
+            timeline.setOnFinished(e -> fScrollingCtx.fHListenerStatus.enable());
 
             timeline.getKeyFrames().addAll(
                     new KeyFrame(Duration.ZERO,
