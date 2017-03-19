@@ -911,9 +911,15 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fTimeGraphPane.getTransforms().setAll(scale);
 
             Timeline timeline = new Timeline();
+            /* Disable the HScroll listener during the animation */
+            fScrollingCtx.fHListenerEnabled = false;
+            timeline.setOnFinished(e -> fScrollingCtx.fHListenerEnabled = true);
+
             timeline.getKeyFrames().addAll(
-                    new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
-                    new KeyFrame(new Duration(zoomAnimationDuration), new KeyValue(scale.xProperty(), newScaleFactor))
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(scale.xProperty(), initialScaleFactor)),
+                    new KeyFrame(new Duration(zoomAnimationDuration),
+                            new KeyValue(scale.xProperty(), newScaleFactor))
                     );
             timeline.play();
 
