@@ -367,7 +367,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             newValue = startPos / (timeGraphTotalWidth - timeGraphVisibleWidth);
         }
 
-        fScrollingCtx.fListenersEnabled = false;
+        fScrollingCtx.fHListenerEnabled = false;
         try {
 
             fZoomActions.resetZoomFactor();
@@ -388,7 +388,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             fTimeGraphScrollPane.setHvalue(newValue);
 
         } finally {
-            fScrollingCtx.fListenersEnabled = true;
+            fScrollingCtx.fHListenerEnabled = true;
         }
     }
 
@@ -767,8 +767,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     private class ScrollingContext {
 
-        /** Knob to programmatically disable the scrolling listeners */
-        public boolean fListenersEnabled = true;
+        /* Knobs to programmatically disable the scrolling listeners */
+        public boolean fHListenerEnabled = true;
+        public boolean fVListenerEnabled = true;
 
         private boolean fUserActionOngoing = false;
 
@@ -788,7 +789,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing || !fListenersEnabled) {
+            if (!fUserActionOngoing || !fHListenerEnabled) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }
@@ -820,7 +821,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("VScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing || !fListenersEnabled) {
+            if (!fUserActionOngoing || !fVListenerEnabled) {
                 System.out.println("VScroll listener triggered but inactive");
                 return;
             }
