@@ -37,7 +37,7 @@ public abstract class SwtJfxTimeGraphView extends TmfView {
             return;
         }
         SwtJfxTimeGraphViewer viewer = new SwtJfxTimeGraphViewer(parent, fModelControl);
-        fModelControl.attachViewer(viewer);
+        fModelControl.attachView(viewer);
 
         IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
         toolbarMgr.add(ActionFactory.getSelectSortingModeAction(viewer));

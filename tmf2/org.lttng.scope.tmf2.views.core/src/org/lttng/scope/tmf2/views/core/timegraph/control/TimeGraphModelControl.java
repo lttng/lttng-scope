@@ -9,9 +9,6 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.control;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
@@ -26,7 +23,7 @@ public final class TimeGraphModelControl {
     private final ITimeGraphModelRenderProvider fRenderProvider;
     private final SignallingContext fSignallingContext;
 
-    private final Collection<TimeGraphModelView> fViewers = new HashSet<>();
+    private @Nullable TimeGraphModelView fView = null;
     private @Nullable ITmfTrace fCurrentTrace = null;
 
     private long fFullTimeGraphStartTime = 1;
@@ -40,16 +37,18 @@ public final class TimeGraphModelControl {
         fSignallingContext = new SignallingContext(this);
     }
 
-    public void attachViewer(TimeGraphModelView viewer) {
-        fViewers.add(viewer);
+    public void attachView(TimeGraphModelView view) {
+        fView = view;
     }
 
-    Iterable<TimeGraphModelView> getViews() {
-        return fViewers;
+    @Nullable TimeGraphModelView getView() {
+        return fView;
     }
 
     public void dispose() {
-        fViewers.forEach(TimeGraphModelView::dispose);
+        if (fView != null) {
+            fView.dispose();
+        }
         fSignallingContext.dispose();
     }
 
@@ -82,7 +81,7 @@ public final class TimeGraphModelControl {
     }
 
     // ------------------------------------------------------------------------
-    // Control -> Viewer operations
+    // Control -> View operations
     // ------------------------------------------------------------------------
 
     public synchronized void initializeForTrace(@Nullable ITmfTrace trace) {
@@ -90,7 +89,7 @@ public final class TimeGraphModelControl {
         fRenderProvider.setTrace(trace);
 
         if (trace == null) {
-            // TODO Clear the viewer?
+            // TODO Clear the view?
             return;
         }
 
@@ -113,22 +112,30 @@ public final class TimeGraphModelControl {
             return;
         }
 
-        fViewers.forEach(viewer -> {
-            viewer.clear();
-            viewer.seekVisibleRange(fLatestVisibleRangeStartTime, fLatestVisibleRangeEndTime);
-        });
+        TimeGraphModelView view = fView;
+        if (view != null) {
+            view.clear();
+            view.seekVisibleRange(fLatestVisibleRangeStartTime, fLatestVisibleRangeEndTime);
+        }
     }
 
     void seekVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
         checkWindowTimeRange(visibleWindowStartTime, visibleWindowEndTime);
-
         updateLatestVisibleRange(visibleWindowStartTime, visibleWindowEndTime);
-        fViewers.forEach(viewer -> viewer.seekVisibleRange(visibleWindowStartTime, visibleWindowEndTime));
+
+        TimeGraphModelView view = fView;
+        if (view != null) {
+            view.seekVisibleRange(visibleWindowStartTime, visibleWindowEndTime);
+        }
     }
 
     void drawSelection(long selectionStartTime, long selectionEndTime) {
         checkWindowTimeRange(selectionStartTime, selectionEndTime);
-        fViewers.forEach(viewer -> viewer.drawSelection(selectionStartTime, selectionEndTime));
+
+        TimeGraphModelView view = fView;
+        if (view != null) {
+            view.drawSelection(selectionStartTime, selectionEndTime);
+        }
     }
 
     void updateLatestVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
@@ -160,7 +167,7 @@ public final class TimeGraphModelControl {
     }
 
     // ------------------------------------------------------------------------
-    // Viewer -> Control operations (Control external API)
+    // View -> Control operations (Control external API)
     // ------------------------------------------------------------------------
 
     public void updateTimeRangeSelection(long startTime, long endTime) {
