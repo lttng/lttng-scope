@@ -22,6 +22,8 @@ import javafx.scene.text.Text;
  */
 class DebugOptions {
 
+    private boolean fPaintingEnabled = true;
+
     private int fEntryPadding = 5;
     private double fRenderRangePadding = 0.1;
     private int fUIUpdateDelay = 250;
@@ -39,6 +41,19 @@ class DebugOptions {
      */
     public DebugOptions() {
         recomputeEllipsisWidth();
+    }
+
+    /**
+     * If the automatic redrawing of the view is enabled.
+     *
+     * @return The repainting status
+     */
+    public boolean isPaintingEnabled() {
+        return fPaintingEnabled;
+    }
+
+    void setPaintingEnabled(boolean bool) {
+        fPaintingEnabled = bool;
     }
 
     /**

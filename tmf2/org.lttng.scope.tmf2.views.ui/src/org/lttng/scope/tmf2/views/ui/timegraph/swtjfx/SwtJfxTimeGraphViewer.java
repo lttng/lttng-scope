@@ -167,6 +167,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         @Override
         public void run() {
+            if (!fDebugOptions.isPaintingEnabled()) {
+                return;
+            }
+
             HorizontalPosition currentHorizontalPos = getCurrentHorizontalPosition();
             VerticalPosition currentVerticalPos = fVerticalPosition;
 
