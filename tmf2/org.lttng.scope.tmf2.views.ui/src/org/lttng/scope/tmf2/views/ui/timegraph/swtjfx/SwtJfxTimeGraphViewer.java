@@ -879,12 +879,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private class ZoomActions {
 
-        private static final long ANIMATION_SPEED = 50;
-        private static final double ZOOM_STEP = 0.08;
-
         private double fCurrentTemporaryZoomFactor = 1.0;
 
         public void zoomIn(@Nullable Double pivotX) {
+            final double zoomStep = fDebugOptions.getZoomStep();
+            final long zoomAnimationDuration = fDebugOptions.getZoomAnimationDuration();
+
             /*
              * Compute and add a new temporary transform on the pane, for the
              * zoom animation. It's fine to accumulate those here, the next
@@ -901,7 +901,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             }
 
             double initialScaleFactor = fCurrentTemporaryZoomFactor;
-            double newScaleFactor = initialScaleFactor * (1 + ZOOM_STEP);
+            double newScaleFactor = initialScaleFactor * (1 + zoomStep);
             fCurrentTemporaryZoomFactor = newScaleFactor;
 
             Scale scale = new Scale();
@@ -912,7 +912,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             Timeline timeline = new Timeline();
             timeline.getKeyFrames().addAll(
                     new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
-                    new KeyFrame(new Duration(ANIMATION_SPEED), new KeyValue(scale.xProperty(), newScaleFactor))
+                    new KeyFrame(new Duration(zoomAnimationDuration), new KeyValue(scale.xProperty(), newScaleFactor))
                     );
             timeline.play();
 
@@ -939,6 +939,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         }
 
         public void zoomOut(@Nullable Double pivotX) {
+            final double zoomStep = fDebugOptions.getZoomStep();
+            final long zoomAnimationDuration = fDebugOptions.getZoomAnimationDuration();
+
             double visibleXStart = -fTimeGraphScrollPane.getViewportBounds().getMinX();
             double pivotPos;
             if (pivotX == null) {
@@ -949,7 +952,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             }
 
             double initialScaleFactor = fCurrentTemporaryZoomFactor;
-            double newScaleFactor = initialScaleFactor * (1 - ZOOM_STEP);
+            double newScaleFactor = initialScaleFactor * (1 - zoomStep);
             fCurrentTemporaryZoomFactor = newScaleFactor;
 
             Scale scale = new Scale();
@@ -960,7 +963,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             Timeline timeline = new Timeline();
             timeline.getKeyFrames().addAll(
                     new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
-                    new KeyFrame(new Duration(ANIMATION_SPEED), new KeyValue(scale.xProperty(), newScaleFactor))
+                    new KeyFrame(new Duration(zoomAnimationDuration), new KeyValue(scale.xProperty(), newScaleFactor))
                     );
             timeline.play();
 

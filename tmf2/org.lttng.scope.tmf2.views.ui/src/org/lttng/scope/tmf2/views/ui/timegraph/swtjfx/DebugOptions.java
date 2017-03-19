@@ -27,6 +27,9 @@ class DebugOptions {
     private int fUIUpdateDelay = 250;
     private boolean fScrollingListenersEnabled = true;
 
+    private long fZoomAnimationDuration = 50;
+    private double fZoomStep = 0.08;
+
     private Font fTextFont = requireNonNull(new Text().getFont());
     private String fEllipsisString = "..."; //$NON-NLS-1$
     private transient double fEllipsisWidth;
@@ -79,6 +82,34 @@ class DebugOptions {
 
     void setScrollingListenersEnabled(boolean bool) {
         fScrollingListenersEnabled = bool;
+    }
+
+    /**
+     * The zoom animation duration, which is the amount of milliseconds it takes
+     * to complete the zoom animation (smaller number means a faster animation).
+     *
+     * @return The zoom animation duration in milliseconds
+     */
+    public long getZoomAnimationDuration() {
+        return fZoomAnimationDuration;
+    }
+
+    void setZoomAnimationDuration(long duration) {
+       fZoomAnimationDuration = duration;
+    }
+
+    /**
+     * Each zoom action (typically, one mouse-scroll == one zoom action) will
+     * increase or decrease the current visible time range by this factor.
+     *
+     * @return The zoom step
+     */
+    public double getZoomStep() {
+        return fZoomStep;
+    }
+
+    void setZoomStep(double step) {
+        fZoomStep = step;
     }
 
     public Font getTextFont() {
