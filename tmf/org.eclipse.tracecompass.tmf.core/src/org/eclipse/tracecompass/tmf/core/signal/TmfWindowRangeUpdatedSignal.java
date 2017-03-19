@@ -15,6 +15,8 @@ package org.eclipse.tracecompass.tmf.core.signal;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * A new range has been selected for the visible (zoom) time range.
  *
@@ -40,6 +42,18 @@ public class TmfWindowRangeUpdatedSignal extends TmfSignal {
         this(source, range, false);
     }
 
+    /**
+     * Constructor
+     *
+     * @param source
+     *            Object sending this signal
+     * @param range
+     *            The new time range
+     * @param echo
+     *            The echo flag. Can checked by recipients to determine if they
+     *            should process this signal or not, even though they might be
+     *            the source.
+     */
     public TmfWindowRangeUpdatedSignal(Object source, TmfTimeRange range, boolean echo) {
         super(source);
         fCurrentRange = range;
@@ -53,29 +67,18 @@ public class TmfWindowRangeUpdatedSignal extends TmfSignal {
         return fCurrentRange;
     }
 
+    /**
+     * @return Echo flag
+     */
     public boolean echo() {
         return fEcho;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(getClass().getSimpleName());
-        sb.append(" [source="); //$NON-NLS-1$
-
-        if (getSource() != null) {
-            sb.append(getSource().toString());
-        } else {
-            sb.append("null"); //$NON-NLS-1$
-        }
-
-        sb.append(", range="); //$NON-NLS-1$
-
-        if (fCurrentRange != null) {
-            sb.append(fCurrentRange.toString());
-        } else {
-            sb.append("null"); //$NON-NLS-1$
-        }
-        sb.append(']');
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+            .add("timerange", fCurrentRange) //$NON-NLS-1$
+            .add("echo", fEcho) //$NON-NLS-1$
+            .toString();
     }
 }
