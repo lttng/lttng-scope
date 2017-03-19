@@ -222,11 +222,7 @@ public class SwtJfxTimeGraphViewerTest {
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {
             control.prepareWaitForNextSignal();
-            if (zoomIn) {
-                viewer.getZoomActions().zoomIn(null);
-            } else {
-                viewer.getZoomActions().zoomOut(null);
-            }
+            viewer.getZoomActions().zoom(null, zoomIn);
             control.waitForNextSignal();
         }
         updateUI();

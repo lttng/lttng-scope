@@ -856,17 +856,11 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * getX() corresponds to the X position of the mouse on the time graph.
          * This is seriously awesome.
          */
-        // TODO Support passing a pivotX to the zoom*() methods below
+        // TODO Support passing a pivotX to the zoom() method below
 //        double originX = e.getX();
 
-        if (zoomIn) {
-            for (int i = 0; i < nbActions; i++) {
-                fZoomActions.zoomIn(null);
-            }
-        } else {
-            for (int i = 0; i < nbActions; i++) {
-                fZoomActions.zoomOut(null);
-            }
+        for (int i = 0; i < nbActions; i++) {
+            fZoomActions.zoom(null, zoomIn);
         }
 
         e.consume();
@@ -881,7 +875,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         private double fCurrentTemporaryZoomFactor = 1.0;
 
-        public void zoomIn(@Nullable Double pivotX) {
+        public void zoom(@Nullable Double pivotX, boolean zoomIn) {
             final double zoomStep = fDebugOptions.getZoomStep();
             final long zoomAnimationDuration = fDebugOptions.getZoomAnimationDuration();
 
@@ -901,7 +895,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             }
 
             double initialScaleFactor = fCurrentTemporaryZoomFactor;
-            double newScaleFactor = initialScaleFactor * (1 + zoomStep);
+            double newScaleFactor = (zoomIn ?
+                        initialScaleFactor * (1 + zoomStep) :
+                        initialScaleFactor * (1 / (1 + zoomStep)));
             fCurrentTemporaryZoomFactor = newScaleFactor;
 
             Scale scale = new Scale();
@@ -928,63 +924,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             /* Shrink the time range by half the ZOOM_FACTOR on each side */
             double newRange = curRange * (1.0 / newScaleFactor);
             double diff = curRange - newRange;
-            if (diff < 0.0) {
-                // FIXME
-                throw new IllegalStateException();
-            }
             long newStart = curStart + Math.round(diff / 2.0);
             long newEnd = curEnd - Math.round(diff / 2.0);
-
-            control.updateVisibleTimeRange(newStart, newEnd, true);
-        }
-
-        public void zoomOut(@Nullable Double pivotX) {
-            final double zoomStep = fDebugOptions.getZoomStep();
-            final long zoomAnimationDuration = fDebugOptions.getZoomAnimationDuration();
-
-            double visibleXStart = -fTimeGraphScrollPane.getViewportBounds().getMinX();
-            double pivotPos;
-            if (pivotX == null) {
-                double visibleWidth = fTimeGraphScrollPane.getWidth();
-                pivotPos = visibleXStart + (visibleWidth / 2);
-            } else {
-                pivotPos = pivotX;
-            }
-
-            double initialScaleFactor = fCurrentTemporaryZoomFactor;
-            double newScaleFactor = initialScaleFactor * (1 / (1 + zoomStep));
-            fCurrentTemporaryZoomFactor = newScaleFactor;
-
-            Scale scale = new Scale();
-            scale.setPivotX(pivotPos);
-            scale.setX(initialScaleFactor);
-            fTimeGraphPane.getTransforms().setAll(scale);
-
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().addAll(
-                    new KeyFrame(Duration.ZERO, new KeyValue(scale.xProperty(), initialScaleFactor)),
-                    new KeyFrame(new Duration(zoomAnimationDuration), new KeyValue(scale.xProperty(), newScaleFactor))
-                    );
-            timeline.play();
-
-            // TODO Update the fTimeGraphScrollPane.hValue() so that the
-            // scrollpane stays centered on the pivot. This is not done
-            // automatically unfortunately.
-
-            /* Send a corresponding window-range signal to the control */
-            TimeGraphModelControl control = getControl();
-            long curStart = control.getVisibleTimeRangeStart();
-            long curEnd = control.getVisibleTimeRangeEnd();
-            long curRange = curEnd - curStart;
-            /* Embiggen the time range by half the ZOOM_FACTOR on each side */
-            double newRange = curRange * (1.0 / newScaleFactor);
-            double diff = newRange - curRange;
-            if (diff < 0.0) {
-                // FIXME
-                throw new IllegalStateException();
-            }
-            long newStart = curStart - Math.round(diff / 2.0);
-            long newEnd = curEnd + Math.round(diff / 2.0);
 
             control.updateVisibleTimeRange(newStart, newEnd, true);
         }
