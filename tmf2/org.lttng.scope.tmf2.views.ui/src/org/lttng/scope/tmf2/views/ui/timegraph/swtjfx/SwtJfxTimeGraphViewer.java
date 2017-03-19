@@ -114,6 +114,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private static final Color SELECTION_STROKE_COLOR = requireNonNull(Color.BLUE);
     private static final Color SELECTION_FILL_COLOR = requireNonNull(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.4));
 
+    private static final Color LOADING_OVERLAY_COLOR = requireNonNull(Color.GRAY.deriveColor(0, 1.2, 1, 0.2));
+
     private static final int LABEL_SIDE_MARGIN = 10;
 
     /**
@@ -150,11 +152,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
-    private final Group fTimeGraphSelectionLayer;
     // TODO Layers for markers, arrows
+    private final Group fTimeGraphSelectionLayer;
+    private final Group fTimeGraphLoadingOverlayLayer;
 
     private final Rectangle fSelectionRect;
     private final Rectangle fOngoingSelectionRect;
+    private final Rectangle fTimeGraphLoadingOverlay;
 
 
     private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
@@ -185,6 +189,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             }
             fPreviousHorizontalPos = currentHorizontalPos;
             fPreviousVerticalPosition = currentVerticalPos;
+
+            /*
+             * Start a new repaint, display the "loading" overlay. The next
+             * paint task to finish will put it back to non-visible.
+             */
+            fTimeGraphLoadingOverlay.setVisible(true);
 
             paintBackground(currentVerticalPos);
             paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
@@ -223,6 +233,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         // Prepare the time graph's part scene graph
         // --------------------------------------------------------------------
 
+        fTimeGraphLoadingOverlay = new Rectangle();
+        fTimeGraphLoadingOverlay.setFill(LOADING_OVERLAY_COLOR);
+        fTimeGraphLoadingOverlay.setVisible(false);
+
         fSelectionRect = new Rectangle();
         fOngoingSelectionRect = new Rectangle();
 
@@ -237,6 +251,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
         fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
+        fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
 
         /*
          * The order of the layers is important here, it will go from back to
@@ -245,7 +260,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphPane = new Pane(fTimeGraphBackgroundLayer,
                 fTimeGraphStatesLayer,
                 fTimeGraphTextLabelsLayer,
-                fTimeGraphSelectionLayer);
+                fTimeGraphSelectionLayer,
+                fTimeGraphLoadingOverlayLayer);
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
         fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);
@@ -265,6 +281,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphPane.minHeightProperty().bind(fTreePane.heightProperty());
         fTimeGraphPane.prefHeightProperty().bind(fTreePane.heightProperty());
         fTimeGraphPane.maxHeightProperty().bind(fTreePane.heightProperty());
+
+        /*
+         * Set the loading overlay's size to always follow the size of the pane.
+         */
+        fTimeGraphLoadingOverlay.widthProperty().bind(fTimeGraphPane.widthProperty());
+        fTimeGraphLoadingOverlay.heightProperty().bind(fTimeGraphPane.heightProperty());
 
         fTimeGraphScrollPane = new ScrollPane(fTimeGraphPane);
         fTimeGraphScrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
@@ -502,6 +524,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     fTimeGraphTextLabelsLayer.getChildren().clear();
                     fTimeGraphStatesLayer.getChildren().add(statesLayerContents);
                     fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
+
+                    fTimeGraphLoadingOverlay.setVisible(false);
 
                     long endUI = System.nanoTime();
                     StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
