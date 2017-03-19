@@ -26,10 +26,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SwtJfxTimeGraphViewerTest {
 
     private static @Nullable ITmfTrace sfTrace;
@@ -88,7 +91,7 @@ public class SwtJfxTimeGraphViewerTest {
     }
 
     @Test
-    public void testInitialPosition() {
+    public void test001InitialPosition() {
         SwtJfxTimeGraphViewer viewer = sfViewer;
         assertNotNull(viewer);
 
@@ -152,9 +155,99 @@ public class SwtJfxTimeGraphViewerTest {
 
         updateUI();
 
+        verifyVisibleRange(startTime, endTime, control, viewer);
+    }
+
+    @Test
+    public void testZoomInBegin() {
+        testZoom(100000L, 110000L, true, 1);
+    }
+
+    @Test
+    public void testZoomIn1() {
+        testZoom(120000L, 150000L, true, 1);
+    }
+
+    @Test
+    public void testZoomIn2() {
+        testZoom(150000L, 160000L, true, 2);
+    }
+
+    @Test
+    public void testZoomInEnd() {
+        testZoom(160000L, 200000L, true, 1);
+    }
+
+    @Test
+    public void testZoomOutBegin() {
+        testZoom(100000L, 140000L, false, 1);
+    }
+
+    @Test
+    public void testZoomOut1() {
+        testZoom(160000L, 180000L, false, 1);
+    }
+
+    @Test
+    public void testZoomOut2() {
+        testZoom(140000L, 160000L, false, 3);
+    }
+
+    @Test
+    public void testZoomOutEnd() {
+        testZoom(180000L, 200000L, false, 1);
+    }
+
+    private void testZoom(long initialRangeStart, long initialRangeEnd, boolean zoomIn, int nbSteps) {
+        SwtJfxTimeGraphViewer viewer = sfViewer;
+        TimeGraphModelControl control = sfControl;
+        assertNotNull(viewer);
+        assertNotNull(control);
+
+        double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().getZoomStep()), nbSteps);
+        if (!zoomIn) {
+            totalFactor = 1 / totalFactor;
+        }
+        long initialRange = initialRangeEnd - initialRangeStart;
+        double newRange = initialRange * (1.0 / (totalFactor));
+        // TODO Support pivot not exactly in the center of the visible range
+        double diff = initialRange - newRange; // diff > 0 means a zoom-in, and vice versa
+
+        /* Seek to the initial requested range */
+        control.prepareWaitForNextSignal();
+        TmfSignalManager.dispatchSignal(new TmfWindowRangeUpdatedSignal(this, createTimeRange(initialRangeStart, initialRangeEnd)));
+        control.waitForNextSignal();
+        updateUI();
+
+        /* Apply zoom action(s) */
+        for (int i = 0; i < nbSteps; i++) {
+            control.prepareWaitForNextSignal();
+            if (zoomIn) {
+                viewer.getZoomActions().zoomIn(null);
+            } else {
+                viewer.getZoomActions().zoomOut(null);
+            }
+            control.waitForNextSignal();
+        }
+        updateUI();
+
+        final long expectedStart = Math.max(initialRangeStart + Math.round(diff / 2),
+                TraceFixture.FULL_TRACE_START_TIME);
+        final long expectedEnd = Math.min(initialRangeEnd -  Math.round(diff / 2),
+                TraceFixture.FULL_TRACE_END_TIME);
+
+        verifyVisibleRange(expectedStart, expectedEnd, control, viewer);
+    }
+
+    /**
+     * Verify that both the control and viewer passed as parameters currently
+     * report the expected visible time range.
+     */
+    private static void verifyVisibleRange(long expectedStart, long expectedEnd,
+            TimeGraphModelControl control,SwtJfxTimeGraphViewer viewer) {
         /* Check the control */
-        assertEquals(startTime, control.getVisibleTimeRangeStart());
-        assertEquals(endTime, control.getVisibleTimeRangeEnd());
+        assertEquals(expectedStart, control.getVisibleTimeRangeStart());
+        assertEquals(expectedEnd, control.getVisibleTimeRangeEnd());
 
         /* Check the view itself */
         HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
@@ -164,13 +257,8 @@ public class SwtJfxTimeGraphViewerTest {
         /* We will tolerate being off by at most 1 pixel */
         double delta = viewer.getCurrentNanosPerPixel();
 
-        assertEqualsWithin(startTime, tsStart, delta);
-        assertEqualsWithin(endTime, tsEnd, delta);
-    }
-
-    @Test
-    public void testZoomOut() {
-
+        assertEqualsWithin(expectedStart, tsStart, delta);
+        assertEqualsWithin(expectedEnd, tsEnd, delta);
     }
 
     private static void assertEqualsWithin(long expected, long actual, double delta) {

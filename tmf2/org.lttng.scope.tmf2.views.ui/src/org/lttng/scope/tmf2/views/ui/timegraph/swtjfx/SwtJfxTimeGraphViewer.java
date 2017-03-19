@@ -877,7 +877,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // These do not come from the control, but from the view itself
     // ------------------------------------------------------------------------
 
-    private class ZoomActions {
+    class ZoomActions {
 
         private double fCurrentTemporaryZoomFactor = 1.0;
 
@@ -952,7 +952,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             }
 
             double initialScaleFactor = fCurrentTemporaryZoomFactor;
-            double newScaleFactor = initialScaleFactor * (1 - zoomStep);
+            double newScaleFactor = initialScaleFactor * (1 / (1 + zoomStep));
             fCurrentTemporaryZoomFactor = newScaleFactor;
 
             Scale scale = new Scale();
@@ -1139,4 +1139,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return fTimeGraphScrollPane;
     }
 
+    @VisibleForTesting
+    ZoomActions getZoomActions() {
+        return fZoomActions;
+    }
 }
