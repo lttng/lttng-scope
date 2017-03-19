@@ -13,6 +13,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+/**
+ * {@link SwtJfxTimeGraphViewer} test suite unit-testing some static utility
+ * methods.
+ */
 public class SwtJfxTimeGraphViewerStaticTest {
 
     private static final double DELTA = 0.1;
@@ -27,6 +31,9 @@ public class SwtJfxTimeGraphViewerStaticTest {
         private static final double NANOS_PER_PIXEL = 10.0;
     }
 
+    /**
+     * Test the {@link SwtJfxTimeGraphViewer#timestampToPaneXPos} method.
+     */
     @Test
     public void testTimeToPosition() {
         double yPos = SwtJfxTimeGraphViewer.timestampToPaneXPos(1500,
@@ -46,6 +53,9 @@ public class SwtJfxTimeGraphViewerStaticTest {
 
     }
 
+    /**
+     * Test the {@link SwtJfxTimeGraphViewer#paneXPosToTimestamp} method.
+     */
     @Test
     public void testPositionToTimestamp() {
         long ts = SwtJfxTimeGraphViewer.paneXPosToTimestamp(50.0,

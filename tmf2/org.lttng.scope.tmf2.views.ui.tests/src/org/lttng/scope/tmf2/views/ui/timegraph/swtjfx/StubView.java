@@ -9,12 +9,23 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
-public class SwtJfxTimeGraphViewStub extends SwtJfxTimeGraphView {
+/**
+ * Stub view for the {@link SwtJfxTimeGraphViewer} tests, providing a concrete
+ * implementation of {@link SwtJfxTimeGraphView}.
+ *
+ * This class is required to be public because it is called by Eclipse's
+ * extension mechanisms.
+ */
+public class StubView extends SwtJfxTimeGraphView {
 
+    /** The view's ID */
     public static final String VIEW_ID = "org.lttng.scope.tmf2.views.ui.tests.timegraph.swtjfx"; //$NON-NLS-1$
 
-    public SwtJfxTimeGraphViewStub() {
-        super(VIEW_ID, new ModelRenderProviderFixture());
+    /**
+     * Constructor
+     */
+    public StubView() {
+        super(VIEW_ID, new StubModelRenderProvider());
     }
 
 }

@@ -21,7 +21,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 
-class TraceFixture extends TmfTrace {
+class StubTrace extends TmfTrace {
 
     public static final long FULL_TRACE_START_TIME = 100000L;
     public static final long FULL_TRACE_END_TIME = 200000L;

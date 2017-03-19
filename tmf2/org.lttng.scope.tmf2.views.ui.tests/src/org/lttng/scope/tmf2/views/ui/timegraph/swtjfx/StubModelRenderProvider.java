@@ -26,7 +26,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip.TimeGraphT
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
-class ModelRenderProviderFixture extends TimeGraphModelRenderProvider {
+class StubModelRenderProvider extends TimeGraphModelRenderProvider {
 
     private static final TimeGraphTreeRender TREE_RENDER;
 
@@ -37,7 +37,7 @@ class ModelRenderProviderFixture extends TimeGraphModelRenderProvider {
         TREE_RENDER = new TimeGraphTreeRender(treeElements);
     }
 
-    protected ModelRenderProviderFixture() {
+    protected StubModelRenderProvider() {
         super(null, null);
     }
 
