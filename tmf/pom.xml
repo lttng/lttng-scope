@@ -26,9 +26,9 @@
 
   <modules>
     <module>org.eclipse.tracecompass.tmf.core</module>
-    <module>org.eclipse.tracecompass.tmf.core.tests</module>
+    <!-- <module>org.eclipse.tracecompass.tmf.core.tests</module> -->
     <module>org.eclipse.tracecompass.tmf.ui</module>
-    <module>org.eclipse.tracecompass.tmf.ui.tests</module>
+    <!-- <module>org.eclipse.tracecompass.tmf.ui.tests</module> -->
   </modules>
 
 </project>
