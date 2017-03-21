@@ -15,6 +15,8 @@ import static org.junit.Assert.fail;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
@@ -69,6 +71,14 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
     /** Class teardown */
     @AfterClass
     public static void teardownClass() {
+        /*
+         * Close the view in the UI (to make sure the next test re-instantiates
+         * it).
+         */
+        IWorkbenchPage wp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IViewPart myView = wp.findView(StubView.VIEW_ID);
+        wp.hideView(myView);
+
         if (sfView != null) {
             /* Disposing the view disposes everything underneath */
             sfView.dispose();
@@ -78,10 +88,11 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
             sfTrace.dispose();
         }
 
-        sfTrace = null;
         sfView = null;
+        sfTrace = null;
         sfDisplay = null;
         sfViewer = null;
+        sfControl = null;
     }
 
     /**
