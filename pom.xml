@@ -163,9 +163,10 @@
     <module>ctf</module>
     <module>lami</module>
     <module>lttng</module>
-    <module>releng</module>
     <module>tmf</module>
     <module>tmf2</module>
+
+    <module>releng</module>
   </modules>
 
   <build>
