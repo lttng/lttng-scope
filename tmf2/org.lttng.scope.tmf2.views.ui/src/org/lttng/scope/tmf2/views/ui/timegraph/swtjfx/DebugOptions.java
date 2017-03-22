@@ -36,6 +36,8 @@ class DebugOptions {
     private String fEllipsisString = "..."; //$NON-NLS-1$
     private transient double fEllipsisWidth;
 
+    private boolean fLoadingOVerlayEnabled = true;
+
     /**
      * Constructor using the default options
      */
@@ -155,6 +157,14 @@ class DebugOptions {
         text.setFont(getTextFont());
         text.applyCss();
         fEllipsisWidth = text.getLayoutBounds().getWidth();
+    }
+
+    void setLoadingOverlayEnabled(boolean bool) {
+        fLoadingOVerlayEnabled = bool;
+    }
+
+    public boolean isLoadingOverlayEnabled() {
+        return fLoadingOVerlayEnabled;
     }
 
 }

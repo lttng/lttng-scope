@@ -114,8 +114,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private static final Color SELECTION_STROKE_COLOR = requireNonNull(Color.BLUE);
     private static final Color SELECTION_FILL_COLOR = requireNonNull(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.4));
 
-    private static final Color LOADING_OVERLAY_COLOR = requireNonNull(Color.GRAY.deriveColor(0, 1.2, 1, 0.2));
-
     private static final int LABEL_SIDE_MARGIN = 10;
 
     /**
@@ -158,7 +156,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private final Rectangle fSelectionRect;
     private final Rectangle fOngoingSelectionRect;
-    private final Rectangle fTimeGraphLoadingOverlay;
+    private final LoadingOverlay fTimeGraphLoadingOverlay;
 
 
     private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
@@ -194,7 +192,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
              * Start a new repaint, display the "loading" overlay. The next
              * paint task to finish will put it back to non-visible.
              */
-            fTimeGraphLoadingOverlay.setVisible(true);
+            if (fDebugOptions.isLoadingOverlayEnabled()) {
+                fTimeGraphLoadingOverlay.fadeIn();
+            }
 
             paintBackground(currentVerticalPos);
             paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
@@ -233,9 +233,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         // Prepare the time graph's part scene graph
         // --------------------------------------------------------------------
 
-        fTimeGraphLoadingOverlay = new Rectangle();
-        fTimeGraphLoadingOverlay.setFill(LOADING_OVERLAY_COLOR);
-        fTimeGraphLoadingOverlay.setVisible(false);
+        fTimeGraphLoadingOverlay = new LoadingOverlay();
 
         fSelectionRect = new Rectangle();
         fOngoingSelectionRect = new Rectangle();
@@ -525,7 +523,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     fTimeGraphStatesLayer.getChildren().add(statesLayerContents);
                     fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
 
-                    fTimeGraphLoadingOverlay.setVisible(false);
+                    fTimeGraphLoadingOverlay.fadeOut();
 
                     long endUI = System.nanoTime();
                     StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
