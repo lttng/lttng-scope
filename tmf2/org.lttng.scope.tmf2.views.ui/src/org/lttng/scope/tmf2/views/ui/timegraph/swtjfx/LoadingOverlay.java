@@ -33,6 +33,13 @@ class LoadingOverlay extends Rectangle {
     public LoadingOverlay() {
         setFill(LOADING_OVERLAY_COLOR);
         setOpacity(TRANSPARENT_OPACITY);
+
+        /*
+         * The overlay should not catch mouse events. Note we could use
+         * .setPickOnBounds(false) if we wanted to handle events but also allow
+         * them to go "through".
+         */
+        setMouseTransparent(true);
     }
 
     public synchronized void fadeIn() {

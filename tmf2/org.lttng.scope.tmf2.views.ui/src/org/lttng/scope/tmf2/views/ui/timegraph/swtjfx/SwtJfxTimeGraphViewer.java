@@ -12,6 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -197,7 +199,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphLoadingOverlay = new LoadingOverlay();
 
         fSelectionRect = new Rectangle();
+        fSelectionRect.setMouseTransparent(true);
         fOngoingSelectionRect = new Rectangle();
+        fOngoingSelectionRect.setMouseTransparent(true);
 
         Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
             rect.setStroke(SELECTION_STROKE_COLOR);
@@ -708,6 +712,18 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return new Group(texts);
     }
 
+    private volatile @Nullable StateRectangle fSelectedStateInterval = null;
+
+    void intervalSelected(StateRectangle state) {
+        @Nullable StateRectangle previousSelectedState = fSelectedStateInterval;
+        if (previousSelectedState != null) {
+            previousSelectedState.setSelected(false);
+        }
+
+        state.setSelected(true);
+        fSelectedStateInterval = state;
+    }
+
     // ------------------------------------------------------------------------
     // Mouse event listeners
     // ------------------------------------------------------------------------
@@ -1113,6 +1129,17 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     @VisibleForTesting
     ScrollPane getTimeGraphScrollPane() {
         return fTimeGraphScrollPane;
+    }
+
+    @VisibleForTesting
+    Collection<StateRectangle> getRenderedStateRectangles() {
+        if (fTimeGraphStatesLayer.getChildren().isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        Collection<?> stateRectangles = ((Group) fTimeGraphStatesLayer.getChildren().get(0)).getChildren();
+        @SuppressWarnings("unchecked")
+        Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
+        return ret;
     }
 
     @VisibleForTesting

@@ -21,6 +21,7 @@ final class JfxColorFactory {
     private JfxColorFactory() {}
 
     private static final Map<ColorDefinition, Color> COLOR_MAP = new ConcurrentHashMap<>();
+    private static final Map<ColorDefinition, Color> DERIVED_COLOR_MAP = new ConcurrentHashMap<>();
 
     /**
      * Instantiate a {@link Color} from a {@link ColorDefinition} object.
@@ -29,11 +30,21 @@ final class JfxColorFactory {
      *            The ColorDefinition
      * @return The Color object
      */
-    public static Color getColorFromDef(ColorDefinition colorDef) {
+    public static synchronized Color getColorFromDef(ColorDefinition colorDef) {
         Color color = COLOR_MAP.get(colorDef);
         if (color == null) {
             color = Color.rgb(colorDef.fRed, colorDef.fGreen, colorDef.fBlue, (double) colorDef.fAlpha / (double) ColorDefinition.MAX);
             COLOR_MAP.put(colorDef, color);
+        }
+        return color;
+    }
+
+    public static synchronized Color getDerivedColorFromDef(ColorDefinition colorDef) {
+        Color color = DERIVED_COLOR_MAP.get(colorDef);
+        if (color == null) {
+            color = getColorFromDef(colorDef);
+            color = color.desaturate().darker();
+           DERIVED_COLOR_MAP.put(colorDef, color);
         }
         return color;
     }

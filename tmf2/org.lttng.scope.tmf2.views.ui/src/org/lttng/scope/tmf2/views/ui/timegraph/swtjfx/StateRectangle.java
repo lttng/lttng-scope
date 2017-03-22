@@ -11,11 +11,16 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class StateRectangle extends Rectangle {
+class StateRectangle extends Rectangle {
 
     private final TimeGraphStateInterval fInterval;
+
+    private final transient Color fBaseColor;
+    private final transient Color fSelectedColor;
 
     public StateRectangle(SwtJfxTimeGraphViewer viewer, TimeGraphStateInterval interval, int entryIndex) {
         fInterval = interval;
@@ -52,11 +57,30 @@ public class StateRectangle extends Rectangle {
         setY(y);
         setWidth(width);
         setHeight(height);
-        setFill(JfxColorFactory.getColorFromDef(interval.getColorDefinition()));
+
+        fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
+        fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
+
+        setSelected(false);
+
+        setOnMouseClicked(e -> {
+            if (e.getButton() != MouseButton.PRIMARY) {
+                return;
+            }
+            viewer.intervalSelected(this);
+        });
     }
 
     public TimeGraphStateInterval getStateInterval() {
         return fInterval;
+    }
+
+    public void setSelected(boolean isSelected) {
+        if (isSelected) {
+            setFill(fSelectedColor);
+        } else {
+            setFill(fBaseColor);
+        }
     }
 
 }
