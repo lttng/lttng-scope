@@ -11,6 +11,8 @@ package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -192,8 +194,9 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
     // Label mapping
     // ------------------------------------------------------------------------
 
-    /** Prefix to strip from syscall names in the labels */
-    private static final String SYSCALL_PREFIX = "sys_"; //$NON-NLS-1$
+    /** Prefixes to strip from syscall names in the labels */
+    // TODO This should be inferred from the kernel event layout
+    private static final Collection<String> SYSCALL_PREFIXES = Arrays.asList("sys_", "syscall_entry_"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final Function<StateIntervalContext, @Nullable String> LABEL_MAPPING_FUNCTION = ssCtx -> {
         int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
@@ -212,10 +215,16 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
             return null;
         }
 
-        /* Strip the "sys_" part if there is one, it's not useful in the label */
-        if (syscallName.startsWith(SYSCALL_PREFIX)) {
-            syscallName = syscallName.substring(SYSCALL_PREFIX.length());
+        /*
+         * Strip the "syscall" prefix part if there is one, it's not useful in
+         * the label.
+         */
+        for (String sysPrefix : SYSCALL_PREFIXES) {
+            if (syscallName.startsWith(sysPrefix)) {
+                syscallName = syscallName.substring(sysPrefix.length());
+            }
         }
+
         return syscallName;
     };
 
