@@ -549,8 +549,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final double paintBottomPos = Math.min(timeGraphHeight, vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT);
 
         List<Line> lines = new LinkedList<>();
-        /* average+2 gives the best-looking output */
-        DoubleStream.iterate((ENTRY_HEIGHT / 2) + 2, y -> y + ENTRY_HEIGHT)
+        DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
                 // TODO Java 9 will allow using dropWhile()/takeWhile()/collect
                 .filter(y -> y > paintTopPos)
                 .peek(y -> {
@@ -606,8 +605,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         treeElemsBox.getChildren().addAll(treeElements);
 
         /* Prepare the background layer with the horizontal alignment lines */
-        /* Using the same alignment as the time graph's background */
-        List<Line> lines = DoubleStream.iterate((ENTRY_HEIGHT / 2) + 2, y -> y + ENTRY_HEIGHT)
+        List<Line> lines = DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
                 .limit(treeElements.size())
                 .mapToObj(y -> {
                     Line line = new Line(0, y, paneWidth, y);
@@ -659,7 +657,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
         final Color textColor = Color.WHITE;
 
-        final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
+        final double yOffset = ENTRY_HEIGHT / 2.0;
         Collection<Node> texts = stateRectangles.stream()
                 /* Only try to annotate rectangles that are large enough */
                 .filter(stateRect -> stateRect.getWidth() > fDebugOptions.getEllipsisWidth())
