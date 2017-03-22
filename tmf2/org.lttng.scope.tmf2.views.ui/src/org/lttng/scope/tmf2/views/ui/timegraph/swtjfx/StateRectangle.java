@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 
 import com.google.common.base.MoreObjects;
 
@@ -17,13 +18,29 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-class StateRectangle extends Rectangle {
+/**
+ * {@link Rectangle} object used to draw states in the timegraph. It attaches
+ * the {@link TimeGraphStateInterval} that represents this state.
+ *
+ * @author Alexandre Montplaisir
+ */
+public class StateRectangle extends Rectangle {
 
     private final TimeGraphStateInterval fInterval;
 
     private final transient Color fBaseColor;
     private final transient Color fSelectedColor;
 
+    /**
+     * Constructor
+     *
+     * @param viewer
+     *            The viewer in which the rectangle will be placed
+     * @param interval
+     *            The source interval model object
+     * @param entryIndex
+     *            The index of the entry to which this state belongs.
+     */
     public StateRectangle(SwtJfxTimeGraphViewer viewer, TimeGraphStateInterval interval, int entryIndex) {
         fInterval = interval;
 
@@ -40,17 +57,7 @@ class StateRectangle extends Rectangle {
         double xEnd = viewer.timestampToPaneXPos(Math.min(modelEndTime, intervalEndTime));
 
         double width = Math.max(1.0, xEnd - xStart) + 1.0;
-
-        double height;
-        switch (interval.getLineThickness()) {
-        case NORMAL:
-        default:
-            height = SwtJfxTimeGraphViewer.ENTRY_HEIGHT - 4;
-            break;
-        case SMALL:
-            height = SwtJfxTimeGraphViewer.ENTRY_HEIGHT - 8;
-            break;
-        }
+        double height = getHeightFromThickness(interval.getLineThickness());
 
         double yOffset = (SwtJfxTimeGraphViewer.ENTRY_HEIGHT - height) / 2;
         double y = entryIndex * SwtJfxTimeGraphViewer.ENTRY_HEIGHT + yOffset;
@@ -76,6 +83,11 @@ class StateRectangle extends Rectangle {
         });
     }
 
+    /**
+     * Return the model interval representing this state
+     *
+     * @return The interval model object
+     */
     public TimeGraphStateInterval getStateInterval() {
         return fInterval;
     }
@@ -85,6 +97,16 @@ class StateRectangle extends Rectangle {
             setFill(fSelectedColor);
         } else {
             setFill(fBaseColor);
+        }
+    }
+
+    private static double getHeightFromThickness(LineThickness lt) {
+        switch (lt) {
+        case NORMAL:
+        default:
+            return SwtJfxTimeGraphViewer.ENTRY_HEIGHT - 4;
+        case SMALL:
+            return SwtJfxTimeGraphViewer.ENTRY_HEIGHT - 8;
         }
     }
 

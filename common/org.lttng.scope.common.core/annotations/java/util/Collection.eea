@@ -1,4 +1,7 @@
 class java/util/Collection
+stream
+ ()Ljava/util/stream/Stream<TE;>;
+ ()L1java/util/stream/Stream<TE;>;
 toArray
  ()[Ljava/lang/Object;
  ()[1Ljava/lang/Object;

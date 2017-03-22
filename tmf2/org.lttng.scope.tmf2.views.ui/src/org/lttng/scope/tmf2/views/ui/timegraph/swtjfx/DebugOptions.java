@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import static java.util.Objects.requireNonNull;
 
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -30,6 +31,7 @@ class DebugOptions {
     private boolean fScrollingListenersEnabled = true;
 
     private double fStateIntervalOpacity = 1.0;
+    private Color fMultiStateColor = requireNonNull(Color.BLACK);
 
     private long fZoomAnimationDuration = 50;
     private double fZoomStep = 0.08;
@@ -123,6 +125,14 @@ class DebugOptions {
 
     public double getStateIntervalOpacity() {
         return fStateIntervalOpacity;
+    }
+
+    void setMultiStateColor(Color newColor) {
+        fMultiStateColor = newColor;
+    }
+
+    public Color getMultiStateColor() {
+        return fMultiStateColor;
     }
 
     /**

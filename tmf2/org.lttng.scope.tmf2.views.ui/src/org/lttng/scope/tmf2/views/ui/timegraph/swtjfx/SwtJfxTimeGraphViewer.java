@@ -36,6 +36,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -487,6 +488,18 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
                 Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, horizontalPos);
 
+                /*
+                 * Go over all state rectangles, and bring the "multi-state"
+                 * ones to the front, to be sure they show on top of the others.
+                 * Note we cannot do the forEach() as part of the stream,
+                 * because that throws a ConcurrentModificationException.
+                 */
+                List<StateRectangle> multiStateIntervals = ((Group) statesLayerContents).getChildren().stream()
+                        .map(node -> (StateRectangle) node)
+                        .filter(rect -> (rect.getStateInterval() instanceof MultiStateInterval))
+                        .collect(Collectors.toList());
+                multiStateIntervals.forEach(Node::toFront);
+
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
                     return null;
@@ -499,7 +512,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                         .add("Generating state renders= " + String.format("%,d", afterStateRenders - afterTreeRender) + " ns")
                         .add("Generating JavaFX objects=" + String.format("%,d", afterJavaFXObjects - afterStateRenders) + " ns");
                 System.err.println(sj.toString());
-
 
                 /* Update the view! */
                 Platform.runLater(() -> {
@@ -658,8 +670,44 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     private Stream<StateRectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
-        return stateRender.getStateIntervals().stream()
-                .map(interval -> new StateRectangle(this, interval, entryIndex));
+        List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
+
+        /* If there is only 1 (or 0) intervals, just map those to UI objects directly */
+        if (intervalsFromRender.size() <= 1) {
+            return intervalsFromRender.stream()
+                    .map(interval -> new StateRectangle(this, interval, entryIndex));
+        }
+
+        List<StateRectangle> states = new LinkedList<>();
+        /*
+         * Iterate tracking both the "previous" and "current" intervals, and
+         * check for non-contiguous state intervals. In those cases, add dummy
+         * "multi-state" intervals in-between.
+         */
+        for (int i = 1; i < intervalsFromRender.size(); i++) {
+            TimeGraphStateInterval previous = intervalsFromRender.get(i - 1);
+            TimeGraphStateInterval current = intervalsFromRender.get(i);
+
+            if (previous.getEndEvent().getTimestamp() + 1 >= current.getStartEvent().getTimestamp()) {
+                /*
+                 * The two intervals are contiguous, add their respective
+                 * corresponding UI objects directly.
+                 */
+                states.add(new StateRectangle(this, previous, entryIndex));
+                states.add(new StateRectangle(this, current, entryIndex));
+            } else {
+                /* Add a "multi-state" interval between the two */
+                MultiStateInterval multiState = new MultiStateInterval(
+                        previous.getEndEvent().getTimestamp() + 1,
+                        previous.getEndEvent().getTreeElement(),
+                        previous.getLineThickness());
+
+                states.add(new StateRectangle(this, previous, entryIndex));
+                states.add(new StateRectangle(this, multiState, entryIndex));
+                states.add(new StateRectangle(this, current, entryIndex));
+            }
+        }
+        return states.stream();
     }
 
     private static Node prepareTimeGraphStatesContents(Collection<StateRectangle> stateRectangles) {
