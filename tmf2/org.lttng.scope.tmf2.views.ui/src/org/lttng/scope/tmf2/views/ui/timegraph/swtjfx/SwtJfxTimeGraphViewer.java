@@ -524,9 +524,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final int entriesToPrefetch = fDebugOptions.getEntryPadding();
 
         final double timeGraphWidth = fTimeGraphPane.getWidth();
-        final double timeGraphHeight = fTimeGraphPane.getHeight();
         final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * ENTRY_HEIGHT);
-        final double paintBottomPos = Math.min(timeGraphHeight, vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT);
+        final double paintBottomPos = vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT;
 
         List<Line> lines = new LinkedList<>();
         DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
