@@ -36,7 +36,7 @@ class DebugOptions {
     private String fEllipsisString = "..."; //$NON-NLS-1$
     private transient double fEllipsisWidth;
 
-    private boolean fLoadingOVerlayEnabled = true;
+    private boolean fLoadingOverlayEnabled = true;
 
     /**
      * Constructor using the default options
@@ -160,11 +160,11 @@ class DebugOptions {
     }
 
     void setLoadingOverlayEnabled(boolean bool) {
-        fLoadingOVerlayEnabled = bool;
+        fLoadingOverlayEnabled = bool;
     }
 
     public boolean isLoadingOverlayEnabled() {
-        return fLoadingOVerlayEnabled;
+        return fLoadingOverlayEnabled;
     }
 
 }
