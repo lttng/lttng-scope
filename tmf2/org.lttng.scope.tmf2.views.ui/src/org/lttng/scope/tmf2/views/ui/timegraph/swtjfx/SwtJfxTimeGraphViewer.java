@@ -19,7 +19,6 @@ import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -159,47 +158,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
 
-    private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
-
-    private final AtomicLong fTaskSeq = new AtomicLong();
     private final Timer fUiUpdateTimer = new Timer();
-    private final TimerTask fUiUpdateTimerTask = new TimerTask() {
+    private final TimerTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
 
-        private HorizontalPosition fPreviousHorizontalPos = new HorizontalPosition(0, 0);
-        private VerticalPosition fPreviousVerticalPosition = new VerticalPosition(0, 0, 0);
-
-        @Override
-        public void run() {
-            if (!fDebugOptions.isPaintingEnabled()) {
-                return;
-            }
-
-            HorizontalPosition currentHorizontalPos = getCurrentHorizontalPosition();
-            VerticalPosition currentVerticalPos = fVerticalPosition;
-
-            if (currentHorizontalPos.equals(fPreviousHorizontalPos)
-                    && currentVerticalPos.equals(fPreviousVerticalPosition)) {
-                /*
-                 * Exact same position as the last one we've seen, no need to
-                 * repaint.
-                 */
-                return;
-            }
-            fPreviousHorizontalPos = currentHorizontalPos;
-            fPreviousVerticalPosition = currentVerticalPos;
-
-            /*
-             * Start a new repaint, display the "loading" overlay. The next
-             * paint task to finish will put it back to non-visible.
-             */
-            if (fDebugOptions.isLoadingOverlayEnabled()) {
-                fTimeGraphLoadingOverlay.fadeIn();
-            }
-
-            paintBackground(currentVerticalPos);
-            paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
-        }
-    };
+    private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
 
     private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
 
@@ -330,6 +292,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         ITmfTrace trace = TmfTraceManager.getInstance().getActiveTrace();
         getControl().initializeForTrace(trace);
 
+        /* Start the periodic redraw thread */
         long delay = fDebugOptions.getUIUpdateDelay();
         fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
@@ -340,6 +303,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     @Override
     public void disposeImpl() {
+        /* Stop/cleanup the redraw thread */
         fUiUpdateTimer.cancel();
         fUiUpdateTimer.purge();
     }
@@ -417,13 +381,17 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * The current horizontal position is tracked by the control. This method
      * just wraps it into a {@link HorizontalPosition}.
      */
-    private HorizontalPosition getCurrentHorizontalPosition() {
+    HorizontalPosition getCurrentHorizontalPosition() {
         long start = getControl().getVisibleTimeRangeStart();
         long end = getControl().getVisibleTimeRangeEnd();
         return new HorizontalPosition(start, end);
     }
 
-    private void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
+    VerticalPosition getCurrentVerticalPosition() {
+        return fVerticalPosition;
+    }
+
+    void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
         final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
         final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
         final long windowStartTime = horizontalPos.fStartTime;
@@ -441,6 +409,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + timeRangePadding);
         final long resolution = Math.max(1, Math.round(fNanosPerPixel));
+
+        /*
+         * Start a new repaint, display the "loading" overlay. The next
+         * paint task to finish will put it back to non-visible.
+         */
+        if (getDebugOptions().isLoadingOverlayEnabled()) {
+            fTimeGraphLoadingOverlay.fadeIn();
+        }
 
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
@@ -540,7 +516,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTaskExecutor.schedule(task);
     }
 
-    private void paintBackground(VerticalPosition vPos) {
+    void paintBackground(VerticalPosition vPos) {
         final int entriesToPrefetch = fDebugOptions.getEntryPadding();
 
         final double timeGraphWidth = fTimeGraphPane.getWidth();
