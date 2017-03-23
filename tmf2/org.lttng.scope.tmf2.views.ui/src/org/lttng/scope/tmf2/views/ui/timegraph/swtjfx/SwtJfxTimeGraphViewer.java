@@ -161,8 +161,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final Timer fUiUpdateTimer = new Timer();
     private final TimerTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
 
-    private VerticalPosition fVerticalPosition = new VerticalPosition(0, 0, 0);
-
     private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
 
     /** Current zoom level */
@@ -259,7 +257,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fTimeGraphScrollPane.setOnMouseEntered(fScrollingCtx.fMouseEnteredEventHandler);
         fTimeGraphScrollPane.setOnMouseExited(fScrollingCtx.fMouseExitedEventHandler);
         fTimeGraphScrollPane.hvalueProperty().addListener(fScrollingCtx.fHScrollChangeListener);
-        fTimeGraphScrollPane.vvalueProperty().addListener(fScrollingCtx.fVScrollChangeListener);
 
         /*
          * Mouse scroll handlers (for zooming) are attached to the time graph
@@ -387,10 +384,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return new HorizontalPosition(start, end);
     }
 
-    VerticalPosition getCurrentVerticalPosition() {
-        return fVerticalPosition;
-    }
-
     void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
         final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
         final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
@@ -421,7 +414,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
             protected @Nullable Void call() {
-
                 long start = System.nanoTime();
                 System.err.println("Starting paint task #" + taskSeqNb);
 
@@ -440,9 +432,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
                 int entriesToPrefetch = fDebugOptions.getEntryPadding();
                 int topEntry = Math.max(0,
-                        paneYPosToEntryListIndex(verticalPos.fTopPos, verticalPos.fContentHeight, nbElements) - entriesToPrefetch);
+                        paneYPosToEntryListIndex(verticalPos.fTopPos, ENTRY_HEIGHT) - entriesToPrefetch);
                 int bottomEntry = Math.min(nbElements,
-                        paneYPosToEntryListIndex(verticalPos.fBottomPos, verticalPos.fContentHeight, nbElements) + entriesToPrefetch);
+                        paneYPosToEntryListIndex(verticalPos.fBottomPos, ENTRY_HEIGHT) + entriesToPrefetch);
 
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
@@ -484,6 +476,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                         .add("Generating JavaFX objects=" + String.format("%,d", afterJavaFXObjects - afterStateRenders) + " ns");
                 System.err.println(sj.toString());
 
+
                 /* Update the view! */
                 Platform.runLater(() -> {
                     long startUI = System.nanoTime();
@@ -513,6 +506,17 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         };
 
         System.err.println("Queueing task #" + taskSeqNb);
+
+        /*
+         * Attach a listener to the task to receive exceptions thrown within the
+         * task.
+         */
+        task.exceptionProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                newVal.printStackTrace();
+            }
+        });
+
         fTaskExecutor.schedule(task);
     }
 
@@ -784,7 +788,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
         /* Knobs to programmatically disable the scrolling listeners */
         public final ListenerStatus fHListenerStatus = new ListenerStatus();
-        public final ListenerStatus fVlistenerStatus = new ListenerStatus();
 
         private boolean fUserActionOngoing = false;
 
@@ -829,27 +832,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
              * HorizontalPosition. The control will update accordingly upon
              * managing the signal we just sent.
              */
-        };
-
-        private final ChangeListener<Number> fVScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!fDebugOptions.isScrollingListenersEnabled()) {
-                System.out.println("VScroll event ignored due to debug option");
-                return;
-            }
-            if (!fUserActionOngoing || !fVlistenerStatus.isEnabled()) {
-                System.out.println("VScroll listener triggered but inactive");
-                return;
-            }
-
-            VerticalPosition newVerticalPos = getTimeGraphVerticalPos(newValue.doubleValue());
-            /*
-             * Unlike the HScrollListener, it *is* our responsibility here to
-             * update the vertical position, because this is tracked solely by
-             * the view.
-             */
-            fVerticalPosition = newVerticalPos;
-
-            /* Next UI update will take these coordinates in consideration */
         };
     }
 
@@ -1046,20 +1028,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     /**
      * Get the current vertical position of the timegraph.
      *
-     * In general, the results returned by this should be the same as
-     * {@link #fVerticalPosition}, unless a different newVValue parameter is
-     * provided.
-     *
-     * @param newVValue
-     *            The "vvalue" property of the vertical scrollbar to use for
-     *            calculations. If null, the current value will be retrieved
-     *            from the scenegraph object. For example, a scrolling listener
-     *            might want to pass its newValue here, since the scenegraph
-     *            object will not have been updated yet.
      * @return The corresponding VerticalPosition
      */
-    VerticalPosition getTimeGraphVerticalPos(@Nullable Double newVValue) {
-        double vvalue = (newVValue == null ? fTimeGraphScrollPane.getVvalue() : newVValue.doubleValue());
+    VerticalPosition getCurrentVerticalPosition() {
+        double vvalue = fTimeGraphScrollPane.getVvalue();
 
         /* Get the Y position of the top/bottom edges of the pane */
         double vmin = fTreeScrollPane.getVmin();
@@ -1070,16 +1042,15 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         double vtop = Math.max(0, contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin);
         double vbottom = vtop + viewportHeight;
 
-        return new VerticalPosition(vtop, vbottom, contentHeight);
+        return new VerticalPosition(vtop, vbottom);
     }
 
-    private static int paneYPosToEntryListIndex(double yPos, double yMax, int nbEntries) {
-        if (yPos < 0.0 || yMax < 0.0 || yPos > yMax || nbEntries < 0) {
+    private static int paneYPosToEntryListIndex(double yPos, double entryHeight) {
+        if (yPos < 0.0 || entryHeight < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        double ratio = yPos / yMax;
-        return (int) (ratio * nbEntries);
+        return (int) (yPos / entryHeight);
     }
 
     // ------------------------------------------------------------------------

@@ -21,7 +21,17 @@ public class StateRectangle extends Rectangle {
         fInterval = interval;
 
         double xStart = viewer.timestampToPaneXPos(interval.getStartEvent().getTimestamp());
-        double xEnd = viewer.timestampToPaneXPos(interval.getEndEvent().getTimestamp());
+
+        /*
+         * It is possible, especially when re-opening already-indexed traces,
+         * that the indexer and the state system do not report the same end
+         * time. Make sure to clamp the interval's end to the earliest valid
+         * value.
+         */
+        long modelEndTime = viewer.getControl().getFullTimeGraphEndTime();
+        long intervalEndTime = interval.getEndEvent().getTimestamp();
+        double xEnd = viewer.timestampToPaneXPos(Math.min(modelEndTime, intervalEndTime));
+
         double width = Math.max(1.0, xEnd - xStart) + 1.0;
 
         double height;

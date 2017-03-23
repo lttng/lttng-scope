@@ -36,9 +36,8 @@ class PeriodicRedrawTask extends TimerTask {
     private final AtomicLong fTaskSeq = new AtomicLong();
     private final SwtJfxTimeGraphViewer fViewer;
 
-
-    private HorizontalPosition fPreviousHorizontalPos = new HorizontalPosition(0, 0);
-    private VerticalPosition fPreviousVerticalPosition = new VerticalPosition(0, 0, 0);
+    private HorizontalPosition fPreviousHorizontalPos = Position.UNINITIALIZED_HP;
+    private VerticalPosition fPreviousVerticalPosition = Position.UNINITIALIZED_VP;
 
     public PeriodicRedrawTask(SwtJfxTimeGraphViewer viewer) {
         fViewer = viewer;
@@ -53,14 +52,19 @@ class PeriodicRedrawTask extends TimerTask {
         HorizontalPosition currentHorizontalPos = fViewer.getCurrentHorizontalPosition();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
+        /*
+         * Skip painting if the previous position is the exact same as last
+         * time. Also skip if were not yet initialized.
+         */
         if (currentHorizontalPos.equals(fPreviousHorizontalPos)
                 && currentVerticalPos.equals(fPreviousVerticalPosition)) {
-            /*
-             * Exact same position as the last one we've seen, no need to
-             * repaint.
-             */
             return;
         }
+        if (currentHorizontalPos.equals(Position.UNINITIALIZED_HP)
+                || currentVerticalPos.equals(Position.UNINITIALIZED_VP)) {
+            return;
+        }
+
         fPreviousHorizontalPos = currentHorizontalPos;
         fPreviousVerticalPosition = currentVerticalPos;
 

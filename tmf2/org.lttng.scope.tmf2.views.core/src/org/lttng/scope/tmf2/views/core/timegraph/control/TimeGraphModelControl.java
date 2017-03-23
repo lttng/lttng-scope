@@ -18,7 +18,8 @@ import com.google.common.annotations.VisibleForTesting;
 
 public final class TimeGraphModelControl {
 
-    private static final long UNINITIALIZED = -1;
+    /** Value representing uninitialized timestamps */
+    public static final long UNINITIALIZED = -1;
 
     private final ITimeGraphModelRenderProvider fRenderProvider;
     private final SignallingContext fSignallingContext;

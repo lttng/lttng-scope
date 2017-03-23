@@ -12,10 +12,23 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 import com.google.common.base.MoreObjects;
 
 interface Position {
+
+    /**
+     * Placeholder for uninitialized horizontal positions.
+     */
+    HorizontalPosition UNINITIALIZED_HP = new HorizontalPosition(
+            TimeGraphModelControl.UNINITIALIZED,
+            TimeGraphModelControl.UNINITIALIZED);
+
+    /**
+     * Placeholder for uninitialized vertical positions.
+     */
+    VerticalPosition UNINITIALIZED_VP = new VerticalPosition(0.0, 0.0);
 
     class HorizontalPosition {
 
@@ -59,19 +72,19 @@ interface Position {
 
     class VerticalPosition {
 
+        private static final double EPSILON = 0.00001;
+
         public final double fTopPos;
         public final double fBottomPos;
-        public final double fContentHeight;
 
-        public VerticalPosition(double topPos, double bottomPos, double contentHeight) {
+        public VerticalPosition(double topPos, double bottomPos) {
             fTopPos = topPos;
             fBottomPos = bottomPos;
-            fContentHeight = contentHeight;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(fTopPos, fBottomPos, fContentHeight);
+            return Objects.hash(fTopPos, fBottomPos);
         }
 
         @Override
@@ -86,9 +99,8 @@ interface Position {
                 return false;
             }
             VerticalPosition other = (VerticalPosition) obj;
-            return (Double.doubleToLongBits(fTopPos) != Double.doubleToLongBits(other.fTopPos)
-                    && Double.doubleToLongBits(fBottomPos) == Double.doubleToLongBits(other.fBottomPos)
-                    && Double.doubleToLongBits(fContentHeight) != Double.doubleToLongBits(other.fContentHeight));
+            return (doubleEquals(fTopPos, other.fTopPos)
+                    && doubleEquals(fBottomPos, other.fBottomPos));
         }
 
         @Override
@@ -96,8 +108,11 @@ interface Position {
             return MoreObjects.toStringHelper(this)
                     .add("fTopPos", fTopPos) //$NON-NLS-1$
                     .add("fBottomPos", fBottomPos) //$NON-NLS-1$
-                    .add("fContentHeight", fContentHeight) //$NON-NLS-1$
                     .toString();
+        }
+
+        private static boolean doubleEquals(double d1, double d2) {
+            return (Math.abs(d1 - d2) < EPSILON);
         }
     }
 }
