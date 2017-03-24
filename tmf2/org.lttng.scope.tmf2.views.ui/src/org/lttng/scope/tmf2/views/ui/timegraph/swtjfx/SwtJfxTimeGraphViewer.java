@@ -60,6 +60,7 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -692,7 +693,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * "bubble up" to the scrollpane to be used for panning.
      */
     private static final Predicate<MouseEvent> MOUSE_EVENT_IGNORED = e -> {
-        return (e.isSecondaryButtonDown() ||e.isMiddleButtonDown() || e.isControlDown());
+        return (e.getButton() == MouseButton.SECONDARY
+                || e.getButton() == MouseButton.MIDDLE
+                || e.isControlDown());
     };
 
     /**
