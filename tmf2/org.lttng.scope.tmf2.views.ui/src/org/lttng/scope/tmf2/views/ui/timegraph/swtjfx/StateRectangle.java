@@ -45,8 +45,8 @@ public class StateRectangle extends Rectangle {
             break;
         }
 
-        // TODO Calculate value for small thickness too
-        double y = entryIndex * SwtJfxTimeGraphViewer.ENTRY_HEIGHT + 2;
+        double yOffset = (SwtJfxTimeGraphViewer.ENTRY_HEIGHT - height) / 2;
+        double y = entryIndex * SwtJfxTimeGraphViewer.ENTRY_HEIGHT + yOffset;
 
         setX(xStart);
         setY(y);
