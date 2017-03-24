@@ -89,8 +89,13 @@ public final class TimeGraphModelControl {
         fCurrentTrace = trace;
         fRenderProvider.setTrace(trace);
 
+        TimeGraphModelView view = fView;
+        if (view != null) {
+            view.clear();
+        }
+
         if (trace == null) {
-            // TODO Clear the view?
+            /* View will remain cleared, good */
             return;
         }
 

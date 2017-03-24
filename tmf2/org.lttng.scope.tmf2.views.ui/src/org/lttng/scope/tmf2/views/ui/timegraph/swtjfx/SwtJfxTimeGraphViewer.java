@@ -157,7 +157,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final Rectangle fOngoingSelectionRect;
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
-
     private final Timer fUiUpdateTimer = new Timer();
     private final TimerTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
 
@@ -307,7 +306,20 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     @Override
     public void clear() {
-        // TODO
+        Platform.runLater(() -> {
+            /*
+             * Clear the generated children of the various groups so they go
+             * back to their initial (post-constructor) state.
+             */
+            fTreePane.getChildren().clear();
+
+            fTimeGraphBackgroundLayer.getChildren().clear();
+            fTimeGraphStatesLayer.getChildren().clear();
+            fTimeGraphTextLabelsLayer.getChildren().clear();
+
+            /* Also clear whatever cached objects the viewer currently has. */
+            fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
+        });
     }
 
     @Override
