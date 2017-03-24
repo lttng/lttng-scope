@@ -16,6 +16,10 @@ import com.google.common.base.MoreObjects;
 
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -28,8 +32,8 @@ public class StateRectangle extends Rectangle {
 
     private final TimeGraphStateInterval fInterval;
 
-    private final transient Color fBaseColor;
-    private final transient Color fSelectedColor;
+    private final transient Paint fBaseColor;
+    private final transient Paint fSelectedColor;
 
     /**
      * Constructor
@@ -70,8 +74,16 @@ public class StateRectangle extends Rectangle {
         double opacity = viewer.getDebugOptions().getStateIntervalOpacity();
         setOpacity(opacity);
 
-        fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
-        fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
+        /* Set a special paint for multi-state intervals */
+        if (interval instanceof MultiStateInterval) {
+            Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
+            LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+            fBaseColor = lg;
+            fSelectedColor = lg;
+        } else {
+            fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
+            fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
+        }
 
         setSelected(false);
 
