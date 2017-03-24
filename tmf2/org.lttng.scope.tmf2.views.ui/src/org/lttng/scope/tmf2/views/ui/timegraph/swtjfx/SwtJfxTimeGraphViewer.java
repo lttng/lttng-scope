@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
@@ -385,6 +386,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         } finally {
             fScrollingCtx.fHListenerStatus.enable();
         }
+
+        /*
+         * Redraw the current selection, as it may have moved if we changed the
+         * size of the pane.
+         */
+        redrawSelection();
     }
 
     /**
@@ -571,6 +578,23 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fSelectionRect.setHeight(fTimeGraphPane.getHeight());
 
         fSelectionRect.setVisible(true);
+    }
+
+    private void redrawSelection() {
+        /*
+         * Tracking the current selection is the trace context's responsibility.
+         * Hopefully it's the right one.
+         */
+        TmfTimeRange selection = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
+        long selectionStart = selection.getStartTime().toNanos();
+        long selectionEnd = selection.getEndTime().toNanos();
+        /* Please Lord, deliver us from this insanity. */
+        if (selectionStart == Long.MAX_VALUE || selectionEnd == Long.MAX_VALUE) {
+            /* Checking the TmfTimetamps with .equals() doesn't even work... */
+            return;
+        }
+
+        drawSelection(selectionStart, selectionEnd);
     }
 
     // ------------------------------------------------------------------------
