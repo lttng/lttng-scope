@@ -42,6 +42,7 @@ public abstract class SwtJfxTimeGraphView extends TmfView {
         IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
         toolbarMgr.add(ActionFactory.getSelectSortingModeAction(viewer));
         toolbarMgr.add(ActionFactory.getSelectFilterModesAction(viewer));
+        toolbarMgr.add(ActionFactory.getInfoOnSelectedStateAction(viewer));
 
         fViewer = viewer;
     }

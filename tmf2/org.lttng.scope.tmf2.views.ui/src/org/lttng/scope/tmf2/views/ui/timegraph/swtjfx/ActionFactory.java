@@ -19,6 +19,10 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelR
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.activator.internal.Activator;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
+
 final class ActionFactory {
 
     private ActionFactory() {}
@@ -136,12 +140,41 @@ final class ActionFactory {
         }
     }
 
+    private static class GetInfoOnSelectedStateAction extends Action {
+
+        private final SwtJfxTimeGraphViewer fViewer;
+
+        public GetInfoOnSelectedStateAction(SwtJfxTimeGraphViewer viewer) {
+            super("Get Info", IAction.AS_PUSH_BUTTON);
+            fViewer = viewer;
+        }
+
+        @Override
+        public void run() {
+            StateRectangle state = fViewer.getSelectedState();
+            if (state == null) {
+                return;
+            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            TextField content = new TextField(state.toString());
+            content.setEditable(false);
+            content.setPrefWidth(1000.0);
+            alert.getDialogPane().setContent(content);
+            alert.setResizable(true);
+            alert.show();
+        }
+    }
+
     public static Action getSelectSortingModeAction(TimeGraphModelView view) {
         return new SelectSortingModeAction(view);
     }
 
     public static Action getSelectFilterModesAction(TimeGraphModelView view) {
         return new SelectFilterModesAction(view);
+    }
+
+    public static Action getInfoOnSelectedStateAction(SwtJfxTimeGraphViewer viewer) {
+        return new GetInfoOnSelectedStateAction(viewer);
     }
 
 }

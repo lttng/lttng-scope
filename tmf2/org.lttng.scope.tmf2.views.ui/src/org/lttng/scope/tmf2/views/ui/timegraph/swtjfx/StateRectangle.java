@@ -11,6 +11,8 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 
+import com.google.common.base.MoreObjects;
+
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -81,6 +83,13 @@ class StateRectangle extends Rectangle {
         } else {
             setFill(fBaseColor);
         }
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("interval", fInterval) //$NON-NLS-1$
+                .toString();
     }
 
 }

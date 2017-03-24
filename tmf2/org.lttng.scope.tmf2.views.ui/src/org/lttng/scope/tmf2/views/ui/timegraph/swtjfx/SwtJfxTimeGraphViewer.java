@@ -724,6 +724,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fSelectedStateInterval = state;
     }
 
+    @Nullable StateRectangle getSelectedState() {
+        return fSelectedStateInterval;
+    }
+
     // ------------------------------------------------------------------------
     // Mouse event listeners
     // ------------------------------------------------------------------------
