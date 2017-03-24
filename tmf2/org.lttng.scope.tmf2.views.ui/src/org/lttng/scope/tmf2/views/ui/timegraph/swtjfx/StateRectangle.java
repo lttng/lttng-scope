@@ -60,6 +60,9 @@ class StateRectangle extends Rectangle {
         setWidth(width);
         setHeight(height);
 
+        double opacity = viewer.getDebugOptions().getStateIntervalOpacity();
+        setOpacity(opacity);
+
         fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
         fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
 

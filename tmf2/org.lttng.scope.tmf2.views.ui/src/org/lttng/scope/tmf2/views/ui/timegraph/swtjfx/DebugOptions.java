@@ -29,6 +29,8 @@ class DebugOptions {
     private int fUIUpdateDelay = 250;
     private boolean fScrollingListenersEnabled = true;
 
+    private double fStateIntervalOpacity = 1.0;
+
     private long fZoomAnimationDuration = 50;
     private double fZoomStep = 0.08;
 
@@ -113,6 +115,14 @@ class DebugOptions {
 
     void setZoomAnimationDuration(long duration) {
        fZoomAnimationDuration = duration;
+    }
+
+    void setStateIntervalOpacity(double opacity) {
+        fStateIntervalOpacity = opacity;
+    }
+
+    public double getStateIntervalOpacity() {
+        return fStateIntervalOpacity;
     }
 
     /**
