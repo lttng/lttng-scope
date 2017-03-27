@@ -10,7 +10,6 @@
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
@@ -38,12 +37,6 @@ public abstract class SwtJfxTimeGraphView extends TmfView {
         }
         SwtJfxTimeGraphViewer viewer = new SwtJfxTimeGraphViewer(parent, fModelControl);
         fModelControl.attachView(viewer);
-
-        IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
-        toolbarMgr.add(ActionFactory.getSelectSortingModeAction(viewer));
-        toolbarMgr.add(ActionFactory.getSelectFilterModesAction(viewer));
-        toolbarMgr.add(ActionFactory.getInfoOnSelectedStateAction(viewer));
-
         fViewer = viewer;
     }
 

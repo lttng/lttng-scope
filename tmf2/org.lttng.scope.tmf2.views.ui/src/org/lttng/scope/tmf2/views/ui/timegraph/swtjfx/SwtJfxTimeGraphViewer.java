@@ -64,9 +64,11 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -140,7 +142,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
     private final FXCanvas fBaseCanvas;
-    private final SplitPane fBaseSplitPane;
+    private final BorderPane fBasePane;
+    private final ToolBar fToolBar;
+    private final SplitPane fSplitPane;
 
     private final Pane fTreePane;
     private final ScrollPane fTreeScrollPane;
@@ -278,16 +282,22 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         // Prepare the top-level area
         // --------------------------------------------------------------------
 
-        fBaseSplitPane = new SplitPane(fTreeScrollPane, fTimeGraphScrollPane);
-        fBaseSplitPane.setOrientation(Orientation.HORIZONTAL);
+        fToolBar = new ViewerToolBar(this);
 
-        fBaseCanvas.setScene(new Scene(fBaseSplitPane));
+        fSplitPane = new SplitPane(fTreeScrollPane, fTimeGraphScrollPane);
+        fSplitPane.setOrientation(Orientation.HORIZONTAL);
+
+        fBasePane = new BorderPane();
+        fBasePane.setCenter(fSplitPane);
+        fBasePane.setTop(fToolBar);
+
+        fBaseCanvas.setScene(new Scene(fBasePane));
 
         /*
          * setDividerPositions() needs to be called *after* the Stage/Scene is
          * initialized.
          */
-        fBaseSplitPane.setDividerPositions(0.2);
+        fSplitPane.setDividerPositions(0.2);
 
         /*
          * Initially populate the viewer with the context of the current trace.
