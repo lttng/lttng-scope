@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.FilterMode;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.SortingMode;
@@ -23,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
@@ -31,9 +34,65 @@ class ViewerToolBar extends ToolBar {
 
     public ViewerToolBar(SwtJfxTimeGraphViewer viewer) {
         super();
-        getItems().addAll(getSortingModeButton(viewer),
-                getFilterModeButton(viewer),
-                getStateInfoButton(viewer));
+        getItems().addAll(
+                getZoomInButton(viewer),
+                getZoomOutButton(viewer),
+                getZoomToSelectionButton(viewer),
+                getZoomToWholeTraceButton(viewer),
+                new Separator(),
+                getStateInfoButton(viewer),
+                getSortingModeButton(viewer),
+                getFilterModeButton(viewer));
+    }
+
+    private static Button getZoomInButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button("Zoom In");
+        button.setOnAction(e -> {
+            // TODO Pivot could be the current time selection if it's in the
+            // visible time range.
+            viewer.getZoomActions().zoom(null, true);
+        });
+        return button;
+    }
+
+    private static Button getZoomOutButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button("Zoom Out");
+        button.setOnAction(e -> {
+            // TODO Should pivot be the current selection, or just the center?
+            viewer.getZoomActions().zoom(null, false);
+        });
+        return button;
+    }
+
+    private static Button getZoomToSelectionButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button("Zoom to Selection");
+        button.setOnAction(e -> {
+            TmfTimeRange range = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
+            long start = range.getStartTime().toNanos();
+            long end = range.getEndTime().toNanos();
+            /*
+             * Only actually zoom if the selection is a time range, not a single
+             * timestamp.
+             */
+            if (start != end) {
+                viewer.getControl().updateVisibleTimeRange(start, end, true);
+            }
+        });
+        return button;
+    }
+
+    private static Button getZoomToWholeTraceButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button("Zoom to Whole Trace");
+        button.setOnAction(e -> {
+            /*
+             * Grab the full trace range from the control, until it's moved to a
+             * central property.
+             */
+            long start = viewer.getControl().getFullTimeGraphStartTime();
+            long end = viewer.getControl().getFullTimeGraphEndTime();
+            viewer.getControl().updateVisibleTimeRange(start, end, true);
+        });
+        return button;
     }
 
     private static MenuButton getSortingModeButton(SwtJfxTimeGraphViewer viewer) {

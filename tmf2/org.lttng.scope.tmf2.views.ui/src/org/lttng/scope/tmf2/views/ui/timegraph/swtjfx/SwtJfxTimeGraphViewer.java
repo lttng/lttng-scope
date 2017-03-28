@@ -1051,6 +1051,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     }
 
+    ZoomActions getZoomActions() {
+        return fZoomActions;
+    }
+
     // ------------------------------------------------------------------------
     // Common utils
     // ------------------------------------------------------------------------
@@ -1195,8 +1199,4 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return ret;
     }
 
-    @VisibleForTesting
-    ZoomActions getZoomActions() {
-        return fZoomActions;
-    }
 }
