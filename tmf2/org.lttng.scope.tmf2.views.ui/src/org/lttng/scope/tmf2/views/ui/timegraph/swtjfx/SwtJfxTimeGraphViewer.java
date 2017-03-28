@@ -42,6 +42,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.ViewerToolBar;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -782,7 +783,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fSelectedStateInterval = state;
     }
 
-    @Nullable StateRectangle getSelectedState() {
+    /**
+     * Get the currently selected state interval
+     *
+     * @return The current selected state
+     */
+    public @Nullable StateRectangle getSelectedState() {
         return fSelectedStateInterval;
     }
 
@@ -980,7 +986,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // These do not come from the control, but from the view itself
     // ------------------------------------------------------------------------
 
-    class ZoomActions {
+    /**
+     * Utils class encapsulating zoom operations
+     */
+    public class ZoomActions {
 
         private double fCurrentTemporaryZoomFactor = 1.0;
 
@@ -1051,7 +1060,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     }
 
-    ZoomActions getZoomActions() {
+    /**
+     * Get the viewer's zoom actions
+     *
+     * @return The zoom actions
+     */
+    public ZoomActions getZoomActions() {
         return fZoomActions;
     }
 
