@@ -28,6 +28,7 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.common.core.log.TraceCompassLog;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -107,9 +108,13 @@ public class SignallingContext {
             LOGGER.fine(() -> "[SignallingContext:ReceivedTraceClosed] " + //$NON-NLS-1$
                     signal.getTrace().getName());
 
-            // How does this signal work anyway?
-            // TODO Implement this!
-            // fViewer.clearViewer()
+            /*
+             * Clear the view, but only if there is no other active trace. This
+             * check should really be the signal manager's job...
+             */
+            if (TmfTraceManager.getInstance().getActiveTrace() == null) {
+                fControl.initializeForTrace(null);
+            }
         });
     }
 
