@@ -952,12 +952,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     /**
-     * The default scroll value seems to be in increments of 40.0 units.
-     * Consider one (default) scroll to correspond to one zoom in/out action.
-     */
-    private static final double SCROLL_FACTOR = 40.0;
-
-    /**
      * Event handler attached to the *time graph pane*, to execute zooming
      * operations when the control key is down (otherwise, it just lets the even
      * bubble to the ScrollPane, which will do a standard scroll).
@@ -968,7 +962,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         }
         double delta = e.getDeltaY();
         boolean zoomIn = (delta > 0.0); // false means a zoom-out
-        int nbActions = (int) Math.abs(Math.round(delta / SCROLL_FACTOR));
 
         /*
          * getX() corresponds to the X position of the mouse on the time graph.
@@ -977,9 +970,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         // TODO Support passing a pivotX to the zoom() method below
 //        double originX = e.getX();
 
-        for (int i = 0; i < nbActions; i++) {
-            fZoomActions.zoom(null, zoomIn);
-        }
+        fZoomActions.zoom(null, zoomIn);
 
         e.consume();
     };
