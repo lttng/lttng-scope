@@ -47,8 +47,7 @@ class ViewerToolBar extends ToolBar {
                     rmi.setToggleGroup(tg);
                     rmi.setOnAction(e -> {
                         provider.setCurrentSortingMode(index);
-                        // FIXME broken
-//                        viewer.getControl().repaintCurrentArea();
+                        viewer.getControl().repaintCurrentArea();
                     });
                     return rmi;
                 })
@@ -81,8 +80,7 @@ class ViewerToolBar extends ToolBar {
                             /* Mode was disabled */
                             provider.disableFilterMode(index);
                         }
-                        // FIXME broken
-//                      viewer.getControl().repaintCurrentArea();
+                        viewer.getControl().repaintCurrentArea();
                     });
                     return cmi;
                 })

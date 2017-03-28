@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -167,7 +166,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
     private final Timer fUiUpdateTimer = new Timer();
-    private final TimerTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
+    private final PeriodicRedrawTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
 
     private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
 
@@ -407,6 +406,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * size of the pane.
          */
         redrawSelection();
+
+        fUiUpdateTimerTask.forceRedraw();
     }
 
     /**

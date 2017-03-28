@@ -39,6 +39,8 @@ class PeriodicRedrawTask extends TimerTask {
     private HorizontalPosition fPreviousHorizontalPos = Position.UNINITIALIZED_HP;
     private VerticalPosition fPreviousVerticalPosition = Position.UNINITIALIZED_VP;
 
+    private volatile boolean fForceRedraw = false;
+
     public PeriodicRedrawTask(SwtJfxTimeGraphViewer viewer) {
         fViewer = viewer;
     }
@@ -52,17 +54,22 @@ class PeriodicRedrawTask extends TimerTask {
         HorizontalPosition currentHorizontalPos = fViewer.getCurrentHorizontalPosition();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
-        /*
-         * Skip painting if the previous position is the exact same as last
-         * time. Also skip if were not yet initialized.
-         */
-        if (currentHorizontalPos.equals(fPreviousHorizontalPos)
-                && currentVerticalPos.equals(fPreviousVerticalPosition)) {
-            return;
-        }
-        if (currentHorizontalPos.equals(Position.UNINITIALIZED_HP)
-                || currentVerticalPos.equals(Position.UNINITIALIZED_VP)) {
-            return;
+        if (fForceRedraw) {
+            fForceRedraw = false;
+            /* Then skip the next checks */
+        } else {
+            /*
+             * Skip painting if the previous position is the exact same as last
+             * time. Also skip if were not yet initialized.
+             */
+            if (currentHorizontalPos.equals(fPreviousHorizontalPos)
+                    && currentVerticalPos.equals(fPreviousVerticalPosition)) {
+                return;
+            }
+            if (currentHorizontalPos.equals(Position.UNINITIALIZED_HP)
+                    || currentVerticalPos.equals(Position.UNINITIALIZED_VP)) {
+                return;
+            }
         }
 
         fPreviousHorizontalPos = currentHorizontalPos;
@@ -70,6 +77,10 @@ class PeriodicRedrawTask extends TimerTask {
 
         fViewer.paintBackground(currentVerticalPos);
         fViewer.paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
+    }
+
+    public void forceRedraw() {
+        fForceRedraw = true;
     }
 
 }
