@@ -335,6 +335,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             /* Also clear whatever cached objects the viewer currently has. */
             fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
+            fUiUpdateTimerTask.forceRedraw();
         });
     }
 
@@ -406,8 +407,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * size of the pane.
          */
         redrawSelection();
-
-        fUiUpdateTimerTask.forceRedraw();
     }
 
     /**
