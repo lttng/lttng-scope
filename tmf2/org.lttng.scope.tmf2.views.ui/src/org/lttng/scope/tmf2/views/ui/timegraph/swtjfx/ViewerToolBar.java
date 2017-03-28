@@ -29,11 +29,21 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 class ViewerToolBar extends ToolBar {
 
+    private final Image fZoomInIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_in.gif")); //$NON-NLS-1$
+    private final Image fZoomOutIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_out.gif")); //$NON-NLS-1$
+    private final Image fZoomSelectionIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_in.gif")); //$NON-NLS-1$
+    private final Image fZoomFullIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_full.gif")); //$NON-NLS-1$
+    private final Image fHelpIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/help.gif")); //$NON-NLS-1$
+
     public ViewerToolBar(SwtJfxTimeGraphViewer viewer) {
         super();
+
         getItems().addAll(
                 getZoomInButton(viewer),
                 getZoomOutButton(viewer),
@@ -45,8 +55,10 @@ class ViewerToolBar extends ToolBar {
                 getFilterModeButton(viewer));
     }
 
-    private static Button getZoomInButton(SwtJfxTimeGraphViewer viewer) {
-        Button button = new Button("Zoom In");
+    private Button getZoomInButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(fZoomInIcon));
+        button.setTooltip(new Tooltip("Zoom In"));
         button.setOnAction(e -> {
             // TODO Pivot could be the current time selection if it's in the
             // visible time range.
@@ -55,8 +67,10 @@ class ViewerToolBar extends ToolBar {
         return button;
     }
 
-    private static Button getZoomOutButton(SwtJfxTimeGraphViewer viewer) {
-        Button button = new Button("Zoom Out");
+    private Button getZoomOutButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(fZoomOutIcon));
+        button.setTooltip(new Tooltip("Zoom Out"));
         button.setOnAction(e -> {
             // TODO Should pivot be the current selection, or just the center?
             viewer.getZoomActions().zoom(null, false);
@@ -64,8 +78,10 @@ class ViewerToolBar extends ToolBar {
         return button;
     }
 
-    private static Button getZoomToSelectionButton(SwtJfxTimeGraphViewer viewer) {
-        Button button = new Button("Zoom to Selection");
+    private Button getZoomToSelectionButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(fZoomSelectionIcon));
+        button.setTooltip(new Tooltip("Zoom to Selection"));
         button.setOnAction(e -> {
             TmfTimeRange range = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
             long start = range.getStartTime().toNanos();
@@ -81,8 +97,10 @@ class ViewerToolBar extends ToolBar {
         return button;
     }
 
-    private static Button getZoomToWholeTraceButton(SwtJfxTimeGraphViewer viewer) {
-        Button button = new Button("Zoom to Whole Trace");
+    private Button getZoomToWholeTraceButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(fZoomFullIcon));
+        button.setTooltip(new Tooltip("Zoom to Whole Trace"));
         button.setOnAction(e -> {
             /*
              * Grab the full trace range from the control, until it's moved to a
@@ -150,8 +168,10 @@ class ViewerToolBar extends ToolBar {
         return button;
     }
 
-    private static Button getStateInfoButton(SwtJfxTimeGraphViewer viewer) {
-        Button button = new Button("Get Info");
+    private Button getStateInfoButton(SwtJfxTimeGraphViewer viewer) {
+        Button button = new Button();
+        button.setGraphic(new ImageView(fHelpIcon));
+        button.setTooltip(new Tooltip("Get State Info"));
         button.setOnAction(e -> {
             StateRectangle state = viewer.getSelectedState();
             if (state == null) {
