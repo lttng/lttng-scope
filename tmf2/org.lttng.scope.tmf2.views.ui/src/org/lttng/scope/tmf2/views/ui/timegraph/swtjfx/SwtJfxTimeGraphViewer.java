@@ -772,16 +772,16 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         return new Group(texts);
     }
 
-    private volatile @Nullable StateRectangle fSelectedStateInterval = null;
+    private @Nullable StateRectangle fSelectedState = null;
 
-    void intervalSelected(StateRectangle state) {
-        @Nullable StateRectangle previousSelectedState = fSelectedStateInterval;
+    void setSelectedState(StateRectangle state) {
+        @Nullable StateRectangle previousSelectedState = fSelectedState;
         if (previousSelectedState != null) {
             previousSelectedState.setSelected(false);
         }
 
         state.setSelected(true);
-        fSelectedStateInterval = state;
+        fSelectedState = state;
     }
 
     /**
@@ -790,7 +790,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * @return The current selected state
      */
     public @Nullable StateRectangle getSelectedState() {
-        return fSelectedStateInterval;
+        return fSelectedState;
     }
 
     // ------------------------------------------------------------------------

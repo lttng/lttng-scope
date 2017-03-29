@@ -91,7 +91,7 @@ public class StateRectangle extends Rectangle {
             if (e.getButton() != MouseButton.PRIMARY) {
                 return;
             }
-            viewer.intervalSelected(this);
+            viewer.setSelectedState(this);
         });
     }
 
