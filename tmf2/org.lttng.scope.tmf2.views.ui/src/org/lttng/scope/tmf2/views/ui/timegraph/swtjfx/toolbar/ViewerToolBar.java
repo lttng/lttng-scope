@@ -22,6 +22,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 /**
  * Toolbar for the time graph viewer.
@@ -49,8 +50,11 @@ public class ViewerToolBar extends ToolBar {
                 new ZoomToSelectionButton(viewer),
                 new ZoomToFullRangeButton(viewer),
                 new Separator(),
-                navButtons.getBackButton(),
-                navButtons.getForwardButton(),
+                new HBox(
+                    navButtons.getBackButton(),
+                    navButtons.getForwardButton(),
+                    navButtons.getMenuButton()
+                ),
                 new Separator(),
                 getStateInfoButton(viewer),
                 new SortingModeMenuButton(viewer),

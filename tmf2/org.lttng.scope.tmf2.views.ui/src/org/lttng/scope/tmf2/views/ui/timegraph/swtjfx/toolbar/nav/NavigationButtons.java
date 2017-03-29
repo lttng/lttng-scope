@@ -17,8 +17,8 @@ import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 import com.google.common.collect.ImmutableList;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -52,7 +52,7 @@ public class NavigationButtons {
         }
     }
 
-    private static class ForwardButton extends SplitMenuButton {
+    private static class ForwardButton extends Button {
 
         private final SwtJfxTimeGraphViewer fViewer;
 
@@ -84,11 +84,13 @@ public class NavigationButtons {
     // ------------------------------------------------------------------------
 
     private final Button fBackButton;
-    private final SplitMenuButton fForwardButton;
+    private final Button fForwardButton;
+    private final MenuButton fMenuButton;
 
     /**
-     * Constructor. This will prepare the two buttons, which can then be
-     * retrieved with {@link #getBackButton()} and {@link #getForwardButton()}.
+     * Constructor. This will prepare the buttons, which can then be retrieved
+     * with {@link #getBackButton()}, {@link #getForwardButton()} and
+     * {@link #getMenuButton()}.
      *
      * @param viewer
      *            The viewer to which the buttons will belong
@@ -99,6 +101,7 @@ public class NavigationButtons {
 
         BackButton backButton = new BackButton(viewer, initialMode);
         ForwardButton forwardButton = new ForwardButton(viewer, initialMode);
+        MenuButton menuButton = new MenuButton();
 
         ToggleGroup tg = new ToggleGroup();
         List<RadioMenuItem> items = NAVIGATION_MODES.stream()
@@ -116,14 +119,15 @@ public class NavigationButtons {
                 .collect(Collectors.toList());
 
         items.get(0).setSelected(true);
-        forwardButton.getItems().addAll(items);
+        menuButton.getItems().addAll(items);
 
         fBackButton = backButton;
         fForwardButton = forwardButton;
+        fMenuButton = menuButton;
     }
 
     /**
-     * Get the "back" button, which is an ordinary button.
+     * Get the "back" button.
      *
      * @return The back button
      */
@@ -132,12 +136,21 @@ public class NavigationButtons {
     }
 
     /**
-     * Get the "forward" button, which is actually a {@link SplitMenuButton}
-     * whose menu will allow switching between the available navigation modes.
+     * Get the "forward" button.
      *
      * @return The forward button
      */
-    public SplitMenuButton getForwardButton() {
+    public Button getForwardButton() {
         return fForwardButton;
+    }
+
+    /**
+     * Get the drop-down menu button, which allows switching between the
+     * available navigation modes.
+     *
+     * @return The drop-down menu button
+     */
+    public MenuButton getMenuButton() {
+        return fMenuButton;
     }
 }
