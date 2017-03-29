@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav.NavigationButtons;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

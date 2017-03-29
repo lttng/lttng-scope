@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
+package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
@@ -23,13 +23,10 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static String sfFilterModeMenuButtonName;
-    public static String sfSortingModeMenuButtonName;
-
-    public static String sfZoomInActionDescription;
-    public static String sfZoomOutActionDescription;
-    public static String sfZoomToFullRangeActionDescription;
-    public static String sfZoomToSelectionActionDescription;
+    public static String sfFollowStateChangesNavModeName;
+    public static String sfFollowEventsNavModeName;
+    public static String sfFollowArrowsNavModeName;
+    public static String sfFollowBookmarksNavModeName;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
