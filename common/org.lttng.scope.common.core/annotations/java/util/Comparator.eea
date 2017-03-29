@@ -1,0 +1,7 @@
+class java/util/Comparator
+comparingLong
+ <T:Ljava/lang/Object;>(Ljava/util/function/ToLongFunction<-TT;>;)Ljava/util/Comparator<TT;>;
+ <T:Ljava/lang/Object;>(Ljava/util/function/ToLongFunction<-TT;>;)L1java/util/Comparator<TT;>;
+reversed
+ ()Ljava/util/Comparator<TT;>;
+ ()L1java/util/Comparator<TT;>;

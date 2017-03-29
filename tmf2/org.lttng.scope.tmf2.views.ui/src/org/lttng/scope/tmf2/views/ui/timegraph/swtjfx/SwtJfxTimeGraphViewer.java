@@ -765,7 +765,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private @Nullable StateRectangle fSelectedState = null;
 
-    void setSelectedState(StateRectangle state) {
+    /**
+     * Set the selected state rectangle
+     *
+     * @param state
+     *            The new selected state. It should ideally be one that's
+     *            present in the scenegraph.
+     */
+    public void setSelectedState(StateRectangle state) {
         @Nullable StateRectangle previousSelectedState = fSelectedState;
         if (previousSelectedState != null) {
             previousSelectedState.setSelected(false);
@@ -782,6 +789,24 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      */
     public @Nullable StateRectangle getSelectedState() {
         return fSelectedState;
+    }
+
+
+    /**
+     * Retrieve the state rectangles currently present in the scenegraph. This
+     * should include all currently visible ones, but also possibly more (due to
+     * padding, prefetching, etc.)
+     *
+     * @return The state rectangles
+     */
+    public Collection<StateRectangle> getRenderedStateRectangles() {
+        if (fTimeGraphStatesLayer.getChildren().isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        Collection<?> stateRectangles = ((Group) fTimeGraphStatesLayer.getChildren().get(0)).getChildren();
+        @SuppressWarnings("unchecked")
+        Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
+        return ret;
     }
 
     // ------------------------------------------------------------------------
@@ -1242,17 +1267,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     @VisibleForTesting
     ScrollPane getTimeGraphScrollPane() {
         return fTimeGraphScrollPane;
-    }
-
-    @VisibleForTesting
-    Collection<StateRectangle> getRenderedStateRectangles() {
-        if (fTimeGraphStatesLayer.getChildren().isEmpty()) {
-            return Collections.EMPTY_LIST;
-        }
-        Collection<?> stateRectangles = ((Group) fTimeGraphStatesLayer.getChildren().get(0)).getChildren();
-        @SuppressWarnings("unchecked")
-        Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
-        return ret;
     }
 
 }
