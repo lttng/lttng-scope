@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
+package org.lttng.scope.tmf2.views.ui.jfx;
 
 import static java.util.Objects.requireNonNull;
 
@@ -18,7 +18,12 @@ import java.lang.reflect.Method;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.text.Font;
 
-class Utils {
+/**
+ * JavaFX-related utilities
+ *
+ * @author Alexandre Montplaisir
+ */
+public final class JfxUtils {
 
     private static final MethodHandles.Lookup LOOKUP = requireNonNull(MethodHandles.lookup());
     private static final MethodHandle COMPUTE_CLIPPED_TEXT_HANDLE;

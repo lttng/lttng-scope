@@ -40,6 +40,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.ViewerToolBar;
@@ -750,7 +751,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     double rectEndX = stateRect.getX() + stateRect.getWidth();
                     double minWidth = rectEndX - textX;
 
-                    String ellipsedText = Utils.computeClippedText(textFont,
+                    String ellipsedText = JfxUtils.computeClippedText(textFont,
                             labelText,
                             minWidth,
                             overrunStyle,
