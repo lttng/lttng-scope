@@ -31,6 +31,11 @@ public class Messages extends NLS {
     public static String sfZoomToFullRangeActionDescription;
     public static String sfZoomToSelectionActionDescription;
 
+    public static String sfFollowStateChangesNavModeName;
+    public static String sfFollowEventsNavModeName;
+    public static String sfFollowArrowsNavModeName;
+    public static String sfFollowBookmarksNavModeName;
+
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }

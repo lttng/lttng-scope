@@ -40,11 +40,16 @@ public class ViewerToolBar extends ToolBar {
     public ViewerToolBar(SwtJfxTimeGraphViewer viewer) {
         super();
 
+        NavigationButtons navButtons = new NavigationButtons(viewer);
+
         getItems().addAll(
                 new ZoomInButton(viewer),
                 new ZoomOutButton(viewer),
                 new ZoomToSelectionButton(viewer),
                 new ZoomToFullRangeButton(viewer),
+                new Separator(),
+                navButtons.getBackButton(),
+                navButtons.getForwardButton(),
                 new Separator(),
                 getStateInfoButton(viewer),
                 new SortingModeMenuButton(viewer),
