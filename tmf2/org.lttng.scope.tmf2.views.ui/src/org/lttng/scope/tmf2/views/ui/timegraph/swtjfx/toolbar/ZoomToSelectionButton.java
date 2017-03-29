@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
 import javafx.scene.control.Button;
@@ -25,10 +26,12 @@ import javafx.scene.image.ImageView;
  */
 class ZoomToSelectionButton extends Button {
 
-    private final Image fZoomSelectionIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_in.gif")); //$NON-NLS-1$
+    // TODO Get an icon!
+    private static final String ZOOM_TO_SELECTION_ICON_PATH = "/icons/toolbar/zoom_in.gif"; //$NON-NLS-1$
 
     public ZoomToSelectionButton(SwtJfxTimeGraphViewer viewer) {
-        setGraphic(new ImageView(fZoomSelectionIcon));
+        Image icon = JfxImageFactory.instance().getImageFromResource(ZOOM_TO_SELECTION_ICON_PATH);
+        setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {
             TmfTimeRange range = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();

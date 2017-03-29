@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
+import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
 import javafx.scene.control.Button;
@@ -24,10 +25,11 @@ import javafx.scene.image.ImageView;
  */
 class ZoomOutButton extends Button {
 
-    private final Image fZoomOutIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_out.gif")); //$NON-NLS-1$
+    private static final String ZOOM_OUT_ICON_PATH = "/icons/toolbar/zoom_out.gif"; //$NON-NLS-1$
 
     public ZoomOutButton(SwtJfxTimeGraphViewer viewer) {
-        setGraphic(new ImageView(fZoomOutIcon));
+        Image icon = JfxImageFactory.instance().getImageFromResource(ZOOM_OUT_ICON_PATH);
+        setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomOutActionDescription));
         setOnAction(e -> {
             // TODO Should pivot be the current selection, or just the center?

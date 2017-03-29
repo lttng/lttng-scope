@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
+import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
 import javafx.scene.control.Button;
@@ -23,10 +24,11 @@ import javafx.scene.image.ImageView;
  */
 class ZoomToFullRangeButton extends Button {
 
-    private final Image fZoomFullRangeIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/zoom_full.gif")); //$NON-NLS-1$
+    private static final String ZOOM_TO_FULL_RANGE_ICON_PATH = "/icons/toolbar/zoom_full.gif"; //$NON-NLS-1$
 
     public ZoomToFullRangeButton(SwtJfxTimeGraphViewer viewer) {
-        setGraphic(new ImageView(fZoomFullRangeIcon));
+        Image icon = JfxImageFactory.instance().getImageFromResource(ZOOM_TO_FULL_RANGE_ICON_PATH);
+        setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToFullRangeActionDescription));
         setOnAction(e -> {
             /*
