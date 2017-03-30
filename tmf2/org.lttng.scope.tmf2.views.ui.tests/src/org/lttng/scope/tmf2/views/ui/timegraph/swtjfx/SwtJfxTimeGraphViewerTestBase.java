@@ -18,7 +18,6 @@ import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -26,6 +25,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 /**
@@ -136,11 +136,11 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
         }
     }
 
-    protected void seekVisibleRange(long start, long end) {
+    protected void seekVisibleRange(TimeRange timeRange) {
         TimeGraphModelControl control = sfControl;
         assertNotNull(control);
 
-        TmfTimeRange range = new TmfTimeRange(TmfTimestamp.fromNanos(start), TmfTimestamp.fromNanos(end));
+        TmfTimeRange range = timeRange.toTmfTimeRange();
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
 
         control.prepareWaitForNextSignal();

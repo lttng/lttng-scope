@@ -57,11 +57,12 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
     }
 
     private void testSeekVisibleRange(long startTime, long endTime) {
+        TimeRange range = TimeRange.of(startTime, endTime);
         SwtJfxTimeGraphViewer viewer = getViewer();
         TimeGraphModelControl control = getControl();
 
-        seekVisibleRange(startTime, endTime);
-        verifyVisibleRange(startTime, endTime, control, viewer);
+        seekVisibleRange(range);
+        verifyVisibleRange(range, control, viewer);
     }
 
     /**
@@ -138,20 +139,21 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
     }
 
     private void testZoom(long initialRangeStart, long initialRangeEnd, boolean zoomIn, int nbSteps) {
+        TimeRange initialRange = TimeRange.of(initialRangeStart, initialRangeEnd);
         SwtJfxTimeGraphViewer viewer = getViewer();
         TimeGraphModelControl control = getControl();
 
-        seekVisibleRange(initialRangeStart, initialRangeEnd);
+        seekVisibleRange(initialRange);
 
         double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().getZoomStep()), nbSteps);
         if (!zoomIn) {
             totalFactor = 1 / totalFactor;
         }
-        long initialRange = initialRangeEnd - initialRangeStart;
-        double newRange = initialRange * (1.0 / (totalFactor));
+        long initialRangeDuration = initialRange.getDuration();
+        double newRangeDuration = initialRangeDuration * (1.0 / (totalFactor));
         // TODO Support pivot not exactly in the center of the visible range
         /* diff > 0 means a zoom-in, and vice versa */
-        double diff = initialRange - newRange;
+        double diff = initialRangeDuration - newRangeDuration;
 
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {
@@ -161,23 +163,25 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         }
         updateUI();
 
-        final long expectedStart = Math.max(initialRangeStart + Math.round(diff / 2),
+        final long expectedStart = Math.max(
+                initialRangeStart + Math.round(diff / 2),
                 StubTrace.FULL_TRACE_START_TIME);
-        final long expectedEnd = Math.min(initialRangeEnd - Math.round(diff / 2),
+        final long expectedEnd = Math.min(
+                initialRangeEnd - Math.round(diff / 2),
                 StubTrace.FULL_TRACE_END_TIME);
+        TimeRange expectedRange = TimeRange.of(expectedStart, expectedEnd);
 
-        verifyVisibleRange(expectedStart, expectedEnd, control, viewer);
+        verifyVisibleRange(expectedRange, control, viewer);
     }
 
     /**
      * Verify that both the control and viewer passed as parameters currently
      * report the expected visible time range.
      */
-    private static void verifyVisibleRange(long expectedStart, long expectedEnd,
+    private static void verifyVisibleRange(TimeRange expectedRange,
             TimeGraphModelControl control, SwtJfxTimeGraphViewer viewer) {
         /* Check the control */
-        assertEquals(expectedStart, control.getVisibleTimeRange().getStart());
-        assertEquals(expectedEnd, control.getVisibleTimeRange().getEnd());
+        assertEquals(expectedRange, control.getVisibleTimeRange());
 
         /* Check the view itself */
         TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);
@@ -187,8 +191,8 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         /* We will tolerate being off by at most 1 pixel */
         double delta = viewer.getCurrentNanosPerPixel();
 
-        assertEqualsWithin(expectedStart, tsStart, delta);
-        assertEqualsWithin(expectedEnd, tsEnd, delta);
+        assertEqualsWithin(expectedRange.getStart(), tsStart, delta);
+        assertEqualsWithin(expectedRange.getEnd(), tsEnd, delta);
     }
 
     private static void assertEqualsWithin(long expected, long actual, double delta) {
