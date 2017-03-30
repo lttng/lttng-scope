@@ -61,6 +61,8 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
         SwtJfxTimeGraphViewer viewer = view.getViewer();
         assertNotNull(viewer);
 
+        /* Disable automatic redraw. We'll trigger view painting manually. */
+        viewer.getDebugOptions().setPaintingEnabled(false);
         /* Disable mouse listeners in case the mouse dwells inside the view. */
         viewer.getDebugOptions().setScrollingListenersEnabled(false);
 
