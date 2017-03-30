@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.Timer;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -526,6 +528,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                     fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
 
                     fTimeGraphLoadingOverlay.fadeOut();
+
+                    if (fRepaintLatch != null) {
+                        fRepaintLatch.countDown();
+                    }
 
                     long endUI = System.nanoTime();
                     StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
@@ -1178,6 +1184,44 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     // ------------------------------------------------------------------------
     // Test accessors
     // ------------------------------------------------------------------------
+
+    private volatile @Nullable CountDownLatch fRepaintLatch = null;
+
+    @VisibleForTesting
+    void prepareWaitForRepaint() {
+        if (fRepaintLatch != null) {
+            throw new IllegalStateException("Do not call this method concurrently!"); //$NON-NLS-1$
+        }
+        fRepaintLatch = new CountDownLatch(1);
+    }
+
+    @VisibleForTesting
+    boolean waitForRepaint() {
+        CountDownLatch latch = fRepaintLatch;
+        boolean done = false;
+        if (latch == null) {
+            throw new IllegalStateException("Do not call this method concurrently!"); //$NON-NLS-1$
+        }
+        try {
+            done = latch.await(100, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+        }
+        if (done) {
+            fRepaintLatch = null;
+        }
+        return done;
+    }
+
+    /**
+     * Bypass the redraw thread and do a manual redraw of the current location.
+     */
+    @VisibleForTesting
+    void paintCurrentLocation() {
+        TimeRange currentHorizontalPos = getControl().getVisibleTimeRange();
+        VerticalPosition currentVerticalPos = getCurrentVerticalPosition();
+        paintBackground(currentVerticalPos);
+        paintArea(currentHorizontalPos, currentVerticalPos, 0);
+    }
 
     // could eventually be exposed to the user, as "advanced preferences"
     DebugOptions getDebugOptions() {
