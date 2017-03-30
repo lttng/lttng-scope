@@ -1045,6 +1045,21 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             long newStart = range.getStart() + Math.round(diff / 2.0);
             long newEnd = range.getEnd() - Math.round(diff / 2.0);
 
+            /* Clamp newStart and newEnd to the full trace's range */
+            long traceStart = control.getFullTimeGraphRange().getStart();
+            long traceEnd = control.getFullTimeGraphRange().getEnd();
+            newStart = Math.max(newStart, traceStart);
+            newEnd = Math.min(newEnd, traceEnd);
+
+            /* Keep at least 1 ns width */
+            if (newStart == newEnd) {
+                if (newEnd == traceEnd) {
+                    newStart--;
+                } else {
+                    newEnd++;
+                }
+            }
+
             control.updateVisibleTimeRange(TimeRange.of(newStart, newEnd), true);
         }
 
