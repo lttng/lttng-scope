@@ -12,7 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 
 /**
  * {@link SwtJfxTimeGraphViewer} test checking the initial conditions.
@@ -39,11 +39,8 @@ public class SwtJfxTimeGraphViewerInitTest extends SwtJfxTimeGraphViewerTestBase
         assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRange().getEnd());
 
         /* Check the view itself */
-        HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.fTimeRange.getStart();
-        long tsEnd = timeRange.fTimeRange.getEnd();
-
-        assertEquals(expectedStart, tsStart);
-        assertEquals(expectedEnd, tsEnd);
+        TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);
+        assertEquals(expectedStart, timeRange.getStart());
+        assertEquals(expectedEnd, timeRange.getEnd());
     }
 }

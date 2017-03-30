@@ -13,8 +13,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
 
 /**
  * {@link SwtJfxTimeGraphViewer} test suite testing seeking and zooming
@@ -180,9 +180,9 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         assertEquals(expectedEnd, control.getVisibleTimeRange().getEnd());
 
         /* Check the view itself */
-        HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.fTimeRange.getStart();
-        long tsEnd = timeRange.fTimeRange.getEnd();
+        TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.getStart();
+        long tsEnd = timeRange.getEnd();
 
         /* We will tolerate being off by at most 1 pixel */
         double delta = viewer.getCurrentNanosPerPixel();

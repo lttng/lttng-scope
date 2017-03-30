@@ -42,8 +42,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.ViewerToolBar;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -411,18 +409,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         redrawSelection();
     }
 
-    /**
-     * The current horizontal position is tracked by the control. This method
-     * just wraps it into a {@link HorizontalPosition}.
-     */
-    HorizontalPosition getCurrentHorizontalPosition() {
-        TimeRange range = getControl().getVisibleTimeRange();
-        return new HorizontalPosition(range);
-    }
-
-    void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
+    void paintArea(TimeRange windowRange, VerticalPosition verticalPos, long taskSeqNb) {
         final TimeRange fullTimeGraphRange = getControl().getFullTimeGraphRange();
-        final TimeRange windowRange = horizontalPos.fTimeRange;
 
         final long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
 
@@ -495,7 +483,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 /* Prepare the time graph part */
                 Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
                 Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
-                Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, horizontalPos);
+                Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, windowRange);
 
                 /*
                  * Go over all state rectangles, and bring the "multi-state"
@@ -725,8 +713,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     private Node prepareTimeGrahLabelsContents(Collection<StateRectangle> stateRectangles,
-            HorizontalPosition horizontalPos) {
-        double minX = timestampToPaneXPos(horizontalPos.fTimeRange.getStart());
+            TimeRange windowRange) {
+        double minX = timestampToPaneXPos(windowRange.getStart());
 
         final String ellipsisStr = fDebugOptions.getEllipsisString();
         final Font textFont = fDebugOptions.getTextFont();
@@ -934,8 +922,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
 
             /* We need to specify the new value here, or else the old one will be used */
-            HorizontalPosition horizontalPos = getTimeGraphEdgeTimestamps(newValue.doubleValue());
-            TimeRange range = horizontalPos.fTimeRange;
+            TimeRange range = getTimeGraphEdgeTimestamps(newValue.doubleValue());
 
             System.out.println("Sending visible range update: " + range.toString());
 
@@ -1089,7 +1076,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      *
      * Note that this method gets its information from UI objects only, so there
      * might be discrepancies between this and the results of
-     * {@link #getCurrentHorizontalPosition()}.
+     * {@link TimeGraphModelControl#getVisibleTimeRange()}.
      *
      * @param newHValue
      *            The "hvalue" property of the horizontal scrollbar to use. If
@@ -1097,10 +1084,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      *            object. For example, a scrolling listener might want to pass
      *            its newValue here, since the scenegraph object will not have
      *            been updated yet.
-     * @return The corresponding timestamps, wrapped in a
-     *         {@link HorizontalPosition}.
+     * @return The corresponding time range
      */
-    HorizontalPosition getTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
+    TimeRange getTimeGraphEdgeTimestamps(@Nullable Double newHValue) {
         double hvalue = (newHValue == null ? fTimeGraphScrollPane.getHvalue() : newHValue.doubleValue());
 
         /*
@@ -1118,7 +1104,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         long tsStart = paneXPosToTimestamp(hoffset);
         long tsEnd = paneXPosToTimestamp(hoffset + viewportWidth);
 
-        return new HorizontalPosition(TimeRange.of(tsStart, tsEnd));
+        return TimeRange.of(tsStart, tsEnd);
     }
 
     double timestampToPaneXPos(long timestamp) {

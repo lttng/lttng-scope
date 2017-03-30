@@ -12,8 +12,8 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.VerticalPosition;
+import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 /**
  * It was quickly determined that having mouse listeners start repaint tasks
@@ -36,8 +36,8 @@ class PeriodicRedrawTask extends TimerTask {
     private final AtomicLong fTaskSeq = new AtomicLong();
     private final SwtJfxTimeGraphViewer fViewer;
 
-    private HorizontalPosition fPreviousHorizontalPos = Position.UNINITIALIZED_HP;
-    private VerticalPosition fPreviousVerticalPosition = Position.UNINITIALIZED_VP;
+    private TimeRange fPreviousHorizontalPos = TimeGraphModelControl.UNINITIALIZED;
+    private VerticalPosition fPreviousVerticalPosition = VerticalPosition.UNINITIALIZED_VP;
 
     private volatile boolean fForceRedraw = false;
 
@@ -51,7 +51,7 @@ class PeriodicRedrawTask extends TimerTask {
             return;
         }
 
-        HorizontalPosition currentHorizontalPos = fViewer.getCurrentHorizontalPosition();
+        TimeRange currentHorizontalPos = fViewer.getControl().getVisibleTimeRange();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
         if (fForceRedraw) {
@@ -66,8 +66,8 @@ class PeriodicRedrawTask extends TimerTask {
                     && currentVerticalPos.equals(fPreviousVerticalPosition)) {
                 return;
             }
-            if (currentHorizontalPos.equals(Position.UNINITIALIZED_HP)
-                    || currentVerticalPos.equals(Position.UNINITIALIZED_VP)) {
+            if (currentHorizontalPos.equals(TimeGraphModelControl.UNINITIALIZED)
+                    || currentVerticalPos.equals(VerticalPosition.UNINITIALIZED_VP)) {
                 return;
             }
         }
