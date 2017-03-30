@@ -28,10 +28,12 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 class StubModelRenderProvider extends TimeGraphModelRenderProvider {
 
+    private static final int NB_ENTRIES = 20;
+
     private static final TimeGraphTreeRender TREE_RENDER;
 
     static {
-        List<TimeGraphTreeElement> treeElements = IntStream.range(0, 20)
+        List<TimeGraphTreeElement> treeElements = IntStream.range(0, NB_ENTRIES)
             .mapToObj(i -> new TimeGraphTreeElement("Entry #" + i, Collections.emptyList()))
             .collect(Collectors.toList());
         TREE_RENDER = new TimeGraphTreeRender(treeElements);

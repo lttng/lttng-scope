@@ -14,6 +14,11 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
+import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
+import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -129,6 +134,20 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
         }
         while (display.readAndDispatch()) {
         }
+    }
+
+    protected void seekVisibleRange(long start, long end) {
+        TimeGraphModelControl control = sfControl;
+        assertNotNull(control);
+
+        TmfTimeRange range = new TmfTimeRange(TmfTimestamp.fromNanos(start), TmfTimestamp.fromNanos(end));
+        TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
+
+        control.prepareWaitForNextSignal();
+        TmfSignalManager.dispatchSignal(signal);
+        control.waitForNextSignal();
+
+        updateUI();
     }
 
 }

@@ -12,11 +12,6 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.Position.HorizontalPosition;
@@ -65,15 +60,7 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         SwtJfxTimeGraphViewer viewer = getViewer();
         TimeGraphModelControl control = getControl();
 
-        TmfTimeRange range = createTimeRange(startTime, endTime);
-        TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
-
-        control.prepareWaitForNextSignal();
-        TmfSignalManager.dispatchSignal(signal);
-        control.waitForNextSignal();
-
-        updateUI();
-
+        seekVisibleRange(startTime, endTime);
         verifyVisibleRange(startTime, endTime, control, viewer);
     }
 
@@ -154,6 +141,8 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         SwtJfxTimeGraphViewer viewer = getViewer();
         TimeGraphModelControl control = getControl();
 
+        seekVisibleRange(initialRangeStart, initialRangeEnd);
+
         double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().getZoomStep()), nbSteps);
         if (!zoomIn) {
             totalFactor = 1 / totalFactor;
@@ -163,12 +152,6 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         // TODO Support pivot not exactly in the center of the visible range
         /* diff > 0 means a zoom-in, and vice versa */
         double diff = initialRange - newRange;
-
-        /* Seek to the initial requested range */
-        control.prepareWaitForNextSignal();
-        TmfSignalManager.dispatchSignal(new TmfWindowRangeUpdatedSignal(this, createTimeRange(initialRangeStart, initialRangeEnd)));
-        control.waitForNextSignal();
-        updateUI();
 
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {
@@ -212,10 +195,6 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
         String errMsg = "" + actual + " not within margin (" + delta + ") of " + expected;
         assertTrue(errMsg, actual < expected + delta);
         assertTrue(errMsg, actual > expected - delta);
-    }
-
-    private static TmfTimeRange createTimeRange(long start, long end) {
-        return new TmfTimeRange(TmfTimestamp.fromNanos(start), TmfTimestamp.fromNanos(end));
     }
 
 }
