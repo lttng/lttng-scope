@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.control;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
@@ -19,7 +20,7 @@ import com.google.common.annotations.VisibleForTesting;
 public final class TimeGraphModelControl {
 
     /** Value representing uninitialized timestamps */
-    public static final long UNINITIALIZED = -1;
+    public static final TimeRange UNINITIALIZED = TimeRange.of(0, 0);
 
     private final ITimeGraphModelRenderProvider fRenderProvider;
     private final SignallingContext fSignallingContext;
@@ -27,11 +28,8 @@ public final class TimeGraphModelControl {
     private @Nullable TimeGraphModelView fView = null;
     private @Nullable ITmfTrace fCurrentTrace = null;
 
-    private long fFullTimeGraphStartTime = 1;
-    private long fFullTimeGraphEndTime = 1;
-
-    private long fLatestVisibleRangeStartTime = UNINITIALIZED;
-    private long fLatestVisibleRangeEndTime = UNINITIALIZED;
+    private TimeRange fFullTimeGraphRange = UNINITIALIZED;
+    private TimeRange fLatestVisibleRange = UNINITIALIZED;
 
     public TimeGraphModelControl(ITimeGraphModelRenderProvider renderProvider) {
         fRenderProvider = renderProvider;
@@ -61,20 +59,32 @@ public final class TimeGraphModelControl {
         return fCurrentTrace;
     }
 
-    public long getFullTimeGraphStartTime() {
-        return fFullTimeGraphStartTime;
+    /**
+     * Recompute the total virtual size of the time graph area, and assigns the
+     * given timestamps as the start and end positions.
+     *
+     * All subsquent operations (seek, paint, etc.) that use timestamp expect
+     * these timestamps to be within the range passed here!
+     *
+     * Should be called when the trace changes, or the trace's total time range
+     * is updated (while indexing, or in live cases).
+     */
+    void setFullTimeRange(TimeRange fullAreaRange) {
+        checkTimeRange(fullAreaRange);
+        fFullTimeGraphRange = fullAreaRange;
     }
 
-    public long getFullTimeGraphEndTime() {
-        return fFullTimeGraphEndTime;
+    public TimeRange getFullTimeGraphRange() {
+        return fFullTimeGraphRange;
     }
 
-    public long getVisibleTimeRangeStart() {
-        return fLatestVisibleRangeStartTime;
+    void setVisibleTimeRange(TimeRange newVisibleRange) {
+        checkTimeRange(newVisibleRange);
+        fLatestVisibleRange = newVisibleRange;
     }
 
-    public long getVisibleTimeRangeEnd() {
-        return fLatestVisibleRangeEndTime;
+    public TimeRange getVisibleTimeRange() {
+        return fLatestVisibleRange;
     }
 
     public ITimeGraphModelRenderProvider getModelRenderProvider() {
@@ -106,116 +116,83 @@ public final class TimeGraphModelControl {
         long windowStartTime = traceStartTime;
         long windowEndtime = Math.min(traceEndTime, traceStartTime + trace.getInitialRangeOffset().toNanos());
 
-        setTimeGraphAreaRange(traceStartTime, traceEndTime);
-        seekVisibleRange(windowStartTime, windowEndtime);
+        setFullTimeRange(TimeRange.of(traceStartTime, traceEndTime));
+        seekVisibleRange(TimeRange.of(windowStartTime, windowEndtime));
     }
 
     public void repaintCurrentArea() {
         ITmfTrace trace = fCurrentTrace;
-        long start = fLatestVisibleRangeStartTime;
-        long end = fLatestVisibleRangeEndTime;
-        if (trace == null || start == UNINITIALIZED || end == UNINITIALIZED) {
+        TimeRange currentRange = fLatestVisibleRange;
+        if (trace == null || currentRange == UNINITIALIZED) {
             return;
         }
 
         TimeGraphModelView view = fView;
         if (view != null) {
             view.clear();
-            view.seekVisibleRange(fLatestVisibleRangeStartTime, fLatestVisibleRangeEndTime);
+            view.seekVisibleRange(currentRange);
         }
     }
 
-    void seekVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
-        checkWindowTimeRange(visibleWindowStartTime, visibleWindowEndTime);
-        updateLatestVisibleRange(visibleWindowStartTime, visibleWindowEndTime);
+    void seekVisibleRange(TimeRange newRange) {
+        checkWindowTimeRange(newRange);
+        setVisibleTimeRange(newRange);
 
         TimeGraphModelView view = fView;
         if (view != null) {
-            view.seekVisibleRange(visibleWindowStartTime, visibleWindowEndTime);
+            view.seekVisibleRange(newRange);
         }
     }
 
-    void drawSelection(long selectionStartTime, long selectionEndTime) {
-        checkWindowTimeRange(selectionStartTime, selectionEndTime);
+    void drawSelection(TimeRange selectionRange) {
+        checkWindowTimeRange(selectionRange);
 
         TimeGraphModelView view = fView;
         if (view != null) {
-            view.drawSelection(selectionStartTime, selectionEndTime);
+            view.drawSelection(selectionRange);
         }
     }
 
-    void updateLatestVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
-        fLatestVisibleRangeStartTime = visibleWindowStartTime;
-        fLatestVisibleRangeEndTime = visibleWindowEndTime;
-    }
 
-    /**
-     * Recompute the total virtual size of the time graph area, and assigns the
-     * given timestamps as the start and end positions.
-     *
-     * All subsquent operations (seek, paint, etc.) that use timestamp expect
-     * these timestamps to be within the range passed here!
-     *
-     * Should be called when the trace changes, or the trace's total time range
-     * is updated (while indexing, or in live cases).
-     */
-    void setTimeGraphAreaRange(long fullAreaStartTime, long fullAreaEndTime) {
-        checkTimeRange(fullAreaStartTime, fullAreaEndTime);
-
-        if (fFullTimeGraphStartTime == fullAreaStartTime &&
-                fFullTimeGraphEndTime == fullAreaEndTime) {
-            /* No need to update */
-            return;
-        }
-
-        fFullTimeGraphStartTime = fullAreaStartTime;
-        fFullTimeGraphEndTime = fullAreaEndTime;
-    }
 
     // ------------------------------------------------------------------------
     // View -> Control operations (Control external API)
     // ------------------------------------------------------------------------
 
-    public void updateTimeRangeSelection(long startTime, long endTime) {
-        fSignallingContext.sendTimeRangeSelectionUpdate(startTime, endTime);
+    public void updateTimeRangeSelection(TimeRange newSelectionRange) {
+        fSignallingContext.sendTimeRangeSelectionUpdate(newSelectionRange);
     }
 
-    public void updateVisibleTimeRange(long startTime, long endTime, boolean echo) {
-        checkTimeRange(startTime, endTime);
-        fSignallingContext.sendVisibleWindowRangeUpdate(startTime, endTime, echo);
+    public void updateVisibleTimeRange(TimeRange newVisibleRange, boolean echo) {
+        checkTimeRange(newVisibleRange);
+        fSignallingContext.sendVisibleWindowRangeUpdate(newVisibleRange, echo);
     }
 
     // ------------------------------------------------------------------------
     // Utils
     // ------------------------------------------------------------------------
 
-    private static void checkTimeRange(long rangeStart, long rangeEnd) {
-        if (rangeStart > rangeEnd) {
-            throw new IllegalArgumentException("Time range start " + rangeStart + " is after its end time " + rangeEnd); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (rangeStart < 0 || rangeEnd < 0) {
-            throw new IllegalArgumentException("One of the time range bounds is negative"); //$NON-NLS-1$
-        }
-        if (rangeStart == Long.MAX_VALUE) {
+    private static void checkTimeRange(TimeRange range) {
+        if (range.getStart() == Long.MAX_VALUE) {
             throw new IllegalArgumentException("You are trying to make me believe the range starts at " + //$NON-NLS-1$
-                    rangeStart + ". I do not believe you."); //$NON-NLS-1$
+                    range.getStart() + ". I do not believe you."); //$NON-NLS-1$
         }
-        if (rangeEnd == Long.MAX_VALUE) {
+        if (range.getEnd() == Long.MAX_VALUE) {
             throw new IllegalArgumentException("You are trying to make me believe the range ends at " + //$NON-NLS-1$
-                    rangeEnd + ". I do not believe you."); //$NON-NLS-1$
+                    range.getEnd() + ". I do not believe you."); //$NON-NLS-1$
         }
     }
 
-    private void checkWindowTimeRange(long windowStartTime, long windowEndTime) {
-        checkTimeRange(windowStartTime, windowEndTime);
+    private void checkWindowTimeRange(TimeRange windowRange) {
+        checkTimeRange(windowRange);
 
-        if (windowStartTime < fFullTimeGraphStartTime) {
-            throw new IllegalArgumentException("Requested window start time: " + windowStartTime +
-                    " is smaller than trace start time " + fFullTimeGraphStartTime);
+        if (windowRange.getStart() < fFullTimeGraphRange.getStart()) {
+            throw new IllegalArgumentException("Requested window start time: " + windowRange.getStart() +
+                    " is smaller than trace start time " + fFullTimeGraphRange.getStart());
         }
-        if (windowEndTime > fFullTimeGraphEndTime) {
-            throw new IllegalArgumentException("Requested window end time: " + windowEndTime +
-                    " is greater than trace end time " + fFullTimeGraphEndTime);
+        if (windowRange.getEnd() > fFullTimeGraphRange.getEnd()) {
+            throw new IllegalArgumentException("Requested window end time: " + windowRange.getEnd() +
+                    " is greater than trace end time " + fFullTimeGraphRange.getEnd());
         }
     }
 

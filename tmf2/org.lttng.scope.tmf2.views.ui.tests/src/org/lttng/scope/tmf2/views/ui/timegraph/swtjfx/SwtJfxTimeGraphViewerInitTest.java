@@ -35,13 +35,13 @@ public class SwtJfxTimeGraphViewerInitTest extends SwtJfxTimeGraphViewerTestBase
         final long expectedEnd = StubTrace.FULL_TRACE_START_TIME + StubTrace.INITIAL_RANGE_OFFSET;
 
         /* Check the control */
-        assertEquals(expectedStart, viewer.getControl().getVisibleTimeRangeStart());
-        assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRangeEnd());
+        assertEquals(expectedStart, viewer.getControl().getVisibleTimeRange().getStart());
+        assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRange().getEnd());
 
         /* Check the view itself */
         HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.fStartTime;
-        long tsEnd = timeRange.fEndTime;
+        long tsStart = timeRange.fTimeRange.getStart();
+        long tsEnd = timeRange.fTimeRange.getEnd();
 
         assertEquals(expectedStart, tsStart);
         assertEquals(expectedEnd, tsEnd);

@@ -30,6 +30,7 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -113,6 +114,7 @@ public class ControlFlowRenderProviderTest {
 
             final long start = trace.getStartTime().toNanos();
             final long end = start + 1 * NANOS_PER_SECOND;
+            final TimeRange range = TimeRange.of(start, end);
 
 
             /* Check that the list of attributes (tree render) are the same */
@@ -159,7 +161,7 @@ public class ControlFlowRenderProviderTest {
                         .findFirst()
                         .get();
 
-                TimeGraphStateRender stateRender = provider.getStateRender(elem, start, end, 1, null);
+                TimeGraphStateRender stateRender = provider.getStateRender(elem, range, 1, null);
                 List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
 
                 verifySameIntervals(intervalsFromSS, intervalsFromRender);

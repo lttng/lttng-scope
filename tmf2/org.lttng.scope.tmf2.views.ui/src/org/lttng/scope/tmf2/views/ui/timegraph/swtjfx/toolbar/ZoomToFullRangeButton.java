@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
@@ -35,9 +36,8 @@ class ZoomToFullRangeButton extends Button {
              * Grab the full trace range from the control, until it's moved to a
              * central property.
              */
-            long start = viewer.getControl().getFullTimeGraphStartTime();
-            long end = viewer.getControl().getFullTimeGraphEndTime();
-            viewer.getControl().updateVisibleTimeRange(start, end, true);
+            TimeRange fullRange = viewer.getControl().getFullTimeGraphRange();
+            viewer.getControl().updateVisibleTimeRange(fullRange, true);
         });
     }
 }

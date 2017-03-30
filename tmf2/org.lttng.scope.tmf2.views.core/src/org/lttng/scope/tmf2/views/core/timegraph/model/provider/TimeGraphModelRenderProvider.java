@@ -18,6 +18,7 @@ import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
@@ -76,11 +77,11 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     @Override
     public abstract TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task);
+            TimeRange timeRange, long resolution, @Nullable FutureTask<?> task);
 
     @Override
     public abstract TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, long rangeStart, long rangeEnd);
+            TimeGraphTreeElement treeElement, TimeRange timeRange);
 
     @Override
     public abstract TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender);

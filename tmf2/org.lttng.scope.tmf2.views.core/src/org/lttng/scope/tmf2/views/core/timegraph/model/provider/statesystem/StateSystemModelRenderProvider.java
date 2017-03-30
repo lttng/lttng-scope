@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
@@ -194,7 +195,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task) {
+            TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
 
         ITmfStateSystem ss = getSSOfCurrentTrace();
         if (ss == null) {
@@ -212,7 +213,8 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
          */
         List<ITmfStateInterval> intervals;
         try {
-            intervals = StateSystemUtils.queryHistoryRange(ss, treeElem.getSourceQuark(), rangeStart, rangeEnd, resolution, task);
+            intervals = StateSystemUtils.queryHistoryRange(ss, treeElem.getSourceQuark(),
+                    timeRange.getStart(), timeRange.getEnd(), resolution, task);
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             intervals = Collections.emptyList();
             e.printStackTrace();
@@ -232,12 +234,12 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
                 .map(fIntervalMappingFunction)
                 .collect(Collectors.toList());
 
-        return new TimeGraphStateRender(rangeStart, rangeEnd, treeElement, stateIntervals);
+        return new TimeGraphStateRender(timeRange, treeElement, stateIntervals);
     }
 
     @Override
     public TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, long rangeStart, long rangeEnd) {
+            TimeGraphTreeElement treeElement, TimeRange timeRange) {
         // TODO
         return new TimeGraphDrawnEventRender();
     }

@@ -2,6 +2,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.view.json;
 
 import java.util.List;
 
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -24,18 +25,19 @@ public class TimeGraphJsonOutput extends TimeGraphModelView {
     }
 
     @Override
-    public void seekVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
+    public void seekVisibleRange(TimeRange newVisibleRange) {
         /* Generate JSON for the visible area */
         ITimeGraphModelRenderProvider provider = getControl().getModelRenderProvider();
 
         TimeGraphTreeRender treeRender = provider.getTreeRender();
-        List<TimeGraphStateRender> stateRenders = provider.getStateRenders(treeRender, visibleWindowStartTime, visibleWindowEndTime, 1, null);
+        List<TimeGraphStateRender> stateRenders = provider.getStateRenders(treeRender,
+                newVisibleRange, 1, null);
 
         RenderToJson.printRenderTo(stateRenders);
     }
 
     @Override
-    public void drawSelection(long selectionStartTime, long selectionEndTime) {
+    public void drawSelection(TimeRange selectionRange) {
         // TODO NYI
     }
 

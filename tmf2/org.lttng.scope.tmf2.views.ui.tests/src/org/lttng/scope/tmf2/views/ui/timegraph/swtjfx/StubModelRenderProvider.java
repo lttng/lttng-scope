@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
@@ -50,13 +51,13 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task) {
-        return new TimeGraphStateRender(rangeStart, rangeEnd, treeElement, Collections.EMPTY_LIST);
+            TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
+        return new TimeGraphStateRender(timeRange, treeElement, Collections.EMPTY_LIST);
     }
 
     @Override
     public @NonNull TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, long rangeStart, long rangeEnd) {
+            TimeGraphTreeElement treeElement, TimeRange timeRange) {
         return new TimeGraphDrawnEventRender();
     }
 

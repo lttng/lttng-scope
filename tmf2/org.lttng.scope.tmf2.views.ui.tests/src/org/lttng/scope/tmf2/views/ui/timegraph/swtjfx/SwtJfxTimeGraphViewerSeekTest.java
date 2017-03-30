@@ -176,13 +176,13 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
     private static void verifyVisibleRange(long expectedStart, long expectedEnd,
             TimeGraphModelControl control, SwtJfxTimeGraphViewer viewer) {
         /* Check the control */
-        assertEquals(expectedStart, control.getVisibleTimeRangeStart());
-        assertEquals(expectedEnd, control.getVisibleTimeRangeEnd());
+        assertEquals(expectedStart, control.getVisibleTimeRange().getStart());
+        assertEquals(expectedEnd, control.getVisibleTimeRange().getEnd());
 
         /* Check the view itself */
         HorizontalPosition timeRange = viewer.getTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.fStartTime;
-        long tsEnd = timeRange.fEndTime;
+        long tsStart = timeRange.fTimeRange.getStart();
+        long tsEnd = timeRange.fTimeRange.getEnd();
 
         /* We will tolerate being off by at most 1 pixel */
         double delta = viewer.getCurrentNanosPerPixel();

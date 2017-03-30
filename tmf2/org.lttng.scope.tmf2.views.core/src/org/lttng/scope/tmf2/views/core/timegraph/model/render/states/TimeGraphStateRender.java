@@ -11,34 +11,28 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
 import java.util.List;
 
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 import com.google.common.collect.ImmutableList;
 
 public class TimeGraphStateRender {
 
-    private final long fStartTime;
-    private final long fEndTime;
+    private final TimeRange fTimeRange;
     private final TimeGraphTreeElement fTreeElement;
     private final List<TimeGraphStateInterval> fStateIntervals;
 
-    public TimeGraphStateRender(long startTime,
-            long endTime,
+    public TimeGraphStateRender(TimeRange timeRange,
             TimeGraphTreeElement treeElement,
             List<TimeGraphStateInterval> stateIntervals) {
 
-        fStartTime = startTime;
-        fEndTime = endTime;
+        fTimeRange = timeRange;
         fTreeElement = treeElement;
         fStateIntervals = ImmutableList.copyOf(stateIntervals);
     }
 
-    public long getStartTime() {
-        return fStartTime;
-    }
-
-    public long getEndTime() {
-        return fEndTime;
+    public TimeRange getTimeRange() {
+        return fTimeRange;
     }
 
     public TimeGraphTreeElement getTreeElement() {

@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
@@ -35,14 +36,13 @@ class ZoomToSelectionButton extends Button {
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {
             TmfTimeRange range = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
-            long start = range.getStartTime().toNanos();
-            long end = range.getEndTime().toNanos();
+            TimeRange timeRange = TimeRange.fromTmfTimeRange(range);
             /*
              * Only actually zoom if the selection is a time range, not a single
              * timestamp.
              */
-            if (start != end) {
-                viewer.getControl().updateVisibleTimeRange(start, end, true);
+            if (timeRange.getDuration() > 0) {
+                viewer.getControl().updateVisibleTimeRange(timeRange, true);
             }
         });
     }

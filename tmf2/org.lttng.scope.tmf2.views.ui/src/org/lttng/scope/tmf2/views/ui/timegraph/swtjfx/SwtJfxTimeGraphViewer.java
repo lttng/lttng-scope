@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
@@ -342,25 +343,24 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     @Override
-    public void seekVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime) {
-        final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
-        final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
+    public void seekVisibleRange(TimeRange newVisibleRange) {
+        final TimeRange fullTimeGraphRange = getControl().getFullTimeGraphRange();
 
         /* Update the zoom level */
-        long windowTimeRange = visibleWindowEndTime - visibleWindowStartTime;
+        long windowTimeRange = newVisibleRange.getDuration();
         double timeGraphVisibleWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
         fNanosPerPixel = windowTimeRange / timeGraphVisibleWidth;
 
-        double timeGraphTotalWidth = timestampToPaneXPos(fullTimeGraphEnd) - timestampToPaneXPos(fullTimeGraphStart);
+        double timeGraphTotalWidth = timestampToPaneXPos(fullTimeGraphRange.getEnd()) - timestampToPaneXPos(fullTimeGraphRange.getStart());
         if (timeGraphTotalWidth < 1.0) {
             // FIXME
             return;
         }
 
         double newValue;
-        if (visibleWindowStartTime == fullTimeGraphStart) {
+        if (newVisibleRange.getStart() == fullTimeGraphRange.getStart()) {
             newValue = fTimeGraphScrollPane.getHmin();
-        } else if (visibleWindowEndTime == fullTimeGraphEnd) {
+        } else if (newVisibleRange.getEnd() == fullTimeGraphRange.getEnd()) {
             newValue = fTimeGraphScrollPane.getHmax();
         } else {
             /*
@@ -376,7 +376,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
              * See http://stackoverflow.com/a/23518314/4227853 for a great
              * explanation.
              */
-            double startPos = timestampToPaneXPos(visibleWindowStartTime);
+            double startPos = timestampToPaneXPos(newVisibleRange.getStart());
             newValue = startPos / (timeGraphTotalWidth - timeGraphVisibleWidth);
         }
 
@@ -416,17 +416,13 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * just wraps it into a {@link HorizontalPosition}.
      */
     HorizontalPosition getCurrentHorizontalPosition() {
-        long start = getControl().getVisibleTimeRangeStart();
-        long end = getControl().getVisibleTimeRangeEnd();
-        return new HorizontalPosition(start, end);
+        TimeRange range = getControl().getVisibleTimeRange();
+        return new HorizontalPosition(range);
     }
 
     void paintArea(HorizontalPosition horizontalPos, VerticalPosition verticalPos, long taskSeqNb) {
-        final long fullTimeGraphStart = getControl().getFullTimeGraphStartTime();
-        final long fullTimeGraphEnd = getControl().getFullTimeGraphEndTime();
-        final long windowStartTime = horizontalPos.fStartTime;
-        final long windowEndTime = horizontalPos.fEndTime;
-        final long windowTimeRange = windowEndTime - windowStartTime;
+        final TimeRange fullTimeGraphRange = getControl().getFullTimeGraphRange();
+        final TimeRange windowRange = horizontalPos.fTimeRange;
 
         final long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
 
@@ -435,9 +431,10 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * We may ask for some padding on each side, clamped by the trace's
          * start and end.
          */
-        final long timeRangePadding = Math.round(windowTimeRange * fDebugOptions.getRenderRangePadding());
-        final long renderingStartTime = Math.max(fullTimeGraphStart, windowStartTime - timeRangePadding);
-        final long renderingEndTime = Math.min(fullTimeGraphEnd, windowEndTime + timeRangePadding);
+        final long timeRangePadding = Math.round(windowRange.getDuration() * fDebugOptions.getRenderRangePadding());
+        final long renderingStartTime = Math.max(fullTimeGraphRange.getStart(), windowRange.getStart() - timeRangePadding);
+        final long renderingEndTime = Math.min(fullTimeGraphRange.getEnd(), windowRange.getEnd() + timeRangePadding);
+        final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
         final long resolution = Math.max(1, Math.round(fNanosPerPixel));
 
         /*
@@ -476,7 +473,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
                 List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
-                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingStartTime, renderingEndTime, resolution, this))
+                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingRange, resolution, this))
                         .collect(Collectors.toList());
 
                 if (isCancelled()) {
@@ -595,9 +592,9 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
     }
 
     @Override
-    public void drawSelection(long selectionStartTime, long selectionEndTime) {
-        double xStart = timestampToPaneXPos(selectionStartTime);
-        double xEnd = timestampToPaneXPos(selectionEndTime);
+    public void drawSelection(TimeRange selectionRange) {
+        double xStart = timestampToPaneXPos(selectionRange.getStart());
+        double xEnd = timestampToPaneXPos(selectionRange.getEnd());
         double xWidth = xEnd - xStart;
 
         fSelectionRect.setX(xStart);
@@ -614,15 +611,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
          * Hopefully it's the right one.
          */
         TmfTimeRange selection = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
-        long selectionStart = selection.getStartTime().toNanos();
-        long selectionEnd = selection.getEndTime().toNanos();
+        TimeRange selectionRange = TimeRange.fromTmfTimeRange(selection);
         /* Please Lord, deliver us from this insanity. */
-        if (selectionStart == Long.MAX_VALUE || selectionEnd == Long.MAX_VALUE) {
+        if (selectionRange.getStart() == Long.MAX_VALUE || selectionRange.getEnd() == Long.MAX_VALUE) {
             /* Checking the TmfTimetamps with .equals() doesn't even work... */
             return;
         }
 
-        drawSelection(selectionStart, selectionEnd);
+        drawSelection(selectionRange);
     }
 
     // ------------------------------------------------------------------------
@@ -730,7 +726,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private Node prepareTimeGrahLabelsContents(Collection<StateRectangle> stateRectangles,
             HorizontalPosition horizontalPos) {
-        double minX = timestampToPaneXPos(horizontalPos.fStartTime);
+        double minX = timestampToPaneXPos(horizontalPos.fTimeRange.getStart());
 
         final String ellipsisStr = fDebugOptions.getEllipsisString();
         final Font textFont = fDebugOptions.getTextFont();
@@ -877,7 +873,7 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             long tsStart = paneXPosToTimestamp(startX);
             long tsEnd = paneXPosToTimestamp(endX);
 
-            getControl().updateTimeRangeSelection(tsStart, tsEnd);
+            getControl().updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
 
             fOngoingSelection = false;
         };
@@ -938,13 +934,12 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
 
             /* We need to specify the new value here, or else the old one will be used */
-            HorizontalPosition timeRange = getTimeGraphEdgeTimestamps(newValue.doubleValue());
-            long tsStart = timeRange.fStartTime;
-            long tsEnd = timeRange.fEndTime;
+            HorizontalPosition horizontalPos = getTimeGraphEdgeTimestamps(newValue.doubleValue());
+            TimeRange range = horizontalPos.fTimeRange;
 
-            System.out.printf("Sending visible range update: %,d to %,d%n", tsStart, tsEnd);
+            System.out.println("Sending visible range update: " + range.toString());
 
-            getControl().updateVisibleTimeRange(tsStart, tsEnd, false);
+            getControl().updateVisibleTimeRange(range, false);
 
             /*
              * We ask the control to not send this signal back to us (to avoid
@@ -1043,16 +1038,14 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
             /* Send a corresponding window-range signal to the control */
             TimeGraphModelControl control = getControl();
-            long curStart = control.getVisibleTimeRangeStart();
-            long curEnd = control.getVisibleTimeRangeEnd();
-            long curRange = curEnd - curStart;
+            TimeRange range = control.getVisibleTimeRange();
             /* Shrink the time range by half the ZOOM_FACTOR on each side */
-            double newRange = curRange * (1.0 / newScaleFactor);
-            double diff = curRange - newRange;
-            long newStart = curStart + Math.round(diff / 2.0);
-            long newEnd = curEnd - Math.round(diff / 2.0);
+            double newRange = range.getDuration() * (1.0 / newScaleFactor);
+            double diff = range.getDuration() - newRange;
+            long newStart = range.getStart() + Math.round(diff / 2.0);
+            long newEnd = range.getEnd() - Math.round(diff / 2.0);
 
-            control.updateVisibleTimeRange(newStart, newEnd, true);
+            control.updateVisibleTimeRange(TimeRange.of(newStart, newEnd), true);
         }
 
         public void resetZoomFactor() {
@@ -1110,17 +1103,19 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         long tsStart = paneXPosToTimestamp(hoffset);
         long tsEnd = paneXPosToTimestamp(hoffset + viewportWidth);
 
-        return new HorizontalPosition(tsStart, tsEnd);
+        return new HorizontalPosition(TimeRange.of(tsStart, tsEnd));
     }
 
     double timestampToPaneXPos(long timestamp) {
-        long fullTimeGraphStartTime = getControl().getFullTimeGraphStartTime();
-        long fullTimeGraphEndTime = getControl().getFullTimeGraphEndTime();
-        return timestampToPaneXPos(timestamp, fullTimeGraphStartTime, fullTimeGraphEndTime, fNanosPerPixel);
+        TimeRange fullTimeGraphRange = getControl().getFullTimeGraphRange();
+        return timestampToPaneXPos(timestamp, fullTimeGraphRange, fNanosPerPixel);
     }
 
     @VisibleForTesting
-    static double timestampToPaneXPos(long timestamp, long start, long end, double nanosPerPixel) {
+    static double timestampToPaneXPos(long timestamp, TimeRange fullTimeGraphRange, double nanosPerPixel) {
+        long start = fullTimeGraphRange.getStart();
+        long end = fullTimeGraphRange.getEnd();
+
         if (timestamp < start) {
             throw new IllegalArgumentException(timestamp + " is smaller than trace start time " + start); //$NON-NLS-1$
         }
@@ -1128,16 +1123,16 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
             throw new IllegalArgumentException(timestamp + " is greater than trace end time " + end); //$NON-NLS-1$
         }
 
-        double traceTimeRange = end - start;
-        double timeStampRatio = (timestamp - start) / traceTimeRange;
+        double traceDuration = fullTimeGraphRange.getDuration();
+        double timeStampRatio = (timestamp - start) / traceDuration;
 
-        long fullTraceWidthInPixels = (long) (traceTimeRange / nanosPerPixel);
+        long fullTraceWidthInPixels = (long) (traceDuration / nanosPerPixel);
         double xPos = fullTraceWidthInPixels * timeStampRatio;
         return Math.round(xPos);
     }
 
     long paneXPosToTimestamp(double x) {
-        long fullTimeGraphStartTime = getControl().getFullTimeGraphStartTime();
+        long fullTimeGraphStartTime = getControl().getFullTimeGraphRange().getStart();
         return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel);
     }
 

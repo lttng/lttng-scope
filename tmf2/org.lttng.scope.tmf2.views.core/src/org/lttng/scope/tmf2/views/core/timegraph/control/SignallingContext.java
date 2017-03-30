@@ -30,6 +30,7 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.common.core.log.TraceCompassLog;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -61,16 +62,16 @@ public class SignallingContext {
         TmfSignalManager.deregister(this);
     }
 
-    public void sendTimeRangeSelectionUpdate(long startTs, long endTs) {
+    public void sendTimeRangeSelectionUpdate(TimeRange selectionRange) {
         TmfSignal signal = new TmfSelectionRangeUpdatedSignal(this,
-                TmfTimestamp.fromNanos(startTs),
-                TmfTimestamp.fromNanos(endTs));
+                TmfTimestamp.fromNanos(selectionRange.getStart()),
+                TmfTimestamp.fromNanos(selectionRange.getEnd()));
         TmfSignalManager.dispatchSignal(signal);
     }
 
-    public void sendVisibleWindowRangeUpdate(long startTs, long endTs, boolean echo) {
+    public void sendVisibleWindowRangeUpdate(TimeRange windowRange, boolean echo) {
         TmfSignal signal = new TmfWindowRangeUpdatedSignal(this,
-                new TmfTimeRange(TmfTimestamp.fromNanos(startTs), TmfTimestamp.fromNanos(endTs)),
+                windowRange.toTmfTimeRange(),
                 echo);
         fVisibleRangeSignalThrottler.queue(signal);
     }
@@ -140,7 +141,7 @@ public class SignallingContext {
             if (trace != null) {
                 long traceStart = trace.getStartTime().toNanos();
                 long traceEnd = trace.getEndTime().toNanos();
-                fControl.setTimeGraphAreaRange(traceStart, traceEnd);
+                fControl.setFullTimeRange(TimeRange.of(traceStart, traceEnd));
             }
         });
     }
@@ -163,9 +164,9 @@ public class SignallingContext {
                  * This signal's end can be before its start time, against all
                  * logic
                  */
-                fControl.drawSelection(rangeEnd, rangeStart);
+                fControl.drawSelection(TimeRange.of(rangeEnd, rangeStart));
             } else {
-                fControl.drawSelection(rangeStart, rangeEnd);
+                fControl.drawSelection(TimeRange.of(rangeStart, rangeEnd));
             }
         });
     }
@@ -185,14 +186,11 @@ public class SignallingContext {
             long traceEnd = trace.getEndTime().toNanos();
 
             TmfTimeRange windowRange = signal.getCurrentRange();
-            long windowStart = Math.max(traceStart, windowRange.getStartTime().toNanos());
-            long windowEnd = Math.min(traceEnd, windowRange.getEndTime().toNanos());
 
             LOGGER.finer(() -> "[SignallingContext:ReceivedWindowRangeUpdated] " + //$NON-NLS-1$
-                    String.format("windowStart=%,d, windowEnd=%,d", //$NON-NLS-1$
-                            windowStart, windowEnd));
+                    windowRange.toString());
 
-            fControl.setTimeGraphAreaRange(traceStart, traceEnd);
+            fControl.setFullTimeRange(TimeRange.of(traceStart, traceEnd));
 
             if (signal.getSource() != this || signal.echo()) {
                 /*
@@ -203,9 +201,9 @@ public class SignallingContext {
                  * Zoom events for instance will set "echo" to true, which means
                  * the view wants to receive the signal back.
                  */
-                fControl.seekVisibleRange(windowStart, windowEnd);
+                fControl.seekVisibleRange(TimeRange.fromTmfTimeRange(windowRange));
             } else {
-                fControl.updateLatestVisibleRange(windowStart, windowEnd);
+                fControl.setVisibleTimeRange(TimeRange.fromTmfTimeRange(windowRange));
             }
 
             if (fCurrentSignalLatch != null) {

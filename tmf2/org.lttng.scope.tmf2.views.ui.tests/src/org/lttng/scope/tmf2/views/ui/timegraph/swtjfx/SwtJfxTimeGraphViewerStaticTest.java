@@ -12,6 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 
 /**
  * {@link SwtJfxTimeGraphViewer} test suite unit-testing some static utility
@@ -37,8 +38,7 @@ public class SwtJfxTimeGraphViewerStaticTest {
     @Test
     public void testTimeToPosition() {
         double yPos = SwtJfxTimeGraphViewer.timestampToPaneXPos(1500,
-                TestArea1.START_TIMESTAMP,
-                TestArea1.END_TIMESTAMP,
+                TimeRange.of(TestArea1.START_TIMESTAMP, TestArea1.END_TIMESTAMP),
                 TestArea1.NANOS_PER_PIXEL);
         assertEquals(50.0, yPos, DELTA);
 
@@ -46,8 +46,8 @@ public class SwtJfxTimeGraphViewerStaticTest {
         long end   = 1332170692664579801L;
         long ts1   = 1332170683481793497L;
         long ts2   = 1332170683485732407L;
-        double yPos1 = SwtJfxTimeGraphViewer.timestampToPaneXPos(ts1, start, end, 10.0);
-        double yPos2 = SwtJfxTimeGraphViewer.timestampToPaneXPos(ts2, start, end, 10.0);
+        double yPos1 = SwtJfxTimeGraphViewer.timestampToPaneXPos(ts1, TimeRange.of(start, end), 10.0);
+        double yPos2 = SwtJfxTimeGraphViewer.timestampToPaneXPos(ts2, TimeRange.of(start, end), 10.0);
         assertEquals(104166039.959, yPos1, DELTA);
         assertEquals(104559930.959, yPos2, DELTA);
 

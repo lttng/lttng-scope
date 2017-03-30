@@ -56,7 +56,7 @@ public class StateRectangle extends Rectangle {
          * time. Make sure to clamp the interval's end to the earliest valid
          * value.
          */
-        long modelEndTime = viewer.getControl().getFullTimeGraphEndTime();
+        long modelEndTime = viewer.getControl().getFullTimeGraphRange().getEnd();
         long intervalEndTime = interval.getEndEvent().getTimestamp();
         double xEnd = viewer.timestampToPaneXPos(Math.min(modelEndTime, intervalEndTime));
 

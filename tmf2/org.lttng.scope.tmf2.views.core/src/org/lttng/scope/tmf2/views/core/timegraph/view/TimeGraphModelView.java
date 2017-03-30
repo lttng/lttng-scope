@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.view;
 
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 public abstract class TimeGraphModelView {
@@ -39,13 +40,13 @@ public abstract class TimeGraphModelView {
      * This should be called whenever the visible window moves, including zoom
      * level changes.
      */
-    public abstract void seekVisibleRange(long visibleWindowStartTime, long visibleWindowEndTime);
+    public abstract void seekVisibleRange(TimeRange newVisibleRange);
 
 
     /**
      * Draw a new selection rectangle. The previous one, if any, will be
      * removed.
      */
-    public abstract void drawSelection(long selectionStartTime, long selectionEndTime);
+    public abstract void drawSelection(TimeRange selectionRange);
 
 }

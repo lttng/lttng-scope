@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
@@ -65,15 +66,15 @@ public interface ITimeGraphModelRenderProvider {
     TimeGraphTreeRender getTreeRender();
 
     TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            long rangeStart, long rangeEnd, long resolution, @Nullable FutureTask<?> task);
+            TimeRange timeRange, long resolution, @Nullable FutureTask<?> task);
 
-    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, long start, long end, long resolution, @Nullable FutureTask<?> task) {
+    default List<TimeGraphStateRender> getStateRenders(TimeGraphTreeRender treeRender, TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
         return treeRender.getAllTreeElements().stream()
-                .map(treeElem -> getStateRender(treeElem, start, end, resolution, task))
+                .map(treeElem -> getStateRender(treeElem, timeRange, resolution, task))
                 .collect(Collectors.toList());
     }
 
-    TimeGraphDrawnEventRender getDrawnEventRender(TimeGraphTreeElement treeElement, long rangeStart, long rangeEnd);
+    TimeGraphDrawnEventRender getDrawnEventRender(TimeGraphTreeElement treeElement, TimeRange timeRange);
 
     TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender);
 

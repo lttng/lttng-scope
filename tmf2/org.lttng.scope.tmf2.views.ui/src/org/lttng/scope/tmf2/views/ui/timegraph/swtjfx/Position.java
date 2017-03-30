@@ -12,6 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 import com.google.common.base.MoreObjects;
@@ -22,7 +23,6 @@ interface Position {
      * Placeholder for uninitialized horizontal positions.
      */
     HorizontalPosition UNINITIALIZED_HP = new HorizontalPosition(
-            TimeGraphModelControl.UNINITIALIZED,
             TimeGraphModelControl.UNINITIALIZED);
 
     /**
@@ -32,17 +32,15 @@ interface Position {
 
     class HorizontalPosition {
 
-        public final long fStartTime;
-        public final long fEndTime;
+        public final TimeRange fTimeRange;
 
-        public HorizontalPosition(long startTime, long endTime) {
-            fStartTime = startTime;
-            fEndTime = endTime;
+        public HorizontalPosition(TimeRange range) {
+            fTimeRange = range;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(fStartTime, fEndTime);
+            return Objects.hash(fTimeRange);
         }
 
         @Override
@@ -57,15 +55,13 @@ interface Position {
                 return false;
             }
             HorizontalPosition other = (HorizontalPosition) obj;
-            return (fEndTime == other.fEndTime
-                    && fStartTime == other.fStartTime);
+            return (fTimeRange.equals(other.fTimeRange));
         }
 
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)
-                    .add("fStartTime", fStartTime) //$NON-NLS-1$
-                    .add("fEndTime", fEndTime) //$NON-NLS-1$
+                    .add("Time range", fTimeRange) //$NON-NLS-1$
                     .toString();
         }
     }
