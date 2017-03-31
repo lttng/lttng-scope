@@ -18,9 +18,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.MultiStateInterval;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.StateRectangle;
@@ -82,8 +79,7 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
              * Go to the end/start of the current state.
              */
             long bound = (forward ? stateEndTime : stateStartTime);
-            viewer.getControl().updateTimeRangeSelection(TimeRange.of(bound, bound));
-            updateVisibleRange(viewer, bound);
+            NavUtils.selectNewTimestamp(viewer, bound);
             return;
         }
 
@@ -123,9 +119,7 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
         }
 
         viewer.setSelectedState(newState);
-
-        viewer.getControl().updateTimeRangeSelection(TimeRange.of(targetTimestamp, targetTimestamp));
-        updateVisibleRange(viewer, targetTimestamp);
+        NavUtils.selectNewTimestamp(viewer, targetTimestamp);
     }
 
     /**
@@ -212,42 +206,6 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
         return potentialStates.stream()
                 .sorted(forward ?  EARLIEST_START_TIME_COMPARATOR : LATEST_END_TIME_COMPARATOR)
                 .findFirst();
-    }
-
-    /**
-     * Update the visible range to be centered on 'timestamp', but only if it is
-     * outside of the current visible range.
-     */
-    private static void updateVisibleRange(SwtJfxTimeGraphViewer viewer, long timestamp) {
-        TimeRange fullTimeGraphRange = viewer.getControl().getFullTimeGraphRange();
-        TmfTimeRange windowRange = TmfTraceManager.getInstance().getCurrentTraceContext().getWindowRange();
-        long windowStart = windowRange.getStartTime().toNanos();
-        long windowEnd = windowRange.getEndTime().toNanos();
-        if (windowStart <= timestamp && timestamp <= windowEnd) {
-            /* Timestamp is still in the visible range, don't touch anything. */
-            return;
-        }
-        /* Update the visible range to the requested timestamp. */
-        /* The "span" of the window (aka zoom level) will remain constant. */
-        long windowSpan = windowEnd - windowStart;
-        if (windowSpan > fullTimeGraphRange.getDuration()) {
-            /* Should never happen, but just to be mathematically safe. */
-            windowSpan = fullTimeGraphRange.getDuration();
-        }
-
-        long newStart = timestamp - (windowSpan / 2);
-        long newEnd = newStart + windowSpan;
-
-        /* Clamp the range to the borders of the pane/trace. */
-        if (newStart < fullTimeGraphRange.getStart()) {
-            newStart = fullTimeGraphRange.getStart();
-            newEnd = newStart + windowSpan;
-        } else if (newEnd > fullTimeGraphRange.getEnd()) {
-            newEnd = fullTimeGraphRange.getEnd();
-            newStart = newEnd - windowSpan;
-        }
-
-        viewer.getControl().updateVisibleTimeRange(TimeRange.of(newStart, newEnd), true);
     }
 
 }

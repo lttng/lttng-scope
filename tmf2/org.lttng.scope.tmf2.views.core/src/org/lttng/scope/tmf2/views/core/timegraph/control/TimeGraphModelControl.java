@@ -55,7 +55,12 @@ public final class TimeGraphModelControl {
     // Accessors
     // ------------------------------------------------------------------------
 
-    @Nullable ITmfTrace getCurrentTrace() {
+    /**
+     * Get the trace currently being tracked by this control.
+     *
+     * @return The trace, may be null if there is no trace
+     */
+    public @Nullable ITmfTrace getCurrentTrace() {
         return fCurrentTrace;
     }
 

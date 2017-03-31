@@ -75,6 +75,10 @@ public class TimeGraphStateInterval {
         return fLineThickness;
     }
 
+    public TimeGraphTreeElement getTreeElement() {
+        return getStartEvent().getTreeElement();
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(fStartEvent, fEndEvent, fStateName, fLabel, fColor, fLineThickness);

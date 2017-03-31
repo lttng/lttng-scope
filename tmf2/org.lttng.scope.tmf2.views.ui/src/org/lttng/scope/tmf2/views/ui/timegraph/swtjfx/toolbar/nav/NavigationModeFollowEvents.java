@@ -11,6 +11,21 @@ package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
+import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
+import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
+import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
 /**
@@ -27,6 +42,21 @@ public class NavigationModeFollowEvents extends NavigationMode {
     private static final String FWD_ICON_PATH = "/icons/toolbar/nav_event_fwd.gif"; //$NON-NLS-1$
 
     /**
+     * Mutex rule for search action jobs, making sure they execute sequentially
+     */
+    private final ISchedulingRule fSearchActionMutexRule = new ISchedulingRule() {
+        @Override
+        public boolean isConflicting(@Nullable ISchedulingRule rule) {
+            return (rule == this);
+        }
+
+        @Override
+        public boolean contains(@Nullable ISchedulingRule rule) {
+            return (rule == this);
+        }
+    };
+
+    /**
      * Constructor
      */
     public NavigationModeFollowEvents() {
@@ -37,14 +67,51 @@ public class NavigationModeFollowEvents extends NavigationMode {
 
     @Override
     public void navigateBackwards(SwtJfxTimeGraphViewer viewer) {
-        // TODO NYI
-        System.out.println("Follow events backwards");
+        navigate(viewer, false);
     }
 
     @Override
     public void navigateForwards(SwtJfxTimeGraphViewer viewer) {
-        // TODO NYI
-        System.out.println("Follow events forwards");
+        navigate(viewer, true);
     }
 
+    private void navigate(SwtJfxTimeGraphViewer viewer, boolean forward) {
+        StateRectangle state = viewer.getSelectedState();
+        ITmfTrace trace = viewer.getControl().getCurrentTrace();
+        if (state == null || trace == null) {
+            return;
+        }
+        Predicate<ITmfEvent> predicate = state.getStateInterval().getTreeElement().getEventMatching();
+        if (predicate == null) {
+            /* The tree element does not support navigating by events. */
+            return;
+        }
+
+        String jobName = (forward ? Messages.sfNextEventJobName : Messages.sfPreviousEventJobName);
+
+        Job job = new Job(jobName) {
+            @Override
+            protected IStatus run(@Nullable IProgressMonitor monitor) {
+                long currentTime = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange().getStartTime().toNanos();
+                ITmfContext ctx = trace.seekEvent(TmfTimestamp.fromNanos(currentTime));
+                long rank = ctx.getRank();
+                ctx.dispose();
+
+                ITmfEvent event = (forward ?
+                        TmfTraceUtils.getNextEventMatching(trace, rank, predicate, monitor) :
+                        TmfTraceUtils.getPreviousEventMatching(trace, rank, predicate, monitor));
+                if (event != null) {
+                    NavUtils.selectNewTimestamp(viewer, event.getTimestamp().toNanos());
+                }
+                return Status.OK_STATUS;
+            }
+        };
+
+        /*
+         * Make subsequent jobs not run concurrently, but wait after one
+         * another.
+         */
+        job.setRule(fSearchActionMutexRule);
+        job.schedule();
+    }
 }

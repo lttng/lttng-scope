@@ -28,6 +28,9 @@ public class Messages extends NLS {
     public static String sfFollowArrowsNavModeName;
     public static String sfFollowBookmarksNavModeName;
 
+    public static String sfNextEventJobName;
+    public static String sfPreviousEventJobName;
+
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }

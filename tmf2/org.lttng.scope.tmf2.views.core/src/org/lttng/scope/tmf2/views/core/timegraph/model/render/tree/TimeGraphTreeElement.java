@@ -11,8 +11,10 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.tree;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
@@ -35,12 +37,21 @@ public class TimeGraphTreeElement {
         return fChildElements;
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("fName", fName) //$NON-NLS-1$
-            .add("fChildElements", fChildElements.toString()) //$NON-NLS-1$
-            .toString();
+    /**
+     * Determine if and how this tree element corresponds to a component of a
+     * trace event.
+     *
+     * For example, if this tree element represents "CPU #2", then the predicate
+     * should return true for all trace events belonging to CPU #2.
+     *
+     * The method returns null if this tree element does not correspond to a
+     * particular aspect of trace events.
+     *
+     * @return The event matching predicate, if there is one
+     */
+    public @Nullable Predicate<ITmfEvent> getEventMatching() {
+        /* Sub-classes can override */
+        return null;
     }
 
     @Override
@@ -64,6 +75,12 @@ public class TimeGraphTreeElement {
                 && Objects.equals(fChildElements, other.fChildElements);
     }
 
-
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .add("fName", fName) //$NON-NLS-1$
+            .add("fChildElements", fChildElements.toString()) //$NON-NLS-1$
+            .toString();
+    }
 
 }

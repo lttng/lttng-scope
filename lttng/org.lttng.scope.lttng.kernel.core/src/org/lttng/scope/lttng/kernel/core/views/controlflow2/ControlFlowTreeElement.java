@@ -1,9 +1,12 @@
 package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
+import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
@@ -46,6 +49,18 @@ public class ControlFlowTreeElement extends StateSystemTimeGraphTreeElement {
 
     public String getThreadName() {
         return fThreadName;
+    }
+
+    @Override
+    public @Nullable Predicate<ITmfEvent> getEventMatching() {
+        /*
+         * This tree element represents a thread ID. Return true for events
+         * whose TID aspect is the same as the TID of this element.
+         */
+        return event -> {
+            Integer eventTid = KernelTidAspect.INSTANCE.resolve(event);
+            return (eventTid != null && eventTid.intValue() == fTid);
+        };
     }
 
 }
