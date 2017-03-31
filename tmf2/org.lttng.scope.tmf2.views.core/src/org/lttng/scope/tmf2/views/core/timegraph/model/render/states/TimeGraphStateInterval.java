@@ -9,6 +9,8 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -74,6 +76,31 @@ public class TimeGraphStateInterval {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(fStartEvent, fEndEvent, fStateName, fLabel, fColor, fLineThickness);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TimeGraphStateInterval other = (TimeGraphStateInterval) obj;
+        return (Objects.equals(fStartEvent, other.fStartEvent)
+                && Objects.equals(fEndEvent, other.fEndEvent)
+                && Objects.equals(fStateName, other.fStateName)
+                && Objects.equals(fLabel, other.fLabel)
+                && Objects.equals(fColor, other.fColor)
+                && fLineThickness == other.fLineThickness);
+    }
+
+    @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("start", fStartEvent.getTimestamp())
@@ -81,4 +108,5 @@ public class TimeGraphStateInterval {
                 .add("name", fStateName)
                 .toString();
     }
+
 }

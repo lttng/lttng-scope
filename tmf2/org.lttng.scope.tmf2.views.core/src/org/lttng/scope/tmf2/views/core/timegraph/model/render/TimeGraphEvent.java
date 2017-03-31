@@ -9,6 +9,9 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render;
 
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 public class TimeGraphEvent {
@@ -27,5 +30,26 @@ public class TimeGraphEvent {
 
     public TimeGraphTreeElement getTreeElement() {
         return fTreeElement;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fTimestamp, fTreeElement);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TimeGraphEvent other = (TimeGraphEvent) obj;
+        return (fTimestamp == other.fTimestamp
+                && Objects.equals(fTreeElement, other.fTreeElement));
     }
 }

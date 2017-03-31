@@ -9,6 +9,9 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 
@@ -120,6 +123,26 @@ public class StateRectangle extends Rectangle {
         case SMALL:
             return SwtJfxTimeGraphViewer.ENTRY_HEIGHT - 8;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fInterval);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        StateRectangle other = (StateRectangle) obj;
+        return Objects.equals(fInterval, other.fInterval);
     }
 
     @Override

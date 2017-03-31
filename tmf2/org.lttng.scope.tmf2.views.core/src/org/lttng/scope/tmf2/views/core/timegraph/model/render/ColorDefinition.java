@@ -64,13 +64,10 @@ public class ColorDefinition {
             return false;
         }
         ColorDefinition other = (ColorDefinition) obj;
-        if (fAlpha != other.fAlpha ||
-                fBlue != other.fBlue ||
-                fGreen != other.fGreen ||
-                fRed != other.fRed) {
-            return false;
-        }
-        return true;
+        return (fRed == other.fRed
+                && fGreen == other.fGreen
+                && fBlue == other.fBlue
+                && fAlpha == other.fAlpha);
     }
 
     @Override
