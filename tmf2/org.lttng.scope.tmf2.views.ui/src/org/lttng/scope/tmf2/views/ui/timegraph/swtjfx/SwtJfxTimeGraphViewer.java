@@ -727,7 +727,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
         final Color textColor = Color.WHITE;
 
-        final double yOffset = ENTRY_HEIGHT / 2.0;
+        /* Requires a ~2 pixels adjustment to be centered on the states */
+        final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
         Collection<Node> texts = stateRectangles.stream()
                 /* Only try to annotate rectangles that are large enough */
                 .filter(stateRect -> stateRect.getWidth() > fDebugOptions.getEllipsisWidth())
