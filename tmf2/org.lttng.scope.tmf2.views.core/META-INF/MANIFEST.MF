@@ -23,7 +23,6 @@ Export-Package: org.lttng.scope.tmf2.views.core,
  org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows,
  org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents,
  org.lttng.scope.tmf2.views.core.timegraph.model.render.states,
- org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip,
  org.lttng.scope.tmf2.views.core.timegraph.model.render.tree,
  org.lttng.scope.tmf2.views.core.timegraph.view,
  org.lttng.scope.tmf2.views.core.timegraph.view.json

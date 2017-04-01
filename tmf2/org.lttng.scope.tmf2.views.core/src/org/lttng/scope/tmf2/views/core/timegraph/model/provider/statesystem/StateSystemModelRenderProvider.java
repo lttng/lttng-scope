@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -30,7 +31,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip.TimeGraphTooltip;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
@@ -112,10 +112,15 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
     private final Map<ITmfStateSystem, CachedTreeRender> fLastTreeRenders = new WeakHashMap<>();
 
     /**
+     * @param sortingModes
+     * @param filterModes
      * @param stateSystemModuleId
+     * @param treeRenderFunction
      * @param stateNameMappingFunction
+     * @param labelMappingFunction
      * @param colorMappingFunction
      * @param lineThicknessMappingFunction
+     * @param propertiesMappingFunction
      * @param propertyMappingFunction
      * @param baseQuarkPattern
      */
@@ -127,7 +132,8 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ColorDefinition> colorMappingFunction,
-            Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction) {
+            Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
+            Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> propertiesMappingFunction) {
 
         super(sortingModes, filterModes);
 
@@ -142,7 +148,8 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
                     stateNameMappingFunction.apply(ssCtx),
                     labelMappingFunction.apply(ssCtx),
                     colorMappingFunction.apply(ssCtx),
-                    lineThicknessMappingFunction.apply(ssCtx));
+                    lineThicknessMappingFunction.apply(ssCtx),
+                    propertiesMappingFunction.apply(ssCtx));
         };
     }
 
@@ -250,9 +257,4 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
         return new TimeGraphArrowRender();
     }
 
-    @Override
-    public TimeGraphTooltip getTooltip(TimeGraphStateInterval interval) {
-        // TODO
-        return new TimeGraphTooltip();
-    }
 }

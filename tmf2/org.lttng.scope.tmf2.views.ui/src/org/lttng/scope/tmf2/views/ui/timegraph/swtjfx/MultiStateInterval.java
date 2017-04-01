@@ -37,7 +37,7 @@ public class MultiStateInterval extends TimeGraphStateInterval {
      *            The line thickness to use
      */
     public MultiStateInterval(long timestamp, TimeGraphTreeElement treeElement, LineThickness lineThickness) {
-        super(timestamp, timestamp + 1, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, lineThickness);
+        super(timestamp, timestamp + 1, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, lineThickness, null);
     }
 
 }

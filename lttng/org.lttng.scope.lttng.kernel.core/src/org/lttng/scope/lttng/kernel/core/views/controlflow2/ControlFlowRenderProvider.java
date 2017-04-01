@@ -16,7 +16,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -294,10 +296,9 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
     // Properties
     // ------------------------------------------------------------------------
 
-    // TODO
-//    private static final Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> PROPERTY_MAPPING_FUNCTION = ssCtx -> {
-//        return null;
-//    };
+    private static final Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
+        return null;
+    };
 
     /**
      * Constructor
@@ -311,7 +312,8 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
                 STATE_NAME_MAPPING_FUNCTION,
                 LABEL_MAPPING_FUNCTION,
                 COLOR_MAPPING_FUNCTION,
-                LINE_THICKNESS_MAPPING_FUNCTION);
+                LINE_THICKNESS_MAPPING_FUNCTION,
+                PROPERTIES_MAPPING_FUNCTION);
 
         enableFilterMode(0);
     }

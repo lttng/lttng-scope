@@ -9,8 +9,11 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -33,13 +36,27 @@ public class TimeGraphStateInterval {
     private final ColorDefinition fColor;
     private final LineThickness fLineThickness;
 
+    private final @Nullable Supplier<@NonNull Map<String, String>> fPropertiesSupplier;
+    private transient @Nullable Map<String, String> fProperties = null;
+
+    /**
+     * @param start
+     * @param end
+     * @param treeElement
+     * @param stateName
+     * @param label
+     * @param color
+     * @param lineThickness
+     * @param propertiesSupplier
+     */
     public TimeGraphStateInterval(long start,
             long end,
             TimeGraphTreeElement treeElement,
             String stateName,
             @Nullable String label,
             ColorDefinition color,
-            LineThickness lineThickness) {
+            LineThickness lineThickness,
+            @Nullable Supplier<@NonNull Map<String, String>> propertiesSupplier) {
 
         fStartEvent = new TimeGraphEvent(start, treeElement);
         fEndEvent = new TimeGraphEvent(end, treeElement);
@@ -48,7 +65,7 @@ public class TimeGraphStateInterval {
         fLabel = label;
         fColor = color;
         fLineThickness = lineThickness;
-
+        fPropertiesSupplier = propertiesSupplier;
     }
 
     public TimeGraphEvent getStartEvent() {
@@ -77,6 +94,21 @@ public class TimeGraphStateInterval {
 
     public TimeGraphTreeElement getTreeElement() {
         return getStartEvent().getTreeElement();
+    }
+
+    public synchronized @Nullable Map<String, String> getProperties() {
+        Supplier<Map<String, String>> propertiesSupplier = fPropertiesSupplier;
+        if (propertiesSupplier == null) {
+            return null;
+        }
+
+        /* Lazy-load the properties */
+        Map<String, String> properties = fProperties;
+        if (properties == null) {
+            properties = propertiesSupplier.get();
+            fProperties = properties;
+        }
+        return properties;
     }
 
     @Override

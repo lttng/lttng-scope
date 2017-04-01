@@ -21,9 +21,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip.TimeGraphTooltip;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
@@ -85,9 +83,6 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     @Override
     public abstract TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender);
-
-    @Override
-    public abstract TimeGraphTooltip getTooltip(TimeGraphStateInterval interval);
 
     // ------------------------------------------------------------------------
     // Sorting modes

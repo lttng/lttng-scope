@@ -27,7 +27,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tooltip.TimeGraphTooltip;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
@@ -76,7 +75,7 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
                     long endTime = startTime + stateLength - 1;
                     String name = getNextStateName();
                     ColorDefinition color = getnextStateColor();
-                    return new TimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL);
+                    return new TimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, null);
                 })
                 .collect(Collectors.toList());
 
@@ -92,11 +91,6 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
     @Override
     public @NonNull TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender) {
         return new TimeGraphArrowRender();
-    }
-
-    @Override
-    public @NonNull TimeGraphTooltip getTooltip(TimeGraphStateInterval interval) {
-        return new TimeGraphTooltip();
     }
 
     private static final Iterator<String> STATE_NAMES = Iterators.cycle("State 1", "State 2");
