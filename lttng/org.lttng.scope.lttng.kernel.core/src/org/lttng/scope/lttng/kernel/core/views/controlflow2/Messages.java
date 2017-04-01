@@ -7,7 +7,6 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-
 package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -36,6 +35,10 @@ public class Messages extends NLS {
     public static String ControlFlowSortingModes_ByThreadName;
 
     public static String ControlFlowFilterModes_InactiveEntries;
+
+    public static String propertyNotAvailable;
+    public static String propertyNameCpu;
+    public static String propertyNameSyscall;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

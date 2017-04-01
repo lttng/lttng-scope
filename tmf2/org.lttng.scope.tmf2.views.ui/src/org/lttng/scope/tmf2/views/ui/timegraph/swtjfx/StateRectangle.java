@@ -9,6 +9,8 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -17,13 +19,17 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 
 import com.google.common.base.MoreObjects;
 
+import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * {@link Rectangle} object used to draw states in the timegraph. It attaches
@@ -37,6 +43,8 @@ public class StateRectangle extends Rectangle {
 
     private final transient Paint fBaseColor;
     private final transient Paint fSelectedColor;
+
+    private volatile boolean fTooltipInstalled = false;
 
     /**
      * Constructor
@@ -88,14 +96,39 @@ public class StateRectangle extends Rectangle {
             fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
         }
 
+        /* Set initial selection state and selection listener. */
         setSelected(false);
-
         setOnMouseClicked(e -> {
             if (e.getButton() != MouseButton.PRIMARY) {
                 return;
             }
             viewer.setSelectedState(this);
         });
+
+        /*
+         * Initialize the tooltip only when the mouse enters the rectangle the
+         * first time.
+         */
+        setOnMouseEntered(e -> {
+            if (fTooltipInstalled) {
+                return;
+            }
+            TooltipContents ttContents = new TooltipContents();
+            ttContents.appendRow(Messages.statePropertyElement, fInterval.getTreeElement().getName());
+            ttContents.appendRow(Messages.statePropertyStateName, fInterval.getStateName());
+            ttContents.appendRow(Messages.statePropertyStartTime, fInterval.getStartTime());
+            ttContents.appendRow(Messages.statePropertyEndTime, fInterval.getEndTime());
+            ttContents.appendRow(Messages.statePropertyDuration, fInterval.getDuration() + " ns"); //$NON-NLS-1$
+            /* Add rows corresponding to the properties from the interval */
+            Map<String, String> properties = fInterval.getProperties();
+            properties.forEach((k, v) -> ttContents.appendRow(k, v));
+
+            Tooltip tt = new Tooltip();
+            tt.setGraphic(ttContents);
+            Tooltip.install(this, tt);
+            fTooltipInstalled = true;
+        });
+
     }
 
     /**
@@ -152,4 +185,17 @@ public class StateRectangle extends Rectangle {
                 .toString();
     }
 
+    private static class TooltipContents extends GridPane {
+
+        private int nbRows = 0;
+
+        public void appendRow(Object... objects) {
+            Node[] labels = Arrays.stream(objects)
+                    .map(Object::toString)
+                    .map(Text::new)
+                    .peek(text -> text.setStroke(Color.WHITE))
+                    .toArray(Node[]::new);
+            addRow(nbRows++, labels);
+        }
+    }
 }

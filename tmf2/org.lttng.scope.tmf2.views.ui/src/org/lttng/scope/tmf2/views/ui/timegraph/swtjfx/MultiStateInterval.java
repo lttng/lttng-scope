@@ -9,6 +9,8 @@
 
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
+import java.util.Collections;
+
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -37,7 +39,7 @@ public class MultiStateInterval extends BasicTimeGraphStateInterval {
      *            The line thickness to use
      */
     public MultiStateInterval(long timestamp, TimeGraphTreeElement treeElement, LineThickness lineThickness) {
-        super(timestamp, timestamp + 1, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, lineThickness, null);
+        super(timestamp, timestamp + 1, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, lineThickness, Collections.emptyMap());
     }
 
 }

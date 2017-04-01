@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -134,7 +133,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ColorDefinition> colorMappingFunction,
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
-            Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> propertiesMappingFunction) {
+            Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
         super(sortingModes, filterModes);
 

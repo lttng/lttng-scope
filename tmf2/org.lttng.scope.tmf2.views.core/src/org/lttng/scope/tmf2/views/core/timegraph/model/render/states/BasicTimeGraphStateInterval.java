@@ -11,9 +11,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -31,8 +29,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     private final ColorDefinition fColor;
     private final LineThickness fLineThickness;
 
-    private final @Nullable Supplier<@NonNull Map<String, String>> fPropertiesSupplier;
-    private transient @Nullable Map<String, String> fProperties = null;
+    private final Map<String, String> fProperties;
 
     /**
      * @param start
@@ -42,7 +39,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
      * @param label
      * @param color
      * @param lineThickness
-     * @param propertiesSupplier
+     * @param properties
      */
     public BasicTimeGraphStateInterval(long start,
             long end,
@@ -51,7 +48,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
             @Nullable String label,
             ColorDefinition color,
             LineThickness lineThickness,
-            @Nullable Supplier<@NonNull Map<String, String>> propertiesSupplier) {
+            Map<String, String> properties) {
 
         fStartEvent = new TimeGraphEvent(start, treeElement);
         fEndEvent = new TimeGraphEvent(end, treeElement);
@@ -60,7 +57,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
         fLabel = label;
         fColor = color;
         fLineThickness = lineThickness;
-        fPropertiesSupplier = propertiesSupplier;
+        fProperties = properties;
     }
 
     @Override
@@ -94,19 +91,8 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     }
 
     @Override
-    public synchronized @Nullable Map<String, String> getProperties() {
-        Supplier<Map<String, String>> propertiesSupplier = fPropertiesSupplier;
-        if (propertiesSupplier == null) {
-            return null;
-        }
-
-        /* Lazy-load the properties */
-        Map<String, String> properties = fProperties;
-        if (properties == null) {
-            properties = propertiesSupplier.get();
-            fProperties = properties;
-        }
-        return properties;
+    public Map<String, String> getProperties() {
+        return fProperties;
     }
 
     @Override

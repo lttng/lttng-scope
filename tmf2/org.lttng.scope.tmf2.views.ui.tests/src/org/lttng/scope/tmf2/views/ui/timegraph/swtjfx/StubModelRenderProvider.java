@@ -76,7 +76,7 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
                     long endTime = startTime + stateLength - 1;
                     String name = getNextStateName();
                     ColorDefinition color = getnextStateColor();
-                    return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, null);
+                    return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, Collections.emptyMap());
                 })
                 .collect(Collectors.toList());
 

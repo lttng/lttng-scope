@@ -9,6 +9,7 @@
 
 package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
+import static java.util.Objects.requireNonNull;
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Arrays;
@@ -18,7 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +34,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
@@ -296,8 +297,30 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
     // Properties
     // ------------------------------------------------------------------------
 
-    private static final Function<StateIntervalContext, @Nullable Supplier<Map<String, String>>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
-        return null;
+    private static final Function<StateIntervalContext, Map<String, String>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
+        /* Include properties for CPU and syscall name. */
+        int baseQuark = ssCtx.baseTreeElement.getSourceQuark();
+
+        String cpu;
+        try {
+            int cpuQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.CURRENT_CPU_RQ);
+            ITmfStateValue sv = ssCtx.fullQueryAtIntervalStart.get(cpuQuark).getStateValue();
+            cpu = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : String.valueOf(sv.unboxInt()));
+        } catch (AttributeNotFoundException e) {
+            cpu = requireNonNull(Messages.propertyNotAvailable);
+        }
+
+        String syscall;
+        try {
+            int syscallNameQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.SYSTEM_CALL);
+            ITmfStateValue sv = ssCtx.fullQueryAtIntervalStart.get(syscallNameQuark).getStateValue();
+            syscall = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : sv.unboxStr());
+        } catch (AttributeNotFoundException e) {
+            syscall = requireNonNull(Messages.propertyNotAvailable);
+        }
+
+        return ImmutableMap.of(requireNonNull(Messages.propertyNameCpu), cpu,
+                requireNonNull(Messages.propertyNameSyscall), syscall);
     };
 
     /**

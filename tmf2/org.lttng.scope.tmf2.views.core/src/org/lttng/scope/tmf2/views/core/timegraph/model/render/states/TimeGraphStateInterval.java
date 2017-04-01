@@ -35,7 +35,7 @@ public interface TimeGraphStateInterval {
 
     LineThickness getLineThickness();
 
-    @Nullable Map<String, String> getProperties();
+    Map<String, String> getProperties();
 
     default long getStartTime() {
         return getStartEvent().getTimestamp();
