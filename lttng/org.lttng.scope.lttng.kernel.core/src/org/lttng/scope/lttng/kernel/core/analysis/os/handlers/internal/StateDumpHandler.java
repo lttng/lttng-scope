@@ -14,6 +14,7 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
 import static java.util.Objects.requireNonNull;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
@@ -45,18 +46,20 @@ public class StateDumpHandler extends KernelEventHandler {
     @Override
     public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
         ITmfEventField content = event.getContent();
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
+        Integer eventCpu = KernelEventHandlerUtils.getCpu(event);
         int tid = ((Long) content.getField("tid").getValue()).intValue(); //$NON-NLS-1$
         int pid = ((Long) content.getField("pid").getValue()).intValue(); //$NON-NLS-1$
         int ppid = ((Long) content.getField("ppid").getValue()).intValue(); //$NON-NLS-1$
         int status = ((Long) content.getField("status").getValue()).intValue(); //$NON-NLS-1$
         String name = requireNonNull((String) content.getField("name").getValue()); //$NON-NLS-1$
+        /* Only present in LTTng 2.10+ */
+        @Nullable Long cpuField = content.getFieldValue(Long.class, "cpu"); //$NON-NLS-1$
         /*
          * "mode" could be interesting too, but it doesn't seem to be populated
          * with anything relevant for now.
          */
 
-        String threadAttributeName = Attributes.buildThreadAttributeName(tid, cpu);
+        String threadAttributeName = Attributes.buildThreadAttributeName(tid, eventCpu);
         if (threadAttributeName == null) {
             return;
         }
@@ -70,16 +73,16 @@ public class StateDumpHandler extends KernelEventHandler {
         setPpid(ss, tid, pid, ppid, curThreadNode, timestamp);
 
         /* Set the process' status */
-        setStatus(ss, status, curThreadNode, timestamp);
+        setStatus(ss, status, curThreadNode, cpuField, timestamp);
     }
 
-    private static void setStatus(ITmfStateSystemBuilder ss, int status, int curThreadNode, long timestamp)
-            throws StateValueTypeException, AttributeNotFoundException {
+    private static void setStatus(ITmfStateSystemBuilder ss, int status, int curThreadNode, @Nullable Long cpu, long timestamp) {
         ITmfStateValue value;
         if (ss.queryOngoingState(curThreadNode).isNull()) {
             switch (status) {
             case LinuxValues.STATEDUMP_PROCESS_STATUS_WAIT_CPU:
                 value = StateValues.PROCESS_STATUS_WAIT_FOR_CPU_VALUE;
+                setRunQueue(ss, curThreadNode, cpu, timestamp);
                 break;
             case LinuxValues.STATEDUMP_PROCESS_STATUS_WAIT:
                 /*
@@ -94,6 +97,14 @@ public class StateDumpHandler extends KernelEventHandler {
                 value = StateValues.PROCESS_STATUS_UNKNOWN_VALUE;
             }
             ss.modifyAttribute(timestamp, value, curThreadNode);
+        }
+    }
+
+    private static void setRunQueue(ITmfStateSystemBuilder ss, int curThreadNode, @Nullable Long cpu, long timestamp) {
+        if (cpu != null) {
+            int quark = ss.getQuarkRelativeAndAdd(curThreadNode, Attributes.CURRENT_CPU_RQ);
+            ITmfStateValue value = TmfStateValue.newValueInt(cpu.intValue());
+            ss.modifyAttribute(timestamp, value, quark);
         }
     }
 
