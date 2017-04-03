@@ -73,8 +73,11 @@ public class ProcessForkHandler extends KernelEventHandler {
         value = TmfStateValue.newValueString(childProcessName);
         ss.modifyAttribute(timestamp, value, quark);
 
-        /* Set the new process' status */
-        value = StateValues.PROCESS_STATUS_WAIT_FOR_CPU_VALUE;
+        /*
+         * Set the new process' status, it is initially in a blocked state. A
+         * subsequent sched_wakeup_new will schedule it.
+         */
+        value = StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE;
         ss.modifyAttribute(timestamp, value, childTidNode);
 
         /* Set the process' syscall name, to be the same as the parent's */

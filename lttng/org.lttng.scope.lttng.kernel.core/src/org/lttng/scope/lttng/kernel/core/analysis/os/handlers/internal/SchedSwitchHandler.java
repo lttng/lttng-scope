@@ -67,11 +67,23 @@ public class SchedSwitchHandler extends KernelEventHandler {
         int newCurrentThreadNode = ss.getQuarkRelativeAndAdd(nodeThreads, currenThreadAttributeName);
 
         long timestamp = KernelEventHandlerUtils.getTimestamp(event);
-        /* Set the status of the process that got scheduled out. */
-        setOldProcessStatus(ss, prevState, formerThreadNode, timestamp);
+        /*
+         * Set the status of the process that got scheduled out. This will also
+         * set it's current CPU run queue accordingly.
+         */
+        setOldProcessStatus(ss, prevState, formerThreadNode, cpu, timestamp);
 
         /* Set the status of the new scheduled process */
         KernelEventHandlerUtils.setProcessToRunning(timestamp, newCurrentThreadNode, ss);
+
+        /*
+         * Set the current CPU run queue of the new process. Should be already
+         * set if we've seen the previous sched_wakeup, but doesn't hurt to set
+         * it here too.
+         */
+        int quark = ss.getQuarkRelativeAndAdd(newCurrentThreadNode, Attributes.CURRENT_CPU_RQ);
+        ITmfStateValue value = TmfStateValue.newValueInt(cpu);
+        ss.modifyAttribute(timestamp, value, quark);
 
         /* Set the exec name of the former process */
         setProcessExecName(ss, prevProcessName, formerThreadNode, timestamp);
@@ -93,9 +105,10 @@ public class SchedSwitchHandler extends KernelEventHandler {
         setCpuStatus(ss, nextTid, newCurrentThreadNode, timestamp, currentCPUNode);
     }
 
-    private static void setOldProcessStatus(ITmfStateSystemBuilder ss, Long prevState, Integer formerThreadNode, long timestamp)
-            throws StateValueTypeException, AttributeNotFoundException {
+    private static void setOldProcessStatus(ITmfStateSystemBuilder ss,
+            long prevState, int formerThreadNode, int cpu, long timestamp) {
         ITmfStateValue value;
+        boolean staysOnRunQueue = false;
         /*
          * Empirical observations and look into the linux code have
          * shown that the TASK_STATE_MAX flag is used internally and
@@ -110,6 +123,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
 
         if (isRunning(state)) {
             value = StateValues.PROCESS_STATUS_WAIT_FOR_CPU_VALUE;
+            staysOnRunQueue = true;
         } else if (isWaiting(state)) {
             value = StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE;
         } else if (isDead(state)) {
@@ -119,6 +133,18 @@ public class SchedSwitchHandler extends KernelEventHandler {
         }
         ss.modifyAttribute(timestamp, value, formerThreadNode);
 
+        int quark = ss.getQuarkRelativeAndAdd(formerThreadNode, Attributes.CURRENT_CPU_RQ);
+        if (staysOnRunQueue) {
+            /*
+             * Set the thread's run queue. This will often be redundant with
+             * previous events, but it may be the first time we see the
+             * information too.
+             */
+            value = TmfStateValue.newValueInt(cpu);
+        } else {
+            value = TmfStateValue.nullValue();
+        }
+        ss.modifyAttribute(timestamp, value, quark);
     }
 
     private static boolean isDead(int state) {

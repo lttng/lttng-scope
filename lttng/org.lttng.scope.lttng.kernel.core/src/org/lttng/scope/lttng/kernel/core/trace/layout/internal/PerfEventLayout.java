@@ -149,6 +149,11 @@ public final class PerfEventLayout implements ILttngKernelEventLayout {
     }
 
     @Override
+    public String eventSchedMigrateTask() {
+        return "sched:sched_migrate_task"; //$NON-NLS-1$
+    }
+
+    @Override
     public String eventHRTimerStart() {
         return "timer:hrtimer_start"; //$NON-NLS-1$
     }

@@ -349,6 +349,11 @@ public class LttngEventLayout implements ILttngKernelEventLayout {
     }
 
     @Override
+    public String eventSchedMigrateTask() {
+        return "sched_migrate_task"; //$NON-NLS-1$
+    }
+
+    @Override
     public String eventHRTimerStart() {
         return HRTIMER_START;
     }
