@@ -24,6 +24,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRe
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -75,7 +76,7 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
                     long endTime = startTime + stateLength - 1;
                     String name = getNextStateName();
                     ColorDefinition color = getnextStateColor();
-                    return new TimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, null);
+                    return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, null);
                 })
                 .collect(Collectors.toList());
 

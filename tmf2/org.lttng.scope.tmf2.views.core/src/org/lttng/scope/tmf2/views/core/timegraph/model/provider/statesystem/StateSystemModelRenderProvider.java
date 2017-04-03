@@ -28,6 +28,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRe
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -141,7 +142,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
         fTreeRenderFunction = treeRenderFunction;
 
         fIntervalMappingFunction = ssCtx -> {
-            return new TimeGraphStateInterval(
+            return new BasicTimeGraphStateInterval(
                     ssCtx.sourceInterval.getStartTime(),
                     ssCtx.sourceInterval.getEndTime(),
                     ssCtx.baseTreeElement,

@@ -10,7 +10,7 @@
 package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 /**
@@ -19,7 +19,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
  *
  * @author Alexandre Montplaisir
  */
-public class MultiStateInterval extends TimeGraphStateInterval {
+public class MultiStateInterval extends BasicTimeGraphStateInterval {
 
     private static final String MULTI_STATE_NAME = "Multi-state"; //$NON-NLS-1$
     private static final ColorDefinition MULTI_STATE_COLOR = new ColorDefinition(0, 0, 0);
