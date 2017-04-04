@@ -7,12 +7,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timegraph.swtjfx;
+package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
 import java.util.Collections;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 /**
@@ -21,7 +20,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
  *
  * @author Alexandre Montplaisir
  */
-public class MultiStateInterval extends BasicTimeGraphStateInterval {
+public final class MultiStateInterval extends BasicTimeGraphStateInterval {
 
     private static final String MULTI_STATE_NAME = "Multi-state"; //$NON-NLS-1$
     private static final ColorDefinition MULTI_STATE_COLOR = new ColorDefinition(0, 0, 0);
@@ -29,17 +28,16 @@ public class MultiStateInterval extends BasicTimeGraphStateInterval {
     /**
      * Constructor
      *
-     * @param timestamp
-     *            The timestamp of the multi-state interval. Those are normally
-     *            valid for only one pixel, so they do not a defined end time,
-     *            they just end "one pixel later".
      * @param treeElement
      *            The tree element to which this interval is associated
-     * @param lineThickness
-     *            The line thickness to use
      */
-    public MultiStateInterval(long timestamp, TimeGraphTreeElement treeElement, LineThickness lineThickness) {
-        super(timestamp, timestamp + 1, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, lineThickness, Collections.emptyMap());
+    public MultiStateInterval(long startTime, long endTime, TimeGraphTreeElement treeElement) {
+        super(startTime, endTime, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, LineThickness.NORMAL, Collections.emptyMap());
+    }
+
+    @Override
+    public boolean isMultiState() {
+        return true;
     }
 
 }

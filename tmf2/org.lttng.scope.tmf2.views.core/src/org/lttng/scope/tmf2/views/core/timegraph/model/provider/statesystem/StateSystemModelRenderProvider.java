@@ -10,13 +10,13 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -28,6 +28,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -35,7 +36,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
-import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
@@ -214,34 +214,15 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
         StateSystemTimeGraphTreeElement treeElem = (StateSystemTimeGraphTreeElement) treeElement;
 
         /* Prepare the state intervals */
-        /*
-         * FIXME Inefficient series of queryHistoryRange() calls, replace with a
-         * 2D query once those become available.
-         */
-        List<ITmfStateInterval> intervals;
+        List<TimeGraphStateInterval> intervals;
         try {
-            intervals = StateSystemUtils.queryHistoryRange(ss, treeElem.getSourceQuark(),
+            intervals = queryHistoryRange(ss, treeElem,
                     timeRange.getStart(), timeRange.getEnd(), resolution, task);
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             intervals = Collections.emptyList();
-            e.printStackTrace();
         }
 
-        List<TimeGraphStateInterval> stateIntervals = intervals.stream()
-                .map(interval -> {
-                    List<ITmfStateInterval> fullState;
-                    try {
-                        fullState = ss.queryFullState(interval.getStartTime());
-                    } catch (StateSystemDisposedException e) {
-                        fullState = Collections.emptyList();
-                        e.printStackTrace();
-                    }
-                    return new StateIntervalContext(ss, treeElem, interval, fullState);
-                })
-                .map(fIntervalMappingFunction)
-                .collect(Collectors.toList());
-
-        return new TimeGraphStateRender(timeRange, treeElement, stateIntervals);
+        return new TimeGraphStateRender(timeRange, treeElement, intervals);
     }
 
     @Override
@@ -255,6 +236,132 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
     public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender) {
         // TODO
         return new TimeGraphArrowRender();
+    }
+
+    private List<TimeGraphStateInterval> queryHistoryRange(ITmfStateSystem ss,
+            StateSystemTimeGraphTreeElement treeElem, long t1, long t2, long resolution,
+            @Nullable FutureTask<?> task)
+            throws AttributeNotFoundException, StateSystemDisposedException {
+
+        /* Validate the parameters. */
+        if (t2 < t1 || resolution <= 0) {
+            throw new IllegalArgumentException(ss.getSSID() + " Start:" + t1 + ", End:" + t2 + ", Resolution:" + resolution); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+
+        final List<TimeGraphStateInterval> modelIntervals = new LinkedList<>();
+        final int attributeQuark = treeElem.getSourceQuark();
+        ITmfStateInterval currentSSInterval = null;
+        boolean isInMultiState = false;
+        long currentMultiStateStart = -1;
+        long currentMultiStateEnd;
+
+        /* Actual valid end time of the range query. */
+        long tEnd = Math.min(t2, ss.getCurrentEndTime());
+
+        /*
+         * Iterate over the "resolution points". We skip unneeded queries in the
+         * case the current interval is longer than the resolution.
+         */
+        for (long ts = t1;
+                ts <= tEnd - resolution;
+                ts += ((currentSSInterval.getEndTime() - ts) / resolution + 1) * resolution) {
+
+            if (task != null && task.isCancelled()) {
+                return modelIntervals;
+            }
+
+            currentSSInterval = ss.querySingleState(ts, attributeQuark);
+
+            /*
+             * Only pick the interval if it fills the current resolution range, from 'ts' to
+             * 'ts + resolution' (or 'ts2'). If it does not, report a multi-state for this
+             * pixel.
+             */
+            long ts2 = ts + resolution;
+            if (currentSSInterval.getStartTime() <= ts
+                    && currentSSInterval.getEndTime() >= ts2) {
+                /* This interval fills at least the current pixel, keep it. */
+
+                /* But first, end the ongoing multi-state if there is one. */
+                if (isInMultiState) {
+                    currentMultiStateEnd = currentSSInterval.getStartTime() - 1;
+                    TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
+                            currentMultiStateStart, currentMultiStateEnd, treeElem);
+                    modelIntervals.add(multiStateInterval);
+                    isInMultiState = false;
+                }
+
+                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, currentSSInterval);
+                modelIntervals.add(interval);
+
+            } else {
+                /*
+                 * The interval does *not* fill the full range, we'll report a "multi-state" for
+                 * this pixel instead.
+                 */
+                if (isInMultiState) {
+                    /* Extend the current multi-state */
+                    currentMultiStateEnd = ts2;
+                } else {
+                    /* Start a new multi-state */
+                    currentMultiStateStart = ts;
+                    isInMultiState = true;
+                }
+            }
+        }
+
+        /*
+         * For the very last interval, we'll use ['tEnd - resolution', 'tEnd'] as a
+         * range condition instead.
+         */
+        long ts = tEnd -resolution;
+        long ts2 = tEnd;
+        currentSSInterval = ss.querySingleState(tEnd, attributeQuark);
+        if (currentSSInterval.getStartTime() <= ts
+                && currentSSInterval.getEndTime() >= ts2) {
+
+            /*
+             * End the ongoing multi-state if there is one, then add the last
+             * interval.
+             */
+            if (isInMultiState) {
+                currentMultiStateEnd = currentSSInterval.getStartTime() - 1;
+                TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
+                        currentMultiStateStart, currentMultiStateEnd, treeElem);
+                modelIntervals.add(multiStateInterval);
+            }
+
+            TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, currentSSInterval);
+            modelIntervals.add(interval);
+
+        } else {
+            if (isInMultiState) {
+                /* Extend the current multi-state until the end */
+                currentMultiStateEnd = ts2;
+            } else {
+                /* Multi-state for only the last pixel. */
+                currentMultiStateStart = ts;
+                currentMultiStateEnd = ts2;
+            }
+            TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
+                    currentMultiStateStart, currentMultiStateEnd, treeElem);
+            modelIntervals.add(multiStateInterval);
+        }
+
+        return modelIntervals;
+    }
+
+    private TimeGraphStateInterval ssIntervalToModelInterval(ITmfStateSystem ss,
+            StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
+        List<ITmfStateInterval> fullState;
+        try {
+            fullState = ss.queryFullState(interval.getStartTime());
+        } catch (StateSystemDisposedException e) {
+            fullState = Collections.emptyList();
+            e.printStackTrace();
+        }
+        StateIntervalContext siCtx = new StateIntervalContext(ss, treeElem, interval, fullState);
+        return fIntervalMappingFunction.apply(siCtx);
     }
 
 }

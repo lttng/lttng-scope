@@ -35,6 +35,8 @@ public interface TimeGraphStateInterval {
 
     LineThickness getLineThickness();
 
+    boolean isMultiState();
+
     Map<String, String> getProperties();
 
     default long getStartTime() {

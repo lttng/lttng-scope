@@ -14,12 +14,10 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.MultiStateInterval;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
 
@@ -152,26 +150,6 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
         }
 
         List<StateRectangle> allStates = potentialStates.collect(Collectors.toList());
-
-        /*
-         * If there are multi-states intervals among the results, only keep the
-         * farthest one. We want the action to skip over multi-states,
-         * considering them as if it was one big state.
-         */
-        Set<StateRectangle> multiStates = allStates.stream()
-                .filter(rect -> rect.getStateInterval() instanceof MultiStateInterval)
-                .collect(Collectors.toSet());
-
-        if (multiStates.isEmpty()) {
-            return allStates;
-        }
-
-        StateRectangle multiStateToKeep = multiStates.stream()
-                .sorted(forward ? LATEST_END_TIME_COMPARATOR : EARLIEST_START_TIME_COMPARATOR)
-                .findFirst().get();
-
-        multiStates.remove(multiStateToKeep);
-        allStates.removeAll(multiStates);
         return allStates;
     }
 

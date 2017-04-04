@@ -86,7 +86,7 @@ public class StateRectangle extends Rectangle {
         setOpacity(opacity);
 
         /* Set a special paint for multi-state intervals */
-        if (interval instanceof MultiStateInterval) {
+        if (interval.isMultiState()) {
             Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
             LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
             fBaseColor = lg;

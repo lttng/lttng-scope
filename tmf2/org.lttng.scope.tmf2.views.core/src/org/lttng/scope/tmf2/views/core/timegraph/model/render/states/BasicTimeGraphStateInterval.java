@@ -50,6 +50,10 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
             LineThickness lineThickness,
             Map<String, String> properties) {
 
+        if (start > end || start < 0 || end < 0) {
+            throw new IllegalArgumentException();
+        }
+
         fStartEvent = new TimeGraphEvent(start, treeElement);
         fEndEvent = new TimeGraphEvent(end, treeElement);
 
@@ -88,6 +92,11 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     @Override
     public LineThickness getLineThickness() {
         return fLineThickness;
+    }
+
+    @Override
+    public boolean isMultiState() {
+        return false;
     }
 
     @Override
