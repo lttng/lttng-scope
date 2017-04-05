@@ -20,7 +20,8 @@ Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=tru
  org.lttng.scope.tmf2.views.ui.timegraph.swtjfx,
  org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.examples,
  org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar,
- org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav
+ org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav,
+ org.lttng.scope.tmf2.views.ui.timeline
 Import-Package: com.google.common.annotations,
  com.google.common.base,
  com.google.common.collect

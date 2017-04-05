@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.tmf.ui.views.category"
+            class="org.lttng.scope.tmf2.views.ui.timeline.TimelineView"
+            id="org.lttng.scope.views.timeline"
+            name="%view.timeline.name"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

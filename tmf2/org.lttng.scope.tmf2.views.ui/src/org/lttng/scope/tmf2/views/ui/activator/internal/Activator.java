@@ -11,6 +11,8 @@ package org.lttng.scope.tmf2.views.ui.activator.internal;
 
 import org.lttng.scope.common.ui.ScopeUIActivator;
 
+import javafx.application.Platform;
+
 /**
  * The activator class controls the plug-in life cycle
  *
@@ -29,6 +31,7 @@ public class Activator extends ScopeUIActivator {
 
     @Override
     protected void startActions() {
+        Platform.setImplicitExit(false);
     }
 
     @Override

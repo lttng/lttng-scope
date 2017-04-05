@@ -30,8 +30,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
@@ -44,6 +42,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.ViewerToolBar;
+import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -53,13 +53,12 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
-import javafx.embed.swt.FXCanvas;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
@@ -83,7 +82,7 @@ import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 /**
- * Viewer for the {@link SwtJfxTimeGraphView}, encapsulating all the view's
+ * Viewer for the {@link TimelineView}, encapsulating all the view's
  * controls.
  *
  * Its contents consist of:
@@ -107,7 +106,7 @@ import javafx.util.Duration;
  *
  * @author Alexandre Montplaisir
  */
-public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
+public class SwtJfxTimeGraphViewer extends TimeGraphModelView implements ITimelineWidget {
 
     // ------------------------------------------------------------------------
     // Style definitions
@@ -142,7 +141,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
-    private final FXCanvas fBaseCanvas;
     private final BorderPane fBasePane;
     private final ToolBar fToolBar;
     private final SplitPane fSplitPane;
@@ -181,11 +179,8 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
      * @param parent
      *            Parent SWT composite
      */
-    public SwtJfxTimeGraphViewer(Composite parent, TimeGraphModelControl control) {
+    public SwtJfxTimeGraphViewer(TimeGraphModelControl control) {
         super(control);
-        Platform.setImplicitExit(false);
-
-        fBaseCanvas = new FXCanvas(parent, SWT.NONE);
 
         // --------------------------------------------------------------------
         // Prepare the tree part's scene graph
@@ -292,14 +287,6 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         fBasePane.setCenter(fSplitPane);
         fBasePane.setTop(fToolBar);
 
-        fBaseCanvas.setScene(new Scene(fBasePane));
-
-        /*
-         * setDividerPositions() needs to be called *after* the Stage/Scene is
-         * initialized.
-         */
-        fSplitPane.setDividerPositions(0.2);
-
         /*
          * Initially populate the viewer with the context of the current trace.
          */
@@ -309,6 +296,20 @@ public class SwtJfxTimeGraphViewer extends TimeGraphModelView {
         /* Start the periodic redraw thread */
         long delay = fDebugOptions.getUIUpdateDelay();
         fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
+    }
+
+    // ------------------------------------------------------------------------
+    // ITimelineWidget
+    // ------------------------------------------------------------------------
+
+    @Override
+    public Parent getRootNode() {
+        return fBasePane;
+    }
+
+    @Override
+    public @NonNull SplitPane getSplitPane() {
+        return fSplitPane;
     }
 
     // ------------------------------------------------------------------------
