@@ -321,8 +321,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
                 && currentSSInterval.getEndTime() >= ts2) {
 
             /*
-             * End the ongoing multi-state if there is one, then add the last
-             * interval.
+             * End the ongoing multi-state if there is one.
              */
             if (isInMultiState) {
                 currentMultiStateEnd = currentSSInterval.getStartTime() - 1;
@@ -331,8 +330,11 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
                 modelIntervals.add(multiStateInterval);
             }
 
+            /* Then add the last interval, if we don't have it already. */
             TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, currentSSInterval);
-            modelIntervals.add(interval);
+            if (!interval.equals(modelIntervals.get(modelIntervals.size() - 1))) {
+                    modelIntervals.add(interval);
+            }
 
         } else {
             if (isInMultiState) {
