@@ -477,6 +477,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
                 Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, windowRange);
 
+                /*
+                 * Go over all state rectangles, and bring the "multi-state"
+                 * ones to the front, to be sure they show on top of the others.
+                 * Note we cannot do the forEach() as part of the stream, that
+                 * would throw a ConcurrentModificationException.
+                 */
+                ((Group) statesLayerContents).getChildren().stream()
+                        .map(node -> (StateRectangle) node)
+                        .filter(rect -> (rect.getStateInterval().isMultiState()))
+                        .collect(Collectors.toList())
+                        .forEach(Node::toFront);
+
                 if (isCancelled()) {
                     System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
                     return null;
