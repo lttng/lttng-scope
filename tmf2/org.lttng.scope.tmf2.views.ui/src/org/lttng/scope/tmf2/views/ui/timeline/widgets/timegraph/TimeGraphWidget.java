@@ -302,6 +302,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return fSplitPane;
     }
 
+    @Override
+    public @NonNull ScrollPane getTimeBasedScrollPane() {
+        return fTimeGraphScrollPane;
+    }
+
     // ------------------------------------------------------------------------
     // Operations
     // ------------------------------------------------------------------------

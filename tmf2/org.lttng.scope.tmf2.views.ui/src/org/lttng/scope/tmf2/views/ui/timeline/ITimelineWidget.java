@@ -12,6 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timeline;
 import org.eclipse.jdt.annotation.Nullable;
 
 import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 
 public interface ITimelineWidget {
@@ -31,4 +32,6 @@ public interface ITimelineWidget {
      *         one and uses the full horizontal width of the view.
      */
     @Nullable SplitPane getSplitPane();
+
+    @Nullable ScrollPane getTimeBasedScrollPane();
 }

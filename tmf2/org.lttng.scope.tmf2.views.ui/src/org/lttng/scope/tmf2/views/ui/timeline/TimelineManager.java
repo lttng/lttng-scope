@@ -22,13 +22,22 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.google.common.collect.ImmutableSet;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class TimelineManager {
 
+    private static final double INITIAL_DIVIDER_POSITION = 0.2;
+
     private final Set<ITimelineWidget> fWidgets = new LinkedHashSet<>();
+
+    private final DoubleProperty fDividerPosition = new SimpleDoubleProperty(INITIAL_DIVIDER_POSITION);
+    private final DoubleProperty fHScrollValue = new SimpleDoubleProperty(0);
 
     public TimelineManager() {
 
         /* Add widgets for all known timegraph model providers */
+        for (int i = 0; i < 2; i++) {
         for (ITimeGraphModelProviderFactory factory : TimeGraphModelProviderManager.instance().getRegisteredProviderFactories()) {
             /* Instantiate a widget for this provider type */
             ITimeGraphModelRenderProvider provider = factory.get();
@@ -38,6 +47,21 @@ public class TimelineManager {
 
             fWidgets.add(viewer);
         }
+        }
+
+        /* Bind divider positions, where applicable */
+        fWidgets.stream()
+                .map(w -> w.getSplitPane())
+                .filter(Objects::nonNull)
+                .map(p -> Objects.requireNonNull(p))
+                .forEach(splitPane -> splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition));
+
+        /* Bind h-scrollbar positions */
+        fWidgets.stream()
+                .map(w -> w.getTimeBasedScrollPane())
+                .filter(Objects::nonNull)
+                .map(p -> Objects.requireNonNull(p))
+                .forEach(scrollPane -> scrollPane.hvalueProperty().bindBidirectional(fHScrollValue));
     }
 
     public void dispose() {
@@ -60,11 +84,7 @@ public class TimelineManager {
     }
 
     void resetInitialSeparatorPosition() {
-        fWidgets.stream()
-                .map(w -> w.getSplitPane())
-                .filter(Objects::nonNull)
-                .map(p -> Objects.requireNonNull(p))
-                .forEach(pane -> pane.setDividerPositions(0.2));
+        fDividerPosition.set(INITIAL_DIVIDER_POSITION);
     }
 
 }
