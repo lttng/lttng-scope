@@ -727,8 +727,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      */
     public void setSelectedState(StateRectangle state, boolean deselectPrevious) {
         @Nullable StateRectangle previousSelectedState = fSelectedState;
-        if (previousSelectedState != null && deselectPrevious) {
-            previousSelectedState.setSelected(false);
+        if (previousSelectedState != null) {
+            previousSelectedState.hideTooltip();
+            if (deselectPrevious) {
+                previousSelectedState.setSelected(false);
+            }
         }
 
         state.setSelected(true);

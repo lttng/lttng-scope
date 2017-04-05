@@ -117,6 +117,7 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
         }
 
         viewer.setSelectedState(newState, true);
+        newState.showTooltip(forward);
         NavUtils.selectNewTimestamp(viewer, targetTimestamp);
     }
 
