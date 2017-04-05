@@ -55,7 +55,7 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
     }
 
     protected StubModelRenderProvider() {
-        super(null, null);
+        super("Test", null, null);
     }
 
     @Override

@@ -32,6 +32,7 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     protected static final SortingMode DEFAULT_SORTING_MODE = new SortingMode(nullToEmptyString(Messages.DefaultSortingModeName));
 
+    private final String fName;
     private final List<SortingMode> fSortingModes;
     private final List<FilterMode> fFilterModes;
 
@@ -40,8 +41,11 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     private @Nullable ITmfTrace fCurrentTrace;
 
-    protected TimeGraphModelRenderProvider(@Nullable List<SortingMode> sortingModes,
+    protected TimeGraphModelRenderProvider(String name,
+            @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes) {
+        fName = name;
+
         if (sortingModes == null || sortingModes.isEmpty()) {
             fSortingModes = ImmutableList.of(DEFAULT_SORTING_MODE);
         } else {
@@ -55,6 +59,11 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
         } else {
             fFilterModes = ImmutableList.copyOf(filterModes);
         }
+    }
+
+    @Override
+    public final String getName() {
+        return fName;
     }
 
     @Override

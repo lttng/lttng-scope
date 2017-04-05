@@ -282,9 +282,15 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
 
+
     // ------------------------------------------------------------------------
     // ITimelineWidget
     // ------------------------------------------------------------------------
+
+    @Override
+    public String getName() {
+        return getControl().getModelRenderProvider().getName();
+    }
 
     @Override
     public Parent getRootNode() {

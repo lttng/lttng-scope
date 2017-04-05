@@ -16,6 +16,8 @@ import javafx.scene.control.SplitPane;
 
 public interface ITimelineWidget {
 
+    String getName();
+
     Parent getRootNode();
 
     void dispose();

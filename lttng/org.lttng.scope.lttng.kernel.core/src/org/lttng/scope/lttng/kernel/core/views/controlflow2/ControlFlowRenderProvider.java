@@ -327,7 +327,8 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
      * Constructor
      */
     public ControlFlowRenderProvider() {
-        super(SORTING_MODES,
+        super(requireNonNull(Messages.threadsProviderName),
+                SORTING_MODES,
                 FILTER_MODES,
                 /* Parameters specific to state system render providers */
                 KernelAnalysisModule.ID,

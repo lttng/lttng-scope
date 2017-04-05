@@ -36,6 +36,8 @@ public class Messages extends NLS {
 
     public static String ControlFlowFilterModes_InactiveEntries;
 
+    public static String threadsProviderName;
+
     public static String propertyNotAvailable;
     public static String propertyNameCpu;
     public static String propertyNameSyscall;

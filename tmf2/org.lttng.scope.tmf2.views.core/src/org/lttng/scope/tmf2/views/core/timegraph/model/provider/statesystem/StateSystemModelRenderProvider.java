@@ -124,7 +124,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
      * @param propertyMappingFunction
      * @param baseQuarkPattern
      */
-    protected StateSystemModelRenderProvider(
+    protected StateSystemModelRenderProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
             String stateSystemModuleId,
@@ -135,7 +135,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
-        super(sortingModes, filterModes);
+        super(name, sortingModes, filterModes);
 
         fStateSystemModuleId = stateSystemModuleId;
         fTreeRenderFunction = treeRenderFunction;

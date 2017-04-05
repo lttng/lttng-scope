@@ -16,6 +16,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav.Navi
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
@@ -45,17 +46,22 @@ public class ViewerToolBar extends ToolBar {
         NavigationButtons navButtons = new NavigationButtons(viewer);
 
         getItems().addAll(
+                new Label(viewer.getName()),
+                new Separator(),
+
                 new ZoomInButton(viewer),
                 new ZoomOutButton(viewer),
                 new ZoomToSelectionButton(viewer),
                 new ZoomToFullRangeButton(viewer),
                 new Separator(),
+
                 new HBox(
                     navButtons.getBackButton(),
                     navButtons.getForwardButton(),
                     navButtons.getMenuButton()
                 ),
                 new Separator(),
+
                 getStateInfoButton(viewer),
                 new SortingModeMenuButton(viewer),
                 new FilterModeMenuButton(viewer));
