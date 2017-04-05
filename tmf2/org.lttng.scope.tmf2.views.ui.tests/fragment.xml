@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.StubView"
+            class="org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StubView"
             id="org.lttng.scope.tmf2.views.ui.tests.timegraph.swtjfx"
             name="Test Timegraph Model View"
             restorable="true">

@@ -18,7 +18,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelP
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
-import org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.SwtJfxTimeGraphViewer;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -33,7 +33,7 @@ public class TimelineManager {
             /* Instantiate a widget for this provider type */
             ITimeGraphModelRenderProvider provider = factory.get();
             TimeGraphModelControl control = new TimeGraphModelControl(provider);
-            SwtJfxTimeGraphViewer viewer = new SwtJfxTimeGraphViewer(control);
+            TimeGraphWidget viewer = new TimeGraphWidget(control);
             control.attachView(viewer);
 
             fWidgets.add(viewer);

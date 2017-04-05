@@ -9,4 +9,4 @@ Fragment-Host: org.lttng.scope.tmf2.views.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.core.resources
-Export-Package: org.lttng.scope.tmf2.views.ui.timegraph.swtjfx
+Export-Package: org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph

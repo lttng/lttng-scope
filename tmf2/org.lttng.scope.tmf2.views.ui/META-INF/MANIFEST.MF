@@ -17,11 +17,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.tmf.ui
 Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=true,
  org.lttng.scope.tmf2.views.ui.jfx,
- org.lttng.scope.tmf2.views.ui.timegraph.swtjfx,
- org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.examples,
- org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar,
- org.lttng.scope.tmf2.views.ui.timegraph.swtjfx.toolbar.nav,
- org.lttng.scope.tmf2.views.ui.timeline
+ org.lttng.scope.tmf2.views.ui.jfx.examples,
+ org.lttng.scope.tmf2.views.ui.timeline,
+ org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph,
+ org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar,
+ org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav
 Import-Package: com.google.common.annotations,
  com.google.common.base,
  com.google.common.collect
