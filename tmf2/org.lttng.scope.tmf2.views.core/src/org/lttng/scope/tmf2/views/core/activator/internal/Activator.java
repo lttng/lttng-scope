@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 
 /**
  * Plugin activator
@@ -33,6 +34,7 @@ public class Activator extends ScopeCoreActivator {
 
     @Override
     protected void stopActions() {
+        ViewGroupContext.cleanup();
     }
 
 }

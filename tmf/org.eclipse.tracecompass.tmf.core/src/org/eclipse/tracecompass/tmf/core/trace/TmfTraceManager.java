@@ -349,9 +349,9 @@ public final class TmfTraceManager {
     @TmfSignalHandler
     public synchronized void traceSelected(final TmfTraceSelectedSignal signal) {
         final ITmfTrace newTrace = signal.getTrace();
-        if (!fTraces.containsKey(newTrace)) {
-            throw new RuntimeException();
-        }
+//        if (!fTraces.containsKey(newTrace)) {
+//            throw new RuntimeException();
+//        }
         fCurrentTrace = newTrace;
     }
 

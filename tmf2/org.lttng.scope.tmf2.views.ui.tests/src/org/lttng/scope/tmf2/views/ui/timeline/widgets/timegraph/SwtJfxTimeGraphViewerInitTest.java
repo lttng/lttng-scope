@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
  * {@link SwtJfxTimeGraphViewer} test checking the initial conditions.
@@ -36,8 +35,9 @@ public class SwtJfxTimeGraphViewerInitTest extends SwtJfxTimeGraphViewerTestBase
         final long expectedEnd = StubTrace.FULL_TRACE_START_TIME + StubTrace.INITIAL_RANGE_OFFSET;
 
         /* Check the control */
-        assertEquals(expectedStart, viewer.getControl().getVisibleTimeRange().getStart());
-        assertEquals(expectedEnd, viewer.getControl().getVisibleTimeRange().getEnd());
+        TimeRange visibleRange = viewer.getControl().getViewContext().getCurrentVisibleTimeRange();
+        assertEquals(expectedStart, visibleRange.getStart());
+        assertEquals(expectedEnd, visibleRange.getEnd());
 
         /* Check the view itself */
         TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);

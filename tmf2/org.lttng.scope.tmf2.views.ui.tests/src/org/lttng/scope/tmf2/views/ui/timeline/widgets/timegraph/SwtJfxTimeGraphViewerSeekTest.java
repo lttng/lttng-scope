@@ -157,9 +157,7 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
 
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {
-            control.prepareWaitForNextSignal();
             viewer.getZoomActions().zoom(null, zoomIn);
-            control.waitForNextSignal();
         }
         updateUI();
 
@@ -181,7 +179,7 @@ public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase
     private static void verifyVisibleRange(TimeRange expectedRange,
             TimeGraphModelControl control, TimeGraphWidget viewer) {
         /* Check the control */
-        assertEquals(expectedRange, control.getVisibleTimeRange());
+        assertEquals(expectedRange, control.getViewContext().getCurrentVisibleTimeRange());
 
         /* Check the view itself */
         TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);

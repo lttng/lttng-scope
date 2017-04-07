@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.tmf.core
 Export-Package: org.lttng.scope.tmf2.views.core,
  org.lttng.scope.tmf2.views.core.activator.internal;x-internal:=true,
+ org.lttng.scope.tmf2.views.core.context,
  org.lttng.scope.tmf2.views.core.timegraph.control,
  org.lttng.scope.tmf2.views.core.timegraph.model.provider,
  org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem,

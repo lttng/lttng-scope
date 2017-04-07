@@ -13,7 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 
 /**
  * It was quickly determined that having mouse listeners start repaint tasks
@@ -36,7 +36,7 @@ class PeriodicRedrawTask extends TimerTask {
     private final AtomicLong fTaskSeq = new AtomicLong();
     private final TimeGraphWidget fViewer;
 
-    private TimeRange fPreviousHorizontalPos = TimeGraphModelControl.UNINITIALIZED;
+    private TimeRange fPreviousHorizontalPos = ViewGroupContext.UNINITIALIZED_RANGE;
     private VerticalPosition fPreviousVerticalPosition = VerticalPosition.UNINITIALIZED_VP;
 
     private volatile boolean fForceRedraw = false;
@@ -51,7 +51,7 @@ class PeriodicRedrawTask extends TimerTask {
             return;
         }
 
-        TimeRange currentHorizontalPos = fViewer.getControl().getVisibleTimeRange();
+        TimeRange currentHorizontalPos = fViewer.getControl().getViewContext().getCurrentVisibleTimeRange();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
         if (fForceRedraw) {
@@ -66,7 +66,7 @@ class PeriodicRedrawTask extends TimerTask {
                     && currentVerticalPos.equals(fPreviousVerticalPosition)) {
                 return;
             }
-            if (currentHorizontalPos.equals(TimeGraphModelControl.UNINITIALIZED)
+            if (currentHorizontalPos.equals(ViewGroupContext.UNINITIALIZED_RANGE)
                     || currentVerticalPos.equals(VerticalPosition.UNINITIALIZED_VP)) {
                 return;
             }

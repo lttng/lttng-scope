@@ -13,9 +13,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;
@@ -43,7 +43,7 @@ public class StubView extends TmfView {
     public StubView() {
         super(VIEW_ID);
         fModelRenderProvider = new StubModelRenderProvider();
-        fModelControl = new TimeGraphModelControl(fModelRenderProvider);
+        fModelControl = new TimeGraphModelControl(ViewGroupContext.getCurrent(), fModelRenderProvider);
     }
 
     @Override

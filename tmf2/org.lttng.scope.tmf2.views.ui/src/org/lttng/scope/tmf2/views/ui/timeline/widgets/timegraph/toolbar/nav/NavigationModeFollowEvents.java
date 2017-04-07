@@ -77,7 +77,7 @@ public class NavigationModeFollowEvents extends NavigationMode {
 
     private void navigate(TimeGraphWidget viewer, boolean forward) {
         StateRectangle state = viewer.getSelectedState();
-        ITmfTrace trace = viewer.getControl().getCurrentTrace();
+        ITmfTrace trace = viewer.getControl().getViewContext().getCurrentTrace();
         if (state == null || trace == null) {
             return;
         }

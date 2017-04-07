@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 
@@ -59,17 +60,20 @@ public class StateRectangle extends Rectangle {
     public StateRectangle(TimeGraphWidget viewer, TimeGraphStateInterval interval, int entryIndex) {
         fInterval = interval;
 
-        double xStart = viewer.timestampToPaneXPos(interval.getStartEvent().getTimestamp());
-
         /*
          * It is possible, especially when re-opening already-indexed traces,
-         * that the indexer and the state system do not report the same end
-         * time. Make sure to clamp the interval's end to the earliest valid
-         * value.
+         * that the indexer and the state system do not report the same
+         * start/end times. Make sure to clamp the interval's bounds to the
+         * valid values.
          */
-        long modelEndTime = viewer.getControl().getFullTimeGraphRange().getEnd();
-        long intervalEndTime = interval.getEndEvent().getTimestamp();
-        double xEnd = viewer.timestampToPaneXPos(Math.min(modelEndTime, intervalEndTime));
+        TimeRange traceRange = viewer.getControl().getViewContext().getCurrentTraceFullRange();
+        long traceStart = traceRange.getStart();
+        long intervalStart = interval.getStartTime();
+        double xStart = viewer.timestampToPaneXPos(Math.max(traceStart, intervalStart));
+
+        long traceEnd = traceRange.getEnd();
+        long intervalEndTime = interval.getEndTime();
+        double xEnd = viewer.timestampToPaneXPos(Math.min(traceEnd, intervalEndTime));
 
         double width = Math.max(1.0, xEnd - xStart) + 1.0;
         double height = getHeightFromThickness(interval.getLineThickness());

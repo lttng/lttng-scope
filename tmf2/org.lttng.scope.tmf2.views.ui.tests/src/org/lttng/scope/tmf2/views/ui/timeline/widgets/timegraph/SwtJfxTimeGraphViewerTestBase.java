@@ -14,10 +14,6 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -27,7 +23,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
  * Base for {@link SwtJfxTimeGraphViewer} tests, which sets up all the needed
@@ -68,7 +63,7 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
         viewer.getDebugOptions().setScrollingListenersEnabled(false);
 
         updateUI();
-        control.initializeForTrace(sfTrace);
+        control.getViewContext().setCurrentTrace(sfTrace);
         updateUI();
 
         sfView = view;
@@ -142,14 +137,7 @@ public abstract class SwtJfxTimeGraphViewerTestBase {
     protected void seekVisibleRange(TimeRange timeRange) {
         TimeGraphModelControl control = sfControl;
         assertNotNull(control);
-
-        TmfTimeRange range = timeRange.toTmfTimeRange();
-        TmfSignal signal = new TmfWindowRangeUpdatedSignal(this, range);
-
-        control.prepareWaitForNextSignal();
-        TmfSignalManager.dispatchSignal(signal);
-        control.waitForNextSignal();
-
+        control.getViewContext().setCurrentVisibleTimeRange(timeRange);
         updateUI();
     }
 

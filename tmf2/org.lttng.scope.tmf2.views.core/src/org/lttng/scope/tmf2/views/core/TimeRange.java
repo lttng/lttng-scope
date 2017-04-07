@@ -30,10 +30,10 @@ public final class TimeRange {
 
     private TimeRange(long startTime, long endTime) {
         if (endTime < startTime) {
-            throw new IllegalArgumentException("End of time range earlier than the start"); //$NON-NLS-1$
+            throw new IllegalArgumentException("End of time range earlier than the start:[" + startTime + ", " + endTime + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         if (startTime < 0 || endTime < 0) {
-            throw new IllegalArgumentException("One of the bounds is negative"); //$NON-NLS-1$
+            throw new IllegalArgumentException("One of the bounds is negative:[" + startTime + ", " + endTime + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         fStartTime = startTime;
         fEndTime = endTime;
@@ -90,6 +90,16 @@ public final class TimeRange {
      */
     public boolean contains(long timestamp) {
         return (fEndTime <= timestamp && timestamp <= fStartTime);
+    }
+
+    /**
+     * Check if the bounds of this time range are the exact same one (single
+     * timestamp).
+     *
+     * @return If this range represents a single timestamp
+     */
+    public boolean isSingleTimestamp() {
+        return (fStartTime == fEndTime);
     }
 
     @Override

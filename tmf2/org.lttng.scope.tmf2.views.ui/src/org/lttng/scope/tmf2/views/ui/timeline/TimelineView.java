@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 import org.lttng.scope.common.core.StreamUtils;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Orientation;
@@ -49,7 +50,7 @@ public class TimelineView extends TmfView {
         sp.setOrientation(Orientation.VERTICAL);
 
         /* Add the widget to the view */
-        TimelineManager manager = new TimelineManager();
+        TimelineManager manager = new TimelineManager(ViewGroupContext.getCurrent());
         Collection<Node> nodes = StreamUtils.getStream(manager.getWidgets())
                 .map(widget -> widget.getRootNode())
                 .collect(Collectors.toSet());

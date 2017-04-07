@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
@@ -34,19 +35,17 @@ public class TimelineManager {
     private final DoubleProperty fDividerPosition = new SimpleDoubleProperty(INITIAL_DIVIDER_POSITION);
     private final DoubleProperty fHScrollValue = new SimpleDoubleProperty(0);
 
-    public TimelineManager() {
+    public TimelineManager(ViewGroupContext viewContext) {
 
         /* Add widgets for all known timegraph model providers */
-        for (int i = 0; i < 2; i++) {
         for (ITimeGraphModelProviderFactory factory : TimeGraphModelProviderManager.instance().getRegisteredProviderFactories()) {
             /* Instantiate a widget for this provider type */
             ITimeGraphModelRenderProvider provider = factory.get();
-            TimeGraphModelControl control = new TimeGraphModelControl(provider);
+            TimeGraphModelControl control = new TimeGraphModelControl(viewContext, provider);
             TimeGraphWidget viewer = new TimeGraphWidget(control);
             control.attachView(viewer);
 
             fWidgets.add(viewer);
-        }
         }
 
         /* Bind divider positions, where applicable */

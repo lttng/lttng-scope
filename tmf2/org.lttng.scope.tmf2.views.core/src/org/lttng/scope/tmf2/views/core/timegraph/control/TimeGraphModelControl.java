@@ -12,32 +12,36 @@ package org.lttng.scope.tmf2.views.core.timegraph.control;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
-import com.google.common.annotations.VisibleForTesting;
+import javafx.beans.value.ChangeListener;
 
 public final class TimeGraphModelControl {
 
-    /** Value representing uninitialized timestamps */
-    public static final TimeRange UNINITIALIZED = TimeRange.of(0, 0);
+    private final ChangeListener<TimeRange> fVisibleRangeChangeListener = (obs, oldRange, newRange) -> seekVisibleRange(newRange);
 
+    private final ViewGroupContext fViewContext;
     private final ITimeGraphModelRenderProvider fRenderProvider;
-    private final SignallingContext fSignallingContext;
 
     private @Nullable TimeGraphModelView fView = null;
-    private @Nullable ITmfTrace fCurrentTrace = null;
 
-    private TimeRange fFullTimeGraphRange = UNINITIALIZED;
-    private TimeRange fLatestVisibleRange = UNINITIALIZED;
-
-    public TimeGraphModelControl(ITimeGraphModelRenderProvider renderProvider) {
+    public TimeGraphModelControl(ViewGroupContext viewContext, ITimeGraphModelRenderProvider renderProvider) {
+        fViewContext = viewContext;
         fRenderProvider = renderProvider;
-        fSignallingContext = new SignallingContext(this);
+
+        attachListeners(viewContext);
     }
 
     public void attachView(TimeGraphModelView view) {
         fView = view;
+
+        /*
+         * Initially populate the view with the context of the current trace.
+         */
+        ITmfTrace trace = getViewContext().getCurrentTrace();
+        initializeForTrace(trace);
     }
 
     @Nullable TimeGraphModelView getView() {
@@ -48,48 +52,26 @@ public final class TimeGraphModelControl {
         if (fView != null) {
             fView.dispose();
         }
-        fSignallingContext.dispose();
+    }
+
+    private void attachListeners(ViewGroupContext viewContext) {
+        viewContext.currentTraceProperty().addListener((observable, oldTrace, newTrace) -> {
+            initializeForTrace(newTrace);
+
+            viewContext.currentSelectionTimeRangeProperty().addListener((obs, oldRange, newRange) -> {
+                drawSelection(newRange);
+            });
+
+            viewContext.currentVisibleTimeRangeProperty().addListener(fVisibleRangeChangeListener);
+        });
     }
 
     // ------------------------------------------------------------------------
     // Accessors
     // ------------------------------------------------------------------------
 
-    /**
-     * Get the trace currently being tracked by this control.
-     *
-     * @return The trace, may be null if there is no trace
-     */
-    public @Nullable ITmfTrace getCurrentTrace() {
-        return fCurrentTrace;
-    }
-
-    /**
-     * Recompute the total virtual size of the time graph area, and assigns the
-     * given timestamps as the start and end positions.
-     *
-     * All subsquent operations (seek, paint, etc.) that use timestamp expect
-     * these timestamps to be within the range passed here!
-     *
-     * Should be called when the trace changes, or the trace's total time range
-     * is updated (while indexing, or in live cases).
-     */
-    void setFullTimeRange(TimeRange fullAreaRange) {
-        checkTimeRange(fullAreaRange);
-        fFullTimeGraphRange = fullAreaRange;
-    }
-
-    public TimeRange getFullTimeGraphRange() {
-        return fFullTimeGraphRange;
-    }
-
-    void setVisibleTimeRange(TimeRange newVisibleRange) {
-        checkTimeRange(newVisibleRange);
-        fLatestVisibleRange = newVisibleRange;
-    }
-
-    public TimeRange getVisibleTimeRange() {
-        return fLatestVisibleRange;
+    public ViewGroupContext getViewContext() {
+        return fViewContext;
     }
 
     public ITimeGraphModelRenderProvider getModelRenderProvider() {
@@ -101,34 +83,28 @@ public final class TimeGraphModelControl {
     // ------------------------------------------------------------------------
 
     public synchronized void initializeForTrace(@Nullable ITmfTrace trace) {
-        fCurrentTrace = trace;
         fRenderProvider.setTrace(trace);
 
         TimeGraphModelView view = fView;
-        if (view != null) {
-            view.clear();
+        if (view == null) {
+            return;
         }
+        view.clear();
 
         if (trace == null) {
             /* View will remain cleared, good */
             return;
         }
 
-        long traceStartTime = trace.getStartTime().toNanos();
-        long traceEndTime = trace.getEndTime().toNanos();
-
-        /* The window's start time is the same as the trace's start time initially */
-        long windowStartTime = traceStartTime;
-        long windowEndtime = Math.min(traceEndTime, traceStartTime + trace.getInitialRangeOffset().toNanos());
-
-        setFullTimeRange(TimeRange.of(traceStartTime, traceEndTime));
-        seekVisibleRange(TimeRange.of(windowStartTime, windowEndtime));
+        TimeRange currentVisibleRange = fViewContext.getCurrentVisibleTimeRange();
+        checkWindowTimeRange(currentVisibleRange);
+        view.seekVisibleRange(currentVisibleRange);
     }
 
     public void repaintCurrentArea() {
-        ITmfTrace trace = fCurrentTrace;
-        TimeRange currentRange = fLatestVisibleRange;
-        if (trace == null || currentRange == UNINITIALIZED) {
+        ITmfTrace trace = fViewContext.getCurrentTrace();
+        TimeRange currentRange = fViewContext.getCurrentVisibleTimeRange();
+        if (trace == null || currentRange == ViewGroupContext.UNINITIALIZED_RANGE) {
             return;
         }
 
@@ -141,8 +117,6 @@ public final class TimeGraphModelControl {
 
     void seekVisibleRange(TimeRange newRange) {
         checkWindowTimeRange(newRange);
-        setVisibleTimeRange(newRange);
-
         TimeGraphModelView view = fView;
         if (view != null) {
             view.seekVisibleRange(newRange);
@@ -151,7 +125,6 @@ public final class TimeGraphModelControl {
 
     void drawSelection(TimeRange selectionRange) {
         checkWindowTimeRange(selectionRange);
-
         TimeGraphModelView view = fView;
         if (view != null) {
             view.drawSelection(selectionRange);
@@ -165,12 +138,23 @@ public final class TimeGraphModelControl {
     // ------------------------------------------------------------------------
 
     public void updateTimeRangeSelection(TimeRange newSelectionRange) {
-        fSignallingContext.sendTimeRangeSelectionUpdate(newSelectionRange);
+        fViewContext.setCurrentSelectionTimeRange(newSelectionRange);
     }
 
     public void updateVisibleTimeRange(TimeRange newVisibleRange, boolean echo) {
         checkTimeRange(newVisibleRange);
-        fSignallingContext.sendVisibleWindowRangeUpdate(newVisibleRange, echo);
+
+        /*
+         * If 'echo' is 'off', we will avoid triggering our change listener on
+         * this modification by detaching then re-attaching it afterwards.
+         */
+        if (echo) {
+            fViewContext.setCurrentVisibleTimeRange(newVisibleRange);
+        } else {
+            fViewContext.currentVisibleTimeRangeProperty().removeListener(fVisibleRangeChangeListener);
+            fViewContext.setCurrentVisibleTimeRange(newVisibleRange);
+            fViewContext.currentVisibleTimeRangeProperty().addListener(fVisibleRangeChangeListener);
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -190,28 +174,16 @@ public final class TimeGraphModelControl {
 
     private void checkWindowTimeRange(TimeRange windowRange) {
         checkTimeRange(windowRange);
+        TimeRange fullRange = fViewContext.getCurrentTraceFullRange();
 
-        if (windowRange.getStart() < fFullTimeGraphRange.getStart()) {
+        if (windowRange.getStart() < fullRange.getStart()) {
             throw new IllegalArgumentException("Requested window start time: " + windowRange.getStart() +
-                    " is smaller than trace start time " + fFullTimeGraphRange.getStart());
+                    " is smaller than trace start time " + fullRange.getStart());
         }
-        if (windowRange.getEnd() > fFullTimeGraphRange.getEnd()) {
+        if (windowRange.getEnd() > fullRange.getEnd()) {
             throw new IllegalArgumentException("Requested window end time: " + windowRange.getEnd() +
-                    " is greater than trace end time " + fFullTimeGraphRange.getEnd());
+                    " is greater than trace end time " + fullRange.getEnd());
         }
     }
 
-    // ------------------------------------------------------------------------
-    // Test utils
-    // ------------------------------------------------------------------------
-
-    @VisibleForTesting
-    public void prepareWaitForNextSignal() {
-        fSignallingContext.prepareWaitForNextSignal();
-    }
-
-    @VisibleForTesting
-    public void waitForNextSignal() {
-        fSignallingContext.waitForNextSignal();
-    }
 }
