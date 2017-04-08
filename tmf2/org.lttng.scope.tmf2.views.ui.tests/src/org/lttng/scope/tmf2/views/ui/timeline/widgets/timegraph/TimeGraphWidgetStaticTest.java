@@ -15,10 +15,9 @@ import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
 /**
- * {@link SwtJfxTimeGraphViewer} test suite unit-testing some static utility
- * methods.
+ * {@link TimeGraphWidget} test suite unit-testing some static utility methods.
  */
-public class SwtJfxTimeGraphViewerStaticTest {
+public class TimeGraphWidgetStaticTest {
 
     private static final double DELTA = 0.1;
 
@@ -33,7 +32,7 @@ public class SwtJfxTimeGraphViewerStaticTest {
     }
 
     /**
-     * Test the {@link SwtJfxTimeGraphViewer#timestampToPaneXPos} method.
+     * Test the {@link TimeGraphWidget#timestampToPaneXPos} method.
      */
     @Test
     public void testTimeToPosition() {
@@ -54,7 +53,7 @@ public class SwtJfxTimeGraphViewerStaticTest {
     }
 
     /**
-     * Test the {@link SwtJfxTimeGraphViewer#paneXPosToTimestamp} method.
+     * Test the {@link TimeGraphWidget#paneXPosToTimestamp} method.
      */
     @Test
     public void testPositionToTimestamp() {

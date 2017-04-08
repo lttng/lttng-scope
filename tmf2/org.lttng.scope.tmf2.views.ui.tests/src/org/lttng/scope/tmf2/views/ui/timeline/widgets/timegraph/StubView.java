@@ -21,8 +21,8 @@ import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;
 
 /**
- * Stub view for the {@link SwtJfxTimeGraphViewer} tests, which implements a
- * view containing a single stub widget.
+ * Stub view for the {@link TimeGraphWidget} tests, which implements a view
+ * containing a single stub widget.
  *
  * This class is required to be public because it is called by Eclipse's
  * extension mechanisms.

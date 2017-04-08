@@ -25,10 +25,10 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 /**
- * Base for {@link SwtJfxTimeGraphViewer} tests, which sets up all the needed
+ * Base for {@link TimeGraphWidget} tests, which sets up all the needed
  * fixtures.
  */
-public abstract class SwtJfxTimeGraphViewerTestBase {
+public abstract class TimeGraphWidgetTestBase {
 
     private static @Nullable ITmfTrace sfTrace;
     private static @Nullable Display sfDisplay;

@@ -24,11 +24,11 @@ import org.junit.runners.Parameterized.Parameters;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
 /**
- * {@link SwtJfxTimeGraphViewer} test suite testing the correctness of the
- * rendered state rectangles.
+ * {@link TimeGraphWidget} test suite testing the correctness of the rendered
+ * state rectangles.
  */
 @RunWith(Parameterized.class)
-public class SwtJfxTimeGraphViewerStatesTest extends SwtJfxTimeGraphViewerTestBase {
+public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
 
     private static final long START_TIME = 150000L;
 
@@ -57,7 +57,7 @@ public class SwtJfxTimeGraphViewerStatesTest extends SwtJfxTimeGraphViewerTestBa
      * @param targetResolution
      *            The resolution we aim to have in the view.
      */
-    public SwtJfxTimeGraphViewerStatesTest(int targetResolution) {
+    public TimeGraphWidgetStatesTest(int targetResolution) {
         fTargetResolution = targetResolution;
     }
 

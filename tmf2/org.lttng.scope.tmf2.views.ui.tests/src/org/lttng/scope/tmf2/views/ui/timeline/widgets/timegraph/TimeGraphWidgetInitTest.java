@@ -15,9 +15,9 @@ import org.junit.Test;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
 /**
- * {@link SwtJfxTimeGraphViewer} test checking the initial conditions.
+ * {@link TimeGraphWidget} test checking the initial conditions.
  */
-public class SwtJfxTimeGraphViewerInitTest extends SwtJfxTimeGraphViewerTestBase {
+public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
 
     /**
      * Test that the initial visible position of both the control and the view

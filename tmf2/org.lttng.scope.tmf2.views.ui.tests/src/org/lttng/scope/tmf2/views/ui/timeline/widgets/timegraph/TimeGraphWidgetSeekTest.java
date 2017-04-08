@@ -17,10 +17,9 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 /**
- * {@link SwtJfxTimeGraphViewer} test suite testing seeking and zooming
- * operations.
+ * {@link TimeGraphWidget} test suite testing seeking and zooming operations.
  */
-public class SwtJfxTimeGraphViewerSeekTest extends SwtJfxTimeGraphViewerTestBase {
+public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
 
     /**
      * Test seeking to a range bordering the trace's start time
