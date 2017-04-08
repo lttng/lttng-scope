@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.core.timegraph.view;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 public abstract class TimeGraphModelView {
@@ -20,12 +21,16 @@ public abstract class TimeGraphModelView {
         fControl = control;
     }
 
-    public TimeGraphModelControl getControl() {
+    public final TimeGraphModelControl getControl() {
         return fControl;
     }
 
     public final void dispose() {
         disposeImpl();
+    }
+
+    public final ViewGroupContext getViewContext() {
+        return getControl().getViewContext();
     }
 
     // ------------------------------------------------------------------------
