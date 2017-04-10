@@ -138,11 +138,20 @@ public class SignalBridge {
         long rangeStart = signal.getBeginTime().toNanos();
         long rangeEnd = signal.getEndTime().toNanos();
 
-        TimeRange range = (rangeStart > rangeEnd) ?
+        /* Sometimes the range is weird... */
+        if (rangeStart == Long.MAX_VALUE || rangeEnd == Long.MAX_VALUE) {
+            return;
+        }
+
         /*
-         * This signal's end can be before its start time, against all logic
+         * This signal's end can be before its start time, against all logic.
          */
-                TimeRange.of(rangeEnd, rangeStart) : TimeRange.of(rangeStart, rangeEnd);
+        TimeRange range;
+        if (rangeStart > rangeEnd) {
+            range = TimeRange.of(rangeEnd, rangeStart);
+        } else {
+            range = TimeRange.of(rangeStart, rangeEnd);
+        }
 
         ITmfTrace trace = fViewContext.getCurrentTrace();
         if (trace == null) {

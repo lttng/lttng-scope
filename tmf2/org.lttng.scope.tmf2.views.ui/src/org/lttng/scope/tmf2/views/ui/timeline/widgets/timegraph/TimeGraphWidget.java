@@ -30,8 +30,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
@@ -588,18 +586,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     private void redrawSelection() {
-        /*
-         * Tracking the current selection is the trace context's responsibility.
-         * Hopefully it's the right one.
-         */
-        TmfTimeRange selection = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
-        TimeRange selectionRange = TimeRange.fromTmfTimeRange(selection);
-        /* Please Lord, deliver us from this insanity. */
-        if (selectionRange.getStart() == Long.MAX_VALUE || selectionRange.getEnd() == Long.MAX_VALUE) {
-            /* Checking the TmfTimetamps with .equals() doesn't even work... */
-            return;
-        }
-
+        TimeRange selectionRange = getViewContext().getCurrentSelectionTimeRange();
         drawSelection(selectionRange);
     }
 
