@@ -86,7 +86,7 @@ public class StateRectangle extends Rectangle {
         setWidth(width);
         setHeight(height);
 
-        double opacity = viewer.getDebugOptions().getStateIntervalOpacity();
+        double opacity = viewer.getDebugOptions().stateIntervalOpacity.get();
         setOpacity(opacity);
 
         /* Set a special paint for multi-state intervals */

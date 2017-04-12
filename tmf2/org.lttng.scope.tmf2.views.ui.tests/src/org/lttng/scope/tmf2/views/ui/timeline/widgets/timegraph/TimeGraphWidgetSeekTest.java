@@ -144,7 +144,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
 
         seekVisibleRange(initialRange);
 
-        double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().getZoomStep()), nbSteps);
+        double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().zoomStep.get()), nbSteps);
         if (!zoomIn) {
             totalFactor = 1 / totalFactor;
         }

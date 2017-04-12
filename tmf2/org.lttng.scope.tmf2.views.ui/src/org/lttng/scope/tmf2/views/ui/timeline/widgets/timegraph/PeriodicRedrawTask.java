@@ -47,7 +47,7 @@ class PeriodicRedrawTask extends TimerTask {
 
     @Override
     public void run() {
-        if (!fViewer.getDebugOptions().isPaintingEnabled()) {
+        if (!fViewer.getDebugOptions().isPaintingEnabled.get()) {
             return;
         }
 

@@ -265,7 +265,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fBasePane.setTop(fToolBar);
 
         /* Start the periodic redraw thread */
-        long delay = fDebugOptions.getUIUpdateDelay();
+        long delay = fDebugOptions.uiUpdateDelay.get();
         fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
 
@@ -417,7 +417,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * We may ask for some padding on each side, clamped by the trace's
          * start and end.
          */
-        final long timeRangePadding = Math.round(windowRange.getDuration() * fDebugOptions.getRenderRangePadding());
+        final long timeRangePadding = Math.round(windowRange.getDuration() * fDebugOptions.renderRangePadding.get());
         final long renderingStartTime = Math.max(fullTimeGraphRange.getStart(), windowRange.getStart() - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphRange.getEnd(), windowRange.getEnd() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
@@ -427,7 +427,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * Start a new repaint, display the "loading" overlay. The next
          * paint task to finish will put it back to non-visible.
          */
-        if (getDebugOptions().isLoadingOverlayEnabled()) {
+        if (getDebugOptions().isLoadingOverlayEnabled.get()) {
             fTimeGraphLoadingOverlay.fadeIn();
         }
 
@@ -450,7 +450,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
                 final int nbElements = allTreeElements.size();
 
-                int entriesToPrefetch = fDebugOptions.getEntryPadding();
+                int entriesToPrefetch = fDebugOptions.entryPadding.get();
                 int topEntry = Math.max(0,
                         paneYPosToEntryListIndex(verticalPos.fTopPos, ENTRY_HEIGHT) - entriesToPrefetch);
                 int bottomEntry = Math.min(nbElements,
@@ -556,7 +556,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     void paintBackground(VerticalPosition vPos) {
-        final int entriesToPrefetch = fDebugOptions.getEntryPadding();
+        final int entriesToPrefetch = fDebugOptions.entryPadding.get();
 
         final double timeGraphWidth = fTimeGraphPane.getWidth();
         final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * ENTRY_HEIGHT);
@@ -671,8 +671,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             TimeRange windowRange) {
         double minX = timestampToPaneXPos(windowRange.getStart());
 
-        final String ellipsisStr = fDebugOptions.getEllipsisString();
-        final Font textFont = fDebugOptions.getTextFont();
+        final String ellipsisStr = DebugOptions.ELLIPSIS_STRING;
+        final Font textFont = fDebugOptions.stateLabelFont.get();
         final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
         final Color textColor = Color.WHITE;
 
@@ -891,7 +891,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * Listener for the horizontal scrollbar changes
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!fDebugOptions.isScrollingListenersEnabled()) {
+            if (!fDebugOptions.isScrollingListenersEnabled.get()) {
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
@@ -956,7 +956,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     public class ZoomActions {
 
         public void zoom(@Nullable Double pivotX, boolean zoomIn) {
-            final double zoomStep = fDebugOptions.getZoomStep();
+            final double zoomStep = fDebugOptions.zoomStep.get();
 
             double newScaleFactor = (zoomIn ?
                         1.0 * (1 + zoomStep) :

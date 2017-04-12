@@ -58,9 +58,9 @@ public abstract class TimeGraphWidgetTestBase {
         assertNotNull(viewer);
 
         /* Disable automatic redraw. We'll trigger view painting manually. */
-        viewer.getDebugOptions().setPaintingEnabled(false);
+        viewer.getDebugOptions().isPaintingEnabled.set(false);
         /* Disable mouse listeners in case the mouse dwells inside the view. */
-        viewer.getDebugOptions().setScrollingListenersEnabled(false);
+        viewer.getDebugOptions().isScrollingListenersEnabled.set(false);
 
         updateUI();
         control.getViewContext().setCurrentTrace(sfTrace);
