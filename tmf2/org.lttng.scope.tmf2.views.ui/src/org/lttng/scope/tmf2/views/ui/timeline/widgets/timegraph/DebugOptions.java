@@ -57,6 +57,10 @@ class DebugOptions {
         recomputeEllipsisWidth();
     }
 
+    // ------------------------------------------------------------------------
+    // General options
+    // ------------------------------------------------------------------------
+
     /**
      * Painting flag. Indicates if automatic redrawing of the view is enabled
      */
@@ -86,14 +90,15 @@ class DebugOptions {
      */
     public final ConfigOption<Boolean> isScrollingListenersEnabled = new ConfigOption<>(true);
 
-    public final ConfigOption<Double> stateIntervalOpacity = new ConfigOption<>(1.0);
+    // ------------------------------------------------------------------------
+    // Loading overlay
+    // ------------------------------------------------------------------------
 
-    public final ConfigOption<Paint> multiStatePaint;
-    {
-        Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
-        LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-        multiStatePaint = new ConfigOption<>(lg);
-    }
+    public final ConfigOption<Boolean> isLoadingOverlayEnabled = new ConfigOption<>(true);
+
+    // ------------------------------------------------------------------------
+    // Zoom animation
+    // ------------------------------------------------------------------------
 
     /**
      * The zoom animation duration, which is the amount of milliseconds it takes
@@ -107,7 +112,30 @@ class DebugOptions {
      */
     public final ConfigOption<Double> zoomStep = new ConfigOption<>(0.08);
 
-    public final ConfigOption<Boolean> isLoadingOverlayEnabled = new ConfigOption<>(true);
+    // ------------------------------------------------------------------------
+    // State rectangles
+    // ------------------------------------------------------------------------
+
+    public final ConfigOption<Double> stateIntervalOpacity = new ConfigOption<>(1.0);
+
+    public final ConfigOption<Paint> multiStatePaint;
+    {
+        Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
+        LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+        multiStatePaint = new ConfigOption<>(lg);
+    }
+
+    // ------------------------------------------------------------------------
+    // Tooltips
+    // ------------------------------------------------------------------------
+
+    public final ConfigOption<Font> toolTipFont = new ConfigOption<>(Font.font(14));
+
+    public final ConfigOption<Paint> toolTipFontFill = new ConfigOption<>(requireNonNull(Color.WHITE));
+
+    // ------------------------------------------------------------------------
+    // State labels
+    // ------------------------------------------------------------------------
 
     public final ConfigOption<Font> stateLabelFont = new ConfigOption<Font>(requireNonNull(new Text().getFont())) {
         @Override

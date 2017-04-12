@@ -24,7 +24,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -113,7 +112,7 @@ public class StateRectangle extends Rectangle {
             if (fTooltipInstalled) {
                 return;
             }
-            TooltipContents ttContents = new TooltipContents();
+            TooltipContents ttContents = new TooltipContents(viewer.getDebugOptions());
             ttContents.appendRow(Messages.statePropertyElement, fInterval.getTreeElement().getName());
             ttContents.appendRow(Messages.statePropertyStateName, fInterval.getStateName());
             ttContents.appendRow(Messages.statePropertyStartTime, fInterval.getStartTime());
@@ -187,13 +186,22 @@ public class StateRectangle extends Rectangle {
 
     private static class TooltipContents extends GridPane {
 
+        private final DebugOptions fOpts;
+
         private int nbRows = 0;
+
+        public TooltipContents(DebugOptions opts) {
+            fOpts = opts;
+        }
 
         public void appendRow(Object... objects) {
             Node[] labels = Arrays.stream(objects)
                     .map(Object::toString)
                     .map(Text::new)
-                    .peek(text -> text.setStroke(Color.WHITE))
+                    .peek(text -> {
+                        text.setFont(fOpts.toolTipFont.get());
+                        text.setFill(fOpts.toolTipFontFill.get());
+                    })
                     .toArray(Node[]::new);
             addRow(nbRows++, labels);
         }
