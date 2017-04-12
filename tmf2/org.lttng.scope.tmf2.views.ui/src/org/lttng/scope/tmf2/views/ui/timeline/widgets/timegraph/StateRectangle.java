@@ -25,10 +25,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -91,10 +88,9 @@ public class StateRectangle extends Rectangle {
 
         /* Set a special paint for multi-state intervals */
         if (interval.isMultiState()) {
-            Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
-            LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-            fBaseColor = lg;
-            fSelectedColor = lg;
+            Paint multiStatePaint = viewer.getDebugOptions().multiStatePaint.get();
+            fBaseColor = multiStatePaint;
+            fSelectedColor = multiStatePaint;
         } else {
             fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
             fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());

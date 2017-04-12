@@ -12,6 +12,10 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import static java.util.Objects.requireNonNull;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -84,7 +88,12 @@ class DebugOptions {
 
     public final ConfigOption<Double> stateIntervalOpacity = new ConfigOption<>(1.0);
 
-    public final ConfigOption<Color> multiStateColor = new ConfigOption<>(requireNonNull(Color.BLACK));
+    public final ConfigOption<Paint> multiStatePaint;
+    {
+        Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.WHITE) };
+        LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+        multiStatePaint = new ConfigOption<>(lg);
+    }
 
     /**
      * The zoom animation duration, which is the amount of milliseconds it takes
