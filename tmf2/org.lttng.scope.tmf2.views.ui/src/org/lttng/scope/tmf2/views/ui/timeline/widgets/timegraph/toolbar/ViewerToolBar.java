@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.debugopts.DebugOptionsButton;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav.NavigationButtons;
 
 import javafx.scene.control.Alert;
@@ -64,7 +65,10 @@ public class ViewerToolBar extends ToolBar {
 
                 getStateInfoButton(viewer),
                 new SortingModeMenuButton(viewer),
-                new FilterModeMenuButton(viewer));
+                new FilterModeMenuButton(viewer),
+                new Separator(),
+
+                new DebugOptionsButton(viewer));
     }
 
     // FIXME Temporary, should be moved to tooltip

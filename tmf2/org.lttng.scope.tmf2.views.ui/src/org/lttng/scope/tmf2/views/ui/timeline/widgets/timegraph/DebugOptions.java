@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
  *
  * @author Alexandre Montplaisir
  */
-class DebugOptions {
+public class DebugOptions {
 
     public static class ConfigOption<T> extends SimpleObjectProperty<T> {
 
@@ -108,7 +108,7 @@ class DebugOptions {
      * The zoom animation duration, which is the amount of milliseconds it takes
      * to complete the zoom animation (smaller number means a faster animation).
      */
-    public final ConfigOption<Long> zoomAnimationDuration = new ConfigOption<>(50L);
+    public final ConfigOption<Integer> zoomAnimationDuration = new ConfigOption<>(50);
 
     /**
      * Each zoom action (typically, one mouse-scroll == one zoom action) will
@@ -128,14 +128,6 @@ class DebugOptions {
         LinearGradient lg = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
         multiStatePaint = new ConfigOption<>(lg);
     }
-
-    // ------------------------------------------------------------------------
-    // Tooltips
-    // ------------------------------------------------------------------------
-
-    public final ConfigOption<Font> toolTipFont = new ConfigOption<>(Font.font(14));
-
-    public final ConfigOption<Paint> toolTipFontFill = new ConfigOption<>(requireNonNull(Color.WHITE));
 
     // ------------------------------------------------------------------------
     // State labels
@@ -163,5 +155,13 @@ class DebugOptions {
         text.applyCss();
         fEllipsisWidth = text.getLayoutBounds().getWidth();
     }
+
+    // ------------------------------------------------------------------------
+    // Tooltips
+    // ------------------------------------------------------------------------
+
+    public final ConfigOption<Font> toolTipFont = new ConfigOption<>(Font.font(14));
+
+    public final ConfigOption<Color> toolTipFontFill = new ConfigOption<>(requireNonNull(Color.WHITE));
 
 }

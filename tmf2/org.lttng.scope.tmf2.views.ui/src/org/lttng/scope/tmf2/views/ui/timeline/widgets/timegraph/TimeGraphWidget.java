@@ -1148,7 +1148,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     // could eventually be exposed to the user, as "advanced preferences"
-    DebugOptions getDebugOptions() {
+    public DebugOptions getDebugOptions() {
         return fDebugOptions;
     }
 

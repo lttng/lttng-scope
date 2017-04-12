@@ -24,4 +24,5 @@ Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=tru
  org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav
 Import-Package: com.google.common.annotations,
  com.google.common.base,
- com.google.common.collect
+ com.google.common.collect,
+ com.google.common.primitives

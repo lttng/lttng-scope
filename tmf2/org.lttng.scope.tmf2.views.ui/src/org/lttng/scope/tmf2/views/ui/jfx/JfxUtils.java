@@ -14,9 +14,15 @@ import static java.util.Objects.requireNonNull;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
+import java.util.List;
 
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
+import javafx.stage.Window;
 
 /**
  * JavaFX-related utilities
@@ -73,5 +79,32 @@ public final class JfxUtils {
         } catch (Throwable e) {
             return "ERROR"; //$NON-NLS-1$
         }
+    }
+
+    /**
+     * Utility method to center a Dialog/Alert on the middle of the current
+     * screen. Used to workaround a "bug" with the current version of JavaFX (or
+     * the SWT/JavaFX embedding?) where alerts always show on the primary
+     * screen, not necessarily the current one.
+     *
+     * @param dialog
+     *            The dialog to reposition. It must be already shown, or else
+     *            this will do nothing.
+     * @param referenceNode
+     *            The dialog should be moved to the same screen as this node's
+     *            window.
+     */
+    public static void centerDialogOnScreen(Dialog<?> dialog, Node referenceNode) {
+        Window window = referenceNode.getScene().getWindow();
+        Rectangle2D windowRectangle = new Rectangle2D(window.getX(), window.getY(), window.getWidth(), window.getHeight());
+
+        List<Screen> screens = Screen.getScreensForRectangle(windowRectangle);
+        Screen screen = screens.stream()
+                .findFirst()
+                .orElse(Screen.getPrimary());
+
+        Rectangle2D screenBounds = screen.getBounds();
+        dialog.setX((screenBounds.getWidth() - dialog.getWidth()) / 2 + screenBounds.getMinX());
+//        dialog.setY((screenBounds.getHeight() - dialog.getHeight()) / 2 + screenBounds.getMinY());
     }
 }
