@@ -235,10 +235,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTimeGraphScrollPane.setFitToWidth(true);
         fTimeGraphScrollPane.setPannable(true);
 
-
-        /* Attach the mouse/scrollbar listeners */
-        fTimeGraphScrollPane.setOnMouseEntered(fScrollingCtx.fMouseEnteredEventHandler);
-        fTimeGraphScrollPane.setOnMouseExited(fScrollingCtx.fMouseExitedEventHandler);
+        /*
+         * Attach the scrollbar listener
+         *
+         * TODO Move this to the timeline ?
+         */
         fTimeGraphScrollPane.hvalueProperty().addListener(fScrollingCtx.fHScrollChangeListener);
 
         /*
@@ -877,16 +878,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         /* Knobs to programmatically disable the scrolling listeners */
         public final ListenerStatus fHListenerStatus = new ListenerStatus();
 
-        private boolean fUserActionOngoing = false;
-
-        private final EventHandler<MouseEvent> fMouseEnteredEventHandler = e -> {
-            fUserActionOngoing = true;
-        };
-
-        private final EventHandler<MouseEvent> fMouseExitedEventHandler = e -> {
-            fUserActionOngoing = false;
-        };
-
         /**
          * Listener for the horizontal scrollbar changes
          */
@@ -895,7 +886,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fUserActionOngoing || !fHListenerStatus.isEnabled()) {
+            if (!fHListenerStatus.isEnabled()) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }
