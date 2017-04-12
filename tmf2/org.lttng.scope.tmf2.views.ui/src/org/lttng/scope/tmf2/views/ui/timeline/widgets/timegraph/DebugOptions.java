@@ -96,6 +96,14 @@ class DebugOptions {
 
     public final ConfigOption<Boolean> isLoadingOverlayEnabled = new ConfigOption<>(true);
 
+    public final ConfigOption<Color> loadingOverlayColor = new ConfigOption<>(requireNonNull(Color.GRAY));
+
+    public final ConfigOption<Double> loadingOverlayFullOpacity = new ConfigOption<>(0.3);
+    public final ConfigOption<Double> loadingOverlayTransparentOpacity = new ConfigOption<>(0.0);
+
+    public final ConfigOption<Double> loadingOverlayFadeInDuration = new ConfigOption<>(100.0);
+    public final ConfigOption<Double> loadingOverlayFadeOutDuration = new ConfigOption<>(100.0);
+
     // ------------------------------------------------------------------------
     // Zoom animation
     // ------------------------------------------------------------------------

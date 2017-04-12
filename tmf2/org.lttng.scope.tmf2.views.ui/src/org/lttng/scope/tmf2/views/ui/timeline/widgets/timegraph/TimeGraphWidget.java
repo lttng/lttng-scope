@@ -173,7 +173,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // Prepare the time graph's part scene graph
         // --------------------------------------------------------------------
 
-        fTimeGraphLoadingOverlay = new LoadingOverlay();
+        fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
 
         fSelectionRect = new Rectangle();
         fSelectionRect.setMouseTransparent(true);
