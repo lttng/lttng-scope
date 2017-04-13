@@ -96,7 +96,12 @@ public class StateRectangle extends Rectangle {
         }
 
         /* Set initial selection state and selection listener. */
-        setSelected(false);
+        if (this.equals(viewer.getSelectedState())) {
+            setSelected(true);
+            viewer.setSelectedState(this);
+        } else {
+            setSelected(false);
+        }
         setOnMouseClicked(e -> {
             if (e.getButton() != MouseButton.PRIMARY) {
                 return;
