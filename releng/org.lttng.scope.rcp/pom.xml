@@ -44,6 +44,8 @@
                 <plugin id="org.apache.xml.resolver"/>
                 <plugin id="org.apache.xml.serializer"/>
 
+                <plugin id="org.eclipse.fx.osgi"/>
+
                 <plugin id="org.eclipse.ant.core"/>
 
                 <plugin id="org.eclipse.cdt.core"/>
