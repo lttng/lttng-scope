@@ -205,8 +205,8 @@ public class StateRectangle extends Rectangle {
                     .map(Object::toString)
                     .map(Text::new)
                     .peek(text -> {
-                        text.setFont(fOpts.toolTipFont.get());
-                        text.setFill(fOpts.toolTipFontFill.get());
+                        text.fontProperty().bind(fOpts.toolTipFont);
+                        text.fillProperty().bind(fOpts.toolTipFontFill);
                     })
                     .toArray(Node[]::new);
             addRow(nbRows++, labels);
