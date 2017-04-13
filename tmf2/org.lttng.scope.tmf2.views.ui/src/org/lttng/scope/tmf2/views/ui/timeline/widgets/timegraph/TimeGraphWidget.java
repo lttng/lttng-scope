@@ -721,10 +721,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * @param state
      *            The new selected state. It should ideally be one that's
      *            present in the scenegraph.
+     * @param deselectPrevious
+     *            If the previously selected interval should be unmarked as
+     *            selected.
      */
-    public void setSelectedState(StateRectangle state) {
+    public void setSelectedState(StateRectangle state, boolean deselectPrevious) {
         @Nullable StateRectangle previousSelectedState = fSelectedState;
-        if (previousSelectedState != null) {
+        if (previousSelectedState != null && deselectPrevious) {
             previousSelectedState.setSelected(false);
         }
 

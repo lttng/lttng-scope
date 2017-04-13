@@ -116,7 +116,7 @@ public class NavigationModeFollowStateChanges extends NavigationMode {
                     .findFirst().get();
         }
 
-        viewer.setSelectedState(newState);
+        viewer.setSelectedState(newState, true);
         NavUtils.selectNewTimestamp(viewer, targetTimestamp);
     }
 
