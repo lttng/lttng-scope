@@ -25,7 +25,18 @@ class LoadingOverlay extends Rectangle {
     public LoadingOverlay(DebugOptions opts) {
         fOpts = opts;
 
-        setFill(fOpts.loadingOverlayColor.get());
+        /*
+         * Set the fill (color) by binding the property to the corresponding
+         * config option. That way if the use changes the configured value, this
+         * overlay will follow.
+         */
+        fillProperty().bind(fOpts.loadingOverlayColor);
+
+        /*
+         * The opacity property on the other hand will change through normal
+         * operation of the overlay. We are just setting the initial value here,
+         * no permanent bind.
+         */
         setOpacity(fOpts.loadingOverlayTransparentOpacity.get());
 
         /*
