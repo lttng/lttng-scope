@@ -9,6 +9,8 @@
 
 package org.lttng.scope.lttng.ust.core.trace;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.ctf.core.CTFStrings;
@@ -53,7 +55,7 @@ public class LttngUstEventFactory extends CtfTmfEventFactory {
         String reference = (fileName == null ? NO_STREAM : fileName);
 
         /* Handle the special case of lost events */
-        if (eventDecl.getName().equals(CTFStrings.LOST_EVENT_NAME)) {
+        if (eventDecl != null && Objects.equals(eventDecl.getName(), CTFStrings.LOST_EVENT_NAME)) {
             return createLostEvent(trace, eventDef, eventDecl, ts, timestamp, sourceCPU, reference);
         }
 
