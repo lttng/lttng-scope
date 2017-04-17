@@ -59,6 +59,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -248,6 +249,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * scroll actions.
          */
         fTimeGraphPane.setOnScroll(fMouseScrollListener);
+
+        /*
+         * Upon reception of any mouse/keyboard event, if there's still a drawn
+         * tooltip it should be hidden.
+         */
+        fTimeGraphPane.addEventFilter(InputEvent.ANY, e -> {
+            StateRectangle selectedState = fSelectedState;
+            if (selectedState != null) {
+                selectedState.hideTooltip();
+            }
+            /* We must not consume the event here */
+        });
 
         /* Synchronize the two scrollpanes' vertical scroll bars together */
         fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
