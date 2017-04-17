@@ -23,6 +23,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.google.common.collect.ImmutableSet;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -48,19 +49,26 @@ public class TimelineManager {
             fWidgets.add(viewer);
         }
 
-        /* Bind divider positions, where applicable */
-        fWidgets.stream()
-                .map(w -> w.getSplitPane())
-                .filter(Objects::nonNull)
-                .map(p -> Objects.requireNonNull(p))
-                .forEach(splitPane -> splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition));
+        /*
+         * Bind properties in a runLater() statement, so that the UI views have
+         * already been initialized. The divider position, for instance, only
+         * has effect after the view is visible.
+         */
+        Platform.runLater(() -> {
+            /* Bind divider positions, where applicable */
+            fWidgets.stream()
+                    .map(w -> w.getSplitPane())
+                    .filter(Objects::nonNull)
+                    .map(p -> Objects.requireNonNull(p))
+                    .forEach(splitPane -> splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition));
 
-        /* Bind h-scrollbar positions */
-        fWidgets.stream()
-                .map(w -> w.getTimeBasedScrollPane())
-                .filter(Objects::nonNull)
-                .map(p -> Objects.requireNonNull(p))
-                .forEach(scrollPane -> scrollPane.hvalueProperty().bindBidirectional(fHScrollValue));
+            /* Bind h-scrollbar positions */
+            fWidgets.stream()
+                    .map(w -> w.getTimeBasedScrollPane())
+                    .filter(Objects::nonNull)
+                    .map(p -> Objects.requireNonNull(p))
+                    .forEach(scrollPane -> scrollPane.hvalueProperty().bindBidirectional(fHScrollValue));
+        });
     }
 
     public void dispose() {
