@@ -232,7 +232,6 @@ public class StateRectangle extends Rectangle {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("widget", fWidget) //$NON-NLS-1$
                 .add("interval", fInterval) //$NON-NLS-1$
                 .toString();
     }
