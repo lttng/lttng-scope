@@ -89,7 +89,7 @@ public final class TimeRange {
      * @return True if the timestamp is contained in the range, false otherwise
      */
     public boolean contains(long timestamp) {
-        return (fEndTime <= timestamp && timestamp <= fStartTime);
+        return (fStartTime <= timestamp && timestamp <= fEndTime);
     }
 
     /**
