@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
+import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.debugopts.DebugOptionsButton;
@@ -89,21 +90,10 @@ public class ViewerToolBar extends ToolBar {
             alert.getDialogPane().setContent(content);
             alert.setResizable(true);
             alert.show();
-//            centerOnCurrentScreen(alert);
+
+            JfxUtils.centerDialogOnScreen(alert, this);
         });
         return button;
     }
-
-//    private static void centerOnCurrentScreen(Alert alert) {
-//        // TODO
-//        Screen screen = Screen.getPrimary();
-//        Rectangle2D screenBounds = screen.getBounds();
-//        double screenCenterX = screenBounds.getMinX() + screenBounds.getWidth() / 2;
-//        double screenCenterY = screenBounds.getMinY() + screenBounds.getHeight() / 2;
-//        double alertX = screenCenterX - alert.getWidth() / 2;
-//        double alertY = screenCenterY - alert.getHeight() / 2;
-//        alert.setX(alertX);
-//        alert.setY(alertY);
-//    }
 
 }
