@@ -55,6 +55,24 @@ Maven outputs the platform-specific application packages in the
 `releng/org.lttng.scope.rcp.product/target/products` directory.
 
 
+== Relation to Trace Compass
+
+LTTng Scope is based on some parts of the Trace Compass source code. However
+it is meant to be a separate project with different design goals. While
+Trace Compass aims to support any analysis for any trace type,
+LTTng Scope aims to:
+
+* Focus on CTF/LTTng use cases
+* Streamline the user experience
+* Clearly separate layers (trace reading, analysis, UI)
+
+Trace Compass is closely tied to the Eclipse platform. Because of this,
+LTTng Scope also makes use of the Eclipse RCP framework initially, but that
+is not a design requirement and could change in the future. Running analyses
+on the command-line (in CI, etc.) with text-based output is also within
+the realm of possibilities.
+
+
 == User documentation
 
 NOTE: Not available yet.
