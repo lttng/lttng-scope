@@ -10,7 +10,9 @@
 package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -35,6 +37,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+
+import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
@@ -171,6 +175,90 @@ public class ControlFlowRenderProviderTest {
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             fail(e.getMessage());
         }
+    }
+
+    /**
+     * Verify that for a known time range, all generated intervals are
+     * contiguous but of a different states (multi-states are included in
+     * there).
+     */
+    @Test
+    public void testMultiStates() {
+        TimeRange range = TimeRange.of(1332170683505733202L, 1332170683603572392L);
+        String treeElemName = "0/0 - swapper";
+        long viewWidth = 1000;
+
+        long resolution = range.getDuration() / viewWidth;
+
+        TimeGraphTreeElement treeElem = provider.getTreeRender().getAllTreeElements().stream()
+                .filter(elem -> elem.getName().equals(treeElemName))
+                .findFirst().get();
+        TimeGraphStateRender stateRender = provider.getStateRender(treeElem, range, resolution, null);
+        List<TimeGraphStateInterval> intervals = stateRender.getStateIntervals();
+
+        assertTrue(intervals.size() > 2);
+
+        for (int i = 1; i < intervals.size(); i++) {
+            TimeGraphStateInterval interval1 = intervals.get(i - 1);
+            TimeGraphStateInterval interval2 = intervals.get(i);
+
+            assertEquals(interval1.getEndTime() + 1, interval2.getStartTime());
+            assertNotEquals(interval1.getStateName(), interval2.getStateName());
+        }
+    }
+
+    /**
+     * Make sure that if multi-states are present at the beginning or end of a
+     * time graph render, they actually start/end at the same timestamps as the
+     * full state model.
+     */
+    @Test
+    public void testBounds() {
+        final ITmfTrace trace = sfTrace;
+        final ITmfStateSystem ss = sfSS;
+        assertNotNull(trace);
+        assertNotNull(ss);
+
+        /*
+         * Note that here, the range of the query is the full range of the
+         * trace, so the start/end times of the full state system should match
+         * the ones in the model. This might not always be the case with
+         * multi-states at the beginning/end, since those may have synthetic
+         * start/end times.
+         */
+        TimeRange range = TimeRange.of(trace.getStartTime().toNanos(), trace.getEndTime().toNanos());
+        String treeElemName = "0/0 - swapper";
+        long viewWidth = 1000;
+
+        long resolution = range.getDuration() / viewWidth;
+
+        /* Get the intervals from the model */
+        TimeGraphTreeElement treeElem = provider.getTreeRender().getAllTreeElements().stream()
+                .filter(elem -> elem.getName().equals(treeElemName))
+                .findFirst().get();
+        TimeGraphStateRender stateRender = provider.getStateRender(treeElem, range, resolution, null);
+        List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
+
+        /* Get the intervals from the state system */
+        int threadsQuark = ss.getQuarkAbsolute(Attributes.THREADS);
+        int threadQuark = ss.getQuarkRelative(threadsQuark, "0_0");
+        List<ITmfStateInterval> intervalsFromSS;
+        try {
+            intervalsFromSS = StateSystemUtils.queryHistoryRange(ss, threadQuark, range.getStart(), range.getEnd());
+        } catch (AttributeNotFoundException | StateSystemDisposedException e) {
+            fail(e.getMessage());
+            return;
+        }
+
+        /* Check that the first intervals start at the same timestamp. */
+        long modelStart = intervalsFromRender.get(0).getStartTime();
+        long ssStart = intervalsFromSS.get(0).getStartTime();
+        assertEquals(ssStart, modelStart);
+
+        /* Check that the last intervals end at the same timestamp too. */
+        long modelEnd = Iterables.getLast(intervalsFromRender).getEndTime();
+        long ssEnd = Iterables.getLast(intervalsFromSS).getEndTime();
+        assertEquals(ssEnd, modelEnd);
     }
 
     private static void verifySameIntervals(List<ITmfStateInterval> ssIntervals,

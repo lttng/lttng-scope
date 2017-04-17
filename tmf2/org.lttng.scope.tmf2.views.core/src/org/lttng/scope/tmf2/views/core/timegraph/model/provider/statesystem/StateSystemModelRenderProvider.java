@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -34,6 +35,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+
+import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -239,7 +242,8 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
     }
 
     private List<TimeGraphStateInterval> queryHistoryRange(ITmfStateSystem ss,
-            StateSystemTimeGraphTreeElement treeElem, long t1, long t2, long resolution,
+            StateSystemTimeGraphTreeElement treeElem,
+            final long t1, final long t2, final long resolution,
             @Nullable FutureTask<?> task)
             throws AttributeNotFoundException, StateSystemDisposedException {
 
@@ -250,113 +254,114 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
 
         final List<TimeGraphStateInterval> modelIntervals = new LinkedList<>();
         final int attributeQuark = treeElem.getSourceQuark();
-        ITmfStateInterval currentSSInterval = null;
-        boolean isInMultiState = false;
-        long currentMultiStateStart = -1;
-        long currentMultiStateEnd;
+        ITmfStateInterval lastAddedInterval = null;
 
         /* Actual valid end time of the range query. */
         long tEnd = Math.min(t2, ss.getCurrentEndTime());
 
         /*
-         * Iterate over the "resolution points". We skip unneeded queries in the
-         * case the current interval is longer than the resolution.
+         * First, iterate over the "resolution points" and keep all matching
+         * state intervals.
          */
-        for (long ts = t1;
-                ts <= tEnd - resolution;
-                ts += ((currentSSInterval.getEndTime() - ts) / resolution + 1) * resolution) {
-
-            if (task != null && task.isCancelled()) {
-                return modelIntervals;
+        for (long ts = t1; ts <= tEnd - resolution; ts += resolution) {
+            /*
+             * Skip queries if the corresponding interval was already included
+             */
+            if (lastAddedInterval != null && lastAddedInterval.getEndTime() >= ts) {
+                long nextTOffset = MathUtils.roundToClosestHigherMultiple(lastAddedInterval.getEndTime() - t1, resolution);
+                long nextTs = t1 + nextTOffset;
+                if (nextTs == ts) {
+                    /*
+                     * The end time of the last interval happened to be exactly
+                     * equal to the next resolution point. We will go to the
+                     * resolution point after that then.
+                     */
+                    ts = nextTs;
+                } else {
+                    /* 'ts' will get incremented at next loop */
+                    ts = nextTs - resolution;
+                }
+                continue;
             }
 
-            currentSSInterval = ss.querySingleState(ts, attributeQuark);
+            ITmfStateInterval stateSystemInterval = ss.querySingleState(ts, attributeQuark);
 
             /*
-             * Only pick the interval if it fills the current resolution range, from 'ts' to
-             * 'ts + resolution' (or 'ts2'). If it does not, report a multi-state for this
-             * pixel.
+             * Only pick the interval if it fills the current resolution range,
+             * from 'ts' to 'ts + resolution' (or 'ts2').
              */
             long ts2 = ts + resolution;
-            if (currentSSInterval.getStartTime() <= ts
-                    && currentSSInterval.getEndTime() >= ts2) {
-                /* This interval fills at least the current pixel, keep it. */
-
-                /* But first, end the ongoing multi-state if there is one. */
-                if (isInMultiState) {
-                    currentMultiStateEnd = currentSSInterval.getStartTime() - 1;
-                    TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
-                            currentMultiStateStart, currentMultiStateEnd, treeElem);
-                    modelIntervals.add(multiStateInterval);
-                    isInMultiState = false;
-                }
-
-                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, currentSSInterval);
+            if (stateSystemInterval.getStartTime() <= ts && stateSystemInterval.getEndTime() >= ts2) {
+                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, stateSystemInterval);
                 modelIntervals.add(interval);
-
-            } else {
-                /*
-                 * The interval does *not* fill the full range, we'll report a "multi-state" for
-                 * this pixel instead.
-                 */
-                if (isInMultiState) {
-                    /* Extend the current multi-state */
-                    currentMultiStateEnd = ts2;
-                } else {
-                    /* Start a new multi-state */
-                    currentMultiStateStart = ts;
-                    isInMultiState = true;
-                }
+                lastAddedInterval = stateSystemInterval;
             }
         }
 
         /*
-         * For the very last interval, we'll use ['tEnd - resolution', 'tEnd'] as a
-         * range condition instead.
+         * For the very last interval, we'll use ['tEnd - resolution', 'tEnd']
+         * as a range condition instead.
          */
-        long ts = tEnd -resolution;
+        long ts = tEnd - resolution;
         long ts2 = tEnd;
-        currentSSInterval = ss.querySingleState(tEnd, attributeQuark);
-        if (currentSSInterval.getStartTime() <= ts
-                && currentSSInterval.getEndTime() >= ts2) {
-
-            /*
-             * End the ongoing multi-state if there is one.
-             */
-            if (isInMultiState) {
-                currentMultiStateEnd = currentSSInterval.getStartTime() - 1;
-                TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
-                        currentMultiStateStart, currentMultiStateEnd, treeElem);
-                modelIntervals.add(multiStateInterval);
-            }
-
-            /* Then add the last interval, if we don't have it already. */
-            TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, currentSSInterval);
-            if (!interval.equals(modelIntervals.get(modelIntervals.size() - 1))) {
-                    modelIntervals.add(interval);
-            }
-
+        if (lastAddedInterval != null && lastAddedInterval.getEndTime() >= ts) {
+            /* Interval already included */
         } else {
-            if (isInMultiState) {
-                /* Extend the current multi-state until the end */
-                currentMultiStateEnd = ts2;
-            } else {
-                /* Multi-state for only the last pixel. */
-                currentMultiStateStart = ts;
-                currentMultiStateEnd = ts2;
+            ITmfStateInterval stateSystemInterval = ss.querySingleState(ts, attributeQuark);
+            if (stateSystemInterval.getStartTime() <= ts && stateSystemInterval.getEndTime() >= ts2) {
+                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, stateSystemInterval);
+                modelIntervals.add(interval);
             }
-            TimeGraphStateInterval multiStateInterval = new MultiStateInterval(
-                    currentMultiStateStart, currentMultiStateEnd, treeElem);
-            modelIntervals.add(multiStateInterval);
         }
 
-        return modelIntervals;
+        /*
+         * 'modelIntervals' now contains all the "real" intervals we will want
+         * to display in the view. Poly-filla the holes in between each using
+         * multi-state intervals.
+         */
+        if (modelIntervals.size() < 2) {
+            return modelIntervals;
+        }
+
+        List<TimeGraphStateInterval> filledIntervals = new LinkedList<>();
+        /*
+         * Add the first real interval. There might be a multi-state at the
+         * beginning.
+         */
+        long firstRealIntervalStartTime = modelIntervals.get(0).getStartTime();
+        if (firstRealIntervalStartTime > t1) {
+            filledIntervals.add(new MultiStateInterval(t1, firstRealIntervalStartTime - 1, treeElem));
+        }
+        filledIntervals.add(modelIntervals.get(0));
+
+        for (int i = 1; i < modelIntervals.size(); i++) {
+            TimeGraphStateInterval interval1 = modelIntervals.get(i - 1);
+            TimeGraphStateInterval interval2 = modelIntervals.get(i);
+            long bound1 = interval1.getEndTime();
+            long bound2 = interval2.getStartTime();
+
+            /* (we've already inserted 'interval1' on the previous loop.) */
+            if (bound1 + 1 != bound2) {
+                TimeGraphStateInterval multiStateInterval = new MultiStateInterval(bound1 + 1, bound2 - 1, treeElem);
+                filledIntervals.add(multiStateInterval);
+            }
+            filledIntervals.add(interval2);
+        }
+
+        /* Add a multi-state at the end too, if needed */
+        long lastRealIntervalEndTime = Iterables.getLast(modelIntervals).getEndTime();
+        if (lastRealIntervalEndTime < t2) {
+            filledIntervals.add(new MultiStateInterval(lastRealIntervalEndTime + 1, t2, treeElem));
+        }
+
+        return filledIntervals;
     }
 
     private TimeGraphStateInterval ssIntervalToModelInterval(ITmfStateSystem ss,
             StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
         List<ITmfStateInterval> fullState;
         try {
+            // TODO Big performance improvement low-hanging fruit here
             fullState = ss.queryFullState(interval.getStartTime());
         } catch (StateSystemDisposedException e) {
             fullState = Collections.emptyList();
