@@ -31,9 +31,7 @@ class ZoomInButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomInActionDescription));
         setOnAction(e -> {
-            // TODO Pivot could be the current time selection if it's in the
-            // visible time range.
-            viewer.getZoomActions().zoom(null, true);
+            viewer.getZoomActions().zoom(true, false, null);
         });
     }
 }

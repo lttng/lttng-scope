@@ -116,6 +116,19 @@ public class DebugOptions {
      */
     public final ConfigOption<Double> zoomStep = new ConfigOption<>(0.08);
 
+    /**
+     * Each zoom action will be centered on the center of the selection if it's
+     * currently visible.
+     */
+    public final ConfigOption<Boolean> zoomPivotOnSelection = new ConfigOption<>(true);
+
+    /**
+     * Each zoom action will be centered on the current mouse position if the
+     * zoom action originates from a mouse event. If zoomPivotOnSelection is
+     * enabled, it has priority.
+     */
+    public final ConfigOption<Boolean> zoomPivotOnMousePosition = new ConfigOption<>(true);
+
     // ------------------------------------------------------------------------
     // State rectangles
     // ------------------------------------------------------------------------

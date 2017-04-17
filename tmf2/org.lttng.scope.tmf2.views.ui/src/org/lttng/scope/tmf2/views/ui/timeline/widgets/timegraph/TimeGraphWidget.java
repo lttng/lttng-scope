@@ -937,8 +937,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * bubble to the ScrollPane, which will do a standard scroll).
      */
     private final EventHandler<ScrollEvent> fMouseScrollListener = e -> {
+        boolean forceUseMousePosition = false;
+
         if (!e.isControlDown()) {
             return;
+        }
+
+        if (e.isShiftDown()) {
+            forceUseMousePosition = true;
         }
         e.consume();
 
@@ -949,10 +955,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * getX() corresponds to the X position of the mouse on the time graph.
          * This is seriously awesome.
          */
-        // TODO Support passing a pivotX to the zoom() method below
-//        double originX = e.getX();
+        fZoomActions.zoom(zoomIn, forceUseMousePosition, e.getX());
 
-        fZoomActions.zoom(null, zoomIn);
     };
 
     // ------------------------------------------------------------------------
@@ -965,21 +969,40 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      */
     public class ZoomActions {
 
-        public void zoom(@Nullable Double pivotX, boolean zoomIn) {
+        public void zoom(boolean zoomIn, boolean forceUseMousePosition, @Nullable Double mouseX) {
             final double zoomStep = fDebugOptions.zoomStep.get();
 
-            double newScaleFactor = (zoomIn ?
-                        1.0 * (1 + zoomStep) :
-                        1.0 * (1 / (1 + zoomStep)));
+            double newScaleFactor = (zoomIn ? 1.0 * (1 + zoomStep) : 1.0 * (1 / (1 + zoomStep)));
 
             /* Send a corresponding window-range signal to the control */
             TimeGraphModelControl control = getControl();
-            TimeRange range = getViewContext().getCurrentVisibleTimeRange();
-            /* Shrink the time range by half the ZOOM_FACTOR on each side */
-            double newRange = range.getDuration() * (1.0 / newScaleFactor);
-            double diff = range.getDuration() - newRange;
-            long newStart = range.getStart() + Math.round(diff / 2.0);
-            long newEnd = range.getEnd() - Math.round(diff / 2.0);
+            TimeRange visibleRange = getViewContext().getCurrentVisibleTimeRange();
+
+            TimeRange currentSelection = getViewContext().getCurrentSelectionTimeRange();
+            long currentSelectionCenter = ((currentSelection.getDuration() / 2) + currentSelection.getStart());
+            boolean currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter);
+
+            long zoomPivot;
+            if (fDebugOptions.zoomPivotOnMousePosition.get() && mouseX != null && forceUseMousePosition) {
+                /* Pivot on mouse position */
+                zoomPivot = paneXPosToTimestamp(mouseX);
+            } else if (fDebugOptions.zoomPivotOnSelection.get() && currentSelectionCenterIsVisible) {
+                /* Pivot on current selection center */
+                zoomPivot = currentSelectionCenter;
+            } else if (fDebugOptions.zoomPivotOnMousePosition.get() && mouseX != null) {
+                /* Pivot on mouse position */
+                zoomPivot = paneXPosToTimestamp(mouseX);
+            } else {
+                /* Pivot on center of visible range */
+                zoomPivot = visibleRange.getStart() + (visibleRange.getDuration() / 2);
+            }
+
+            double newDuration = visibleRange.getDuration() * (1.0 / newScaleFactor);
+            double durationDelta = newDuration - visibleRange.getDuration();
+            double zoomPivotRatio = (double) (zoomPivot - visibleRange.getStart()) / (double) (visibleRange.getDuration());
+
+            long newStart = visibleRange.getStart() - Math.round(durationDelta * zoomPivotRatio);
+            long newEnd = visibleRange.getEnd() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
 
             /* Clamp newStart and newEnd to the full trace's range */
             TimeRange fullRange = control.getViewContext().getCurrentTraceFullRange();
