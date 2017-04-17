@@ -12,6 +12,8 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.util.Collection;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -121,6 +123,49 @@ public abstract class TimeGraphWidgetTestBase {
     }
 
     /**
+     * Get the horizontal number of visible pixels in the view.
+     *
+     * @return The time graph's visible width
+     */
+    protected double getTimeGraphWidth() {
+        return getWidget().getTimeGraphScrollPane().getViewportBounds().getWidth();
+    }
+
+    /**
+     * Seek the view to a given time range, and retrieve the rendered state
+     * rectangles. Note that this method won't touch the vertical position of
+     * the widget.
+     *
+     * @param range
+     *            The target time range
+     * @return The generated and rendered state rectangles
+     */
+    protected Collection<StateRectangle> renderRectanglesForRange(TimeRange range) {
+        seekVisibleRange(range);
+
+        getWidget().prepareWaitForRepaint();
+        getWidget().paintCurrentLocation();
+        while (!getWidget().waitForRepaint()) {
+            updateUI();
+        }
+
+        return getWidget().getRenderedStateRectangles();
+    }
+
+    /**
+     * See the timegraph to the given time range.
+     *
+     * @param timeRange
+     *            The target time range
+     */
+    protected void seekVisibleRange(TimeRange timeRange) {
+        TimeGraphModelControl control = sfControl;
+        assertNotNull(control);
+        control.getViewContext().setCurrentVisibleTimeRange(timeRange);
+        updateUI();
+    }
+
+    /**
      * Execute all pending UI operations. Since these tests are meant to start
      * on the UI thread, calling this will allow pausing the test and running
      * queued up UI operations.
@@ -132,13 +177,6 @@ public abstract class TimeGraphWidgetTestBase {
         }
         while (display.readAndDispatch()) {
         }
-    }
-
-    protected void seekVisibleRange(TimeRange timeRange) {
-        TimeGraphModelControl control = sfControl;
-        assertNotNull(control);
-        control.getViewContext().setCurrentVisibleTimeRange(timeRange);
-        updateUI();
     }
 
 }

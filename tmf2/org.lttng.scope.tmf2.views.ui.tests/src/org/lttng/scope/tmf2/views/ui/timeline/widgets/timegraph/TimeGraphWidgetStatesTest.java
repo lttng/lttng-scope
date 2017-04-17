@@ -71,24 +71,16 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
          * This width is the maximum number of nanoseconds the time range can
          * have to have a query resolution of 1.
          */
-        double viewWidth = getWidget().getTimeGraphScrollPane().getViewportBounds().getWidth();
+        double viewWidth = getTimeGraphWidth();
         long duration = (long) (viewWidth / 2.0) * fTargetResolution;
         TimeRange visibleRange = TimeRange.of(START_TIME, START_TIME + duration);
-        seekVisibleRange(visibleRange);
-
-        getWidget().prepareWaitForRepaint();
-        getWidget().paintCurrentLocation();
-        while (!getWidget().waitForRepaint()) {
-            updateUI();
-        }
-
-        Collection<StateRectangle> renderedStates = getWidget().getRenderedStateRectangles();
+        Collection<StateRectangle> renderedStates = renderRectanglesForRange(visibleRange);
 
         /* Check the states for each of the first 10 tree entries. */
         for (int i = 1; i <= 10; i++) {
             int entryIndex = i;
             Collection<StateRectangle> entryStates = renderedStates.stream()
-                    .filter(rect -> rect.getStateInterval().getStartEvent().getTreeElement().getName().equals(StubModelRenderProvider.ENTRY_NAME_PREFIX + entryIndex))
+                    .filter(rect -> rect.getStateInterval().getTreeElement().getName().equals(StubModelRenderProvider.ENTRY_NAME_PREFIX + entryIndex))
                     .sorted(Comparator.comparingLong(rect -> rect.getStateInterval().getStartEvent().getTimestamp()))
                     .collect(Collectors.toList());
 
@@ -103,9 +95,7 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
             assertTrue(entryStates.size() >= expectedSize);
             /* ... but never more than twice that number. */
             assertTrue(entryStates.size() <= 2 * expectedSize);
-
         }
-
     }
 
 }
