@@ -12,6 +12,18 @@ available under the https://www.eclipse.org/legal/epl-v10.html[Eclipse
 Public License].
 
 
+== Requirements
+
+The following items are required to run LTTng Scope:
+
+* Java 8
+* JavaFX
+
+If you use Oracle's JVM, JavaFX is included. If you use OpenJDK, you might need
+to install OpenJFX separately. On Debian/Ubuntu, it is part of the _openjfx_
+package.
+
+
 == Build from source
 
 You need http://maven.apache.org[Maven] version 3.3 or later to build
