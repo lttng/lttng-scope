@@ -69,8 +69,8 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomInBegin() {
-        testZoom(100000L, 110000L, true, 1);
-        testZoom(100000L, 120000L, true, 3);
+        testZoom(100000L, 110000L, 105000L, true, 1);
+        testZoom(100000L, 120000L, 110000L, true, 3);
     }
 
     /**
@@ -78,8 +78,8 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomIn() {
-        testZoom(120000L, 150000L, true, 1);
-        testZoom(150000L, 160000L, true, 2);
+        testZoom(120000L, 150000L, 135000L, true, 1);
+        testZoom(150000L, 160000L, 155000L, true, 2);
     }
 
     /**
@@ -87,8 +87,8 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomInEnd() {
-        testZoom(160000L, 200000L, true, 1);
-        testZoom(180000L, 200000L, true, 3);
+        testZoom(160000L, 200000L, 180000L, true, 1);
+        testZoom(180000L, 200000L, 190000L, true, 3);
     }
 
     /**
@@ -96,8 +96,8 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomInFull() {
-        testZoom(100000L, 200000L, true, 1);
-        testZoom(100000L, 200000L, true, 3);
+        testZoom(100000L, 200000L, 150000L, true, 1);
+        testZoom(100000L, 200000L, 150000L, true, 3);
     }
 
     /**
@@ -106,7 +106,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomOutBegin() {
-        testZoom(100000L, 140000L, false, 1);
+        testZoom(100000L, 140000L, 120000L, false, 1);
     }
 
     /**
@@ -114,8 +114,8 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomOut() {
-        testZoom(160000L, 180000L, false, 1);
-        testZoom(140000L, 160000L, false, 3);
+        testZoom(160000L, 180000L, 170000L, false, 1);
+        testZoom(140000L, 160000L, 150000L, false, 3);
     }
 
     /**
@@ -124,7 +124,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomOutEnd() {
-        testZoom(180000L, 200000L, false, 1);
+        testZoom(180000L, 200000L, 190000L, false, 1);
     }
 
     /**
@@ -133,16 +133,19 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testZoomOutFull() {
-        testZoom(160000L, 200000L, true, 1);
-        testZoom(180000L, 200000L, true, 3);
+        testZoom(160000L, 200000L, 180000L, true, 1);
+        testZoom(180000L, 200000L, 190000L, true, 3);
     }
 
-    private void testZoom(long initialRangeStart, long initialRangeEnd, boolean zoomIn, int nbSteps) {
+    private void testZoom(long initialRangeStart, long initialRangeEnd, long zoomPivot, boolean zoomIn, int nbSteps) {
         TimeRange initialRange = TimeRange.of(initialRangeStart, initialRangeEnd);
+        TimeRange selectionRange = TimeRange.of(zoomPivot, zoomPivot);
         TimeGraphWidget viewer = getWidget();
         TimeGraphModelControl control = getControl();
 
         seekVisibleRange(initialRange);
+
+        viewer.getViewContext().setCurrentSelectionTimeRange(selectionRange);
 
         double totalFactor = Math.pow((1.0 + viewer.getDebugOptions().zoomStep.get()), nbSteps);
         if (!zoomIn) {
@@ -150,22 +153,23 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
         }
         long initialRangeDuration = initialRange.getDuration();
         double newRangeDuration = initialRangeDuration * (1.0 / (totalFactor));
-        // TODO Support pivot not exactly in the center of the visible range
-        /* diff > 0 means a zoom-in, and vice versa */
-        double diff = initialRangeDuration - newRangeDuration;
+
+        double durationDelta = newRangeDuration - initialRangeDuration;
+        double zoomPivotRatio = (double) (zoomPivot - initialRange.getStart()) / (double) (initialRange.getDuration());
+
+        long newStart = initialRange.getStart() - Math.round(durationDelta * zoomPivotRatio);
+        long newEnd = initialRange.getEnd() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
 
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {
-            viewer.getZoomActions().zoom(null, zoomIn);
+            viewer.getZoomActions().zoom(zoomIn, false, null);
         }
         updateUI();
 
         final long expectedStart = Math.max(
-                initialRangeStart + Math.round(diff / 2),
-                StubTrace.FULL_TRACE_START_TIME);
+                newStart, StubTrace.FULL_TRACE_START_TIME);
         final long expectedEnd = Math.min(
-                initialRangeEnd - Math.round(diff / 2),
-                StubTrace.FULL_TRACE_END_TIME);
+                newEnd, StubTrace.FULL_TRACE_END_TIME);
         TimeRange expectedRange = TimeRange.of(expectedStart, expectedEnd);
 
         verifyVisibleRange(expectedRange, control, viewer);

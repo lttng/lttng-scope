@@ -32,8 +32,7 @@ class ZoomOutButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomOutActionDescription));
         setOnAction(e -> {
-            // TODO Should pivot be the current selection, or just the center?
-            viewer.getZoomActions().zoom(null, false);
+            viewer.getZoomActions().zoom(false, false, null);
         });
     }
 }
