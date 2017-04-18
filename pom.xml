@@ -476,6 +476,9 @@
                 <version>2.5.0</version>
               </frameworkExtension>
             </frameworkExtensions>
+            <environmentVariables>
+              <SWT_GTK3>0</SWT_GTK3>
+            </environmentVariables>
           </configuration>
         </plugin>
 
