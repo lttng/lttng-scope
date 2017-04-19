@@ -330,6 +330,7 @@ public class ControlFlowRenderProvider extends StateSystemModelRenderProvider {
         super(requireNonNull(Messages.threadsProviderName),
                 SORTING_MODES,
                 FILTER_MODES,
+                null,
                 /* Parameters specific to state system render providers */
                 KernelAnalysisModule.ID,
                 SS_TO_TREE_RENDER_FUNCTION,

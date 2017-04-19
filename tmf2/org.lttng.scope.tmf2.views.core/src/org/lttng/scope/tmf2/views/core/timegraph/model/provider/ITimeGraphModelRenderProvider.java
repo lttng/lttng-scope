@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -64,7 +65,7 @@ public interface ITimeGraphModelRenderProvider {
     void setTrace(@Nullable ITmfTrace trace);
 
     // ------------------------------------------------------------------------
-    // Render generation methods
+    // State render generation methods
     // ------------------------------------------------------------------------
 
     TimeGraphTreeRender getTreeRender();
@@ -78,10 +79,19 @@ public interface ITimeGraphModelRenderProvider {
                 .collect(Collectors.toList());
     }
 
+    // ------------------------------------------------------------------------
+    // Arrow render generation methods
+    // ------------------------------------------------------------------------
+
+    List<TimeGraphArrowSeries> getAvailableArrowSeries();
+
+    TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange);
+
+    // ------------------------------------------------------------------------
+    // Drawn event generation methods
+    // ------------------------------------------------------------------------
+
     TimeGraphDrawnEventRender getDrawnEventRender(TimeGraphTreeElement treeElement, TimeRange timeRange);
-
-    TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender);
-
 
     // ------------------------------------------------------------------------
     // Sorting modes

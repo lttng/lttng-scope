@@ -23,6 +23,7 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
@@ -55,7 +56,7 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
     }
 
     protected StubModelRenderProvider() {
-        super("Test", null, null);
+        super("Test", null, null, null);
     }
 
     @Override
@@ -90,8 +91,8 @@ class StubModelRenderProvider extends TimeGraphModelRenderProvider {
     }
 
     @Override
-    public @NonNull TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender) {
-        return new TimeGraphArrowRender();
+    public @NonNull TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange) {
+        return new TimeGraphArrowRender(timeRange, Collections.EMPTY_LIST);
     }
 
     private static final Iterator<String> STATE_NAMES = Iterators.cycle("State 1", "State 2");

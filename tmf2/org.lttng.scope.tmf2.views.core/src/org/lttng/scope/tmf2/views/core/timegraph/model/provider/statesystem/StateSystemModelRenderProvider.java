@@ -27,6 +27,7 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
@@ -130,6 +131,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
     protected StateSystemModelRenderProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
+            @Nullable List<TimeGraphArrowSeries> arrowSeries,
             String stateSystemModuleId,
             Function<TreeRenderContext, TimeGraphTreeRender> treeRenderFunction,
             Function<StateIntervalContext, String> stateNameMappingFunction,
@@ -138,7 +140,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
-        super(name, sortingModes, filterModes);
+        super(name, sortingModes, filterModes, arrowSeries);
 
         fStateSystemModuleId = stateSystemModuleId;
         fTreeRenderFunction = treeRenderFunction;
@@ -236,9 +238,9 @@ public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider
     }
 
     @Override
-    public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender) {
+    public TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange) {
         // TODO
-        return new TimeGraphArrowRender();
+        return new TimeGraphArrowRender(timeRange, Collections.EMPTY_LIST);
     }
 
     private List<TimeGraphStateInterval> queryHistoryRange(ITmfStateSystem ss,

@@ -20,6 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -35,6 +36,7 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
     private final String fName;
     private final List<SortingMode> fSortingModes;
     private final List<FilterMode> fFilterModes;
+    private final List<TimeGraphArrowSeries> fArrowSeries;
 
     private final Set<FilterMode> fActiveFilterModes = new HashSet<>();
     private SortingMode fCurrentSortingMode;
@@ -43,7 +45,8 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     protected TimeGraphModelRenderProvider(String name,
             @Nullable List<SortingMode> sortingModes,
-            @Nullable List<FilterMode> filterModes) {
+            @Nullable List<FilterMode> filterModes,
+            @Nullable List<TimeGraphArrowSeries> arrowSeries) {
         fName = name;
 
         if (sortingModes == null || sortingModes.isEmpty()) {
@@ -58,6 +61,12 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
             fFilterModes = ImmutableList.of();
         } else {
             fFilterModes = ImmutableList.copyOf(filterModes);
+        }
+
+        if (arrowSeries == null || arrowSeries.isEmpty()) {
+            fArrowSeries = ImmutableList.of();
+        } else {
+            fArrowSeries = ImmutableList.copyOf(arrowSeries);
         }
     }
 
@@ -75,6 +84,11 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
         return fCurrentTrace;
     }
 
+    @Override
+    public final List<TimeGraphArrowSeries> getAvailableArrowSeries() {
+        return fArrowSeries;
+    }
+
     // ------------------------------------------------------------------------
     // Render generation methods. Implementation left to subclasses.
     // ------------------------------------------------------------------------
@@ -87,11 +101,10 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task);
 
     @Override
-    public abstract TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, TimeRange timeRange);
+    public abstract TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange);
 
     @Override
-    public abstract TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender);
+    public abstract TimeGraphDrawnEventRender getDrawnEventRender(TimeGraphTreeElement treeElement, TimeRange timeRange);
 
     // ------------------------------------------------------------------------
     // Sorting modes
