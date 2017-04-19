@@ -72,6 +72,7 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         } else {
             fArrowProviders = ImmutableList.copyOf(arrowProviders);
         }
+        fArrowProviders.forEach(ap -> ap.traceProperty().bind(fTraceProperty));
     }
 
     @Override

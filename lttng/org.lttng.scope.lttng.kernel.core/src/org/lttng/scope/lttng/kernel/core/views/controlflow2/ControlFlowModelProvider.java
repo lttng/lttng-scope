@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -38,6 +39,12 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
 
     private static final Supplier<ITimeGraphModelStateProvider> STATE_PROVIDER = () -> {
         return new ControlFlowModelStateProvider();
+    };
+
+    private static final Supplier<List<ITimeGraphModelArrowProvider>> ARROW_PROVIDERS = () -> {
+        return ImmutableList.of(
+                new ControlFlowModelArrowProviderCpus()
+                );
     };
 
     private static final List<SortingMode> SORTING_MODES = ImmutableList.of(
@@ -153,7 +160,7 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
                 SORTING_MODES,
                 FILTER_MODES,
                 STATE_PROVIDER.get(),
-                null,
+                ARROW_PROVIDERS.get(),
                 /* Parameters specific to state system render providers */
                 KernelAnalysisModule.ID,
                 SS_TO_TREE_RENDER_FUNCTION);
