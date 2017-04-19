@@ -76,6 +76,7 @@ public class ControlFlowRenderProviderTest {
     public void setupClass() {
         LttngKernelTrace trace = LttngKernelTestTraceUtils.getTrace(TEST_TRACE);
         trace.traceOpened(new TmfTraceOpenedSignal(ControlFlowRenderProviderTest.class, trace, null));
+        trace.indexTrace(true);
 
         IAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(trace, KernelAnalysisModule.class, KernelAnalysisModule.ID);
         assertNotNull(analysis);
