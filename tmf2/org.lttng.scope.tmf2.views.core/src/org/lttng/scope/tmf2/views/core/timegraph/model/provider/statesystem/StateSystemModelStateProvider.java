@@ -65,6 +65,8 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
     private final String fStateSystemModuleId;
     private final Function<StateIntervalContext, TimeGraphStateInterval> fIntervalMappingFunction;
 
+    private @Nullable ITmfStateSystem fStateSystem = null;
+
     /**
      * @param sortingModes
      * @param filterModes
@@ -99,15 +101,20 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
                     lineThicknessMappingFunction.apply(ssCtx),
                     propertiesMappingFunction.apply(ssCtx));
         };
-    }
 
-    private @Nullable ITmfStateSystem getSSOfCurrentTrace() {
-        ITmfTrace trace = traceProperty().get();
-        if (trace == null) {
-            return null;
-        }
-        // FIXME Potentially costly to query this every time, cache it?
-        return TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+        /*
+         * Change listener which will take care of keeping the target state
+         * system up to date.
+         */
+        traceProperty().addListener((obs, oldValue, newValue) -> {
+            ITmfTrace trace = newValue;
+            if (trace == null) {
+                fStateSystem = null;
+                return;
+            }
+            fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+        });
+
     }
 
     // ------------------------------------------------------------------------
@@ -118,7 +125,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
 
-        ITmfStateSystem ss = getSSOfCurrentTrace();
+        ITmfStateSystem ss = fStateSystem;
         if (ss == null) {
             /* Has been called with an invalid trace/treeElement */
             throw new IllegalArgumentException();
