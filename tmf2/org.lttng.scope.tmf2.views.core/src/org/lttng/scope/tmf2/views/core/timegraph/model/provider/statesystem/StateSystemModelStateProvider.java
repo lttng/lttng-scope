@@ -13,29 +13,22 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.google.common.collect.Iterables;
 
@@ -44,30 +37,7 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
-public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
-
-    /**
-     * The context of a tree render. Should contain all the information to
-     * generate the corresponding tree render, according to all configuration
-     * options like sorting, filtering etc. specified by the user.
-     */
-    protected static final class TreeRenderContext {
-
-        public final ITmfStateSystem ss;
-        public final SortingMode sortingMode;
-        public final Set<FilterMode> filterModes;
-        public final List<ITmfStateInterval> fullQueryAtRangeStart;
-
-        public TreeRenderContext(ITmfStateSystem ss,
-                SortingMode sortingMode,
-                Set<FilterMode> filterModes,
-                List<ITmfStateInterval> fullQueryAtRangeStart) {
-            this.ss = ss;
-            this.sortingMode = sortingMode;
-            this.filterModes = filterModes;
-            this.fullQueryAtRangeStart = fullQueryAtRangeStart;
-        }
-    }
+public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
 
     /**
      * The context of a single state interval. Should contain all the
@@ -92,28 +62,8 @@ public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
         }
     }
 
-    /**
-     * Class to encapsulate a cached {@link TimeGraphTreeRender}. This render
-     * should never change, except if the number of attributes in the state
-     * system does (for example, if queries were made before the state system
-     * was done building).
-     */
-    private static final class CachedTreeRender {
-
-        public final int nbAttributes;
-        public final TimeGraphTreeRender treeRender;
-
-        public CachedTreeRender(int nbAttributes, TimeGraphTreeRender treeRender) {
-            this.nbAttributes = nbAttributes;
-            this.treeRender = treeRender;
-        }
-    }
-
     private final String fStateSystemModuleId;
-    private final Function<TreeRenderContext, TimeGraphTreeRender> fTreeRenderFunction;
     private final Function<StateIntervalContext, TimeGraphStateInterval> fIntervalMappingFunction;
-
-    private final Map<ITmfStateSystem, CachedTreeRender> fLastTreeRenders = new WeakHashMap<>();
 
     /**
      * @param sortingModes
@@ -128,22 +78,15 @@ public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
      * @param propertyMappingFunction
      * @param baseQuarkPattern
      */
-    protected StateSystemModelRenderProvider(String name,
-            @Nullable List<SortingMode> sortingModes,
-            @Nullable List<FilterMode> filterModes,
-            @Nullable List<TimeGraphArrowSeries> arrowSeries,
+    protected StateSystemModelStateProvider(
             String stateSystemModuleId,
-            Function<TreeRenderContext, TimeGraphTreeRender> treeRenderFunction,
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ColorDefinition> colorMappingFunction,
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
-        super(name, sortingModes, filterModes, arrowSeries);
-
         fStateSystemModuleId = stateSystemModuleId;
-        fTreeRenderFunction = treeRenderFunction;
 
         fIntervalMappingFunction = ssCtx -> {
             return new BasicTimeGraphStateInterval(
@@ -159,7 +102,7 @@ public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
     }
 
     private @Nullable ITmfStateSystem getSSOfCurrentTrace() {
-        ITmfTrace trace = getCurrentTrace();
+        ITmfTrace trace = traceProperty().get();
         if (trace == null) {
             return null;
         }
@@ -170,40 +113,6 @@ public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
     // ------------------------------------------------------------------------
     // Render generation methods
     // ------------------------------------------------------------------------
-
-    @Override
-    public @NonNull TimeGraphTreeRender getTreeRender() {
-        ITmfStateSystem ss = getSSOfCurrentTrace();
-        if (ss == null) {
-            /* This trace does not provide the expected state system */
-            return TimeGraphTreeRender.EMPTY_RENDER;
-        }
-
-      CachedTreeRender cachedRender = fLastTreeRenders.get(ss);
-      if (cachedRender != null && cachedRender.nbAttributes == ss.getNbAttributes()) {
-          /* The last render is still valid, we can re-use it */
-          return cachedRender.treeRender;
-      }
-
-        /* First generate the tree render context */
-        List<ITmfStateInterval> fullStateAtStart;
-        try {
-            fullStateAtStart = ss.queryFullState(ss.getStartTime());
-        } catch (StateSystemDisposedException e) {
-            return TimeGraphTreeRender.EMPTY_RENDER;
-        }
-
-        TreeRenderContext treeContext = new TreeRenderContext(ss,
-                getCurrentSortingMode(),
-                getActiveFilterModes(),
-                fullStateAtStart);
-
-        /* Generate a new tree render */
-        TimeGraphTreeRender treeRender = fTreeRenderFunction.apply(treeContext);
-
-        fLastTreeRenders.put(ss, new CachedTreeRender(ss.getNbAttributes(), treeRender));
-        return treeRender;
-    }
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
@@ -230,18 +139,6 @@ public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
         return new TimeGraphStateRender(timeRange, treeElement, intervals);
     }
 
-    @Override
-    public TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, TimeRange timeRange) {
-        // TODO
-        return new TimeGraphDrawnEventRender();
-    }
-
-    @Override
-    public TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange) {
-        // TODO
-        return new TimeGraphArrowRender(timeRange, Collections.EMPTY_LIST);
-    }
 
     private List<TimeGraphStateInterval> queryHistoryRange(ITmfStateSystem ss,
             StateSystemTimeGraphTreeElement treeElem,

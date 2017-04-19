@@ -80,7 +80,7 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
         for (int i = 1; i <= 10; i++) {
             int entryIndex = i;
             Collection<StateRectangle> entryStates = renderedStates.stream()
-                    .filter(rect -> rect.getStateInterval().getTreeElement().getName().equals(StubModelRenderProvider.ENTRY_NAME_PREFIX + entryIndex))
+                    .filter(rect -> rect.getStateInterval().getTreeElement().getName().equals(StubModelProvider.ENTRY_NAME_PREFIX + entryIndex))
                     .sorted(Comparator.comparingLong(rect -> rect.getStateInterval().getStartEvent().getTimestamp()))
                     .collect(Collectors.toList());
 
@@ -91,7 +91,7 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
              * Check the minimum number of states. There might be more than
              * expected due to prefetching on each side ...
              */
-            int expectedSize = (int) (duration / (entryIndex * StubModelRenderProvider.DURATION_FACTOR));
+            int expectedSize = (int) (duration / (entryIndex * StubModelStateProvider.DURATION_FACTOR));
             assertTrue(entryStates.size() >= expectedSize);
             /* ... but never more than twice that number. */
             assertTrue(entryStates.size() <= 2 * expectedSize);

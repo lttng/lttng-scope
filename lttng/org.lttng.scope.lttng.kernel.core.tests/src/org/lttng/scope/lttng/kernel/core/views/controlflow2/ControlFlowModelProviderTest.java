@@ -47,11 +47,11 @@ import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
 /**
- * Tests for {@link ControlFlowRenderProvider}.
+ * Tests for {@link ControlFlowModelProvider}.
  *
  * @author Alexandre Montplaisir
  */
-public class ControlFlowRenderProviderTest {
+public class ControlFlowModelProviderTest {
 
 //    /** Timeout the tests after 2 minutes */
 //    @Rule
@@ -64,7 +64,7 @@ public class ControlFlowRenderProviderTest {
     private static @Nullable ITmfTrace sfTrace;
     private static @Nullable ITmfStateSystem sfSS;
 
-    private ControlFlowRenderProvider provider = new ControlFlowRenderProvider();
+    private ControlFlowModelProvider provider = new ControlFlowModelProvider();
     {
         provider.disableFilterMode(0);
     }
@@ -75,7 +75,7 @@ public class ControlFlowRenderProviderTest {
     @Before
     public void setupClass() {
         LttngKernelTrace trace = LttngKernelTestTraceUtils.getTrace(TEST_TRACE);
-        trace.traceOpened(new TmfTraceOpenedSignal(ControlFlowRenderProviderTest.class, trace, null));
+        trace.traceOpened(new TmfTraceOpenedSignal(ControlFlowModelProviderTest.class, trace, null));
         trace.indexTrace(true);
 
         IAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(trace, KernelAnalysisModule.class, KernelAnalysisModule.ID);
@@ -166,7 +166,7 @@ public class ControlFlowRenderProviderTest {
                         .findFirst()
                         .get();
 
-                TimeGraphStateRender stateRender = provider.getStateRender(elem, range, 1, null);
+                TimeGraphStateRender stateRender = provider.getStateProvider().getStateRender(elem, range, 1, null);
                 List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
 
                 verifySameIntervals(intervalsFromSS, intervalsFromRender);
@@ -194,7 +194,7 @@ public class ControlFlowRenderProviderTest {
         TimeGraphTreeElement treeElem = provider.getTreeRender().getAllTreeElements().stream()
                 .filter(elem -> elem.getName().equals(treeElemName))
                 .findFirst().get();
-        TimeGraphStateRender stateRender = provider.getStateRender(treeElem, range, resolution, null);
+        TimeGraphStateRender stateRender = provider.getStateProvider().getStateRender(treeElem, range, resolution, null);
         List<TimeGraphStateInterval> intervals = stateRender.getStateIntervals();
 
         assertTrue(intervals.size() > 2);
@@ -237,7 +237,7 @@ public class ControlFlowRenderProviderTest {
         TimeGraphTreeElement treeElem = provider.getTreeRender().getAllTreeElements().stream()
                 .filter(elem -> elem.getName().equals(treeElemName))
                 .findFirst().get();
-        TimeGraphStateRender stateRender = provider.getStateRender(treeElem, range, resolution, null);
+        TimeGraphStateRender stateRender = provider.getStateProvider().getStateRender(treeElem, range, resolution, null);
         List<TimeGraphStateInterval> intervalsFromRender = stateRender.getStateIntervals();
 
         /* Get the intervals from the state system */
@@ -274,7 +274,7 @@ public class ControlFlowRenderProviderTest {
             assertEquals(ssInterval.getEndTime(), renderInterval.getEndEvent().getTimestamp());
 
             int stateValue = ssInterval.getStateValue().unboxInt();
-            String stateName = ControlFlowRenderProvider.mapStateValueToStateName(stateValue);
+            String stateName = ControlFlowModelStateProvider.mapStateValueToStateName(stateValue);
             assertEquals(stateName, renderInterval.getStateName());
         }
     }

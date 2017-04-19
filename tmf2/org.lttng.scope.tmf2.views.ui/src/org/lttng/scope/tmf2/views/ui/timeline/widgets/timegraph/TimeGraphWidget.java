@@ -33,6 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -451,8 +452,9 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 long start = System.nanoTime();
                 System.err.println("Starting paint task #" + taskSeqNb);
 
-                ITimeGraphModelProvider renderProvider = getControl().getModelRenderProvider();
-                TimeGraphTreeRender treeRender = renderProvider.getTreeRender();
+                ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
+                ITimeGraphModelStateProvider stateProvider = modelProvider.getStateProvider();
+                TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
                 final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
 
                 if (isCancelled()) {
@@ -473,7 +475,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
                 List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
-                        .map(treeElem -> renderProvider.getStateRender(treeElem, renderingRange, resolution, this))
+                        .map(treeElem -> stateProvider.getStateRender(treeElem, renderingRange, resolution, this))
                         .collect(Collectors.toList());
 
                 if (isCancelled()) {

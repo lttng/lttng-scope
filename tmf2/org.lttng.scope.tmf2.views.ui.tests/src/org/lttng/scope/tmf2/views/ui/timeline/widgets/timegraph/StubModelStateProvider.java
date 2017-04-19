@@ -14,29 +14,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.google.common.collect.Iterators;
 
-class StubModelRenderProvider extends TimeGraphModelProvider {
-
-    public static final String ENTRY_NAME_PREFIX = "Entry #";
+class StubModelStateProvider extends TimeGraphModelStateProvider {
 
     /**
      * The duration of each state is equal to its tree element index, multiplied
@@ -44,31 +36,11 @@ class StubModelRenderProvider extends TimeGraphModelProvider {
      */
     public static final long DURATION_FACTOR = 10;
 
-    private static final int NB_ENTRIES = 20;
-
-    private static final TimeGraphTreeRender TREE_RENDER;
-
-    static {
-        List<TimeGraphTreeElement> treeElements = IntStream.range(1, NB_ENTRIES)
-            .mapToObj(i -> new TimeGraphTreeElement(ENTRY_NAME_PREFIX + i, Collections.emptyList()))
-            .collect(Collectors.toList());
-        TREE_RENDER = new TimeGraphTreeRender(treeElements);
-    }
-
-    protected StubModelRenderProvider() {
-        super("Test", null, null, null);
-    }
-
-    @Override
-    public TimeGraphTreeRender getTreeRender() {
-        return TREE_RENDER;
-    }
-
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
 
-        int entryIndex = Integer.valueOf(treeElement.getName().substring(ENTRY_NAME_PREFIX.length()));
+        int entryIndex = Integer.valueOf(treeElement.getName().substring(StubModelProvider.ENTRY_NAME_PREFIX.length()));
         long stateLength = entryIndex * DURATION_FACTOR;
 
         List<TimeGraphStateInterval> intervals = LongStream.iterate(timeRange.getStart(), i -> i + stateLength)
@@ -82,17 +54,6 @@ class StubModelRenderProvider extends TimeGraphModelProvider {
                 .collect(Collectors.toList());
 
         return new TimeGraphStateRender(timeRange, treeElement, intervals);
-    }
-
-    @Override
-    public @NonNull TimeGraphDrawnEventRender getDrawnEventRender(
-            TimeGraphTreeElement treeElement, TimeRange timeRange) {
-        return new TimeGraphDrawnEventRender();
-    }
-
-    @Override
-    public @NonNull TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange) {
-        return new TimeGraphArrowRender(timeRange, Collections.EMPTY_LIST);
     }
 
     private static final Iterator<String> STATE_NAMES = Iterators.cycle("State 1", "State 2");

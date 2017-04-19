@@ -42,7 +42,7 @@ public class StubView extends TmfView {
      */
     public StubView() {
         super(VIEW_ID);
-        fModelRenderProvider = new StubModelRenderProvider();
+        fModelRenderProvider = new StubModelProvider();
         fModelControl = new TimeGraphModelControl(ViewGroupContext.getCurrent(), fModelRenderProvider);
     }
 

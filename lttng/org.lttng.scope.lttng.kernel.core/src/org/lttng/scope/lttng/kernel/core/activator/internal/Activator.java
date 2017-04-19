@@ -10,7 +10,7 @@
 package org.lttng.scope.lttng.kernel.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
-import org.lttng.scope.lttng.kernel.core.views.controlflow2.ControlFlowRenderProvider;
+import org.lttng.scope.lttng.kernel.core.views.controlflow2.ControlFlowModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 
 /**
@@ -33,7 +33,7 @@ public class Activator extends ScopeCoreActivator {
     protected void startActions() {
         /* Register the model providers shipped in this plugin */
         TimeGraphModelProviderManager manager = TimeGraphModelProviderManager.instance();
-        manager.registerProviderFactory(() -> new ControlFlowRenderProvider());
+        manager.registerProviderFactory(() -> new ControlFlowModelProvider());
 
         /* Register the built-in LTTng-Analyses descriptors */
 //        try {

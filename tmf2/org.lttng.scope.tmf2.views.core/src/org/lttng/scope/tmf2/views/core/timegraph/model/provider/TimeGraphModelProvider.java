@@ -14,20 +14,18 @@ import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider {
 
@@ -36,18 +34,24 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
     private final String fName;
     private final List<SortingMode> fSortingModes;
     private final List<FilterMode> fFilterModes;
-    private final List<TimeGraphArrowSeries> fArrowSeries;
+
+    private final ITimeGraphModelStateProvider fStateProvider;
+    private final List<ITimeGraphModelArrowProvider> fArrowProviders;
 
     private final Set<FilterMode> fActiveFilterModes = new HashSet<>();
     private SortingMode fCurrentSortingMode;
 
-    private @Nullable ITmfTrace fCurrentTrace;
+    private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>();
 
     protected TimeGraphModelProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
-            @Nullable List<TimeGraphArrowSeries> arrowSeries) {
+            ITimeGraphModelStateProvider stateProvider,
+            @Nullable List<ITimeGraphModelArrowProvider> arrowProviders) {
         fName = name;
+
+        fStateProvider = stateProvider;
+        stateProvider.traceProperty().bind(fTraceProperty);
 
         if (sortingModes == null || sortingModes.isEmpty()) {
             fSortingModes = ImmutableList.of(DEFAULT_SORTING_MODE);
@@ -63,10 +67,10 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
             fFilterModes = ImmutableList.copyOf(filterModes);
         }
 
-        if (arrowSeries == null || arrowSeries.isEmpty()) {
-            fArrowSeries = ImmutableList.of();
+        if (arrowProviders == null || arrowProviders.isEmpty()) {
+            fArrowProviders = ImmutableList.of();
         } else {
-            fArrowSeries = ImmutableList.copyOf(arrowSeries);
+            fArrowProviders = ImmutableList.copyOf(arrowProviders);
         }
     }
 
@@ -77,16 +81,21 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
 
     @Override
     public final void setTrace(@Nullable ITmfTrace trace) {
-        fCurrentTrace = trace;
+        fTraceProperty.set(trace);
     }
 
-    protected final @Nullable ITmfTrace getCurrentTrace() {
-        return fCurrentTrace;
+    protected final @Nullable ITmfTrace getTrace() {
+        return fTraceProperty.get();
     }
 
     @Override
-    public final List<TimeGraphArrowSeries> getAvailableArrowSeries() {
-        return fArrowSeries;
+    public final ITimeGraphModelStateProvider getStateProvider() {
+        return fStateProvider;
+    }
+
+    @Override
+    public final List<ITimeGraphModelArrowProvider> getArrowProviders() {
+        return fArrowProviders;
     }
 
     // ------------------------------------------------------------------------
@@ -95,16 +104,6 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
 
     @Override
     public abstract TimeGraphTreeRender getTreeRender();
-
-    @Override
-    public abstract TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
-            TimeRange timeRange, long resolution, @Nullable FutureTask<?> task);
-
-    @Override
-    public abstract TimeGraphArrowRender getArrowRender(TimeGraphArrowSeries series, TimeRange timeRange);
-
-    @Override
-    public abstract TimeGraphDrawnEventRender getDrawnEventRender(TimeGraphTreeElement treeElement, TimeRange timeRange);
 
     // ------------------------------------------------------------------------
     // Sorting modes
