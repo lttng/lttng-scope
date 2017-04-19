@@ -9,7 +9,9 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
@@ -177,6 +179,51 @@ public abstract class TimeGraphWidgetTestBase {
         }
         while (display.readAndDispatch()) {
         }
+    }
+
+    /**
+     * Verify that both the control and viewer passed as parameters currently
+     * report the expected visible time range.
+     *
+     * @param expectedRange
+     *            Expected time range
+     */
+    protected static void verifyVisibleRange(TimeRange expectedRange) {
+        TimeGraphModelControl control = sfControl;
+        TimeGraphWidget widget = sfWidget;
+        assertNotNull(control);
+        assertNotNull(widget);
+
+        /* Check the control */
+        assertEquals(expectedRange, control.getViewContext().getCurrentVisibleTimeRange());
+
+        /* Check the view itself */
+        TimeRange timeRange = widget.getTimeGraphEdgeTimestamps(null);
+        long tsStart = timeRange.getStart();
+        long tsEnd = timeRange.getEnd();
+
+        /* We will tolerate being off by at most 1 pixel */
+        double delta = widget.getCurrentNanosPerPixel();
+
+        assertEqualsWithin(expectedRange.getStart(), tsStart, delta);
+        assertEqualsWithin(expectedRange.getEnd(), tsEnd, delta);
+    }
+
+    /**
+     *
+     * Assert that a long value is equal to another, within a given delta.
+     *
+     * @param expected
+     *            The expected value
+     * @param actual
+     *            The value to test
+     * @param delta
+     *            The delta
+     */
+    protected static void assertEqualsWithin(long expected, long actual, double delta) {
+        String errMsg = "" + actual + " not within margin (" + delta + ") of " + expected;
+        assertTrue(errMsg, actual < expected + delta);
+        assertTrue(errMsg, actual > expected - delta);
     }
 
 }
