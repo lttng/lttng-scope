@@ -16,7 +16,7 @@ import java.util.Set;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
@@ -41,7 +41,7 @@ public class TimelineManager {
         /* Add widgets for all known timegraph model providers */
         for (ITimeGraphModelProviderFactory factory : TimeGraphModelProviderManager.instance().getRegisteredProviderFactories()) {
             /* Instantiate a widget for this provider type */
-            ITimeGraphModelRenderProvider provider = factory.get();
+            ITimeGraphModelProvider provider = factory.get();
             TimeGraphModelControl control = new TimeGraphModelControl(viewContext, provider);
             TimeGraphWidget viewer = new TimeGraphWidget(control);
             control.attachView(viewer);

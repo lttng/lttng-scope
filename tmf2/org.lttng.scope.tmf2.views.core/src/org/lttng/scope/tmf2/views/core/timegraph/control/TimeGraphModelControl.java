@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
 import javafx.beans.value.ChangeListener;
@@ -23,11 +23,11 @@ public final class TimeGraphModelControl {
     private final ChangeListener<TimeRange> fVisibleRangeChangeListener = (obs, oldRange, newRange) -> seekVisibleRange(newRange);
 
     private final ViewGroupContext fViewContext;
-    private final ITimeGraphModelRenderProvider fRenderProvider;
+    private final ITimeGraphModelProvider fRenderProvider;
 
     private @Nullable TimeGraphModelView fView = null;
 
-    public TimeGraphModelControl(ViewGroupContext viewContext, ITimeGraphModelRenderProvider renderProvider) {
+    public TimeGraphModelControl(ViewGroupContext viewContext, ITimeGraphModelProvider renderProvider) {
         fViewContext = viewContext;
         fRenderProvider = renderProvider;
 
@@ -74,7 +74,7 @@ public final class TimeGraphModelControl {
         return fViewContext;
     }
 
-    public ITimeGraphModelRenderProvider getModelRenderProvider() {
+    public ITimeGraphModelProvider getModelRenderProvider() {
         return fRenderProvider;
     }
 

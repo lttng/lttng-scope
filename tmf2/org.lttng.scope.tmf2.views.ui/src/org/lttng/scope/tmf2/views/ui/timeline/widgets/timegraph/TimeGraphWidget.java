@@ -32,7 +32,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -451,7 +451,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 long start = System.nanoTime();
                 System.err.println("Starting paint task #" + taskSeqNb);
 
-                ITimeGraphModelRenderProvider renderProvider = getControl().getModelRenderProvider();
+                ITimeGraphModelProvider renderProvider = getControl().getModelRenderProvider();
                 TimeGraphTreeRender treeRender = renderProvider.getTreeRender();
                 final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
 

@@ -29,7 +29,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRenderProvider {
+public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider {
 
     protected static final SortingMode DEFAULT_SORTING_MODE = new SortingMode(nullToEmptyString(Messages.DefaultSortingModeName));
 
@@ -43,7 +43,7 @@ public abstract class TimeGraphModelRenderProvider implements ITimeGraphModelRen
 
     private @Nullable ITmfTrace fCurrentTrace;
 
-    protected TimeGraphModelRenderProvider(String name,
+    protected TimeGraphModelProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
             @Nullable List<TimeGraphArrowSeries> arrowSeries) {

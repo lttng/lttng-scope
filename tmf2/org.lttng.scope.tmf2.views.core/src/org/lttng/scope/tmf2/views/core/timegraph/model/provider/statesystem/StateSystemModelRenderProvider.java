@@ -24,7 +24,7 @@ import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModul
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
@@ -44,7 +44,7 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
-public class StateSystemModelRenderProvider extends TimeGraphModelRenderProvider {
+public class StateSystemModelRenderProvider extends TimeGraphModelProvider {
 
     /**
      * The context of a tree render. Should contain all the information to

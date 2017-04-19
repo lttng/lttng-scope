@@ -13,8 +13,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.FilterMode;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.scene.control.CheckMenuItem;
@@ -32,7 +32,7 @@ import javafx.scene.control.MenuButton;
 class FilterModeMenuButton extends MenuButton {
 
     public FilterModeMenuButton(TimeGraphWidget viewer) {
-        ITimeGraphModelRenderProvider provider = viewer.getControl().getModelRenderProvider();
+        ITimeGraphModelProvider provider = viewer.getControl().getModelRenderProvider();
 
         Collection<CheckMenuItem> filterModeItems = IntStream.range(0, provider.getFilterModes().size())
                 .mapToObj(index -> {

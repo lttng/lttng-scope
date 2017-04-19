@@ -12,6 +12,6 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider;
 import java.util.function.Supplier;
 
 @FunctionalInterface
-public interface ITimeGraphModelProviderFactory extends Supplier<ITimeGraphModelRenderProvider> {
+public interface ITimeGraphModelProviderFactory extends Supplier<ITimeGraphModelProvider> {
 
 }

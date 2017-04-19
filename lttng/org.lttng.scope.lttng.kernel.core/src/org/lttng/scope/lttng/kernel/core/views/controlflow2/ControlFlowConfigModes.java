@@ -11,8 +11,8 @@ package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.FilterMode;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.SortingMode;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 
 public interface ControlFlowConfigModes {
 

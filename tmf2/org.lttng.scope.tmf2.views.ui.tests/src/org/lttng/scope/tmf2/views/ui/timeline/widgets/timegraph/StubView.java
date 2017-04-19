@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;
@@ -32,7 +32,7 @@ public class StubView extends TmfView {
     /** The view's ID */
     public static final String VIEW_ID = "org.lttng.scope.tmf2.views.ui.tests.timegraph.swtjfx"; //$NON-NLS-1$
 
-    private final ITimeGraphModelRenderProvider fModelRenderProvider;
+    private final ITimeGraphModelProvider fModelRenderProvider;
     private final TimeGraphModelControl fModelControl;
 
     private @Nullable TimeGraphWidget fViewer;

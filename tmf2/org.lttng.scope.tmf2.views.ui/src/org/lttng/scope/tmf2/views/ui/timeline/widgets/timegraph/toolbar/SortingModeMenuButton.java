@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelRenderProvider.SortingMode;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.scene.control.MenuButton;
@@ -32,7 +32,7 @@ import javafx.scene.control.ToggleGroup;
 class SortingModeMenuButton extends MenuButton {
 
     public SortingModeMenuButton(TimeGraphWidget viewer) {
-        ITimeGraphModelRenderProvider provider = viewer.getControl().getModelRenderProvider();
+        ITimeGraphModelProvider provider = viewer.getControl().getModelRenderProvider();
 
         ToggleGroup tg = new ToggleGroup();
         List<RadioMenuItem> sortingModeItems = IntStream.range(0, provider.getSortingModes().size())

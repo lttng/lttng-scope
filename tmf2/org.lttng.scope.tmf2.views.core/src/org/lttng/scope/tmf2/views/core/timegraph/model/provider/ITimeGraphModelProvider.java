@@ -24,7 +24,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
-public interface ITimeGraphModelRenderProvider {
+public interface ITimeGraphModelProvider {
 
     // ------------------------------------------------------------------------
     // Configuration option classes

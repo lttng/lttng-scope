@@ -20,7 +20,7 @@ import java.util.stream.LongStream;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelRenderProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
@@ -34,7 +34,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import com.google.common.collect.Iterators;
 
-class StubModelRenderProvider extends TimeGraphModelRenderProvider {
+class StubModelRenderProvider extends TimeGraphModelProvider {
 
     public static final String ENTRY_NAME_PREFIX = "Entry #";
 
