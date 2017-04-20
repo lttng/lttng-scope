@@ -47,7 +47,7 @@ To build LTTng Scope from source and run the unit tests:
 --
 [role="term"]
 ----
-mvn clean install -Dmaven.test.skip=false
+SWT_GTK3=0 mvn clean install -Dmaven.test.skip=false
 ----
 --
 
