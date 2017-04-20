@@ -23,8 +23,8 @@ import com.google.common.collect.ImmutableList;
  */
 public class TimeGraphArrowRender {
 
-    public final TimeRange fTimeRange;
-    public final Collection<TimeGraphArrow> fArrows;
+    private final TimeRange fTimeRange;
+    private final Collection<TimeGraphArrow> fArrows;
 
     public TimeGraphArrowRender(TimeRange range, Collection<TimeGraphArrow> arrows) {
         fTimeRange = range;
