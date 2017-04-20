@@ -88,6 +88,10 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         return fTraceProperty.get();
     }
 
+    protected final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
+        return fTraceProperty;
+    }
+
     @Override
     public final ITimeGraphModelStateProvider getStateProvider() {
         return fStateProvider;

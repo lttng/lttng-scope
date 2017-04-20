@@ -65,7 +65,11 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
     private final String fStateSystemModuleId;
     private final Function<StateIntervalContext, TimeGraphStateInterval> fIntervalMappingFunction;
 
-    private @Nullable ITmfStateSystem fStateSystem = null;
+    /**
+     * This state system here is not necessarily the same as the one in the
+     * {@link StateSystemModelProvider}!
+     */
+    private transient @Nullable ITmfStateSystem fStateSystem = null;
 
     /**
      * @param sortingModes

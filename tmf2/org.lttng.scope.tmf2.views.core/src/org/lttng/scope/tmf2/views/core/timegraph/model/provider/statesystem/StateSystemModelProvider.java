@@ -75,6 +75,8 @@ public class StateSystemModelProvider extends TimeGraphModelProvider {
 
     private final Map<ITmfStateSystem, CachedTreeRender> fLastTreeRenders = new WeakHashMap<>();
 
+    private transient @Nullable ITmfStateSystem fStateSystem = null;
+
     protected StateSystemModelProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
@@ -87,15 +89,19 @@ public class StateSystemModelProvider extends TimeGraphModelProvider {
 
         fStateSystemModuleId = stateSystemModuleId;
         fTreeRenderFunction = treeRenderFunction;
-    }
 
-    private @Nullable ITmfStateSystem getSSOfCurrentTrace() {
-        ITmfTrace trace = getTrace();
-        if (trace == null) {
-            return null;
-        }
-        // FIXME Potentially costly to query this every time, cache it?
-        return TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+        /*
+         * Change listener which will take care of keeping the target state
+         * system up to date.
+         */
+        traceProperty().addListener((obs, oldValue, newValue) -> {
+            ITmfTrace trace = newValue;
+            if (trace == null) {
+                fStateSystem = null;
+                return;
+            }
+            fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+        });
     }
 
     // ------------------------------------------------------------------------
@@ -104,7 +110,7 @@ public class StateSystemModelProvider extends TimeGraphModelProvider {
 
     @Override
     public @NonNull TimeGraphTreeRender getTreeRender() {
-        ITmfStateSystem ss = getSSOfCurrentTrace();
+        ITmfStateSystem ss = fStateSystem;
         if (ss == null) {
             /* This trace does not provide the expected state system */
             return TimeGraphTreeRender.EMPTY_RENDER;
