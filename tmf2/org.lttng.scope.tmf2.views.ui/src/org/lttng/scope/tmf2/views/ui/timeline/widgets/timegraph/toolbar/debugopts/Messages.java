@@ -46,6 +46,8 @@ public class Messages extends NLS {
     public static String tabNameZoom;
     public static String controlZoomAnimationDuration;
     public static String controlZoomStep;
+    public static String controlZoomPivotOnSelection;
+    public static String controlZoomPivotOnMousePosition;
 
     public static String tabNameIntervals;
     public static String controlIntervalOpacity;

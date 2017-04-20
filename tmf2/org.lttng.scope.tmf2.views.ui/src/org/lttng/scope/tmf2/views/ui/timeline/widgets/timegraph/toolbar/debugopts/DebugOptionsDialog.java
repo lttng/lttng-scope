@@ -154,7 +154,9 @@ class DebugOptionsDialog extends Dialog<@Nullable DebugOptions> {
     private Tab getZoomTab() {
         return new DebugOptionsDialogTab(Messages.tabNameZoom,
                 new IntegerTextField(Messages.controlZoomAnimationDuration + " (unused)", fOpts.zoomAnimationDuration), //$NON-NLS-1$
-                new DoubleTextField(Messages.controlZoomStep, fOpts.zoomStep));
+                new DoubleTextField(Messages.controlZoomStep, fOpts.zoomStep),
+                new CheckBoxControl(Messages.controlZoomPivotOnSelection, fOpts.zoomPivotOnSelection),
+                new CheckBoxControl(Messages.controlZoomPivotOnMousePosition, fOpts.zoomPivotOnMousePosition));
     }
 
     private Tab getStateIntervalsTab() {
