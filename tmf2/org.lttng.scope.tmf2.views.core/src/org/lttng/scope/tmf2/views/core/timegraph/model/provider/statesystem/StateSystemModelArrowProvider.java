@@ -56,7 +56,7 @@ public class StateSystemModelArrowProvider extends TimeGraphModelArrowProvider {
     public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange) {
         ITmfStateSystem ss = fStateSystem;
         if (ss == null) {
-            throw new IllegalArgumentException();
+            return TimeGraphArrowRender.EMPTY_RENDER;
         }
 
         // TODO temp test code

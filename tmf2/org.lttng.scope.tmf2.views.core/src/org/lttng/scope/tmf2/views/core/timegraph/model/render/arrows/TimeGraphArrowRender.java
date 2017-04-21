@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
@@ -22,6 +23,10 @@ import com.google.common.collect.ImmutableList;
  * @author Alexandre Montplaisir
  */
 public class TimeGraphArrowRender {
+
+    /** Empty arrow render, can be used instead of a null value */
+    public static final TimeGraphArrowRender EMPTY_RENDER =
+            new TimeGraphArrowRender(TimeRange.of(0, 0), Collections.EMPTY_LIST);
 
     private final TimeRange fTimeRange;
     private final Collection<TimeGraphArrow> fArrows;
