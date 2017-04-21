@@ -17,8 +17,7 @@ import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.lttng.scope.lttng.kernel.ui.views.controlflow.internal.ControlFlowView;
-import org.lttng.scope.lttng.kernel.ui.views.resources.internal.ResourcesView;
+import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
 
 /**
  * The default LTTng perspective.
@@ -30,8 +29,6 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 
     // LTTng views
     private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
-    private static final String CONTROLFLOW_VIEW_ID = ControlFlowView.ID;
-    private static final String RESOURCES_VIEW_ID = ResourcesView.ID;
 
     // Standard Eclipse views
     private static final String PROJECT_VIEW_ID = IPageLayout.ID_PROJECT_EXPLORER;
@@ -43,53 +40,24 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 
         layout.setEditorAreaVisible(true);
 
-        addFastViews(layout);
-        addViewShortcuts(layout);
-        addPerspectiveShortcuts(layout);
-
         // Create the top left folder
         IFolderLayout topLeftFolder = layout.createFolder(
-                "topLeftFolder", IPageLayout.LEFT, 0.15f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+                "topLeftFolder", IPageLayout.LEFT, 0.2f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
         topLeftFolder.addView(PROJECT_VIEW_ID);
 
         // Create the top right folder
         IFolderLayout topRightFolder = layout.createFolder(
-                "topRightFolder", IPageLayout.TOP, 0.40f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
-        topRightFolder.addView(CONTROLFLOW_VIEW_ID);
-        topRightFolder.addView(RESOURCES_VIEW_ID);
+                "topRightFolder", IPageLayout.TOP, 0.6f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+        topRightFolder.addView(TimelineView.VIEW_ID);
 
         // Create the bottom right folder
         IFolderLayout bottomRightFolder = layout.createFolder(
-                "bottomRightFolder", IPageLayout.BOTTOM, 0.50f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
+                "bottomRightFolder", IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
         bottomRightFolder.addView(HISTOGRAM_VIEW_ID);
         bottomRightFolder.addView(PROPERTIES_VIEW_ID);
         bottomRightFolder.addView(BOOKMARKS_VIEW_ID);
 
         layout.addNewWizardShortcut(NewTmfProjectWizard.ID);
-    }
-
-    /**
-     * Add fast views to the perspective
-     *
-     * @param layout
-     */
-    private void addFastViews(IPageLayout layout) {
-    }
-
-    /**
-     * Add view shortcuts to the perspective
-     *
-     * @param layout
-     */
-    private void addViewShortcuts(IPageLayout layout) {
-    }
-
-    /**
-     * Add perspective shortcuts to the perspective
-     *
-     * @param layout
-     */
-    private void addPerspectiveShortcuts(IPageLayout layout) {
     }
 
 }
