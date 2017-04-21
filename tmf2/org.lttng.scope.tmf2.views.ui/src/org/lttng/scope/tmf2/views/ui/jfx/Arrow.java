@@ -42,7 +42,7 @@ public class Arrow extends Group {
      */
     public Arrow(double startX, double startY, double endX, double endY) {
         this();
-        setStartX(startY);
+        setStartX(startX);
         setStartY(startY);
         setEndX(endX);
         setEndY(endY);
