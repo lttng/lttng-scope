@@ -74,7 +74,8 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
         double viewWidth = getTimeGraphWidth();
         long duration = (long) (viewWidth / 2.0) * fTargetResolution;
         TimeRange visibleRange = TimeRange.of(START_TIME, START_TIME + duration);
-        Collection<StateRectangle> renderedStates = renderRectanglesForRange(visibleRange);
+        renderRange(visibleRange);
+        Collection<StateRectangle> renderedStates = getWidget().getRenderedStateRectangles();
 
         /* Check the states for each of the first 10 tree entries. */
         for (int i = 1; i <= 10; i++) {

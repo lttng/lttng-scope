@@ -18,6 +18,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelPr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.google.common.collect.ImmutableList;
+
 class StubModelProvider extends TimeGraphModelProvider {
 
     public static final String ENTRY_NAME_PREFIX = "Entry #";
@@ -34,7 +36,15 @@ class StubModelProvider extends TimeGraphModelProvider {
     }
 
     protected StubModelProvider() {
-        super("Test", null, null, new StubModelStateProvider(), null);
+        super("Test",
+                /* Sorting modes */
+                null,
+                /* Filter modes */
+                null,
+                /* State provider */
+                new StubModelStateProvider(),
+                /* Arrow providers */
+                ImmutableList.of(new StubModelArrowProvider1(), new StubModelArrowProvider2()));
     }
 
     @Override

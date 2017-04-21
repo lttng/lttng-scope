@@ -149,6 +149,19 @@ public class TimeGraphArrowControl {
         return arrows;
     }
 
+    synchronized Collection<Arrow> getRenderedArrows() {
+        /*
+         * Retrieve the rendered arrows of each group, and flatten them into a
+         * single collection.
+         */
+        return fArrowProvidersConfig.values().stream()
+                .map(ArrowConfig::getGroup)
+                .map(Group::getChildren)
+                .flatMap(Collection::stream)
+                .map(node -> (Arrow) node)
+                .collect(Collectors.toList());
+    }
+
     private static class ArrowConfig {
 
         private final Group fGroup;

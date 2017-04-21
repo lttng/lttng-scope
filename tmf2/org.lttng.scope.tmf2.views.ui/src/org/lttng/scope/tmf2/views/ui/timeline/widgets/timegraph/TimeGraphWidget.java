@@ -136,7 +136,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
-//    private final Group fTimeGraphArrowsLayer;
     // TODO Layers for events, bookmarks
     private final Group fTimeGraphSelectionLayer;
     private final Group fTimeGraphLoadingOverlayLayer;
@@ -1219,6 +1218,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     @VisibleForTesting
     ScrollPane getTimeGraphScrollPane() {
         return fTimeGraphScrollPane;
+    }
+
+    @VisibleForTesting
+    TimeGraphArrowControl getArrowControl() {
+        return fArrowControl;
     }
 
 }

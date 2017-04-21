@@ -14,8 +14,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Collection;
-
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -134,15 +132,14 @@ public abstract class TimeGraphWidgetTestBase {
     }
 
     /**
-     * Seek the view to a given time range, and retrieve the rendered state
-     * rectangles. Note that this method won't touch the vertical position of
-     * the widget.
+     * Seek the view to a given time range and run a paint operation on this
+     * range. Note that this method won't touch the vertical position of the
+     * widget.
      *
      * @param range
      *            The target time range
-     * @return The generated and rendered state rectangles
      */
-    protected Collection<StateRectangle> renderRectanglesForRange(TimeRange range) {
+    protected void renderRange(TimeRange range) {
         seekVisibleRange(range);
 
         getWidget().prepareWaitForRepaint();
@@ -150,8 +147,6 @@ public abstract class TimeGraphWidgetTestBase {
         while (!getWidget().waitForRepaint()) {
             updateUI();
         }
-
-        return getWidget().getRenderedStateRectangles();
     }
 
     /**
