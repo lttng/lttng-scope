@@ -9,6 +9,8 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows;
 
+import java.util.concurrent.FutureTask;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
@@ -27,6 +29,6 @@ public interface ITimeGraphModelArrowProvider {
 
     TimeGraphArrowSeries getArrowSeries();
 
-    TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange);
+    TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task);
 
 }

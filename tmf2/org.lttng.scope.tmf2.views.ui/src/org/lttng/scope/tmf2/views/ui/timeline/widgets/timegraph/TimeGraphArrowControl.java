@@ -12,9 +12,11 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -69,7 +71,9 @@ public class TimeGraphArrowControl {
                      */
                     TimeRange timeRange = fWidget.getViewContext().getCurrentVisibleTimeRange();
                     TimeGraphTreeRender treeRender = fWidget.getLatestTreeRender();
-                    paintArrowsOfProvider(treeRender, timeRange, ap);
+                    // FIXME Not using a task here, so this might end up running
+                    // on the UI thread  and not being cancellable...
+                    paintArrowsOfProvider(treeRender, timeRange, ap, null);
                 } else {
                     /*
                      * The provider is now disabled, we must remove the existing
@@ -87,10 +91,10 @@ public class TimeGraphArrowControl {
         });
     }
 
-    public void paintArrows(TimeGraphTreeRender treeRender, TimeRange timeRange) {
+    public void paintArrows(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task) {
         fArrowProvidersConfig.keySet().stream()
                 .filter(arrowProvider -> arrowProvider.enabledProperty().get())
-                .forEach(arrowProvider -> paintArrowsOfProvider(treeRender, timeRange, arrowProvider));
+                .forEach(arrowProvider -> paintArrowsOfProvider(treeRender, timeRange, arrowProvider, task));
     }
 
     public void clear() {
@@ -100,7 +104,7 @@ public class TimeGraphArrowControl {
     }
 
     private void paintArrowsOfProvider(TimeGraphTreeRender treeRender, TimeRange timeRange,
-            ITimeGraphModelArrowProvider arrowProvider) {
+            ITimeGraphModelArrowProvider arrowProvider, @Nullable FutureTask<?> task) {
         ArrowConfig config = fArrowProvidersConfig.get(arrowProvider);
         if (config == null) {
             /* Should not happen... */
@@ -108,7 +112,7 @@ public class TimeGraphArrowControl {
         }
 
 
-        TimeGraphArrowRender arrowRender = arrowProvider.getArrowRender(treeRender, timeRange);
+        TimeGraphArrowRender arrowRender = arrowProvider.getArrowRender(treeRender, timeRange, task);
         Collection<Arrow> arrows = prepareArrows(treeRender, arrowRender, config.getStroke());
 
         Platform.runLater(() -> {

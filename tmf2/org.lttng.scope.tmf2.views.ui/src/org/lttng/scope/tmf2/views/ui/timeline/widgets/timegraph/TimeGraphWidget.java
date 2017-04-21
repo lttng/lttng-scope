@@ -562,7 +562,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 });
 
                 /* Phase 2: paint the arrows */
-                fArrowControl.paintArrows(treeRender, renderingRange);
+                fArrowControl.paintArrows(treeRender, renderingRange, this);
 
                 return null;
             }

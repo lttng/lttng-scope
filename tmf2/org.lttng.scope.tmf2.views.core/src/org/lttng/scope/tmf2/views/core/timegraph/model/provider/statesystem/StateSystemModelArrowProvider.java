@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem;
 
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
@@ -53,7 +54,7 @@ public class StateSystemModelArrowProvider extends TimeGraphModelArrowProvider {
     }
 
     @Override
-    public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange) {
+    public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task) {
         ITmfStateSystem ss = fStateSystem;
         if (ss == null) {
             return TimeGraphArrowRender.EMPTY_RENDER;

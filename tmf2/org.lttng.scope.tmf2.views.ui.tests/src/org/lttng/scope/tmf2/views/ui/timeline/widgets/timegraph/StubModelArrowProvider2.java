@@ -10,7 +10,9 @@
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -38,7 +40,7 @@ class StubModelArrowProvider2 extends TimeGraphModelArrowProvider {
     }
 
     @Override
-    public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange) {
+    public TimeGraphArrowRender getArrowRender(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task) {
         TimeGraphArrowSeries series = getArrowSeries();
         List<TimeGraphTreeElement> treeElems = treeRender.getAllTreeElements();
 
