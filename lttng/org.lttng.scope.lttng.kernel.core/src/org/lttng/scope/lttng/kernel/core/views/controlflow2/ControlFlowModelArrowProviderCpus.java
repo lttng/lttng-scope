@@ -19,7 +19,7 @@ public class ControlFlowModelArrowProviderCpus extends StateSystemModelArrowProv
 
     private static final TimeGraphArrowSeries ARROW_SERIES = new TimeGraphArrowSeries(
             "CPUs",
-            new ColorDefinition(1, 1, 1),
+            new ColorDefinition(200, 1, 1),
             LineStyle.FULL);
 
     public ControlFlowModelArrowProviderCpus() {

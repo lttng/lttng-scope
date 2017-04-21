@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -26,22 +27,33 @@ import com.google.common.collect.ImmutableMap;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
+import javafx.scene.paint.Paint;
 
 public class TimeGraphArrowControl {
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
     private final TimeGraphWidget fWidget;
-    private final Map<ITimeGraphModelArrowProvider, Group> fArrowGroups;
+    private final Map<ITimeGraphModelArrowProvider, ArrowConfig> fArrowProvidersConfig;
 
     public TimeGraphArrowControl(TimeGraphWidget widget, Group paintTarget) {
         fWidget = widget;
         Collection<ITimeGraphModelArrowProvider> arrowProviders =
                 widget.getControl().getModelRenderProvider().getArrowProviders();
-        fArrowGroups = arrowProviders.stream()
-                .collect(ImmutableMap.toImmutableMap(Function.identity(), e -> new Group()));
 
-        fArrowGroups.values().forEach(paintTarget.getChildren()::add);
+        fArrowProvidersConfig = arrowProviders.stream()
+                .collect(ImmutableMap.toImmutableMap(
+                        Function.identity(),
+                        ap -> {
+                            Group group = new Group();
+                            ColorDefinition colorDef = ap.getArrowSeries().getColor();
+                            Paint stroke = JfxColorFactory.getColorFromDef(colorDef);
+                            return new ArrowConfig(group, stroke);
+                        }));
+
+        fArrowProvidersConfig.values().stream()
+                .map(ArrowConfig::getGroup)
+                .forEach(paintTarget.getChildren()::add);
 
         /*
          * Add listeners to the registered arrow providers. If providers become
@@ -63,12 +75,12 @@ public class TimeGraphArrowControl {
                      * The provider is now disabled, we must remove the existing
                      * arrows from this provider.
                      */
-                    Group group = fArrowGroups.get(ap);
-                    if (group == null) {
+                    ArrowConfig config = fArrowProvidersConfig.get(ap);
+                    if (config == null) {
                         return;
                     }
                     Platform.runLater(() -> {
-                        group.getChildren().clear();
+                        config.getGroup().getChildren().clear();
                     });
                 }
             });
@@ -76,34 +88,37 @@ public class TimeGraphArrowControl {
     }
 
     public void paintArrows(TimeGraphTreeRender treeRender, TimeRange timeRange) {
-        fArrowGroups.keySet().stream()
+        fArrowProvidersConfig.keySet().stream()
                 .filter(arrowProvider -> arrowProvider.enabledProperty().get())
                 .forEach(arrowProvider -> paintArrowsOfProvider(treeRender, timeRange, arrowProvider));
     }
 
     public void clear() {
-        fArrowGroups.values().forEach(group -> group.getChildren().clear());
+        fArrowProvidersConfig.values().stream()
+                .map(ArrowConfig::getGroup)
+                .forEach(group -> group.getChildren().clear());
     }
 
     private void paintArrowsOfProvider(TimeGraphTreeRender treeRender, TimeRange timeRange,
             ITimeGraphModelArrowProvider arrowProvider) {
-        Group targetGroup = fArrowGroups.get(arrowProvider);
-        if (targetGroup == null) {
+        ArrowConfig config = fArrowProvidersConfig.get(arrowProvider);
+        if (config == null) {
             /* Should not happen... */
             return;
         }
 
+
         TimeGraphArrowRender arrowRender = arrowProvider.getArrowRender(treeRender, timeRange);
-        Collection<Arrow> arrows = prepareArrows(treeRender, arrowRender);
+        Collection<Arrow> arrows = prepareArrows(treeRender, arrowRender, config.getStroke());
 
         Platform.runLater(() -> {
-            targetGroup.getChildren().clear();
-            targetGroup.getChildren().addAll(arrows);
+            config.getGroup().getChildren().clear();
+            config.getGroup().getChildren().addAll(arrows);
         });
     }
 
     private Collection<Arrow> prepareArrows(TimeGraphTreeRender treeRender,
-            TimeGraphArrowRender arrowRender) {
+            TimeGraphArrowRender arrowRender, Paint arrowStroke) {
         final double entryHeight = TimeGraphWidget.ENTRY_HEIGHT;
 
         Collection<Arrow> arrows = arrowRender.getArrows().stream()
@@ -125,11 +140,31 @@ public class TimeGraphArrowControl {
                 double startY = startIndex * entryHeight + entryHeight / 2;
                 double endY = endIndex * entryHeight + entryHeight / 2;
 
-                return new Arrow(startX, startY, endX, endY);
+                Arrow arrow = new Arrow(startX, startY, endX, endY);
+                arrow.setStroke(arrowStroke);
+                return arrow;
             })
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
         return arrows;
     }
 
+    private static class ArrowConfig {
+
+        private final Group fGroup;
+        private final Paint fStroke;
+
+        public ArrowConfig(Group group, Paint stroke) {
+            fGroup = group;
+            fStroke = stroke;
+        }
+
+        public Group getGroup() {
+            return fGroup;
+        }
+
+        public Paint getStroke() {
+            return fStroke;
+        }
+    }
 }
