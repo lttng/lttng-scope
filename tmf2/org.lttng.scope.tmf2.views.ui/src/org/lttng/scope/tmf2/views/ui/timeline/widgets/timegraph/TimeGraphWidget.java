@@ -33,11 +33,14 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
+import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
@@ -135,7 +138,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
-    // TODO Layers for markers, arrows
+    private final Group fTimeGraphArrowsLayer;
+    // TODO Layers for events, bookmarks
     private final Group fTimeGraphSelectionLayer;
     private final Group fTimeGraphLoadingOverlayLayer;
 
@@ -192,6 +196,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTimeGraphBackgroundLayer = new Group();
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
+        fTimeGraphArrowsLayer = new Group();
         fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
 
@@ -202,6 +207,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTimeGraphPane = new Pane(fTimeGraphBackgroundLayer,
                 fTimeGraphStatesLayer,
                 fTimeGraphTextLabelsLayer,
+                fTimeGraphArrowsLayer,
                 fTimeGraphSelectionLayer,
                 fTimeGraphLoadingOverlayLayer);
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
@@ -332,6 +338,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             fTimeGraphBackgroundLayer.getChildren().clear();
             fTimeGraphStatesLayer.getChildren().clear();
             fTimeGraphTextLabelsLayer.getChildren().clear();
+            fTimeGraphArrowsLayer.getChildren().clear();
 
             /* Also clear whatever cached objects the viewer currently has. */
             fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
@@ -552,6 +559,26 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     System.err.println(sjui.toString());
                 });
 
+                /* Phase 2: paint the arrows */
+                Collection<ITimeGraphModelArrowProvider> arrowProviders = modelProvider.getArrowProviders();
+                // FIXME All arrows are going on the same layer for now
+                Collection<Arrow> allArrows = arrowProviders.stream()
+                        .map(ap -> {
+                            TimeGraphArrowRender arrowRender = ap.getArrowRender(treeRender, renderingRange);
+                            return prepareArrows(treeRender, arrowRender);
+                        })
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
+
+                if (isCancelled()) {
+                    return null;
+                }
+
+                Platform.runLater(() -> {
+                    fTimeGraphArrowsLayer.getChildren().clear();
+                    fTimeGraphArrowsLayer.getChildren().addAll(allArrows);
+                });
+
                 return null;
             }
         };
@@ -726,6 +753,34 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 .collect(Collectors.toList());
 
         return new Group(texts);
+    }
+
+    private Collection<Arrow> prepareArrows(TimeGraphTreeRender treeRender,
+            TimeGraphArrowRender arrowRender) {
+        Collection<Arrow> arrows = arrowRender.getArrows().stream()
+            .map(timeGraphArrow -> {
+                TimeGraphTreeElement startTreeElem = timeGraphArrow.getStartEvent().getTreeElement();
+                TimeGraphTreeElement endTreeElem = timeGraphArrow.getEndEvent().getTreeElement();
+                long startTimestamp = timeGraphArrow.getStartEvent().getTimestamp();
+                long endTimestamp = timeGraphArrow.getEndEvent().getTimestamp();
+                // FIXME Build and use a hashmap instead for indexes
+                int startIndex = treeRender.getAllTreeElements().indexOf(startTreeElem);
+                int endIndex = treeRender.getAllTreeElements().indexOf(endTreeElem);
+                if (startIndex == -1 || endIndex == -1) {
+                    /* We shouldn't have received this... */
+                    return null;
+                }
+
+                double startX = timestampToPaneXPos(startTimestamp);
+                double endX = timestampToPaneXPos(endTimestamp);
+                double startY = startIndex * ENTRY_HEIGHT + ENTRY_HEIGHT / 2;
+                double endY = endIndex *ENTRY_HEIGHT + ENTRY_HEIGHT / 2;
+
+                return new Arrow(startX, startY, endX, endY);
+            })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+        return arrows;
     }
 
     private @Nullable StateRectangle fSelectedState = null;
