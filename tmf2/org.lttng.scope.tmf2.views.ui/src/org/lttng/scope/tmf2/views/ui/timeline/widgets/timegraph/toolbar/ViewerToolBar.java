@@ -65,6 +65,7 @@ public class ViewerToolBar extends ToolBar {
                 new Separator(),
 
                 getStateInfoButton(viewer),
+                new ArrowSeriesMenuButton(viewer),
                 new SortingModeMenuButton(viewer),
                 new FilterModeMenuButton(viewer),
                 new Separator(),

@@ -16,7 +16,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 
 import javafx.scene.paint.Color;
 
-final class JfxColorFactory {
+public final class JfxColorFactory {
 
     private JfxColorFactory() {}
 

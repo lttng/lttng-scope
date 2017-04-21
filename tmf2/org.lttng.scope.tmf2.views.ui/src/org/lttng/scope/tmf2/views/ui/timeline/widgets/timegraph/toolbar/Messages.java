@@ -23,6 +23,8 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
+    public static String arrowSeriesMenuButtonName;
+
     public static String sfFilterModeMenuButtonName;
     public static String sfSortingModeMenuButtonName;
 

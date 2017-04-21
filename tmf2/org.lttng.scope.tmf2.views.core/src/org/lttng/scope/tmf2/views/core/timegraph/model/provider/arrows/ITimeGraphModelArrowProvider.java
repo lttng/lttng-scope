@@ -16,11 +16,14 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphAr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 
 public interface ITimeGraphModelArrowProvider {
 
     ObjectProperty<@Nullable ITmfTrace> traceProperty();
+
+    BooleanProperty enabledProperty();
 
     TimeGraphArrowSeries getArrowSeries();
 
