@@ -150,7 +150,6 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         return new TimeGraphStateRender(timeRange, treeElement, intervals);
     }
 
-
     private List<TimeGraphStateInterval> queryHistoryRange(ITmfStateSystem ss,
             StateSystemTimeGraphTreeElement treeElem,
             final long t1, final long t2, final long resolution,
@@ -166,20 +165,21 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         final int attributeQuark = treeElem.getSourceQuark();
         ITmfStateInterval lastAddedInterval = null;
 
-        /* Actual valid end time of the range query. */
+        /* Actual valid start/end time of the range query. */
+        long tStart = Math.max(t1, ss.getStartTime());
         long tEnd = Math.min(t2, ss.getCurrentEndTime());
 
         /*
          * First, iterate over the "resolution points" and keep all matching
          * state intervals.
          */
-        for (long ts = t1; ts <= tEnd - resolution; ts += resolution) {
+        for (long ts = tStart; ts <= tEnd - resolution; ts += resolution) {
             /*
              * Skip queries if the corresponding interval was already included
              */
             if (lastAddedInterval != null && lastAddedInterval.getEndTime() >= ts) {
-                long nextTOffset = MathUtils.roundToClosestHigherMultiple(lastAddedInterval.getEndTime() - t1, resolution);
-                long nextTs = t1 + nextTOffset;
+                long nextTOffset = MathUtils.roundToClosestHigherMultiple(lastAddedInterval.getEndTime() - tStart, resolution);
+                long nextTs = tStart + nextTOffset;
                 if (nextTs == ts) {
                     /*
                      * The end time of the last interval happened to be exactly
@@ -212,7 +212,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
          * For the very last interval, we'll use ['tEnd - resolution', 'tEnd']
          * as a range condition instead.
          */
-        long ts = tEnd - resolution;
+        long ts = Math.max(tStart, tEnd - resolution);
         long ts2 = tEnd;
         if (lastAddedInterval != null && lastAddedInterval.getEndTime() >= ts) {
             /* Interval already included */
@@ -239,8 +239,8 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
          * beginning.
          */
         long firstRealIntervalStartTime = modelIntervals.get(0).getStartTime();
-        if (firstRealIntervalStartTime > t1) {
-            filledIntervals.add(new MultiStateInterval(t1, firstRealIntervalStartTime - 1, treeElem));
+        if (firstRealIntervalStartTime > tStart) {
+            filledIntervals.add(new MultiStateInterval(tStart, firstRealIntervalStartTime - 1, treeElem));
         }
         filledIntervals.add(modelIntervals.get(0));
 
