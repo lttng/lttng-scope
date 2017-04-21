@@ -31,7 +31,7 @@ public class TimeGraphArrowRender {
     private final TimeRange fTimeRange;
     private final Collection<TimeGraphArrow> fArrows;
 
-    public TimeGraphArrowRender(TimeRange range, Collection<TimeGraphArrow> arrows) {
+    public TimeGraphArrowRender(TimeRange range, Iterable<TimeGraphArrow> arrows) {
         fTimeRange = range;
         fArrows = ImmutableList.copyOf(arrows);
     }

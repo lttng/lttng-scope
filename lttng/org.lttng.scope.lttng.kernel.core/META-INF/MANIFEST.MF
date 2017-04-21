@@ -26,6 +26,8 @@ Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:
  org.lttng.scope.lttng.kernel.core.trace.layout.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.views.controlflow2
 Import-Package: com.google.common.annotations,
+ com.google.common.base,
  com.google.common.cache,
  com.google.common.collect,
- com.google.common.hash
+ com.google.common.hash,
+ com.google.common.primitives
