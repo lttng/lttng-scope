@@ -404,6 +404,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     rect.setWidth(rect.getWidth() * factor);
                 });
 
+                /* Reposition the text labels (don't stretch them!) */
+                getRenderedStateLabels().forEach(text -> {
+                    text.setX(text.getX() * factor);
+                });
+
+                /* Reposition the arrows */
+                fArrowControl.getRenderedArrows().forEach(arrow -> {
+                    arrow.setStartX(arrow.getStartX() * factor);
+                    arrow.setEndX(arrow.getEndX() * factor);
+                });
+
+
                 /*
                  * Resize the pane itself. Remember min/max are bound to the
                  * "pref" width, so this will change the actual size right away.
@@ -789,6 +801,17 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         Collection<?> stateRectangles = ((Group) fTimeGraphStatesLayer.getChildren().get(0)).getChildren();
         @SuppressWarnings("unchecked")
         Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
+        return ret;
+    }
+
+    private Collection<Text> getRenderedStateLabels() {
+        if (fTimeGraphTextLabelsLayer.getChildren().isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        /* The labels are wrapped in a group */
+        Collection<?> texts = ((Group) fTimeGraphTextLabelsLayer.getChildren().get(0)).getChildren();
+        @SuppressWarnings("unchecked")
+        Collection<Text> ret = (@NonNull Collection<Text>) texts;
         return ret;
     }
 
