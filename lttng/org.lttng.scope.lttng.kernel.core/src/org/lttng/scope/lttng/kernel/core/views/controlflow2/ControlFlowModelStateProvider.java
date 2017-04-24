@@ -23,6 +23,7 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -120,13 +121,13 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     // ------------------------------------------------------------------------
 
     private static final ColorDefinition NO_COLOR           = new ColorDefinition(  0,   0,   0,  0);
-    private static final ColorDefinition COLOR_UNKNOWN      = new ColorDefinition(100, 100, 100);
-    private static final ColorDefinition COLOR_WAIT_UNKNOWN = new ColorDefinition(200, 200, 200);
-    private static final ColorDefinition COLOR_WAIT_BLOCKED = new ColorDefinition(200, 200,   0);
-    private static final ColorDefinition COLOR_WAIT_FOR_CPU = new ColorDefinition(200, 100,   0);
-    private static final ColorDefinition COLOR_USERMODE     = new ColorDefinition(  0, 200,   0);
-    private static final ColorDefinition COLOR_SYSCALL      = new ColorDefinition(  0,   0, 200);
-    private static final ColorDefinition COLOR_INTERRUPTED  = new ColorDefinition(200,   0, 100);
+    private static final ColorDefinition COLOR_UNKNOWN      = FlatUIColors.DARK_GRAY;
+    private static final ColorDefinition COLOR_WAIT_UNKNOWN = FlatUIColors.LIGHT_GRAY;
+    private static final ColorDefinition COLOR_WAIT_BLOCKED = FlatUIColors.YELLOW;
+    private static final ColorDefinition COLOR_WAIT_FOR_CPU = FlatUIColors.ORANGE;
+    private static final ColorDefinition COLOR_USERMODE     = FlatUIColors.DARK_GREEN;
+    private static final ColorDefinition COLOR_SYSCALL      = FlatUIColors.DARK_BLUE;
+    private static final ColorDefinition COLOR_INTERRUPTED  = FlatUIColors.PURPLE;
 
     private static final Function<StateIntervalContext, ColorDefinition> COLOR_MAPPING_FUNCTION = ssCtx -> {
         try {
