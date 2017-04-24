@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -26,7 +27,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
 
     private final String fStateName;
     private final @Nullable String fLabel;
-    private final ColorDefinition fColor;
+    private final ConfigOption<ColorDefinition> fColor;
     private final LineThickness fLineThickness;
 
     private final Map<String, String> fProperties;
@@ -46,7 +47,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
             TimeGraphTreeElement treeElement,
             String stateName,
             @Nullable String label,
-            ColorDefinition color,
+            ConfigOption<ColorDefinition> color,
             LineThickness lineThickness,
             Map<String, String> properties) {
 
@@ -85,7 +86,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     }
 
     @Override
-    public ColorDefinition getColorDefinition() {
+    public ConfigOption<ColorDefinition> getColorDefinition() {
         return fColor;
     }
 

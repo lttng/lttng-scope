@@ -21,6 +21,7 @@ import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModul
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
@@ -88,7 +89,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
             String stateSystemModuleId,
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
-            Function<StateIntervalContext, ColorDefinition> colorMappingFunction,
+            Function<StateIntervalContext, ConfigOption<ColorDefinition>> colorMappingFunction,
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 

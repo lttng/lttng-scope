@@ -21,6 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
@@ -120,16 +121,16 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     // Color mapping
     // ------------------------------------------------------------------------
 
-    private static final ColorDefinition NO_COLOR           = new ColorDefinition(  0,   0,   0,  0);
-    private static final ColorDefinition COLOR_UNKNOWN      = FlatUIColors.DARK_GRAY;
-    private static final ColorDefinition COLOR_WAIT_UNKNOWN = FlatUIColors.LIGHT_GRAY;
-    private static final ColorDefinition COLOR_WAIT_BLOCKED = FlatUIColors.YELLOW;
-    private static final ColorDefinition COLOR_WAIT_FOR_CPU = FlatUIColors.ORANGE;
-    private static final ColorDefinition COLOR_USERMODE     = FlatUIColors.DARK_GREEN;
-    private static final ColorDefinition COLOR_SYSCALL      = FlatUIColors.DARK_BLUE;
-    private static final ColorDefinition COLOR_INTERRUPTED  = FlatUIColors.PURPLE;
+    private static final ConfigOption<ColorDefinition> NO_COLOR           = new ConfigOption<>(new ColorDefinition(  0,   0,   0,  0));
+    private static final ConfigOption<ColorDefinition> COLOR_UNKNOWN      = new ConfigOption<>(FlatUIColors.DARK_GRAY);
+    private static final ConfigOption<ColorDefinition> COLOR_WAIT_UNKNOWN = new ConfigOption<>(FlatUIColors.LIGHT_GRAY);
+    private static final ConfigOption<ColorDefinition> COLOR_WAIT_BLOCKED = new ConfigOption<>(FlatUIColors.YELLOW);
+    private static final ConfigOption<ColorDefinition> COLOR_WAIT_FOR_CPU = new ConfigOption<>(FlatUIColors.ORANGE);
+    private static final ConfigOption<ColorDefinition> COLOR_USERMODE     = new ConfigOption<>(FlatUIColors.DARK_GREEN);
+    private static final ConfigOption<ColorDefinition> COLOR_SYSCALL      = new ConfigOption<>(FlatUIColors.DARK_BLUE);
+    private static final ConfigOption<ColorDefinition> COLOR_INTERRUPTED  = new ConfigOption<>(FlatUIColors.PURPLE);
 
-    private static final Function<StateIntervalContext, ColorDefinition> COLOR_MAPPING_FUNCTION = ssCtx -> {
+    private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> {
         try {
             int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
             ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();

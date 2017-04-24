@@ -11,6 +11,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
 import java.util.Collections;
 
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
@@ -24,6 +25,7 @@ public final class MultiStateInterval extends BasicTimeGraphStateInterval {
 
     private static final String MULTI_STATE_NAME = "Multi-state"; //$NON-NLS-1$
     private static final ColorDefinition MULTI_STATE_COLOR = new ColorDefinition(0, 0, 0);
+    private static final ConfigOption<ColorDefinition> MULTI_STATE_COLOR_OPTION = new ConfigOption<>(MULTI_STATE_COLOR);
 
     /**
      * Constructor
@@ -32,7 +34,7 @@ public final class MultiStateInterval extends BasicTimeGraphStateInterval {
      *            The tree element to which this interval is associated
      */
     public MultiStateInterval(long startTime, long endTime, TimeGraphTreeElement treeElement) {
-        super(startTime, endTime, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR, LineThickness.NORMAL, Collections.emptyMap());
+        super(startTime, endTime, treeElement, MULTI_STATE_NAME, null, MULTI_STATE_COLOR_OPTION, LineThickness.NORMAL, Collections.emptyMap());
     }
 
     @Override

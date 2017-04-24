@@ -44,8 +44,8 @@ public class StateRectangle extends Rectangle {
     private final TimeGraphWidget fWidget;
     private final TimeGraphStateInterval fInterval;
 
-    private final transient Paint fBaseColor;
-    private final transient Paint fSelectedColor;
+    private transient Paint fBaseColor;
+    private transient Paint fSelectedColor;
 
     private @Nullable Tooltip fTooltip = null;
 
@@ -98,8 +98,15 @@ public class StateRectangle extends Rectangle {
             fBaseColor = multiStatePaint;
             fSelectedColor = multiStatePaint;
         } else {
-            fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition());
-            fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition());
+            fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition().get());
+            fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition().get());
+
+            /* Add listeners that will ensure the colors stay in sync */
+            interval.getColorDefinition().addListener((obs, oldValue, newValue) -> {
+                fBaseColor = JfxColorFactory.getColorFromDef(newValue);
+                fSelectedColor = JfxColorFactory.getDerivedColorFromDef(newValue);
+                setFill(fBaseColor);
+            });
         }
 
         /* Set initial selection state and selection listener. */

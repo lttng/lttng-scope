@@ -18,6 +18,7 @@ import java.util.stream.LongStream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
@@ -48,7 +49,7 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
                 .mapToObj(startTime -> {
                     long endTime = startTime + stateLength - 1;
                     String name = getNextStateName();
-                    ColorDefinition color = getnextStateColor();
+                    ConfigOption<ColorDefinition> color = getnextStateColor();
                     return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, Collections.emptyMap());
                 })
                 .collect(Collectors.toList());
@@ -57,15 +58,15 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
     }
 
     private static final Iterator<String> STATE_NAMES = Iterators.cycle("State 1", "State 2");
-    private static final Iterator<ColorDefinition> STATE_COLORS = Iterators.cycle(
-            new ColorDefinition(128, 0, 0),
-            new ColorDefinition(0, 0, 128));
+    private static final Iterator<ConfigOption<ColorDefinition>> STATE_COLORS = Iterators.cycle(
+            new ConfigOption<>(new ColorDefinition(128, 0, 0)),
+            new ConfigOption<>(new ColorDefinition(0, 0, 128)));
 
     private static synchronized String getNextStateName() {
         return STATE_NAMES.next();
     }
 
-    private static synchronized ColorDefinition getnextStateColor() {
+    private static synchronized ConfigOption<ColorDefinition> getnextStateColor() {
         return STATE_COLORS.next();
     }
 

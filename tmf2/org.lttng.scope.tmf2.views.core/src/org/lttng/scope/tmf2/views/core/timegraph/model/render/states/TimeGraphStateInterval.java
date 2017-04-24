@@ -12,6 +12,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -31,7 +32,7 @@ public interface TimeGraphStateInterval {
 
     @Nullable String getLabel();
 
-    ColorDefinition getColorDefinition();
+    ConfigOption<ColorDefinition> getColorDefinition();
 
     LineThickness getLineThickness();
 
