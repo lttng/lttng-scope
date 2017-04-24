@@ -64,6 +64,7 @@ public class ViewerToolBar extends ToolBar {
                 ),
                 new Separator(),
 
+                new ModelConfigButton(viewer),
                 getStateInfoButton(viewer),
                 new ArrowSeriesMenuButton(viewer),
                 new SortingModeMenuButton(viewer),

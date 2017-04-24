@@ -162,6 +162,24 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
         }
     };
 
+    /**
+     * Color map definition, required by the super-class. Note we do not use
+     * this map for state mapping, as it's faster to just compare the int state
+     * value. However the same ConfigOption are used in both.
+     */
+    private static final Map<String, ConfigOption<ColorDefinition>> COLOR_MAP;
+    static {
+        ImmutableMap.Builder<String, ConfigOption<ColorDefinition>> builder = ImmutableMap.builder();
+        builder.put("UNKNOWN", COLOR_UNKNOWN);
+        builder.put("WAIT_UNKNOWN", COLOR_WAIT_UNKNOWN);
+        builder.put("WAIT_BLOCKED", COLOR_WAIT_BLOCKED);
+        builder.put("WAIT_FOR_CPU", COLOR_WAIT_FOR_CPU);
+        builder.put("USERMODE", COLOR_USERMODE);
+        builder.put("SYSCALL", COLOR_SYSCALL);
+        builder.put("INTERRUPTED", COLOR_INTERRUPTED);
+        COLOR_MAP = builder.build();
+    }
+
     // ------------------------------------------------------------------------
     // Line thickness
     // ------------------------------------------------------------------------
@@ -213,7 +231,8 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
      * Constructor
      */
     public ControlFlowModelStateProvider() {
-        super(KernelAnalysisModule.ID,
+        super(COLOR_MAP,
+                KernelAnalysisModule.ID,
                 STATE_NAME_MAPPING_FUNCTION,
                 LABEL_MAPPING_FUNCTION,
                 COLOR_MAPPING_FUNCTION,

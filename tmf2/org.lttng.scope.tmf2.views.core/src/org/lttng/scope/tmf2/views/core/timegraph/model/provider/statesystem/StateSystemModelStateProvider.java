@@ -86,12 +86,15 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
      * @param baseQuarkPattern
      */
     protected StateSystemModelStateProvider(
+            Map<String, ConfigOption<ColorDefinition>> stateColorMapping,
             String stateSystemModuleId,
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ConfigOption<ColorDefinition>> colorMappingFunction,
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
+
+        super(stateColorMapping);
 
         fStateSystemModuleId = stateSystemModuleId;
 

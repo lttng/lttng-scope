@@ -27,6 +27,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 
 class StubModelStateProvider extends TimeGraphModelStateProvider {
@@ -36,6 +37,10 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
      * by this factor.
      */
     public static final long DURATION_FACTOR = 10;
+
+    public StubModelStateProvider() {
+        super(ImmutableMap.of());
+    }
 
     @Override
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
