@@ -9,6 +9,8 @@
 
 package org.lttng.scope.lttng.kernel.core.views.controlflow2;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.FutureTask;
@@ -18,7 +20,7 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrow;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
@@ -39,8 +41,8 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 public class ControlFlowModelArrowProviderCpus extends StateSystemModelArrowProvider {
 
     private static final TimeGraphArrowSeries ARROW_SERIES = new TimeGraphArrowSeries(
-            "CPUs",
-            new ColorDefinition(200, 1, 1),
+            requireNonNull(Messages.arrowSeriesCPUs),
+            FlatUIColors.RED,
             LineStyle.FULL);
 
     public ControlFlowModelArrowProviderCpus() {

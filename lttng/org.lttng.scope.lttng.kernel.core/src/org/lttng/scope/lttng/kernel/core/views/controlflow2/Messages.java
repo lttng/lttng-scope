@@ -38,6 +38,8 @@ public class Messages extends NLS {
 
     public static String threadsProviderName;
 
+    public static String arrowSeriesCPUs;
+
     public static String propertyNotAvailable;
     public static String propertyNameCpu;
     public static String propertyNameSyscall;
