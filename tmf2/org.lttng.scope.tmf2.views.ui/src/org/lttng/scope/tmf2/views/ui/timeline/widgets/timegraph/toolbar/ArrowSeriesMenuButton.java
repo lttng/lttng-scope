@@ -16,7 +16,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelP
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.JfxColorFactory;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.scene.control.CheckMenuItem;

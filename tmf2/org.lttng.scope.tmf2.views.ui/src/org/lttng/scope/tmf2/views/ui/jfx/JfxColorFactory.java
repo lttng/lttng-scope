@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.jfx;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

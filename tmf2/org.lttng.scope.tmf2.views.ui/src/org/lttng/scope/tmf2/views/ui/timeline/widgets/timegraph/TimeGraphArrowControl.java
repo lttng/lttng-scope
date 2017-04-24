@@ -24,6 +24,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphAr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 
 import com.google.common.collect.ImmutableMap;
 

@@ -19,6 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 
 import com.google.common.base.MoreObjects;
 
