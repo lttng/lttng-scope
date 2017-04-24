@@ -19,6 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
+import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 
 import com.google.common.base.MoreObjects;
@@ -28,7 +29,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -136,14 +136,14 @@ public class StateRectangle extends Rectangle {
             return;
         }
         TooltipContents ttContents = new TooltipContents(fWidget.getDebugOptions());
-        ttContents.appendRow(Messages.statePropertyElement, fInterval.getTreeElement().getName());
-        ttContents.appendRow(Messages.statePropertyStateName, fInterval.getStateName());
-        ttContents.appendRow(Messages.statePropertyStartTime, fInterval.getStartTime());
-        ttContents.appendRow(Messages.statePropertyEndTime, fInterval.getEndTime());
-        ttContents.appendRow(Messages.statePropertyDuration, fInterval.getDuration() + " ns"); //$NON-NLS-1$
+        ttContents.addTooltipRow(Messages.statePropertyElement, fInterval.getTreeElement().getName());
+        ttContents.addTooltipRow(Messages.statePropertyStateName, fInterval.getStateName());
+        ttContents.addTooltipRow(Messages.statePropertyStartTime, fInterval.getStartTime());
+        ttContents.addTooltipRow(Messages.statePropertyEndTime, fInterval.getEndTime());
+        ttContents.addTooltipRow(Messages.statePropertyDuration, fInterval.getDuration() + " ns"); //$NON-NLS-1$
         /* Add rows corresponding to the properties from the interval */
         Map<String, String> properties = fInterval.getProperties();
-        properties.forEach((k, v) -> ttContents.appendRow(k, v));
+        properties.forEach((k, v) -> ttContents.addTooltipRow(k, v));
 
         Tooltip tt = new Tooltip();
         tt.setGraphic(ttContents);
@@ -244,17 +244,15 @@ public class StateRectangle extends Rectangle {
                 .toString();
     }
 
-    private static class TooltipContents extends GridPane {
+    private static class TooltipContents extends CountingGridPane {
 
         private final DebugOptions fOpts;
-
-        private int nbRows = 0;
 
         public TooltipContents(DebugOptions opts) {
             fOpts = opts;
         }
 
-        public void appendRow(Object... objects) {
+        public void addTooltipRow(Object... objects) {
             Node[] labels = Arrays.stream(objects)
                     .map(Object::toString)
                     .map(Text::new)
@@ -263,7 +261,7 @@ public class StateRectangle extends Rectangle {
                         text.fillProperty().bind(fOpts.toolTipFontFill);
                     })
                     .toArray(Node[]::new);
-            addRow(nbRows++, labels);
+            appendRow(labels);
         }
     }
 }
