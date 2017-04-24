@@ -44,8 +44,8 @@ public class StateRectangle extends Rectangle {
     private final TimeGraphWidget fWidget;
     private final TimeGraphStateInterval fInterval;
 
-    private transient Paint fBaseColor;
-    private transient Paint fSelectedColor;
+    private @Nullable transient Paint fBaseColor;
+    private @Nullable transient Paint fSelectedColor;
 
     private @Nullable Tooltip fTooltip = null;
 
@@ -92,22 +92,7 @@ public class StateRectangle extends Rectangle {
         double opacity = viewer.getDebugOptions().stateIntervalOpacity.get();
         setOpacity(opacity);
 
-        /* Set a special paint for multi-state intervals */
-        if (interval.isMultiState()) {
-            Paint multiStatePaint = viewer.getDebugOptions().multiStatePaint.get();
-            fBaseColor = multiStatePaint;
-            fSelectedColor = multiStatePaint;
-        } else {
-            fBaseColor = JfxColorFactory.getColorFromDef(interval.getColorDefinition().get());
-            fSelectedColor = JfxColorFactory.getDerivedColorFromDef(interval.getColorDefinition().get());
-
-            /* Add listeners that will ensure the colors stay in sync */
-            interval.getColorDefinition().addListener((obs, oldValue, newValue) -> {
-                fBaseColor = JfxColorFactory.getColorFromDef(newValue);
-                fSelectedColor = JfxColorFactory.getDerivedColorFromDef(newValue);
-                setFill(fBaseColor);
-            });
-        }
+        updatePaint();
 
         /* Set initial selection state and selection listener. */
         if (this.equals(viewer.getSelectedState())) {
@@ -158,6 +143,19 @@ public class StateRectangle extends Rectangle {
      */
     public TimeGraphStateInterval getStateInterval() {
         return fInterval;
+    }
+
+    public void updatePaint() {
+        /* Set a special paint for multi-state intervals */
+        if (fInterval.isMultiState()) {
+            Paint multiStatePaint = fWidget.getDebugOptions().multiStatePaint.get();
+            fBaseColor = multiStatePaint;
+            fSelectedColor = multiStatePaint;
+        } else {
+            fBaseColor = JfxColorFactory.getColorFromDef(fInterval.getColorDefinition().get());
+            fSelectedColor = JfxColorFactory.getDerivedColorFromDef(fInterval.getColorDefinition().get());
+        }
+        setFill(fBaseColor);
     }
 
     public void setSelected(boolean isSelected) {

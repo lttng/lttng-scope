@@ -20,6 +20,7 @@ import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.event.ActionEvent;
@@ -60,11 +61,8 @@ public class ModelConfigButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.legendButtonName));
 
-        // TODO Allow configuring arrow, etc. providers too (different tabs?)
-        ITimeGraphModelStateProvider stateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
-
         setOnAction(e -> {
-            Dialog<?> dialog = new LegendDialog(stateProvider);
+            Dialog<?> dialog = new LegendDialog(widget);
             dialog.show();
             JfxUtils.centerDialogOnScreen(dialog, ModelConfigButton.this);
         });
@@ -72,15 +70,17 @@ public class ModelConfigButton extends Button {
 
     private static class LegendDialog extends Dialog<@Nullable Void> {
 
-        public LegendDialog(ITimeGraphModelStateProvider stateProvider) {
+        public LegendDialog(TimeGraphWidget widget) {
             setTitle("State Model Configuration");
             setHeaderText("State Rectangles Configuration");
 
             ButtonType resetToDefaultButtonType = new ButtonType("Reset Defaults", ButtonData.LEFT);
             getDialogPane().getButtonTypes().addAll(resetToDefaultButtonType, ButtonType.CLOSE);
 
+            // TODO Allow configuring arrow, etc. providers too (different tabs?)
+            ITimeGraphModelStateProvider stateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
             List<ColorDefControl> stateColorSetters = stateProvider.getStateColorMapping().entrySet().stream()
-                    .map(entry -> new ColorDefControl(entry.getKey(), entry.getValue()))
+                    .map(entry -> new ColorDefControl(widget, entry.getKey(), entry.getValue()))
                     .collect(Collectors.toList());
 
             CountingGridPane grid = new CountingGridPane();
@@ -106,6 +106,7 @@ public class ModelConfigButton extends Button {
                     ps.load();
                 });
 
+                widget.getRenderedStateRectangles().forEach(StateRectangle::updatePaint);
             });
 
         }
@@ -124,7 +125,7 @@ public class ModelConfigButton extends Button {
         private final Label fLabel;
         private final ColorPicker fColorPicker;
 
-        public ColorDefControl(@Nullable String labelText, ConfigOption<ColorDefinition> option) {
+        public ColorDefControl(TimeGraphWidget widget, @Nullable String labelText, ConfigOption<ColorDefinition> option) {
             fOption = option;
 
             fLabel = new Label(labelText + ":"); //$NON-NLS-1$
@@ -150,6 +151,8 @@ public class ModelConfigButton extends Button {
                 int blue = (int) Math.round(color.getBlue() * 255);
                 int opacity = (int) Math.round(color.getOpacity() * 255);
                 fOption.set(new ColorDefinition(red, green, blue, opacity));
+
+                widget.getRenderedStateRectangles().forEach(StateRectangle::updatePaint);
             });
 
         }
