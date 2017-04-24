@@ -21,7 +21,8 @@ public interface TimeGraphStateInterval {
 
     public enum LineThickness {
         NORMAL,
-        SMALL
+        SMALL,
+        TINY
     }
 
     TimeGraphEvent getStartEvent();

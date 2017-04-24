@@ -211,6 +211,8 @@ public class StateRectangle extends Rectangle {
             return TimeGraphWidget.ENTRY_HEIGHT - 4;
         case SMALL:
             return TimeGraphWidget.ENTRY_HEIGHT - 8;
+        case TINY:
+            return TimeGraphWidget.ENTRY_HEIGHT - 12;
         }
     }
 

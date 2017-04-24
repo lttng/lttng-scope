@@ -184,15 +184,13 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     // Line thickness
     // ------------------------------------------------------------------------
 
-    /* No variation for now */
     private static final Function<StateIntervalContext, LineThickness> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> {
-//        int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
-//        ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
-//
-//        // For demo purposes only!
-//        if (val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
-//            return LineThickness.SMALL;
-//        }
+        ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
+
+        if (val.equals(StateValues.PROCESS_STATUS_WAIT_UNKNOWN_VALUE)
+                || val.equals(StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE)) {
+            return LineThickness.TINY;
+        }
 
         return LineThickness.NORMAL;
     };
