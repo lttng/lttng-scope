@@ -11,7 +11,8 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
 import static java.util.Objects.requireNonNull;
 
-import javafx.beans.property.SimpleObjectProperty;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -27,24 +28,6 @@ import javafx.scene.text.Text;
  * @author Alexandre Montplaisir
  */
 public class DebugOptions {
-
-    public static class ConfigOption<T> extends SimpleObjectProperty<T> {
-
-        private final T fDefaultValue;
-
-        public ConfigOption(T defaultValue) {
-            super(defaultValue);
-            fDefaultValue = defaultValue;
-        }
-
-        public T getDefaultValue() {
-            return fDefaultValue;
-        }
-
-        public void resetToDefault() {
-            set(fDefaultValue);
-        }
-    }
 
     /**
      * Constructor using the default options
