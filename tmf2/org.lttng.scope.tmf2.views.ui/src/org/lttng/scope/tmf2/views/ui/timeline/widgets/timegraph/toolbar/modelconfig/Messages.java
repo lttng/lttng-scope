@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.modelconfig;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
@@ -23,15 +23,11 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static String arrowSeriesMenuButtonName;
+    public static String modelConfigButtonName;
+    public static String modelConfigDialogTitle;
+    public static String modelConfigDialogHeader;
 
-    public static String sfFilterModeMenuButtonName;
-    public static String sfSortingModeMenuButtonName;
-
-    public static String sfZoomInActionDescription;
-    public static String sfZoomOutActionDescription;
-    public static String sfZoomToFullRangeActionDescription;
-    public static String sfZoomToSelectionActionDescription;
+    public static String modelConfigDialogResetDefaultsButton;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

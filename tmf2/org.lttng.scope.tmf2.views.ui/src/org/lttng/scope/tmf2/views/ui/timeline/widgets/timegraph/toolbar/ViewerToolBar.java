@@ -13,6 +13,7 @@ import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.debugopts.DebugOptionsButton;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.modelconfig.ModelConfigButton;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav.NavigationButtons;
 
 import javafx.scene.control.Alert;

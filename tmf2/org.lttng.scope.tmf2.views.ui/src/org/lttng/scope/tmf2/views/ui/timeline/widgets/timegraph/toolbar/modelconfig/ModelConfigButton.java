@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.modelconfig;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +25,6 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -47,8 +46,7 @@ public class ModelConfigButton extends Button {
 
     private static final String LEGEND_ICON_PATH = "/icons/toolbar/legend.gif"; //$NON-NLS-1$
 
-    private static final Insets PADDING = new Insets(20.0);
-    private static final double SPACING = 10.0;
+    private static final double H_GAP = 10;
 
     /**
      * Constructor
@@ -60,32 +58,33 @@ public class ModelConfigButton extends Button {
     public ModelConfigButton(TimeGraphWidget widget) {
         Image icon = JfxImageFactory.instance().getImageFromResource(LEGEND_ICON_PATH);
         setGraphic(new ImageView(icon));
-        setTooltip(new Tooltip(Messages.legendButtonName));
+        setTooltip(new Tooltip(Messages.modelConfigButtonName));
 
         setOnAction(e -> {
-            Dialog<?> dialog = new LegendDialog(widget);
+            Dialog<?> dialog = new ModelConfigDialog(widget);
             dialog.show();
             JfxUtils.centerDialogOnScreen(dialog, ModelConfigButton.this);
         });
     }
 
-    private static class LegendDialog extends Dialog<@Nullable Void> {
+    private static class ModelConfigDialog extends Dialog<@Nullable Void> {
 
-        public LegendDialog(TimeGraphWidget widget) {
-            setTitle("State Model Configuration");
-            setHeaderText("State Rectangles Configuration");
+        public ModelConfigDialog(TimeGraphWidget widget) {
+            setTitle(Messages.modelConfigDialogTitle);
+            setHeaderText(Messages.modelConfigDialogHeader);
 
-            ButtonType resetToDefaultButtonType = new ButtonType("Reset Defaults", ButtonData.LEFT);
+            ButtonType resetToDefaultButtonType = new ButtonType(Messages.modelConfigDialogResetDefaultsButton, ButtonData.LEFT);
             getDialogPane().getButtonTypes().addAll(resetToDefaultButtonType, ButtonType.CLOSE);
 
             // TODO Allow configuring arrow, etc. providers too (different tabs?)
             ITimeGraphModelStateProvider stateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
-            List<ColorDefControl> stateColorSetters = stateProvider.getStateDefinitions().stream()
+            List<ColorDefControl> stateControls = stateProvider.getStateDefinitions().stream()
                     .map(stateDef -> new ColorDefControl(widget, stateDef))
                     .collect(Collectors.toList());
 
             CountingGridPane grid = new CountingGridPane();
-            stateColorSetters.forEach(setter -> grid.appendRow(setter.getNodes()));
+            grid.setHgap(H_GAP);
+            stateControls.forEach(setter -> grid.appendRow(setter.getNodes()));
             getDialogPane().setContent(grid);
 
             /*
@@ -101,7 +100,7 @@ public class ModelConfigButton extends Button {
                  */
                 e.consume();
 
-                stateColorSetters.forEach(ps -> {
+                stateControls.forEach(ps -> {
                     ConfigOption<?> option = ps.getOption();
                     option.resetToDefault();
                     ps.load();
@@ -123,7 +122,7 @@ public class ModelConfigButton extends Button {
         public ColorDefControl(TimeGraphWidget widget, StateDefinition stateDef) {
             fStateDef = stateDef;
 
-            fLabel = new Label(stateDef.getName() + ":"); //$NON-NLS-1$
+            fLabel = new Label(stateDef.getName());
             fColorPicker = new ColorPicker();
             fColorPicker.getStyleClass().add(ColorPicker.STYLE_CLASS_BUTTON);
             load();
