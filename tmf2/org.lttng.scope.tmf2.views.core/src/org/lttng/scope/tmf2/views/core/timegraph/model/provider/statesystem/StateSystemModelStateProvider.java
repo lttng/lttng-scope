@@ -24,10 +24,11 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
@@ -86,7 +87,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
      * @param baseQuarkPattern
      */
     protected StateSystemModelStateProvider(
-            Map<String, ConfigOption<ColorDefinition>> stateColorMapping,
+            List<StateDefinition> stateDefinitions,
             String stateSystemModuleId,
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
@@ -94,7 +95,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
             Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
-        super(stateColorMapping);
+        super(stateDefinitions);
 
         fStateSystemModuleId = stateSystemModuleId;
 

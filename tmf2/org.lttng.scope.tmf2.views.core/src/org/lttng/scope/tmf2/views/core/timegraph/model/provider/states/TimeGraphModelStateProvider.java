@@ -9,14 +9,13 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.states;
 
-import java.util.Map;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -25,10 +24,10 @@ public abstract class TimeGraphModelStateProvider implements ITimeGraphModelStat
 
     private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>(null);
 
-    private final Map<String, ConfigOption<ColorDefinition>> fStateColorMapping;
+    private final List<StateDefinition> fStateDefinitions;
 
-    protected TimeGraphModelStateProvider(Map<String, ConfigOption<ColorDefinition>> stateColorMapping) {
-        fStateColorMapping = ImmutableMap.copyOf(stateColorMapping);
+    protected TimeGraphModelStateProvider(List<StateDefinition> stateDefinitions) {
+        fStateDefinitions = ImmutableList.copyOf(stateDefinitions);
     }
 
     @Override
@@ -37,8 +36,8 @@ public abstract class TimeGraphModelStateProvider implements ITimeGraphModelStat
     }
 
     @Override
-    public Map<String, ConfigOption<ColorDefinition>> getStateColorMapping() {
-        return fStateColorMapping;
+    public List<StateDefinition> getStateDefinitions() {
+        return fStateDefinitions;
     }
 
 }

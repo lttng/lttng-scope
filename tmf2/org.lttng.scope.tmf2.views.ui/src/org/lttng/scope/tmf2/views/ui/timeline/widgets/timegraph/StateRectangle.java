@@ -17,8 +17,8 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 

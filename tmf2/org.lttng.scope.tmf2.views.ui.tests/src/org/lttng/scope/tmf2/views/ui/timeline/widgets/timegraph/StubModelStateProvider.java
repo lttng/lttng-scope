@@ -21,13 +21,13 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
 class StubModelStateProvider extends TimeGraphModelStateProvider {
@@ -39,7 +39,7 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
     public static final long DURATION_FACTOR = 10;
 
     public StubModelStateProvider() {
-        super(ImmutableMap.of());
+        super(ImmutableList.of());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.lttng.scope.lttng.kernel.core.views.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
 
 import java.util.List;
 import java.util.function.Predicate;

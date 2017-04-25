@@ -10,7 +10,7 @@
 package org.lttng.scope.lttng.kernel.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
-import org.lttng.scope.lttng.kernel.core.views.controlflow2.ControlFlowModelProvider;
+import org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2.ControlFlowModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 
 /**

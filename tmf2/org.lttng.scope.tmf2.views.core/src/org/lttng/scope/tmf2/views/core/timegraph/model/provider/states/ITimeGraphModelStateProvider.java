@@ -10,15 +10,13 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.states;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -29,7 +27,7 @@ public interface ITimeGraphModelStateProvider {
 
     ObjectProperty<@Nullable ITmfTrace> traceProperty();
 
-    Map<String, ConfigOption<ColorDefinition>> getStateColorMapping();
+    List<StateDefinition> getStateDefinitions();
 
     TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task);

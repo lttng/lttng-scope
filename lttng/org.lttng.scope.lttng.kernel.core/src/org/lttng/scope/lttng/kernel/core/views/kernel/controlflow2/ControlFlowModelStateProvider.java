@@ -7,13 +7,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
 
 import static java.util.Objects.requireNonNull;
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -21,13 +22,15 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
+import org.lttng.scope.lttng.kernel.core.views.kernel.KernelAnalysisStateDefinitions;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -121,64 +124,49 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     // Color mapping
     // ------------------------------------------------------------------------
 
-    private static final ConfigOption<ColorDefinition> NO_COLOR           = new ConfigOption<>(new ColorDefinition(  0,   0,   0,  0));
-    private static final ConfigOption<ColorDefinition> COLOR_UNKNOWN      = new ConfigOption<>(FlatUIColors.DARK_GRAY);
-    private static final ConfigOption<ColorDefinition> COLOR_WAIT_UNKNOWN = new ConfigOption<>(FlatUIColors.LIGHT_GRAY);
-    private static final ConfigOption<ColorDefinition> COLOR_WAIT_BLOCKED = new ConfigOption<>(FlatUIColors.YELLOW);
-    private static final ConfigOption<ColorDefinition> COLOR_WAIT_FOR_CPU = new ConfigOption<>(FlatUIColors.ORANGE);
-    private static final ConfigOption<ColorDefinition> COLOR_USERMODE     = new ConfigOption<>(FlatUIColors.DARK_GREEN);
-    private static final ConfigOption<ColorDefinition> COLOR_SYSCALL      = new ConfigOption<>(FlatUIColors.DARK_BLUE);
-    private static final ConfigOption<ColorDefinition> COLOR_INTERRUPTED  = new ConfigOption<>(FlatUIColors.PURPLE);
-
     private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> {
         try {
             int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
             ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
 
             if (val.isNull()) {
-                return NO_COLOR;
+                return KernelAnalysisStateDefinitions.NO_STATE.getColor();
             }
 
             int status = val.unboxInt();
             switch (status) {
             case StateValues.PROCESS_STATUS_WAIT_UNKNOWN:
-                return COLOR_WAIT_UNKNOWN;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_UNKNOWN.getColor();
             case StateValues.PROCESS_STATUS_WAIT_BLOCKED:
-                return COLOR_WAIT_BLOCKED;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_BLOCKED.getColor();
             case StateValues.PROCESS_STATUS_WAIT_FOR_CPU:
-                return COLOR_WAIT_FOR_CPU;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_FOR_CPU.getColor();
             case StateValues.PROCESS_STATUS_RUN_USERMODE:
-                return COLOR_USERMODE;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_USERMODE.getColor();
             case StateValues.PROCESS_STATUS_RUN_SYSCALL:
-                return COLOR_SYSCALL;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL.getColor();
             case StateValues.PROCESS_STATUS_INTERRUPTED:
-                return COLOR_INTERRUPTED;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED.getColor();
             default:
-                return COLOR_UNKNOWN;
+                return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN.getColor();
             }
 
         } catch (StateValueTypeException e) {
-            return COLOR_UNKNOWN;
+            return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN.getColor();
         }
     };
 
     /**
-     * Color map definition, required by the super-class. Note we do not use
-     * this map for state mapping, as it's faster to just compare the int state
-     * value. However the same ConfigOption are used in both.
+     * State definitions used in this provider.
      */
-    private static final Map<String, ConfigOption<ColorDefinition>> COLOR_MAP;
-    static {
-        ImmutableMap.Builder<String, ConfigOption<ColorDefinition>> builder = ImmutableMap.builder();
-        builder.put("UNKNOWN", COLOR_UNKNOWN);
-        builder.put("WAIT_UNKNOWN", COLOR_WAIT_UNKNOWN);
-        builder.put("WAIT_BLOCKED", COLOR_WAIT_BLOCKED);
-        builder.put("WAIT_FOR_CPU", COLOR_WAIT_FOR_CPU);
-        builder.put("USERMODE", COLOR_USERMODE);
-        builder.put("SYSCALL", COLOR_SYSCALL);
-        builder.put("INTERRUPTED", COLOR_INTERRUPTED);
-        COLOR_MAP = builder.build();
-    }
+    private static final List<StateDefinition> STATE_DEFINITIONS = ImmutableList.of(
+            KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN,
+            KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_UNKNOWN,
+            KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_BLOCKED,
+            KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_FOR_CPU,
+            KernelAnalysisStateDefinitions.THREAD_STATE_USERMODE,
+            KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL,
+            KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED);
 
     // ------------------------------------------------------------------------
     // Line thickness
@@ -229,7 +217,7 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
      * Constructor
      */
     public ControlFlowModelStateProvider() {
-        super(COLOR_MAP,
+        super(STATE_DEFINITIONS,
                 KernelAnalysisModule.ID,
                 STATE_NAME_MAPPING_FUNCTION,
                 LABEL_MAPPING_FUNCTION,

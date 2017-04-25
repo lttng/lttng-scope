@@ -16,6 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
@@ -79,8 +80,8 @@ public class ModelConfigButton extends Button {
 
             // TODO Allow configuring arrow, etc. providers too (different tabs?)
             ITimeGraphModelStateProvider stateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
-            List<ColorDefControl> stateColorSetters = stateProvider.getStateColorMapping().entrySet().stream()
-                    .map(entry -> new ColorDefControl(widget, entry.getKey(), entry.getValue()))
+            List<ColorDefControl> stateColorSetters = stateProvider.getStateDefinitions().stream()
+                    .map(stateDef -> new ColorDefControl(widget, stateDef))
                     .collect(Collectors.toList());
 
             CountingGridPane grid = new CountingGridPane();
@@ -112,23 +113,17 @@ public class ModelConfigButton extends Button {
         }
     }
 
-    // FIXME Exact same code as DebugOptionsDialog. Move all this to ui.config ?
-    private static interface PropertySetter {
-        ConfigOption<?> getOption();
-        void load();
-    }
+    private static class ColorDefControl {
 
-    private static class ColorDefControl implements PropertySetter {
-
-        private final ConfigOption<ColorDefinition> fOption;
+        private final StateDefinition fStateDef;
 
         private final Label fLabel;
         private final ColorPicker fColorPicker;
 
-        public ColorDefControl(TimeGraphWidget widget, @Nullable String labelText, ConfigOption<ColorDefinition> option) {
-            fOption = option;
+        public ColorDefControl(TimeGraphWidget widget, StateDefinition stateDef) {
+            fStateDef = stateDef;
 
-            fLabel = new Label(labelText + ":"); //$NON-NLS-1$
+            fLabel = new Label(stateDef.getName() + ":"); //$NON-NLS-1$
             fColorPicker = new ColorPicker();
             fColorPicker.getStyleClass().add(ColorPicker.STYLE_CLASS_BUTTON);
             load();
@@ -150,7 +145,7 @@ public class ModelConfigButton extends Button {
                 int green = (int) Math.round(color.getGreen() * 255);
                 int blue = (int) Math.round(color.getBlue() * 255);
                 int opacity = (int) Math.round(color.getOpacity() * 255);
-                fOption.set(new ColorDefinition(red, green, blue, opacity));
+                fStateDef.getColor().set(new ColorDefinition(red, green, blue, opacity));
 
                 widget.getRenderedStateRectangles().forEach(StateRectangle::updatePaint);
             });
@@ -161,14 +156,12 @@ public class ModelConfigButton extends Button {
             return new Node[] { fLabel, fColorPicker };
         }
 
-        @Override
         public ConfigOption<?> getOption() {
-            return fOption;
+            return fStateDef.getColor();
         }
 
-        @Override
         public void load() {
-            fColorPicker.setValue(JfxColorFactory.getColorFromDef(fOption.get()));
+            fColorPicker.setValue(JfxColorFactory.getColorFromDef(fStateDef.getColor().get()));
         }
     }
 
