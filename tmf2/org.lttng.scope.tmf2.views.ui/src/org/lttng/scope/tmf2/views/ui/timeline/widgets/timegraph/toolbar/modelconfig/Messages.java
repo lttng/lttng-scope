@@ -27,6 +27,10 @@ public class Messages extends NLS {
     public static String modelConfigDialogTitle;
     public static String modelConfigDialogHeader;
 
+    public static String modelConfigDialogRowHeaderState;
+    public static String modelConfigDialogRowHeaderColor;
+    public static String modelConfigDialogRowHeaderLineThickness;
+
     public static String modelConfigDialogResetDefaultsButton;
 
     static {

@@ -121,40 +121,8 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     };
 
     // ------------------------------------------------------------------------
-    // Color mapping
+    // Color mapping, line thickness
     // ------------------------------------------------------------------------
-
-    private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> {
-        try {
-            int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
-            ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
-
-            if (val.isNull()) {
-                return KernelAnalysisStateDefinitions.NO_STATE.getColor();
-            }
-
-            int status = val.unboxInt();
-            switch (status) {
-            case StateValues.PROCESS_STATUS_WAIT_UNKNOWN:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_UNKNOWN.getColor();
-            case StateValues.PROCESS_STATUS_WAIT_BLOCKED:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_BLOCKED.getColor();
-            case StateValues.PROCESS_STATUS_WAIT_FOR_CPU:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_FOR_CPU.getColor();
-            case StateValues.PROCESS_STATUS_RUN_USERMODE:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_USERMODE.getColor();
-            case StateValues.PROCESS_STATUS_RUN_SYSCALL:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL.getColor();
-            case StateValues.PROCESS_STATUS_INTERRUPTED:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED.getColor();
-            default:
-                return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN.getColor();
-            }
-
-        } catch (StateValueTypeException e) {
-            return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN.getColor();
-        }
-    };
 
     /**
      * State definitions used in this provider.
@@ -168,20 +136,39 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
             KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL,
             KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED);
 
-    // ------------------------------------------------------------------------
-    // Line thickness
-    // ------------------------------------------------------------------------
+    private static final Function<StateIntervalContext, StateDefinition> STATE_DEF_MAPPING_FUNCTION = ssCtx -> {
+        try {
+            ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
+            if (val.isNull()) {
+                return KernelAnalysisStateDefinitions.NO_STATE;
+            }
 
-    private static final Function<StateIntervalContext, LineThickness> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> {
-        ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
+            int status = val.unboxInt();
+            switch (status) {
+            case StateValues.PROCESS_STATUS_WAIT_UNKNOWN:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_UNKNOWN;
+            case StateValues.PROCESS_STATUS_WAIT_BLOCKED:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_BLOCKED;
+            case StateValues.PROCESS_STATUS_WAIT_FOR_CPU:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_WAIT_FOR_CPU;
+            case StateValues.PROCESS_STATUS_RUN_USERMODE:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_USERMODE;
+            case StateValues.PROCESS_STATUS_RUN_SYSCALL:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL;
+            case StateValues.PROCESS_STATUS_INTERRUPTED:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED;
+            default:
+                return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN;
+            }
 
-        if (val.equals(StateValues.PROCESS_STATUS_WAIT_UNKNOWN_VALUE)
-                || val.equals(StateValues.PROCESS_STATUS_WAIT_BLOCKED_VALUE)) {
-            return LineThickness.TINY;
+        } catch (StateValueTypeException e) {
+            return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN;
         }
-
-        return LineThickness.NORMAL;
     };
+
+    private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getColor();
+
+    private static final Function<StateIntervalContext, ConfigOption<LineThickness>> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getLineThickness();
 
     // ------------------------------------------------------------------------
     // Properties

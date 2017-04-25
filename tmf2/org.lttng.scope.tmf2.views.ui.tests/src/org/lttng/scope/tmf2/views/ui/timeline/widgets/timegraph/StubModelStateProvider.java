@@ -55,13 +55,14 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
                     long endTime = startTime + stateLength - 1;
                     String name = getNextStateName();
                     ConfigOption<ColorDefinition> color = getnextStateColor();
-                    return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LineThickness.NORMAL, Collections.emptyMap());
+                    return new BasicTimeGraphStateInterval(startTime, endTime, treeElement, name, name, color, LINE_THICKNESS, Collections.emptyMap());
                 })
                 .collect(Collectors.toList());
 
         return new TimeGraphStateRender(timeRange, treeElement, intervals);
     }
 
+    private static final ConfigOption<LineThickness> LINE_THICKNESS = new ConfigOption<>(LineThickness.NORMAL);
     private static final Iterator<String> STATE_NAMES = Iterators.cycle("State 1", "State 2");
     private static final Iterator<ConfigOption<ColorDefinition>> STATE_COLORS = Iterators.cycle(
             new ConfigOption<>(new ColorDefinition(128, 0, 0)),

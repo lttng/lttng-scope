@@ -30,7 +30,7 @@ public interface TimeGraphStateInterval {
 
     ConfigOption<ColorDefinition> getColorDefinition();
 
-    LineThickness getLineThickness();
+    ConfigOption<LineThickness> getLineThickness();
 
     boolean isMultiState();
 

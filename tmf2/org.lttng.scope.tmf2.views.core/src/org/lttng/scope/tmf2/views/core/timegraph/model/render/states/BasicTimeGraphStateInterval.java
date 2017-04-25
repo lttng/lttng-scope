@@ -29,7 +29,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     private final String fStateName;
     private final @Nullable String fLabel;
     private final ConfigOption<ColorDefinition> fColor;
-    private final LineThickness fLineThickness;
+    private final ConfigOption<LineThickness> fLineThickness;
 
     private final Map<String, String> fProperties;
 
@@ -49,7 +49,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
             String stateName,
             @Nullable String label,
             ConfigOption<ColorDefinition> color,
-            LineThickness lineThickness,
+            ConfigOption<LineThickness> lineThickness,
             Map<String, String> properties) {
 
         if (start > end || start < 0 || end < 0) {
@@ -92,7 +92,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     }
 
     @Override
-    public LineThickness getLineThickness() {
+    public ConfigOption<LineThickness> getLineThickness() {
         return fLineThickness;
     }
 

@@ -42,6 +42,7 @@ import javafx.scene.text.Text;
 public class StateRectangle extends Rectangle {
 
     private final TimeGraphWidget fWidget;
+    private final int fEntryIndex;
     private final TimeGraphStateInterval fInterval;
 
     private @Nullable transient Paint fBaseColor;
@@ -61,6 +62,7 @@ public class StateRectangle extends Rectangle {
      */
     public StateRectangle(TimeGraphWidget viewer, TimeGraphStateInterval interval, int entryIndex) {
         fWidget = viewer;
+        fEntryIndex = entryIndex;
         fInterval = interval;
 
         /*
@@ -79,10 +81,8 @@ public class StateRectangle extends Rectangle {
         double xEnd = viewer.timestampToPaneXPos(Math.min(traceEnd, intervalEndTime));
 
         double width = Math.max(1.0, xEnd - xStart) + 1.0;
-        double height = getHeightFromThickness(interval.getLineThickness());
-
-        double yOffset = (TimeGraphWidget.ENTRY_HEIGHT - height) / 2;
-        double y = entryIndex * TimeGraphWidget.ENTRY_HEIGHT + yOffset;
+        double height = getHeightFromThickness(interval.getLineThickness().get());
+        double y = computeY(height);
 
         setX(xStart);
         setY(y);
@@ -146,6 +146,7 @@ public class StateRectangle extends Rectangle {
     }
 
     public void updatePaint() {
+        /* Update the color */
         /* Set a special paint for multi-state intervals */
         if (fInterval.isMultiState()) {
             Paint multiStatePaint = fWidget.getDebugOptions().multiStatePaint.get();
@@ -156,6 +157,29 @@ public class StateRectangle extends Rectangle {
             fSelectedColor = JfxColorFactory.getDerivedColorFromDef(fInterval.getColorDefinition().get());
         }
         setFill(fBaseColor);
+
+        /* Update the line thickness */
+        LineThickness lt = fInterval.getLineThickness().get();
+        double height = getHeightFromThickness(lt);
+        setHeight(height);
+        /* We need to adjust the y position too */
+        setY(computeY(height));
+    }
+
+    /**
+     * Compute the Y property (the Y position of the *top* of the rectangle)
+     * this rectangle should have on its pane. This takes into consideration the
+     * entry it belongs to, as well as its target height.
+     *
+     * For example, if the line thickness of the rectangle changes, its Y has to
+     * be recomputed so that the rectangle remains centered on its entry line.
+     *
+     * This method does not change the yProperty of the rectangle.
+     */
+    private double computeY(double height) {
+        double yOffset = (TimeGraphWidget.ENTRY_HEIGHT - height) / 2;
+        double y = fEntryIndex * TimeGraphWidget.ENTRY_HEIGHT + yOffset;
+        return y;
     }
 
     public void setSelected(boolean isSelected) {
@@ -204,7 +228,7 @@ public class StateRectangle extends Rectangle {
         hideTooltip();
     }
 
-    private static double getHeightFromThickness(LineThickness lt) {
+    public static double getHeightFromThickness(LineThickness lt) {
         switch (lt) {
         case NORMAL:
         default:

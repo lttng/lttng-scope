@@ -92,7 +92,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
             Function<StateIntervalContext, String> stateNameMappingFunction,
             Function<StateIntervalContext, @Nullable String> labelMappingFunction,
             Function<StateIntervalContext, ConfigOption<ColorDefinition>> colorMappingFunction,
-            Function<StateIntervalContext, LineThickness> lineThicknessMappingFunction,
+            Function<StateIntervalContext, ConfigOption<LineThickness>> lineThicknessMappingFunction,
             Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
 
         super(stateDefinitions);
