@@ -40,7 +40,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.Shape;
 
-class TimeGraphDrawnEventControl {
+public class TimeGraphDrawnEventControl {
 
     private final TimeGraphWidget fWidget;
     private final Group fParentGroup;
@@ -179,7 +179,12 @@ class TimeGraphDrawnEventControl {
     private static Shape getShapeFromEvent(TimeGraphDrawnEvent event) {
         Color color = JfxColorFactory.getColorFromDef(event.getEventSeries().getColor().get());
         SymbolStyle symbol = event.getEventSeries().getSymbolStyle().get();
+        Shape shape = getShapeFromSymbol(symbol);
+        shape.setFill(color);
+        return shape;
+    }
 
+    public static Shape getShapeFromSymbol(SymbolStyle symbol) {
         Shape shape;
         switch (symbol) {
         case CIRCLE:
@@ -187,10 +192,11 @@ class TimeGraphDrawnEventControl {
             break;
 
         case DIAMOND: {
-            SVGPath path = new SVGPath();
-            path.setContent("M5,0 L10,9 L5,18 L0,9 Z"); //$NON-NLS-1$
-            path.relocate(-5, -9);
-            shape = path;
+            shape = new Polygon(5.0, 0.0,
+                    10.0, 5.0,
+                    5.0, 10.0,
+                    0.0, 5.0);
+            shape.relocate(-5.0, -5.0);
         }
             break;
 
@@ -232,7 +238,6 @@ class TimeGraphDrawnEventControl {
 
         }
 
-        shape.setFill(color);
         shape.setStroke(Color.BLACK);
         return shape;
     }
