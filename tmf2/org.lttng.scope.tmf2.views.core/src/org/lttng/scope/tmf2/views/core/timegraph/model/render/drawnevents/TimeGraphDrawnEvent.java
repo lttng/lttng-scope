@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 
@@ -22,17 +23,23 @@ public class TimeGraphDrawnEvent {
     public enum SymbolStyle {
         CIRCLE,
         CROSS,
-        STAR;
+        STAR,
+        BANG,
+        SQUARE,
+        DIAMOND,
+        TRIANGLE;
     }
 
     private final TimeGraphEvent fTimeGraphEvent;
     private final String fEventName;
-    private final ColorDefinition fColor;
-    private final SymbolStyle fSymbolStyle;
+    private final ConfigOption<ColorDefinition> fColor;
+    private final ConfigOption<SymbolStyle> fSymbolStyle;
     private final @Nullable Supplier<Map<String, String>> fPropertySupplier;
 
-    public TimeGraphDrawnEvent(TimeGraphEvent event, String eventName,
-            ColorDefinition color, SymbolStyle style,
+    public TimeGraphDrawnEvent(TimeGraphEvent event,
+            String eventName,
+            ConfigOption<ColorDefinition> color,
+            ConfigOption<SymbolStyle> style,
             @Nullable Supplier<Map<String, String>> propertySupplier) {
         fTimeGraphEvent = event;
         fEventName = eventName;
@@ -49,11 +56,11 @@ public class TimeGraphDrawnEvent {
         return fEventName;
     }
 
-    public ColorDefinition getColor() {
+    public ConfigOption<ColorDefinition> getColor() {
         return fColor;
     }
 
-    public SymbolStyle getSymbolStyle() {
+    public ConfigOption<SymbolStyle> getSymbolStyle() {
         return fSymbolStyle;
     }
 
