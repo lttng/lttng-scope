@@ -19,11 +19,13 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGrap
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -35,6 +37,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -55,14 +58,23 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
                 .map(stateDef -> new ColorDefControl(widget, stateDef))
                 .collect(Collectors.toList());
 
+        /* Setup the GridPane which will be the contents of the dialog */
         CountingGridPane grid = new CountingGridPane();
         grid.setHgap(H_GAP);
         /* Header row */
         grid.appendRow(new Text(Messages.modelConfigDialogRowHeaderState),
-                new Text(Messages.modelConfigDialogRowHeaderState),
+                new Text(Messages.modelConfigDialogRowHeaderColor),
                 new Text(Messages.modelConfigDialogRowHeaderLineThickness));
 
         stateControls.forEach(setter -> grid.appendRow(setter.getNodes()));
+
+        /* Add an "empty row", then the control for multi-state intervals */
+        LineThicknessMenuButton multiStateThicknessButton = new LineThicknessMenuButton(widget,
+                MultiStateInterval.MULTI_STATE_THICKNESS_OPTION,
+                widget.getDebugOptions().multiStatePaint);
+        grid.appendRow(new Text("")); //$NON-NLS-1$
+        grid.appendRow(new Label("Multi-states"), new Text(), multiStateThicknessButton);
+
         getDialogPane().setContent(grid);
 
         /*
@@ -82,12 +94,15 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
                 sc.getOptions().forEach(ConfigOption::resetToDefault);
                 sc.load();
             });
+            multiStateThicknessButton.getOption().resetToDefault();
+            multiStateThicknessButton.load();
 
             repaintAllRectangles(widget);
         });
 
     }
 
+    // TODO Repaint the rectangles of the whole Timeline view, not just 1 widget
     private static void repaintAllRectangles(TimeGraphWidget widget) {
         widget.getRenderedStateRectangles().forEach(StateRectangle::updatePaint);
     }
@@ -101,6 +116,12 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
         private final ColorPicker fColorPicker;
         private final LineThicknessMenuButton fLineThicknessButton;
 
+        /**
+         * Constructor
+         *
+         * TODO Use a "PaintPicker" dialog instead, so a full Paint object can
+         * be configured from the UI. There is apparently one in SceneBuilder.
+         */
         public ColorDefControl(TimeGraphWidget widget, StateDefinition stateDef) {
             fWidget = widget;
             fStateDef = stateDef;
@@ -108,7 +129,7 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
             fLabel = new Label(stateDef.getName());
             fColorPicker = new ColorPicker();
             fColorPicker.getStyleClass().add(ColorPicker.STYLE_CLASS_BUTTON);
-            fLineThicknessButton = new LineThicknessMenuButton(this);
+            fLineThicknessButton = new LineThicknessMenuButton(widget, stateDef.getLineThickness(), fColorPicker.valueProperty());
             load();
 
             /*
@@ -147,12 +168,7 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
             Color color = JfxColorFactory.getColorFromDef(fStateDef.getColor().get());
             fColorPicker.setValue(color);
 
-            LineThickness lt = fStateDef.getLineThickness().get();
-            fLineThicknessButton.setGraphic(fLineThicknessButton.getRectangleForThickness(lt));
-            fLineThicknessButton.getItems().stream()
-                    .map(item -> (LineThicknessMenuButtonItem) item)
-                    .filter(item -> item.getLineThickness() == lt)
-                    .findFirst().get().setSelected(true);
+            fLineThicknessButton.load();
         }
     }
 
@@ -160,11 +176,14 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
 
         private static final double RECTANGLE_WIDTH = 30;
 
-        private final ColorDefControl fStateDefControl;
+        private final ConfigOption<LineThickness> fOption;
+        private final ReadOnlyProperty<? extends Paint> fColorSource;
 
-        public LineThicknessMenuButton(ColorDefControl control) {
-            fStateDefControl = control;
-            StateDefinition stateDef = control.fStateDef;
+        public LineThicknessMenuButton(TimeGraphWidget widget,
+                ConfigOption<LineThickness> option,
+                ReadOnlyProperty<? extends Paint> colorSource) {
+            fOption = option;
+            fColorSource = colorSource;
 
             ToggleGroup tg = new ToggleGroup();
             List<LineThicknessMenuButtonItem> items = Arrays.stream(LineThickness.values())
@@ -173,27 +192,40 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
                         rmi.setGraphic(getRectangleForThickness(lt));
                         rmi.setToggleGroup(tg);
 
-                        LineThickness currentThickness = stateDef.getLineThickness().get();
+                        LineThickness currentThickness = option.get();
                         rmi.setSelected(lt == currentThickness);
 
                         rmi.setOnAction(e -> {
-                            stateDef.getLineThickness().set(lt);
+                            option.set(lt);
                             LineThicknessMenuButton.this.setGraphic(getRectangleForThickness(lt));
-                            repaintAllRectangles(fStateDefControl.fWidget);
+                            repaintAllRectangles(widget);
                         });
                         return rmi;
                     })
                     .collect(Collectors.toList());
 
             /* Initial value shown in the button */
-            setGraphic(getRectangleForThickness(stateDef.getLineThickness().get()));
+            setGraphic(getRectangleForThickness(option.get()));
             getItems().addAll(items);
         }
 
         private Rectangle getRectangleForThickness(LineThickness lt) {
             Rectangle rectangle = new Rectangle(RECTANGLE_WIDTH, StateRectangle.getHeightFromThickness(lt));
-            rectangle.fillProperty().bind(fStateDefControl.fColorPicker.valueProperty());
+            rectangle.fillProperty().bind(fColorSource);
             return rectangle;
+        }
+
+        public ConfigOption<LineThickness> getOption() {
+            return fOption;
+        }
+
+        public void load() {
+            LineThickness lt = fOption.get();
+            setGraphic(getRectangleForThickness(lt));
+            getItems().stream()
+                    .map(item -> (LineThicknessMenuButtonItem) item)
+                    .filter(item -> item.getLineThickness() == lt)
+                    .findFirst().get().setSelected(true);
         }
     }
 
