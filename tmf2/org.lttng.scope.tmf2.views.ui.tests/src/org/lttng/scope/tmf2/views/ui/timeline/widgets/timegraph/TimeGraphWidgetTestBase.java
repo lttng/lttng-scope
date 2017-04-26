@@ -132,6 +132,14 @@ public abstract class TimeGraphWidgetTestBase {
     }
 
     /**
+     * Repaint the current time range.
+     */
+    protected void repaint() {
+        TimeRange currentRange = getControl().getViewContext().getCurrentVisibleTimeRange();
+        renderRange(currentRange);
+    }
+
+    /**
      * Seek the view to a given time range and run a paint operation on this
      * range. Note that this method won't touch the vertical position of the
      * widget.

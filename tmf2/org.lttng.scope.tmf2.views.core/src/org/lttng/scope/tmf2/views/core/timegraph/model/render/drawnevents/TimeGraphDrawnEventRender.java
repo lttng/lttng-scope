@@ -9,23 +9,21 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents;
 
+import java.util.Collection;
+
 import org.lttng.scope.tmf2.views.core.TimeRange;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 import com.google.common.collect.ImmutableList;
 
 public class TimeGraphDrawnEventRender {
 
     private final TimeRange fTimeRange;
-    private final TimeGraphTreeElement fTreeElement;
-    private final Iterable<TimeGraphDrawnEvent> fEvents;
+    private final Collection<TimeGraphDrawnEvent> fEvents;
 
     public TimeGraphDrawnEventRender(TimeRange timeRange,
-            TimeGraphTreeElement treeElement,
             Iterable<TimeGraphDrawnEvent> events) {
 
         fTimeRange = timeRange;
-        fTreeElement = treeElement;
         fEvents = ImmutableList.copyOf(events);
     }
 
@@ -33,11 +31,7 @@ public class TimeGraphDrawnEventRender {
         return fTimeRange;
     }
 
-    public TimeGraphTreeElement getTreeElement() {
-        return fTreeElement;
-    }
-
-    public Iterable<TimeGraphDrawnEvent> getEvents() {
+    public Collection<TimeGraphDrawnEvent> getEvents() {
         return fEvents;
     }
 }

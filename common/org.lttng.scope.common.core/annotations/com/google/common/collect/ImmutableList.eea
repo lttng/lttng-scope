@@ -56,3 +56,6 @@ of
 of
  <E:Ljava/lang/Object;>(TE;TE;TE;TE;TE;TE;TE;TE;TE;TE;TE;TE;[TE;)Lcom/google/common/collect/ImmutableList<TE;>;
  <E:Ljava/lang/Object;>(T1E;T1E;T1E;T1E;T1E;T1E;T1E;T1E;T1E;T1E;T1E;T1E;[TE;)L1com/google/common/collect/ImmutableList<TE;>;
+toImmutableList
+ <E:Ljava/lang/Object;>()Ljava/util/stream/Collector<TE;*Lcom/google/common/collect/ImmutableList<TE;>;>;
+ <E:Ljava/lang/Object;>()Ljava/util/stream/Collector<TE;*L1com/google/common/collect/ImmutableList<TE;>;>;

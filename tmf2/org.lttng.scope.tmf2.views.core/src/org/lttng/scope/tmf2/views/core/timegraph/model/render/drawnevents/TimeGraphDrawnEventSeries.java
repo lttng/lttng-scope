@@ -18,7 +18,6 @@ public class TimeGraphDrawnEventSeries {
         CIRCLE,
         CROSS,
         STAR,
-        BANG,
         SQUARE,
         DIAMOND,
         TRIANGLE;

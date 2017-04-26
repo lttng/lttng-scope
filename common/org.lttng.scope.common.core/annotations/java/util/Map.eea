@@ -8,6 +8,9 @@ get
 keySet
  ()Ljava/util/Set<TK;>;
  ()L1java/util/Set<TK;>;
+put
+ (TK;TV;)TV;
+ (TK;TV;)T0V;
 remove
  (Ljava/lang/Object;)TV;
  (Ljava/lang/Object;)T0V;

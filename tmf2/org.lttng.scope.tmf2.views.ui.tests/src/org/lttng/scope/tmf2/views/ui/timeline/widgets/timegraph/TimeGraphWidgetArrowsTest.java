@@ -16,7 +16,6 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
 
@@ -101,13 +100,4 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
         assertEquals(2, arrows.size());
     }
 
-    /**
-     * Repaint the current time range. This test doesn't really care about the
-     * time range in particular, the arrow providers just give arrows relative
-     * to the current visible range.
-     */
-    private void repaint() {
-        TimeRange currentRange = getControl().getViewContext().getCurrentVisibleTimeRange();
-        renderRange(currentRange);
-    }
 }

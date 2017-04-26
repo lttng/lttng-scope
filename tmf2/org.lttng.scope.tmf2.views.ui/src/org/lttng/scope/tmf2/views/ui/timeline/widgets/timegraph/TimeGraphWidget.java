@@ -117,6 +117,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
     private final TimeGraphArrowControl fArrowControl;
+    private final TimeGraphDrawnEventControl fDrawnEventControl;
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -136,7 +137,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
-    // TODO Layers for events, bookmarks
+    // TODO Layer for bookmarks
     private final Group fTimeGraphSelectionLayer;
     private final Group fTimeGraphLoadingOverlayLayer;
 
@@ -194,10 +195,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
         Group timeGraphArrowsLayer = new Group();
+        Group timeGraphDrawnEventsLayer = new Group();
         fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
 
         fArrowControl = new TimeGraphArrowControl(this, timeGraphArrowsLayer);
+        fDrawnEventControl = new TimeGraphDrawnEventControl(this, timeGraphDrawnEventsLayer);
 
         /*
          * The order of the layers is important here, it will go from back to
@@ -207,6 +210,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 fTimeGraphStatesLayer,
                 fTimeGraphTextLabelsLayer,
                 timeGraphArrowsLayer,
+                timeGraphDrawnEventsLayer,
                 fTimeGraphSelectionLayer,
                 fTimeGraphLoadingOverlayLayer);
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
@@ -341,6 +345,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             fTimeGraphStatesLayer.getChildren().clear();
             fTimeGraphTextLabelsLayer.getChildren().clear();
             fArrowControl.clear();
+            fDrawnEventControl.clear();
 
             /* Also clear whatever cached objects the viewer currently has. */
             fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
@@ -573,8 +578,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     System.err.println(sjui.toString());
                 });
 
-                /* Phase 2: paint the arrows */
                 fArrowControl.paintArrows(treeRender, renderingRange, this);
+                fDrawnEventControl.paintEvents(treeRender, renderingRange, this);
 
                 return null;
             }
@@ -1248,4 +1253,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return fArrowControl;
     }
 
+    @VisibleForTesting
+    TimeGraphDrawnEventControl getDrawnEventControl() {
+        return fDrawnEventControl;
+    }
 }

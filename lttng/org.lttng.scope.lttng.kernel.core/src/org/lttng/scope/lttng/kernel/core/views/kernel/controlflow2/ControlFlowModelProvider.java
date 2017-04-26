@@ -14,7 +14,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -186,10 +188,16 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
          * represents this TID.
          */
         TimeGraphTreeRender treeRender = getTreeRender();
-        return treeRender.getAllTreeElements().stream()
-                //FIXME generics...
-                .map(treeElem -> (ControlFlowTreeElement) treeElem)
-                .filter(cfvElem -> tid.equals(cfvElem.getTid()))
-                .findFirst().orElse(null);
+        Optional<TimeGraphTreeElement> ret = treeRender.getAllTreeElements().stream()
+                .filter(elem -> {
+                    Predicate<ITmfEvent> predicate = elem.getEventMatching();
+                    if (predicate == null) {
+                        return false;
+                    }
+                    return predicate.test(event);
+                })
+                .findFirst();
+
+        return (ret.isPresent() ? ret.get() : null);
     }
 }
