@@ -43,4 +43,5 @@ public class TimeGraphArrowRender {
     public Collection<TimeGraphArrow> getArrows() {
         return fArrows;
     }
+
 }
