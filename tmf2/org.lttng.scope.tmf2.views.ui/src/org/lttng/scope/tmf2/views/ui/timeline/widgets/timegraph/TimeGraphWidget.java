@@ -565,12 +565,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     fTimeGraphStatesLayer.getChildren().add(statesLayerContents);
                     fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
 
-                    fTimeGraphLoadingOverlay.fadeOut();
-
-                    if (fRepaintLatch != null) {
-                        fRepaintLatch.countDown();
-                    }
-
                     long endUI = System.nanoTime();
                     StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
                             .add("Drawing tree=" + String.format("%,d", afterTreeUI - startUI) + " ns")
@@ -580,6 +574,19 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
                 fArrowControl.paintArrows(treeRender, renderingRange, this);
                 fDrawnEventControl.paintEvents(treeRender, renderingRange, this);
+
+                if (isCancelled()) {
+                    return null;
+                }
+
+                /* Painting is finished, turn off the loading overlay */
+                Platform.runLater(() -> {
+                    System.err.println("fading out overlay");
+                    fTimeGraphLoadingOverlay.fadeOut();
+                    if (fRepaintLatch != null) {
+                        fRepaintLatch.countDown();
+                    }
+                });
 
                 return null;
             }
