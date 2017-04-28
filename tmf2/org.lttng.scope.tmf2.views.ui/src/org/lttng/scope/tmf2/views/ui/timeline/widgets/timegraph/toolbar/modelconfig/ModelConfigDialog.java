@@ -141,15 +141,8 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
                 if (color == null) {
                     return;
                 }
-                /*
-                 * ColorDefintion works with integer values 0 to 255, but JavaFX
-                 * colors works with doubles 0.0 to 0.1
-                 */
-                int red = (int) Math.round(color.getRed() * 255);
-                int green = (int) Math.round(color.getGreen() * 255);
-                int blue = (int) Math.round(color.getBlue() * 255);
-                int opacity = (int) Math.round(color.getOpacity() * 255);
-                fStateDef.getColor().set(new ColorDefinition(red, green, blue, opacity));
+                ColorDefinition colorDef = JfxColorFactory.colorToColorDef(color);
+                fStateDef.getColor().set(colorDef);
 
                 repaintAllRectangles(widget);
             });

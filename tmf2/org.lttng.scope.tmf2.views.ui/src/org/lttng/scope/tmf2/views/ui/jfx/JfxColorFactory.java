@@ -49,4 +49,22 @@ public final class JfxColorFactory {
         return color;
     }
 
+    /**
+     * Convert a JavaFX {@link Color} to its equivalent {@link ColorDefinition}.
+     *
+     * @param color
+     *            The color to convert
+     * @return A corresponding ColorDefinition
+     */
+    public static ColorDefinition colorToColorDef(Color color) {
+        /*
+         * ColorDefintion works with integer values 0 to 255, but JavaFX colors
+         * works with doubles 0.0 to 0.1
+         */
+        int red = (int) Math.round(color.getRed() * 255);
+        int green = (int) Math.round(color.getGreen() * 255);
+        int blue = (int) Math.round(color.getBlue() * 255);
+        int opacity = (int) Math.round(color.getOpacity() * 255);
+        return new ColorDefinition(red, green, blue, opacity);
+    }
 }
