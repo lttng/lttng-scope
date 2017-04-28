@@ -28,7 +28,7 @@ import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
-public class StateSystemModelProvider extends TimeGraphModelProvider {
+public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
 
     /**
      * The context of a tree render. Should contain all the information to
