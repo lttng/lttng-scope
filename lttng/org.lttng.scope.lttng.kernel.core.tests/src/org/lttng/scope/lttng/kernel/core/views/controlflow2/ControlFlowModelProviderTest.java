@@ -93,6 +93,14 @@ public class ControlFlowModelProviderTest {
         sfSS = ss;
 
         provider.setTrace(trace);
+
+        // FIXME Very ugly hack to work-around the delay introduced by the calls
+        // to getStateSystem() that are done in separate threads. Remove once we
+        // move to Jabberwocky and avoid the need of those separate threads.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
