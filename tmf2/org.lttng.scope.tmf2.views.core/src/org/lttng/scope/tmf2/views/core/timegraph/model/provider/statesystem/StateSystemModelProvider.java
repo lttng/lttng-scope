@@ -100,7 +100,18 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
                 fStateSystem = null;
                 return;
             }
-            fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+
+            /*
+             * Set the state system in another thread, so that if it blocks on
+             * waitForInitialization, it does not block the application
+             * thread...
+             *
+             * FIXME We ought to get rid of this blocking in Jabberwocky.
+             */
+            Thread thread = new Thread(() -> {
+                fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+            });
+            thread.start();
         });
     }
 

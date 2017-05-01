@@ -121,7 +121,12 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
                 fStateSystem = null;
                 return;
             }
-            fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+
+            // FIXME Remove the extra thread once we move to Jabberwocky
+            Thread thread = new Thread(() -> {
+                fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
+            });
+            thread.start();
         });
 
     }
