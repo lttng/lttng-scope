@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 public interface ITimeGraphModelProvider {
@@ -60,8 +58,6 @@ public interface ITimeGraphModelProvider {
     String getName();
 
     void setTrace(@Nullable ITmfTrace trace);
-
-    @Nullable TimeGraphTreeElement matchEventToTreeElement(ITmfEvent event);
 
     // ------------------------------------------------------------------------
     // Render providers

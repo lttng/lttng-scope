@@ -14,18 +14,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
-import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
@@ -173,31 +168,4 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
         enableFilterMode(0);
     }
 
-    @Override
-    public @Nullable TimeGraphTreeElement matchEventToTreeElement(ITmfEvent event) {
-        /*
-         * Tree elements represent TIDs. We can use the KernelTidAspect to match
-         * a trace event to its TID.
-         */
-        Integer tid = KernelTidAspect.INSTANCE.resolve(event);
-        if (tid == null) {
-            return null;
-        }
-        /*
-         * Find the corresponding element in the current tree render that
-         * represents this TID.
-         */
-        TimeGraphTreeRender treeRender = getTreeRender();
-        Optional<TimeGraphTreeElement> ret = treeRender.getAllTreeElements().stream()
-                .filter(elem -> {
-                    Predicate<ITmfEvent> predicate = elem.getEventMatching();
-                    if (predicate == null) {
-                        return false;
-                    }
-                    return predicate.test(event);
-                })
-                .findFirst();
-
-        return (ret.isPresent() ? ret.get() : null);
-    }
 }

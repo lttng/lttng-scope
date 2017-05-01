@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -52,12 +50,6 @@ class StubModelProvider extends TimeGraphModelProvider {
     @Override
     public TimeGraphTreeRender getTreeRender() {
         return TREE_RENDER;
-    }
-
-    @Override
-    public @Nullable TimeGraphTreeElement matchEventToTreeElement(ITmfEvent event) {
-        /* The tree elements don't represent anything... */
-        return null;
     }
 
 }

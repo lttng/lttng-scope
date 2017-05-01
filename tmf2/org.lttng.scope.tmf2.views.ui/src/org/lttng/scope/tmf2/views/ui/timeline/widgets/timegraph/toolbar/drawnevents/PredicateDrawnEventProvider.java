@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 
@@ -102,15 +103,30 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
         }
 
         List<TimeGraphDrawnEvent> drawnEvents = traceEvents.stream()
+                /* trace event -> TimeGraphEvent */
                 .map(traceEvent -> {
                     long timestamp = traceEvent.getTimestamp().toNanos();
-                    TimeGraphTreeElement treeElem = fModelProvider.matchEventToTreeElement(traceEvent);
-                    if (treeElem == null) {
+                    /*
+                     * Find the matching tree element for this trace event, if
+                     * there is one.
+                     */
+                    Optional<TimeGraphTreeElement> treeElem = treeRender.getAllTreeElements().stream()
+                            .filter(elem -> {
+                                Predicate<ITmfEvent> predicate = elem.getEventMatching();
+                                if (predicate == null) {
+                                    return false;
+                                }
+                                return predicate.test(traceEvent);
+                            })
+                            .findFirst();
+
+                    if (!treeElem.isPresent()) {
                         return null;
                     }
-                    return new TimeGraphEvent(timestamp, treeElem);
+                    return new TimeGraphEvent(timestamp, treeElem.get());
                 })
                 .filter(Objects::nonNull)
+                /* TimeGraphEvent -> TimeGraphDrawnEvent */
                 .map(tgEvent -> new TimeGraphDrawnEvent(tgEvent, getEventSeries(), null))
                 .collect(ImmutableList.toImmutableList());
 
