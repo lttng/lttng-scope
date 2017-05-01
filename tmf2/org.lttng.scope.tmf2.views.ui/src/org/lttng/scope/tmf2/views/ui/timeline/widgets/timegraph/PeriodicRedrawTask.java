@@ -54,6 +54,9 @@ class PeriodicRedrawTask extends TimerTask {
         TimeRange currentHorizontalPos = fViewer.getControl().getViewContext().getCurrentVisibleTimeRange();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
+        boolean movedHorizontally = !currentHorizontalPos.equals(fPreviousHorizontalPos);
+        boolean movedVertically = !currentVerticalPos.equals(fPreviousVerticalPosition);
+
         if (fForceRedraw) {
             fForceRedraw = false;
             /* Then skip the next checks */
@@ -62,8 +65,7 @@ class PeriodicRedrawTask extends TimerTask {
              * Skip painting if the previous position is the exact same as last
              * time. Also skip if were not yet initialized.
              */
-            if (currentHorizontalPos.equals(fPreviousHorizontalPos)
-                    && currentVerticalPos.equals(fPreviousVerticalPosition)) {
+            if (!movedHorizontally && !movedVertically) {
                 return;
             }
             if (currentHorizontalPos.equals(ViewGroupContext.UNINITIALIZED_RANGE)
@@ -76,7 +78,9 @@ class PeriodicRedrawTask extends TimerTask {
         fPreviousVerticalPosition = currentVerticalPos;
 
         fViewer.paintBackground(currentVerticalPos);
-        fViewer.paintArea(currentHorizontalPos, currentVerticalPos, fTaskSeq.getAndIncrement());
+        fViewer.paintArea(currentHorizontalPos, currentVerticalPos,
+                movedHorizontally, movedVertically,
+                fTaskSeq.getAndIncrement());
     }
 
     public void forceRedraw() {

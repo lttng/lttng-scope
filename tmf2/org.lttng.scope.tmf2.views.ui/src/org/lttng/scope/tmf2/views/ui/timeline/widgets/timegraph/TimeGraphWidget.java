@@ -457,7 +457,26 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         redrawSelection();
     }
 
-    void paintArea(TimeRange windowRange, VerticalPosition verticalPos, long taskSeqNb) {
+    /**
+     *
+     * Paint the specified view area.
+     *
+     * @param windowRange
+     *            The horizontal position where the visible window currently is
+     * @param verticalPos
+     *            The vertical position where the visible window currently is
+     * @param movedHorizontally
+     *            If we have moved horizontally since the last redraw. May be
+     *            used to skip some operations. If you are not sure say "true".
+     * @param movedVertically
+     *            If we have moved vertically since the last redraw. May be used
+     *            to skip some operations. If you are not sure say "true".
+     * @param taskSeqNb
+     *            The sequence number of this task, used for logging only
+     */
+    void paintArea(TimeRange windowRange, VerticalPosition verticalPos,
+            boolean movedHorizontally, boolean movedVertically,
+            long taskSeqNb) {
         final TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
 
         final long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
@@ -486,6 +505,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             protected @Nullable Void call() {
                 long start = System.nanoTime();
                 System.err.println("Starting paint task #" + taskSeqNb);
+
+                /*
+                 * The state rectangles are redrawn as soon as we move, either
+                 * horizontally or vertically.
+                 */
 
                 ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
                 ITimeGraphModelStateProvider stateProvider = modelProvider.getStateProvider();
@@ -581,8 +605,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     System.err.println(sjui.toString());
                 });
 
-                fArrowControl.paintArrows(treeRender, renderingRange, this);
-                fDrawnEventControl.paintEvents(treeRender, renderingRange, this);
+                if (isCancelled()) {
+                    return null;
+                }
+
+                /*
+                 * Arrows and drawn events are drawn for the full vertical
+                 * range. Only refetch/repaint them if we moved horizontally.
+                 */
+                if (movedHorizontally) {
+                    fArrowControl.paintArrows(treeRender, renderingRange, this);
+                    fDrawnEventControl.paintEvents(treeRender, renderingRange, this);
+                }
 
                 if (isCancelled()) {
                     return null;
@@ -1241,7 +1275,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         TimeRange currentHorizontalPos = getViewContext().getCurrentVisibleTimeRange();
         VerticalPosition currentVerticalPos = getCurrentVerticalPosition();
         paintBackground(currentVerticalPos);
-        paintArea(currentHorizontalPos, currentVerticalPos, 0);
+        paintArea(currentHorizontalPos, currentVerticalPos, true, true, 0);
     }
 
     // could eventually be exposed to the user, as "advanced preferences"
