@@ -34,6 +34,12 @@ public class Messages extends NLS {
     public static String threadStateSyscall;
     public static String threadStateInterrupted;
 
+    public static String cpuStateUnknown;
+    public static String cpuStateIdle;
+    public static String cpuStateIrqActive;
+    public static String cpuStateSoftIrqActive;
+    public static String cpuStateSoftIrqRaised;
+
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }

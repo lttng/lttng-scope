@@ -34,4 +34,10 @@ public final class KernelAnalysisStateDefinitions {
     public static final StateDefinition THREAD_STATE_SYSCALL      = new StateDefinition(Messages.threadStateSyscall,     FlatUIColors.DARK_BLUE,  LineThickness.NORMAL);
     public static final StateDefinition THREAD_STATE_INTERRUPTED  = new StateDefinition(Messages.threadStateInterrupted, FlatUIColors.PURPLE,     LineThickness.NORMAL);
 
+    public static final StateDefinition CPU_STATE_UNKNOWN         = new StateDefinition(Messages.cpuStateUnknown,        FlatUIColors.DARK_GRAY,    LineThickness.NORMAL);
+    public static final StateDefinition CPU_STATE_IDLE            = new StateDefinition(Messages.cpuStateIdle,           FlatUIColors.GRAY,         LineThickness.TINY);
+    public static final StateDefinition CPU_STATE_IRQ_ACTIVE      = new StateDefinition(Messages.cpuStateIrqActive,      FlatUIColors.DARK_PURPLE,  LineThickness.NORMAL);
+    public static final StateDefinition CPU_STATE_SOFTIRQ_ACTIVE  = new StateDefinition(Messages.cpuStateSoftIrqActive,  FlatUIColors.DARK_ORANGE,  LineThickness.NORMAL);
+    public static final StateDefinition CPU_STATE_SOFTIRQ_RAISED  = new StateDefinition(Messages.cpuStateSoftIrqRaised,  FlatUIColors.DARK_YELLOW,  LineThickness.NORMAL);
+
 }
