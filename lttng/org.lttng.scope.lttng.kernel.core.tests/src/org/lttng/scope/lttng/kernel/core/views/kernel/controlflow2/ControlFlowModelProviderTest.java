@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -32,9 +32,6 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
-import org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2.ControlFlowModelProvider;
-import org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2.ControlFlowModelStateProvider;
-import org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2.ControlFlowTreeElement;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -48,6 +45,7 @@ import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * Tests for {@link ControlFlowModelProvider}.
@@ -284,8 +282,8 @@ public class ControlFlowModelProviderTest {
             assertEquals(ssInterval.getStartTime(), renderInterval.getStartEvent().getTimestamp());
             assertEquals(ssInterval.getEndTime(), renderInterval.getEndEvent().getTimestamp());
 
-            int stateValue = ssInterval.getStateValue().unboxInt();
-            String stateName = ControlFlowModelStateProvider.mapStateValueToStateName(stateValue);
+            ITmfStateValue stateValue = ssInterval.getStateValue();
+            String stateName = ControlFlowModelStateProvider.stateValueToStateDef(stateValue).getName();
             assertEquals(stateName, renderInterval.getStateName());
         }
     }

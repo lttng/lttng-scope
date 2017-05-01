@@ -23,14 +23,6 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static String ControlFlowRenderProvider_State_WaitUnknown;
-    public static String ControlFlowRenderProvider_State_WaitBlocked;
-    public static String ControlFlowRenderProvider_State_WaitForCpu;
-    public static String ControlFlowRenderProvider_State_UserMode;
-    public static String ControlFlowRenderProvider_State_Syscall;
-    public static String ControlFlowRenderProvider_State_Interrupted;
-    public static String ControlFlowRenderProvider_State_Unknown;
-
     public static String ControlFlowSortingModes_ByTid;
     public static String ControlFlowSortingModes_ByThreadName;
 

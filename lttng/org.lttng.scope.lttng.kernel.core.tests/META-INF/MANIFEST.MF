@@ -16,4 +16,4 @@ Export-Package: org.lttng.scope.lttng.kernel.core.analysis.os;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.synchronization;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.tests.shared,
  org.lttng.scope.lttng.kernel.core.tests.stubs;x-internal:=true,
- org.lttng.scope.lttng.kernel.core.views.controlflow2
+ org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2

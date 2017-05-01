@@ -10,7 +10,6 @@
 package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
 
 import static java.util.Objects.requireNonNull;
-import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,49 +37,6 @@ import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 public class ControlFlowModelStateProvider extends StateSystemModelStateProvider {
-
-    // ------------------------------------------------------------------------
-    // State name mapping
-    // ------------------------------------------------------------------------
-
-    /**
-     * Function mapping state names
-     *
-     * @param value
-     *            State value representing the state
-     * @return The state name to display, should be localized
-     */
-    @VisibleForTesting
-    public static String mapStateValueToStateName(int value) {
-        try {
-            switch (value) {
-            case StateValues.PROCESS_STATUS_WAIT_UNKNOWN:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_WaitUnknown);
-            case StateValues.PROCESS_STATUS_WAIT_BLOCKED:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_WaitBlocked);
-            case StateValues.PROCESS_STATUS_WAIT_FOR_CPU:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_WaitForCpu);
-            case StateValues.PROCESS_STATUS_RUN_USERMODE:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_UserMode);
-            case StateValues.PROCESS_STATUS_RUN_SYSCALL:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_Syscall);
-            case StateValues.PROCESS_STATUS_INTERRUPTED:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_Interrupted);
-            default:
-                return nullToEmptyString(Messages.ControlFlowRenderProvider_State_Unknown);
-            }
-
-        } catch (StateValueTypeException e) {
-            return nullToEmptyString(Messages.ControlFlowRenderProvider_State_Unknown);
-        }
-    }
-
-    private static final Function<StateIntervalContext, String> STATE_NAME_MAPPING_FUNCTION = ssCtx -> {
-        int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
-        ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
-        int status = val.unboxInt();
-        return mapStateValueToStateName(status);
-    };
 
     // ------------------------------------------------------------------------
     // Label mapping
@@ -137,12 +93,17 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
             KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED);
 
     private static final Function<StateIntervalContext, StateDefinition> STATE_DEF_MAPPING_FUNCTION = ssCtx -> {
-        try {
-            ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
-            if (val.isNull()) {
-                return KernelAnalysisStateDefinitions.NO_STATE;
-            }
+        ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
+        return stateValueToStateDef(val);
+    };
 
+    @VisibleForTesting
+    static final StateDefinition stateValueToStateDef(ITmfStateValue val) {
+        if (val.isNull()) {
+            return KernelAnalysisStateDefinitions.NO_STATE;
+        }
+
+        try {
             int status = val.unboxInt();
             switch (status) {
             case StateValues.PROCESS_STATUS_WAIT_UNKNOWN:
@@ -164,7 +125,9 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
         } catch (StateValueTypeException e) {
             return KernelAnalysisStateDefinitions.THREAD_STATE_UNKNOWN;
         }
-    };
+    }
+
+    private static final Function<StateIntervalContext, String> STATE_NAME_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getName();
 
     private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getColor();
 
