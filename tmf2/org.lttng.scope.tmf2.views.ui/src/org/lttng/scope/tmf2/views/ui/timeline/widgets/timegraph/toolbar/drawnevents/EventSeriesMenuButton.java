@@ -66,6 +66,31 @@ public class EventSeriesMenuButton extends MenuButton {
             separator.visibleProperty().set(change.getList().size() > 3);
         });
 
+        /* "Create New Series" menu item */
+        MenuItem addNewSeriesMenuItem = new MenuItem(Messages.newEventSeriesMenuItem);
+        addNewSeriesMenuItem.setOnAction(e -> {
+            ITimeGraphModelProvider modelProvider = widget.getControl().getModelRenderProvider();
+            CreateEventSeriesDialog dialog = new CreateEventSeriesDialog(modelProvider);
+            dialog.setOnShowing(h -> Platform.runLater(() -> JfxUtils.centerDialogOnScreen(dialog, EventSeriesMenuButton.this)));
+            Optional<@Nullable PredicateDrawnEventProvider> results = dialog.showAndWait();
+            ITimeGraphDrawnEventProvider provider = results.orElse(null);
+            if (provider != null) {
+                PROVIDER_MANAGER.getRegisteredProviders().add(provider);
+                provider.enabledProperty().set(true);
+            }
+        });
+
+        /* "Clear series" menu item */
+        MenuItem clearSeriesMenuItem = new MenuItem(Messages.clearEventSeriesMenuItem);
+        clearSeriesMenuItem.setOnAction(e -> {
+            // TODO Eventually we could track which providers were created from
+            // this button/dialog, and only clear those here.
+            PROVIDER_MANAGER.getRegisteredProviders().clear();
+        });
+
+        getItems().addAll(separator, addNewSeriesMenuItem, clearSeriesMenuItem);
+
+
         /* Load the already-registered providers */
         PROVIDER_MANAGER.getRegisteredProviders().forEach(this::addProviderToMenu);
 
@@ -80,29 +105,6 @@ public class EventSeriesMenuButton extends MenuButton {
                 removeProviderFromMenu(removedProvider);
             }
         });
-
-
-        MenuItem addNewSeriesMenuItem = new MenuItem(Messages.newEventSeriesMenuItem);
-        addNewSeriesMenuItem.setOnAction(e -> {
-            ITimeGraphModelProvider modelProvider = widget.getControl().getModelRenderProvider();
-            CreateEventSeriesDialog dialog = new CreateEventSeriesDialog(modelProvider);
-            dialog.setOnShowing(h -> Platform.runLater(() -> JfxUtils.centerDialogOnScreen(dialog, EventSeriesMenuButton.this)));
-            Optional<@Nullable PredicateDrawnEventProvider> results = dialog.showAndWait();
-            ITimeGraphDrawnEventProvider provider = results.orElse(null);
-            if (provider != null) {
-                PROVIDER_MANAGER.getRegisteredProviders().add(provider);
-                provider.enabledProperty().set(true);
-            }
-        });
-
-        MenuItem clearSeriesMenuItem = new MenuItem(Messages.clearEventSeriesMenuItem);
-        clearSeriesMenuItem.setOnAction(e -> {
-            // TODO Eventually we could track which providers were created from
-            // this button/dialog, and only clear those here.
-            PROVIDER_MANAGER.getRegisteredProviders().clear();
-        });
-
-        getItems().addAll(separator, addNewSeriesMenuItem, clearSeriesMenuItem);
     }
 
     private void addProviderToMenu(ITimeGraphDrawnEventProvider provider) {
