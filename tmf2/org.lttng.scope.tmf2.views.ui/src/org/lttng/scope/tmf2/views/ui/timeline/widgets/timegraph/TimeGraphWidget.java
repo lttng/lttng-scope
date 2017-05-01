@@ -420,6 +420,15 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     arrow.setEndX(arrow.getEndX() * factor);
                 });
 
+                /* Reposition the drawn events */
+                fDrawnEventControl.getRenderedEvents().forEach(event -> {
+                    /*
+                     * Drawn events use the "translate" properties to define
+                     * their position.
+                     */
+                    event.setTranslateX(event.getTranslateX() * factor);
+                });
+
 
                 /*
                  * Resize the pane itself. Remember min/max are bound to the
