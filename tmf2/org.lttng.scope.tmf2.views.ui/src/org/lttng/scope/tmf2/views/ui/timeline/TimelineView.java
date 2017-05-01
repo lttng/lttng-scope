@@ -53,7 +53,7 @@ public class TimelineView extends TmfView {
         TimelineManager manager = new TimelineManager(ViewGroupContext.getCurrent());
         Collection<Node> nodes = StreamUtils.getStream(manager.getWidgets())
                 .map(widget -> widget.getRootNode())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         sp.getItems().addAll(nodes);
 
         fxCanvas.setScene(new Scene(sp));
