@@ -39,6 +39,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
+import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;

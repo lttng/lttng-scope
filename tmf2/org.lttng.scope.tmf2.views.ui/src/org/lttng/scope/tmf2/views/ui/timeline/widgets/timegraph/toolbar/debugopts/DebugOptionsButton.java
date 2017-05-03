@@ -12,7 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.debugop
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.DebugOptions;
+import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.beans.property.IntegerProperty;

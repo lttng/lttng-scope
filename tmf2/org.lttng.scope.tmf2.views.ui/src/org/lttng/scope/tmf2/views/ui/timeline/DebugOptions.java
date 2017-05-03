@@ -7,11 +7,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.timeline;
 
 import static java.util.Objects.requireNonNull;
 
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;

@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.shape.Rectangle;
