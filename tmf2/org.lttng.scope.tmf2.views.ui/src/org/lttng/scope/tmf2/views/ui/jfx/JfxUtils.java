@@ -16,6 +16,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
@@ -78,6 +79,28 @@ public final class JfxUtils {
             return requireNonNull(str);
         } catch (Throwable e) {
             return "ERROR"; //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Run the given {@link Runnable} on the UI/main/application thread.
+     *
+     * If you know for sure you are *not* on the main thread, you should use
+     * {@link Platform#runLater} to queue the runnable for the main thread.
+     *
+     * If you are not sure, you can use this method. The difference with
+     * {@link Platform#runLater} is that if you are actually already on the UI
+     * thread, the runnable will be run immediately. Whereas calling runLater
+     * from the UI will just queue the runnable at the end of the queue.
+     *
+     * @param r
+     *            The runnable to run on the main thread
+     */
+    public static void runOnMainThread(Runnable r) {
+        if (Platform.isFxApplicationThread()) {
+            r.run();
+        } else {
+            Platform.runLater(r);
         }
     }
 
