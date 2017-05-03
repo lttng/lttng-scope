@@ -54,5 +54,9 @@ class FilterModeMenuButton extends MenuButton {
 
         setText(Messages.sfFilterModeMenuButtonName);
         getItems().addAll(filterModeItems);
+
+        if (filterModeItems.isEmpty()) {
+            setDisable(true);
+        }
     }
 }

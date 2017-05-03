@@ -58,5 +58,13 @@ class SortingModeMenuButton extends MenuButton {
 
         setText(Messages.sfSortingModeMenuButtonName);
         getItems().addAll(sortingModeItems);
+
+        /*
+         * There is at minimum the "default" sorting mode. Don't show the list
+         * if there is only that one.
+         */
+        if (sortingModeItems.size() <= 1) {
+            setDisable(true);
+        }
     }
 }

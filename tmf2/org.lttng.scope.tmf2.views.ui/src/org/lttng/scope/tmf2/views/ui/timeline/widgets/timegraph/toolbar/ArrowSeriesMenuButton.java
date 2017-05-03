@@ -53,6 +53,10 @@ class ArrowSeriesMenuButton extends MenuButton {
 
         setText(Messages.arrowSeriesMenuButtonName);
         getItems().addAll(arrowSeriesItems);
+
+        if (arrowSeriesItems.isEmpty()) {
+            setDisable(true);
+        }
     }
 
     private static Arrow getArrowGraphicForSeries(TimeGraphArrowSeries series) {
