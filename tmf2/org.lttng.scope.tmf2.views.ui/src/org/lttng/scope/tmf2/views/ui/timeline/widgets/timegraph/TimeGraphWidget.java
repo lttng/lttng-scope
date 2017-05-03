@@ -568,6 +568,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     treeContents = prepareTreeContents(treeRender, treePaneWidth);
                 }
 
+                paintBackground(verticalPos);
+
                 /* Prepare the time graph part */
                 Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
                 Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
@@ -667,12 +669,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     void paintBackground(VerticalPosition vPos) {
         final int entriesToPrefetch = fDebugOptions.entryPadding.get();
+        int totalNbEntries = fLatestTreeRender.getAllTreeElements().size();
 
         final double timeGraphWidth = fTimeGraphPane.getWidth();
         final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * ENTRY_HEIGHT);
-        final double paintBottomPos = vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT;
+        final double paintBottomPos = Math.min(vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT,
+                /*
+                 * If there are less tree elements than can fill the window,
+                 * stop at the end of the real tree elements.
+                 */
+                totalNbEntries * ENTRY_HEIGHT);
 
-        List<Line> lines = new LinkedList<>();
+        LinkedList<Line> lines = new LinkedList<>();
         DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
                 // TODO Java 9 will allow using dropWhile()/takeWhile()/collect
                 .filter(y -> y > paintTopPos)
@@ -684,6 +692,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     lines.add(line);
                 })
                 .allMatch(y -> y < paintBottomPos);
+        // The list contains the first element that didn't match the predicate,
+        // we don't want it.
+        if (!lines.isEmpty()) {
+            lines.removeLast();
+        }
 
         Platform.runLater(() -> {
             fTimeGraphBackgroundLayer.getChildren().clear();

@@ -77,7 +77,6 @@ class PeriodicRedrawTask extends TimerTask {
         fPreviousHorizontalPos = currentHorizontalPos;
         fPreviousVerticalPosition = currentVerticalPos;
 
-        fViewer.paintBackground(currentVerticalPos);
         fViewer.paintArea(currentHorizontalPos, currentVerticalPos,
                 movedHorizontally, movedVertically,
                 fTaskSeq.getAndIncrement());
