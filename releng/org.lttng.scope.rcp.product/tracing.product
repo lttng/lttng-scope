@@ -215,10 +215,6 @@ Java and all Java-based trademarks are trademarks of Oracle Corporation in the U
       <plugin id="org.lttng.scope.rcp.ui" autoStart="false" startLevel="5" />
    </configurations>
 
-   <repositories>
-      <repository location="http://download.eclipse.org/tracecompass/master/rcp-repository" enabled="true" />
-   </repositories>
-
    <preferencesInfo>
       <targetfile overwrite="false"/>
    </preferencesInfo>
