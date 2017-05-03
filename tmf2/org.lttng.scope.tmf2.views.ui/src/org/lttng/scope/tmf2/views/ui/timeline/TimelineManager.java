@@ -25,7 +25,9 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import com.google.common.collect.ImmutableSet;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class TimelineManager {
@@ -38,6 +40,12 @@ public class TimelineManager {
 
     private final DoubleProperty fDividerPosition = new SimpleDoubleProperty(INITIAL_DIVIDER_POSITION);
     private final DoubleProperty fHScrollValue = new SimpleDoubleProperty(0);
+
+    /* Properties to sync ongoing selection rectangles */
+    private final BooleanProperty fSelectionVisible = new SimpleBooleanProperty(true);
+    private final DoubleProperty fOngoingSelectionX = new SimpleDoubleProperty();
+    private final DoubleProperty fOngoingSelectionWidth = new SimpleDoubleProperty();
+    private final BooleanProperty fOngoingSelectionVisible = new SimpleBooleanProperty(false);
 
     public TimelineManager(ViewGroupContext viewContext) {
 
@@ -61,16 +69,30 @@ public class TimelineManager {
             /* Bind divider positions, where applicable */
             fWidgets.stream()
                     .map(w -> w.getSplitPane())
-                    .filter(Objects::nonNull)
-                    .map(p -> Objects.requireNonNull(p))
+                    .filter(Objects::nonNull).map(p -> Objects.requireNonNull(p))
                     .forEach(splitPane -> splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition));
 
             /* Bind h-scrollbar positions */
             fWidgets.stream()
                     .map(w -> w.getTimeBasedScrollPane())
-                    .filter(Objects::nonNull)
-                    .map(p -> Objects.requireNonNull(p))
+                    .filter(Objects::nonNull).map(p -> Objects.requireNonNull(p))
                     .forEach(scrollPane -> scrollPane.hvalueProperty().bindBidirectional(fHScrollValue));
+
+            /* Bind the selection rectangles together */
+            fWidgets.stream()
+                    .map(w -> w.getSelectionRectangle())
+                    .filter(Objects::nonNull).map(r -> Objects.requireNonNull(r))
+                    .forEach(rect -> {
+                        rect.visibleProperty().bindBidirectional(fSelectionVisible);
+                    });
+            fWidgets.stream()
+                    .map(w -> w.getOngoingSelectionRectangle())
+                    .filter(Objects::nonNull).map(r -> Objects.requireNonNull(r))
+                    .forEach(rect -> {
+                        rect.xProperty().bindBidirectional(fOngoingSelectionX);
+                        rect.widthProperty().bindBidirectional(fOngoingSelectionWidth);
+                        rect.visibleProperty().bindBidirectional(fOngoingSelectionVisible);
+                    });
         });
     }
 

@@ -47,6 +47,8 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerTo
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -107,6 +109,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * TODO Make this configurable (vertical zoom feature)
      */
     public static final double ENTRY_HEIGHT = 20;
+
+    /**
+     * Double property with a non-modifiable value of 0. For things that should
+     * remain at 0.
+     */
+    private static final ReadOnlyDoubleProperty ZERO_PROPERTY = new SimpleDoubleProperty(0);
 
     // ------------------------------------------------------------------------
     // Instance fields
@@ -193,18 +201,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // --------------------------------------------------------------------
 
         fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
-
         fSelectionRect = new Rectangle();
-        fSelectionRect.setMouseTransparent(true);
         fOngoingSelectionRect = new Rectangle();
-        fOngoingSelectionRect.setMouseTransparent(true);
-
-        Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
-            rect.setStroke(SELECTION_STROKE_COLOR);
-            rect.setStrokeWidth(SELECTION_STROKE_WIDTH);
-            rect.setStrokeLineCap(StrokeLineCap.ROUND);
-            rect.setFill(SELECTION_FILL_COLOR);
-        });
 
         fTimeGraphBackgroundLayer = new Group();
         fTimeGraphStatesLayer = new Group();
@@ -291,6 +289,22 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
 
         // --------------------------------------------------------------------
+        // Selection rectangles setup
+        // --------------------------------------------------------------------
+
+        Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
+            rect.setMouseTransparent(true);
+
+            rect.setStroke(SELECTION_STROKE_COLOR);
+            rect.setStrokeWidth(SELECTION_STROKE_WIDTH);
+            rect.setStrokeLineCap(StrokeLineCap.ROUND);
+            rect.setFill(SELECTION_FILL_COLOR);
+
+            rect.yProperty().bind(ZERO_PROPERTY);
+            rect.heightProperty().bind(fTimeGraphPane.heightProperty());
+        });
+
+        // --------------------------------------------------------------------
         // Prepare the top-level area
         // --------------------------------------------------------------------
 
@@ -334,6 +348,16 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     @Override
     public @NonNull ScrollPane getTimeBasedScrollPane() {
         return fTimeGraphScrollPane;
+    }
+
+    @Override
+    public @Nullable Rectangle getSelectionRectangle() {
+        return fSelectionRect;
+    }
+
+    @Override
+    public @Nullable Rectangle getOngoingSelectionRectangle() {
+        return fOngoingSelectionRect;
     }
 
     // ------------------------------------------------------------------------
@@ -711,9 +735,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         double xWidth = xEnd - xStart;
 
         fSelectionRect.setX(xStart);
-        fSelectionRect.setY(0);
         fSelectionRect.setWidth(xWidth);
-        fSelectionRect.setHeight(fTimeGraphPane.getHeight());
 
         fSelectionRect.setVisible(true);
     }
@@ -936,9 +958,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             fMouseOriginX = e.getX();
 
             fOngoingSelectionRect.setX(fMouseOriginX);
-            fOngoingSelectionRect.setY(0);
             fOngoingSelectionRect.setWidth(0);
-            fOngoingSelectionRect.setHeight(fTimeGraphPane.getHeight());
 
             fOngoingSelectionRect.setVisible(true);
 

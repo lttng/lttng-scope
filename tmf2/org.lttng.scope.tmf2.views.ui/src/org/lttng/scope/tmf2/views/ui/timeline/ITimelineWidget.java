@@ -14,6 +14,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.shape.Rectangle;
 
 public interface ITimelineWidget {
 
@@ -34,4 +35,8 @@ public interface ITimelineWidget {
     @Nullable SplitPane getSplitPane();
 
     @Nullable ScrollPane getTimeBasedScrollPane();
+
+    @Nullable Rectangle getSelectionRectangle();
+
+    @Nullable Rectangle getOngoingSelectionRectangle();
 }
