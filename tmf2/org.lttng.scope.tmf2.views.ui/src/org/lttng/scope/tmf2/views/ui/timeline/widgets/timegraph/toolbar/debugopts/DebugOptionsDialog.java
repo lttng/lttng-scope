@@ -42,7 +42,7 @@ import javafx.scene.paint.Color;
  *
  * @author Alexandre Montplaisir
  */
-class DebugOptionsDialog extends Dialog<@Nullable DebugOptions> {
+class DebugOptionsDialog extends Dialog<@Nullable Void> {
 
     private static final Insets PADDING = new Insets(20.0);
     private static final double SPACING = 10.0;
@@ -87,7 +87,7 @@ class DebugOptionsDialog extends Dialog<@Nullable DebugOptions> {
              */
             getAllPropertySetters().forEach(PropertySetter::save);
 
-            return fOpts;
+            return null;
         });
 
         /* Define how to "Reset Defaults" button works */

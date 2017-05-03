@@ -55,7 +55,7 @@ public class DebugOptionsButton extends Button {
         fOpts = widget.getDebugOptions();
 
         setOnAction(e -> {
-            Dialog<@Nullable DebugOptions> dialog = new DebugOptionsDialog(this);
+            Dialog<@Nullable Void> dialog = new DebugOptionsDialog(this);
             dialog.show();
             JfxUtils.centerDialogOnScreen(dialog, DebugOptionsButton.this);
         });
