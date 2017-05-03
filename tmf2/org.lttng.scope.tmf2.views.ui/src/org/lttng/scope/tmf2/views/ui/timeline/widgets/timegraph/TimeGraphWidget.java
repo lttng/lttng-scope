@@ -122,6 +122,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
+    private final NestingBoolean fHScrollListenerStatus;
+
     private final BorderPane fBasePane;
     private final ToolBar fToolBar;
     private final SplitPane fSplitPane;
@@ -157,11 +159,23 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     /**
      * Constructor
      *
-     * @param parent
-     *            Parent SWT composite
+     * @param control
+     *            The control for this widget. See
+     *            {@link TimeGraphModelControl}.
+     * @param hScrollListenerStatus
+     *            If the hscroll property of this widget's scrollpane is bound
+     *            with others (possibly through the
+     *            {@link ITimelineWidget#getTimeBasedScrollPane()} method), then
+     *            a common {@link NestingBoolean} should be used to track
+     *            requests to disable the hscroll listener.
+     *            <p>
+     *            If the widget is to be used stand-alone, then you can pass a "
+     *            <code>new NestingBoolean()</code> " that only this view will
+     *            use.
      */
-    public TimeGraphWidget(TimeGraphModelControl control) {
+    public TimeGraphWidget(TimeGraphModelControl control, NestingBoolean hScrollListenerStatus) {
         super(control);
+        fHScrollListenerStatus = hScrollListenerStatus;
 
         // --------------------------------------------------------------------
         // Prepare the tree part's scene graph
@@ -393,7 +407,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             newValue = startPos / (newTotalWidth - timeGraphVisibleWidth);
         }
 
-        fScrollingCtx.fHListenerStatus.disable();
+        fHScrollListenerStatus.disable();
         try {
 
             /*
@@ -448,7 +462,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             fTimeGraphScrollPane.setHvalue(newValue);
 
         } finally {
-            fScrollingCtx.fHListenerStatus.enable();
+            fHScrollListenerStatus.enable();
         }
 
         /*
@@ -969,9 +983,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      */
     private class ScrollingContext {
 
-        /* Knobs to programmatically disable the scrolling listeners */
-        public final NestingBoolean fHListenerStatus = new NestingBoolean();
-
         /**
          * Listener for the horizontal scrollbar changes
          */
@@ -980,7 +991,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fHListenerStatus.enabledProperty().get()) {
+            if (!fHScrollListenerStatus.enabledProperty().get()) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }

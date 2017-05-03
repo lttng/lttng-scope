@@ -13,6 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
+import org.lttng.scope.tmf2.views.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
@@ -54,7 +55,7 @@ public class StubView extends TmfView {
         FXCanvas fxCanvas = new FXCanvas(parent, SWT.NONE);
 
 
-        TimeGraphWidget viewer = new TimeGraphWidget(fModelControl);
+        TimeGraphWidget viewer = new TimeGraphWidget(fModelControl, new NestingBoolean());
         fModelControl.attachView(viewer);
 
         fxCanvas.setScene(new Scene(viewer.getRootNode()));

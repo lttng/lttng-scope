@@ -13,10 +13,11 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.lttng.scope.tmf2.views.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
@@ -33,6 +34,8 @@ public class TimelineManager {
 
     private final Set<ITimelineWidget> fWidgets = new LinkedHashSet<>();
 
+    private final NestingBoolean fHScrollListenerStatus = new NestingBoolean();
+
     private final DoubleProperty fDividerPosition = new SimpleDoubleProperty(INITIAL_DIVIDER_POSITION);
     private final DoubleProperty fHScrollValue = new SimpleDoubleProperty(0);
 
@@ -43,7 +46,7 @@ public class TimelineManager {
             /* Instantiate a widget for this provider type */
             ITimeGraphModelProvider provider = factory.get();
             TimeGraphModelControl control = new TimeGraphModelControl(viewContext, provider);
-            TimeGraphWidget viewer = new TimeGraphWidget(control);
+            TimeGraphWidget viewer = new TimeGraphWidget(control, fHScrollListenerStatus);
             control.attachView(viewer);
 
             fWidgets.add(viewer);
