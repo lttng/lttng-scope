@@ -20,7 +20,6 @@ import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -30,6 +29,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.lttng.scope.tmf2.views.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
@@ -961,24 +961,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         };
     }
 
-    private static class ListenerStatus {
-
-        private final AtomicInteger fDisabledCount = new AtomicInteger(0);
-
-        public void disable() {
-            fDisabledCount.incrementAndGet();
-        }
-
-        public void enable() {
-            /* Decrement the count but only if it is currently above 0 */
-            fDisabledCount.updateAndGet(value -> value > 0 ? value - 1 : 0);
-        }
-
-        public boolean isEnabled() {
-            return (fDisabledCount.get() == 0);
-        }
-    }
-
     /**
      * Class encapsulating the scrolling operations of the time graph pane.
      *
@@ -988,7 +970,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private class ScrollingContext {
 
         /* Knobs to programmatically disable the scrolling listeners */
-        public final ListenerStatus fHListenerStatus = new ListenerStatus();
+        public final NestingBoolean fHListenerStatus = new NestingBoolean();
 
         /**
          * Listener for the horizontal scrollbar changes
@@ -998,7 +980,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 System.out.println("HScroll event ignored due to debug option");
                 return;
             }
-            if (!fHListenerStatus.isEnabled()) {
+            if (!fHListenerStatus.enabledProperty().get()) {
                 System.out.println("HScroll listener triggered but inactive");
                 return;
             }
