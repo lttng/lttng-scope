@@ -21,6 +21,11 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import com.google.common.base.MoreObjects;
 
+/**
+ * Basic implementation of {@link TimeGraphStateInterval}.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
 
     private final TimeGraphEvent fStartEvent;
@@ -34,14 +39,27 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     private final Map<String, String> fProperties;
 
     /**
+     * Constructor.
+     *
+     * It requires supplying the start time, end time, and tree element. The
+     * corresponding {@link TimeGraphEvent} will be created from those.
+     *
      * @param start
+     *            Start time
      * @param end
+     *            End time
      * @param treeElement
+     *            Tree element of this interval
      * @param stateName
+     *            State name
      * @param label
+     *            Label, see {@link #getLabel()}
      * @param color
+     *            Color
      * @param lineThickness
+     *            Line thickness
      * @param properties
+     *            Properties
      */
     public BasicTimeGraphStateInterval(long start,
             long end,
@@ -134,9 +152,9 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("start", fStartEvent.getTimestamp())
-                .add("end", fEndEvent.getTimestamp())
-                .add("name", fStateName)
+                .add("start", fStartEvent.getTimestamp()) //$NON-NLS-1$
+                .add("end", fEndEvent.getTimestamp()) //$NON-NLS-1$
+                .add("name", fStateName) //$NON-NLS-1$
                 .toString();
     }
 

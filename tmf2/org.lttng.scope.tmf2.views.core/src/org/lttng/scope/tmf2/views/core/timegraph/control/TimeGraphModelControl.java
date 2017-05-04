@@ -18,6 +18,12 @@ import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
 import javafx.beans.value.ChangeListener;
 
+/**
+ * Control part of the timegraph MVC mechanism. It links a
+ * {@link TimeGraphModelView} to a {@link ITimeGraphModelProvider}.
+ *
+ * @author Alexandre Montplaisir
+ */
 public final class TimeGraphModelControl {
 
     private final ChangeListener<TimeRange> fVisibleRangeChangeListener = (obs, oldRange, newRange) -> seekVisibleRange(newRange);
@@ -27,13 +33,37 @@ public final class TimeGraphModelControl {
 
     private @Nullable TimeGraphModelView fView = null;
 
-    public TimeGraphModelControl(ViewGroupContext viewContext, ITimeGraphModelProvider renderProvider) {
+    /**
+     * Constructor.
+     *
+     * The control links a model provider, and a view. But the view also needs a
+     * back-reference to the control. The suggested pattern is to do:
+     *
+     * <pre>
+     * ITimeGraphModelProvider provider = ...
+     * TimeGraphModelControl control = new TimeGraphModelControl(viewContext, provider);
+     * TimeGraphModelView view = new TimeGraphModelView(control);
+     * control.attachView(view);
+     * </pre>
+     *
+     * @param viewContext
+     *            The view context to which this timegraph belongs
+     * @param provider
+     *            The model provider that goes with this control
+     */
+    public TimeGraphModelControl(ViewGroupContext viewContext, ITimeGraphModelProvider provider) {
         fViewContext = viewContext;
-        fRenderProvider = renderProvider;
+        fRenderProvider = provider;
 
         attachListeners(viewContext);
     }
 
+    /**
+     * Attach a view to this control
+     *
+     * @param view
+     *            The view to attach
+     */
     public void attachView(TimeGraphModelView view) {
         fView = view;
 
@@ -48,6 +78,9 @@ public final class TimeGraphModelControl {
         return fView;
     }
 
+    /**
+     * Dispose this control and its components.
+     */
     public void dispose() {
         if (fView != null) {
             fView.dispose();
@@ -70,10 +103,20 @@ public final class TimeGraphModelControl {
     // Accessors
     // ------------------------------------------------------------------------
 
+    /**
+     * Get the view context to which this control belongs.
+     *
+     * @return The view context
+     */
     public ViewGroupContext getViewContext() {
         return fViewContext;
     }
 
+    /**
+     * Get the model provider of this control
+     *
+     * @return The model provider
+     */
     public ITimeGraphModelProvider getModelRenderProvider() {
         return fRenderProvider;
     }
@@ -82,6 +125,13 @@ public final class TimeGraphModelControl {
     // Control -> View operations
     // ------------------------------------------------------------------------
 
+    /**
+     * Initialize this timegraph for a new trace.
+     *
+     * @param trace
+     *            The trace to initialize in the view. If it is null it indcates
+     *            'no trace'.
+     */
     public synchronized void initializeForTrace(@Nullable ITmfTrace trace) {
         fRenderProvider.setTrace(trace);
 
@@ -101,6 +151,13 @@ public final class TimeGraphModelControl {
         view.seekVisibleRange(currentVisibleRange);
     }
 
+    /**
+     * Repaint, without seeking anywhere else, the current displayed area of the
+     * view.
+     *
+     * This can be called whenever some settings like filters etc. have changed,
+     * so that a repaint will show updated information.
+     */
     public void repaintCurrentArea() {
         ITmfTrace trace = fViewContext.getCurrentTrace();
         TimeRange currentRange = fViewContext.getCurrentVisibleTimeRange();
@@ -137,10 +194,33 @@ public final class TimeGraphModelControl {
     // View -> Control operations (Control external API)
     // ------------------------------------------------------------------------
 
+    /**
+     * Change the current time range selection.
+     *
+     * Called by the view to indicate that the user has input a new time range
+     * selection from the view. The control will relay this to the rest of the
+     * framework.
+     *
+     * @param newSelectionRange
+     *            The new time range selection.
+     */
     public void updateTimeRangeSelection(TimeRange newSelectionRange) {
         fViewContext.setCurrentSelectionTimeRange(newSelectionRange);
     }
 
+    /**
+     * Change the current visible time range.
+     *
+     * Called by the view whenever the user selects a new visible time range,
+     * for example by scrolling left or right.
+     *
+     * @param newVisibleRange
+     *            The new visible time range
+     * @param echo
+     *            This flag indicates if the view wants to receive the new time
+     *            range notification back to itself (via
+     *            {@link #seekVisibleRange}.
+     */
     public void updateVisibleTimeRange(TimeRange newVisibleRange, boolean echo) {
         checkTimeRange(newVisibleRange);
 
@@ -177,12 +257,12 @@ public final class TimeGraphModelControl {
         TimeRange fullRange = fViewContext.getCurrentTraceFullRange();
 
         if (windowRange.getStart() < fullRange.getStart()) {
-            throw new IllegalArgumentException("Requested window start time: " + windowRange.getStart() +
-                    " is smaller than trace start time " + fullRange.getStart());
+            throw new IllegalArgumentException("Requested window start time: " + windowRange.getStart() + //$NON-NLS-1$
+                    " is smaller than trace start time " + fullRange.getStart()); //$NON-NLS-1$
         }
         if (windowRange.getEnd() > fullRange.getEnd()) {
-            throw new IllegalArgumentException("Requested window end time: " + windowRange.getEnd() +
-                    " is greater than trace end time " + fullRange.getEnd());
+            throw new IllegalArgumentException("Requested window end time: " + windowRange.getEnd() + //$NON-NLS-1$
+                    " is greater than trace end time " + fullRange.getEnd()); //$NON-NLS-1$
         }
     }
 

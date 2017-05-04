@@ -28,6 +28,12 @@ import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
+/**
+ * Basic implementation of a {@link TimeGraphModelProvider} backed by a state
+ * system.
+ *
+ * @author Alexandre Montplaisir
+ */
 public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
 
     /**
@@ -37,11 +43,27 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
      */
     protected static final class TreeRenderContext {
 
+        /** State system */
         public final ITmfStateSystem ss;
+        /** Sorting mode */
         public final SortingMode sortingMode;
+        /** Filter modes */
         public final Set<FilterMode> filterModes;
+        /** Full query */
         public final List<ITmfStateInterval> fullQueryAtRangeStart;
 
+        /**
+         * Constructor
+         *
+         * @param ss
+         *            State system
+         * @param sortingMode
+         *            Current sorting mode
+         * @param filterModes
+         *            Current filter modes
+         * @param fullQueryAtRangeStart
+         *            Full query at the start of the time range.
+         */
         public TreeRenderContext(ITmfStateSystem ss,
                 SortingMode sortingMode,
                 Set<FilterMode> filterModes,
@@ -77,7 +99,25 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
 
     private transient @Nullable ITmfStateSystem fStateSystem = null;
 
-    protected StateSystemModelProvider(String name,
+    /**
+     * Constructor
+     *
+     * @param name
+     *            The name of this provider
+     * @param sortingModes
+     *            The available sorting modes
+     * @param filterModes
+     *            The available filter modes
+     * @param stateProvider
+     *            The state provider part of this model provider
+     * @param arrowProviders
+     *            The arrow provider(s) supplied by this model provider
+     * @param stateSystemModuleId
+     *            ID of the state system from which data will be fetched
+     * @param treeRenderFunction
+     *            Function to generate a tree render for a given tree context
+     */
+    public StateSystemModelProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
             ITimeGraphModelStateProvider stateProvider,

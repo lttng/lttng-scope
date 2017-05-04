@@ -14,20 +14,47 @@ import java.util.Objects;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+/**
+ * A time graph event is a virtual representation of a location on the time
+ * graph, defined by its timestamp and tree element.
+ *
+ * It does not have a directly corresponding UI representation, but is used as
+ * an intermediate construct in intervals and drawn events, for example.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphEvent {
 
     private final long fTimestamp;
     private final TimeGraphTreeElement fTreeElement;
 
+    /**
+     * Constructor
+     *
+     * @param timestamp
+     *            The timestamp of the event
+     * @param treeElement
+     *            The tree element to which this even belong
+     */
     public TimeGraphEvent(long timestamp, TimeGraphTreeElement treeElement) {
         fTimestamp = timestamp;
         fTreeElement = treeElement;
     }
 
+    /**
+     * Get the timestamp of this event.
+     *
+     * @return The timestamp
+     */
     public long getTimestamp() {
         return fTimestamp;
     }
 
+    /**
+     * Get the tree element of this event.
+     *
+     * @return The tree element
+     */
     public TimeGraphTreeElement getTreeElement() {
         return fTreeElement;
     }

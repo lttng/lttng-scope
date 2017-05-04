@@ -23,9 +23,15 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
  */
 public class TimeGraphArrowSeries {
 
+    /**
+     * Headless definition of the style of the arrow line.
+     */
     public enum LineStyle {
+        /** Full line */
         FULL,
+        /** Line composed of dotsf */
         DOTTED,
+        /** Line composed of dashes */
         DASHED;
     }
 
@@ -33,20 +39,45 @@ public class TimeGraphArrowSeries {
     private final ColorDefinition fColor;
     private final LineStyle fLineStyle;
 
+    /**
+     * Constructor
+     *
+     * @param seriesName
+     *            Name of this series
+     * @param color
+     *            Suggested color for arrows of this series
+     * @param lineStyle
+     *            Suggested line style for arrows of this series
+     */
     public TimeGraphArrowSeries(String seriesName, ColorDefinition color, LineStyle lineStyle) {
         fSeriesName = seriesName;
         fColor = color;
         fLineStyle = lineStyle;
     }
 
+    /**
+     * Get the name of this series.
+     *
+     * @return The series's name
+     */
     public String getSeriesName() {
         return fSeriesName;
     }
 
+    /**
+     * Get the suggested color of this series.
+     *
+     * @return The series's color
+     */
     public ColorDefinition getColor() {
         return fColor;
     }
 
+    /**
+     * Get the suggested line style of this series.
+     *
+     * @return The series's line style
+     */
     public LineStyle getLineStyle() {
         return fLineStyle;
     }

@@ -11,6 +11,14 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider;
 
 import java.util.function.Supplier;
 
+/**
+ * Factory for {@link ITimeGraphModelProvider} objects.
+ *
+ * Used to register possible time graphs to the framework using the
+ * {@link TimeGraphModelProviderManager}.
+ *
+ * @author Alexandre Montplaisir
+ */
 @FunctionalInterface
 public interface ITimeGraphModelProviderFactory extends Supplier<ITimeGraphModelProvider> {
 

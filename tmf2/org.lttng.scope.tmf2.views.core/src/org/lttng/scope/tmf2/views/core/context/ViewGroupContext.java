@@ -14,6 +14,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
@@ -45,6 +46,12 @@ public class ViewGroupContext {
         fSignalBridge = new SignalBridge(this);
     }
 
+    /**
+     * For now, there is only a single view context for the framework. This
+     * method returns this singleton instance.
+     *
+     * @return The view context
+     */
     public static ViewGroupContext getCurrent() {
         ViewGroupContext ctx = INSTANCE;
         if (ctx != null) {
@@ -55,6 +62,9 @@ public class ViewGroupContext {
         return ctx;
     }
 
+    /**
+     * Cleanup all view group contexts.
+     */
     public static void cleanup() {
         ViewGroupContext ctx = INSTANCE;
         if (ctx != null) {
@@ -62,6 +72,12 @@ public class ViewGroupContext {
         }
     }
 
+    /**
+     * Set the current trace being displayed by this view context.
+     *
+     * @param trace
+     *            The trace, can be null to indicate no trace
+     */
     public void setCurrentTrace(@Nullable ITmfTrace trace) {
         /* On trace change, adjust the other properties accordingly. */
         if (trace == null) {
@@ -82,46 +98,111 @@ public class ViewGroupContext {
         fCurrentTrace.set(trace);
     }
 
+    /**
+     * Retrieve the current trace displayed by this view context.
+     *
+     * @return The context's current trace. Can be null to indicate no trace.
+     */
     public @Nullable ITmfTrace getCurrentTrace() {
         return fCurrentTrace.get();
     }
 
-    public ObjectProperty<@Nullable ITmfTrace> currentTraceProperty() {
+    /**
+     * The current trace property.
+     *
+     * Make sure you use {@link #setCurrentTrace} to modify the current trace.
+     *
+     * @return The current trace property.
+     */
+    public ReadOnlyObjectProperty<@Nullable ITmfTrace> currentTraceProperty() {
         return fCurrentTrace;
     }
 
+    /**
+     * Set a new full range for the current trace
+     *
+     * @param range
+     *            The new full range of the trace
+     */
     public void setCurrentTraceFullRange(TimeRange range) {
         fCurrentTraceFullRange.set(range);
     }
 
+    /**
+     * Get the full range of the current trace.
+     *
+     * @return The full range of the trace
+     */
     public TimeRange getCurrentTraceFullRange() {
         return fCurrentTraceFullRange.get();
     }
 
+    /**
+     * The property representing the full range of the current trace.
+     *
+     * TODO This property should move to the trace object itself.
+     *
+     * @return The full range property
+     */
     public ObjectProperty<TimeRange> currentTraceFullRangeProperty() {
         return fCurrentTraceFullRange;
     }
 
+    /**
+     * Set the current visible time range of this view context.
+     *
+     * @param range
+     *            The new visible time range
+     */
     public void setCurrentVisibleTimeRange(TimeRange range) {
         fCurrentVisibleTimeRange.set(range);
     }
 
+    /**
+     * Retrieve the current visible time range of the view context.
+     *
+     * @return The current visible time range
+     */
     public TimeRange getCurrentVisibleTimeRange() {
         return fCurrentVisibleTimeRange.get();
     }
 
+    /**
+     * The visible time range property. This indicates the time range bounded by
+     * the views of this context.
+     *
+     * @return The visible time range property
+     */
     public ObjectProperty<TimeRange> currentVisibleTimeRangeProperty() {
         return fCurrentVisibleTimeRange;
     }
 
+    /**
+     * Set the current time range selection.
+     *
+     * @param range
+     *            The new selection range
+     */
     public void setCurrentSelectionTimeRange(TimeRange range) {
         fCurrentSelectionRange.set(range);
     }
 
+    /**
+     * Retrieve the current time range selection
+     *
+     * @return The current selection range
+     */
     public TimeRange getCurrentSelectionTimeRange() {
         return fCurrentSelectionRange.get();
     }
 
+    /**
+     * The property representing the current time range selection. This is the
+     * "highlighted" part of the trace, which can be selected by the mouse or
+     * other means, and on which action can act.
+     *
+     * @return The time range selection property
+     */
     public ObjectProperty<TimeRange> currentSelectionTimeRangeProperty() {
         return fCurrentSelectionRange;
     }

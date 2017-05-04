@@ -15,11 +15,26 @@ import org.lttng.scope.tmf2.views.core.TimeRange;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Render of time graph drawn events. It can cover several (usually all) tree
+ * elements, unlike the TimeGraphStateRender which covers only a single element.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphDrawnEventRender {
 
     private final TimeRange fTimeRange;
     private final Collection<TimeGraphDrawnEvent> fEvents;
 
+    /**
+     * Constructor
+     *
+     * @param timeRange
+     *            The time range of this draw event render. Should usually match
+     *            the time range of the query that created this render.
+     * @param events
+     *            The drawn events contained in this render
+     */
     public TimeGraphDrawnEventRender(TimeRange timeRange,
             Iterable<TimeGraphDrawnEvent> events) {
 
@@ -27,10 +42,20 @@ public class TimeGraphDrawnEventRender {
         fEvents = ImmutableList.copyOf(events);
     }
 
+    /**
+     * Get the time range of this render
+     *
+     * @return The time range
+     */
     public TimeRange getTimeRange() {
         return fTimeRange;
     }
 
+    /**
+     * Get the drawn events that are part of this render.
+     *
+     * @return The drawn events
+     */
     public Collection<TimeGraphDrawnEvent> getEvents() {
         return fEvents;
     }

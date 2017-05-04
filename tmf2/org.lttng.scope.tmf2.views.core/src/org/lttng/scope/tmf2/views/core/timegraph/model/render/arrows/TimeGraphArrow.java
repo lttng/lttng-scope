@@ -11,26 +11,62 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 
+/**
+ * Model representation of a timegraph arrow.
+ *
+ * An arrow links two {@link TimeGraphEvent}s, and has a direction (a start
+ * event and a end event). The two events can belong to different tree elements,
+ * or the same one.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphArrow {
 
     private final TimeGraphEvent fStartEvent;
     private final TimeGraphEvent fEndEvent;
     private final TimeGraphArrowSeries fArrowSeries;
 
+    /**
+     * Constructor
+     *
+     * @param startEvent
+     *            The start event of this arrow
+     * @param endEvent
+     *            The end event of this arrow. The drawn arrowhead should be on
+     *            this side
+     * @param series
+     *            The series to which the arrow belongs. This series contains
+     *            all the styling information.
+     */
     public TimeGraphArrow(TimeGraphEvent startEvent, TimeGraphEvent endEvent, TimeGraphArrowSeries series) {
         fStartEvent = startEvent;
         fEndEvent = endEvent;
         fArrowSeries = series;
     }
 
+    /**
+     * Get the start event of this arrow.
+     *
+     * @return The start event
+     */
     public TimeGraphEvent getStartEvent() {
         return fStartEvent;
     }
 
+    /**
+     * Get the end event of this arrow.
+     *
+     * @return The end event
+     */
     public TimeGraphEvent getEndEvent() {
         return fEndEvent;
     }
 
+    /**
+     * Get the series of this arrow.
+     *
+     * @return The arrow series
+     */
     public TimeGraphArrowSeries getArrowSeries() {
         return fArrowSeries;
     }

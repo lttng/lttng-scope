@@ -12,14 +12,32 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 
+/**
+ * Definition of a time graph arrow series.
+ *
+ * It contains all the styling information (symbols, color, etc.) for the events
+ * that are part of this series. It does not contain the events themselves, the
+ * events will keep a reference to their series instead.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphDrawnEventSeries {
 
+    /**
+     * Headless symbol style definitions
+     */
     public enum SymbolStyle {
+        /** Circle */
         CIRCLE,
+        /** Cross */
         CROSS,
+        /** Star */
         STAR,
+        /** Square */
         SQUARE,
+        /** Diamond */
         DIAMOND,
+        /** Triangle */
         TRIANGLE;
     }
 
@@ -27,6 +45,19 @@ public class TimeGraphDrawnEventSeries {
     private final ConfigOption<ColorDefinition> fColor;
     private final ConfigOption<SymbolStyle> fSymbolStyle;
 
+    /**
+     * Constructor.
+     *
+     * The parameters passed as {@link ConfigOption}s can be modified at
+     * runtime.
+     *
+     * @param seriesName
+     *            Name of this event series
+     * @param color
+     *            Color for this event series.
+     * @param symbolStyle
+     *            Symbol style for this series
+     */
     public TimeGraphDrawnEventSeries(String seriesName,
             ConfigOption<ColorDefinition> color,
             ConfigOption<SymbolStyle> symbolStyle) {
@@ -36,14 +67,29 @@ public class TimeGraphDrawnEventSeries {
         fSymbolStyle = symbolStyle;
     }
 
+    /**
+     * Get the name of this series
+     *
+     * @return This series's name
+     */
     public String getSeriesName() {
         return fSeriesName;
     }
 
+    /**
+     * Get the configurable color of this series.
+     *
+     * @return This series's color
+     */
     public ConfigOption<ColorDefinition> getColor() {
         return fColor;
     }
 
+    /**
+     * Get the configurable symbol style of this series.
+     *
+     * @return This series's symbol style
+     */
     public ConfigOption<SymbolStyle> getSymbolStyle() {
         return fSymbolStyle;
     }

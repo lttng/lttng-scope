@@ -9,8 +9,22 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render;
 
+/**
+ * Headless definitions of possible values of state interval line thicknesses
+ */
 public enum LineThickness {
+
+    /** Normal, full thickness */
     NORMAL,
+    /**
+     * Small thickness, should be between {@link #NORMAL} and {@link #TINY} and
+     * distinguishable from those two.
+     */
     SMALL,
+    /**
+     * Tiny line thickness. The line should be as small as possible but still
+     * have the color distinguishable.
+     */
     TINY
+
 }

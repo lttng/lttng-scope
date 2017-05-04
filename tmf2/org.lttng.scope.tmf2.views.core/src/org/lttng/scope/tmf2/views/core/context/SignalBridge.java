@@ -25,7 +25,14 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 
-// TODO Needs to be public because of TmfSignalManager
+/**
+ * Bridge between a {@link ViewGroupContext} and the {@link TmfSignalManager}.
+ * It sends equivalent "signals" back-and-forth between the two APIs.
+ *
+ * Note: Needs to be public because of the way TmfSignalManager works.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class SignalBridge {
 
     private static final int SIGNAL_DELAY_MS = 200;
@@ -34,7 +41,12 @@ public class SignalBridge {
 
     private final ViewGroupContext fViewContext;
 
-
+    /**
+     * Constructor
+     *
+     * @param viewContext
+     *            The view context this bridge will connect to
+     */
     public SignalBridge(ViewGroupContext viewContext) {
         TmfSignalManager.register(this);
         fViewContext = viewContext;
@@ -74,6 +86,9 @@ public class SignalBridge {
         });
     }
 
+    /**
+     * Dispose of this bridge, deregistering it from the signal manager.
+     */
     public void dispose() {
         TmfSignalManager.deregister(this);
     }
@@ -82,6 +97,12 @@ public class SignalBridge {
     // Signal handlers
     // ------------------------------------------------------------------------
 
+    /**
+     * Handler for the trace selected signal
+     *
+     * @param signal
+     *            Received signal
+     */
     @TmfSignalHandler
     public void traceSelected(final TmfTraceSelectedSignal signal) {
         if (signal.getSource() == this) {
@@ -92,7 +113,10 @@ public class SignalBridge {
     }
 
     /**
+     * Handler for the trace closed signal
+     *
      * @param signal
+     *            Received signal
      */
     @TmfSignalHandler
     public void traceClosed(final TmfTraceClosedSignal signal) {
@@ -105,7 +129,10 @@ public class SignalBridge {
     }
 
     /**
+     * Handler for the trace range updated signal
+     *
      * @param signal
+     *            Received signal
      */
     @TmfSignalHandler
     public void traceRangeUpdated(TmfTraceRangeUpdatedSignal signal) {
@@ -128,7 +155,10 @@ public class SignalBridge {
     }
 
     /**
+     * Handler for the selection range updated signal
+     *
      * @param signal
+     *            Received signal
      */
     @TmfSignalHandler
     public void selectionRangeUpdated(final TmfSelectionRangeUpdatedSignal signal) {
@@ -161,7 +191,10 @@ public class SignalBridge {
     }
 
     /**
+     * Handler for the window range updated signal
+     *
      * @param signal
+     *            Received signal
      */
     @TmfSignalHandler
     public void windowRangeUpdated(final TmfWindowRangeUpdatedSignal signal) {
@@ -169,9 +202,8 @@ public class SignalBridge {
             return;
         }
         TmfTimeRange windowRange = signal.getCurrentRange();
-
         ITmfTrace trace = fViewContext.getCurrentTrace();
-        if (trace == null) {
+        if (windowRange == null || trace == null) {
             return;
         }
         fViewContext.setCurrentVisibleTimeRange(TimeRange.fromTmfTimeRange(windowRange));

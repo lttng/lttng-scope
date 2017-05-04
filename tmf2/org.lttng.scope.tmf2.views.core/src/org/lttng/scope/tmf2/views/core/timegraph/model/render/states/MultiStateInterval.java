@@ -34,6 +34,10 @@ public final class MultiStateInterval extends BasicTimeGraphStateInterval {
     /**
      * Constructor
      *
+     * @param startTime
+     *            Start time
+     * @param endTime
+     *            End time
      * @param treeElement
      *            The tree element to which this interval is associated
      */

@@ -27,8 +27,16 @@ import com.google.common.collect.ImmutableSet;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+/**
+ * Base implementation of {@link ITimeGraphModelProvider}.
+ *
+ * @author Alexandre Montplaisir
+ */
 public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider {
 
+    /**
+     * A "default" sorting mode, for use when only one is needed.
+     */
     protected static final SortingMode DEFAULT_SORTING_MODE = new SortingMode(nullToEmptyString(Messages.DefaultSortingModeName));
 
     private final String fName;
@@ -43,7 +51,21 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
 
     private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>();
 
-    protected TimeGraphModelProvider(String name,
+    /**
+     * Constructor
+     *
+     * @param name
+     *            The name of this provider
+     * @param sortingModes
+     *            The available sorting modes
+     * @param filterModes
+     *            The available filter modes
+     * @param stateProvider
+     *            The state provider part of this model provider
+     * @param arrowProviders
+     *            The arrow provider(s) supplied by this model provider
+     */
+    public TimeGraphModelProvider(String name,
             @Nullable List<SortingMode> sortingModes,
             @Nullable List<FilterMode> filterModes,
             ITimeGraphModelStateProvider stateProvider,
@@ -85,10 +107,20 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         fTraceProperty.set(trace);
     }
 
+    /**
+     * Get the trace for which this model provider fetches its information.
+     *
+     * @return The current trace
+     */
     protected final @Nullable ITmfTrace getTrace() {
         return fTraceProperty.get();
     }
 
+    /**
+     * The property representing the target trace of this model provider.
+     *
+     * @return The trace property
+     */
     protected final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
         return fTraceProperty;
     }

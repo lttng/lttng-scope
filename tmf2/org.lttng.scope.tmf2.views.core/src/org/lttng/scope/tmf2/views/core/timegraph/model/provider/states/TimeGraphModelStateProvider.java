@@ -20,13 +20,24 @@ import com.google.common.collect.ImmutableList;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+/**
+ * Basic implementation of {@link ITimeGraphModelStateProvider}.
+ *
+ * @author Alexandre Montplaisir
+ */
 public abstract class TimeGraphModelStateProvider implements ITimeGraphModelStateProvider {
 
     private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>(null);
 
     private final List<StateDefinition> fStateDefinitions;
 
-    protected TimeGraphModelStateProvider(List<StateDefinition> stateDefinitions) {
+    /**
+     * Constructor
+     *
+     * @param stateDefinitions
+     *            The state definitions used in this provider
+     */
+    public TimeGraphModelStateProvider(List<StateDefinition> stateDefinitions) {
         fStateDefinitions = ImmutableList.copyOf(stateDefinitions);
     }
 

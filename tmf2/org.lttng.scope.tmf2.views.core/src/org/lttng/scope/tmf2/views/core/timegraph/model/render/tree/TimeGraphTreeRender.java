@@ -17,16 +17,50 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Render of a tree of the timegraph. Contains the tree elements that compose
+ * the current tree.
+ *
+ * In a timegraph, the "tree" part is usually shown on the left-hand side, and
+ * lists the tree elements, which represent attributes of a model. A tree render
+ * is a "snapshot" of this tree that is valid for a given timestamp or
+ * timerange.
+ *
+ * Some timegraphs may use a tree that is valid for the whole time range of a
+ * trace. Other timegraphs may display a different tree for different parts of
+ * the trace.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphTreeRender {
 
+    /**
+     * A static reference to an empty render, which can be used to represent an
+     * uninitialized state for example (by comparing with ==).
+     */
     public static final TimeGraphTreeRender EMPTY_RENDER = new TimeGraphTreeRender(Collections.emptyList());
 
     private final List<TimeGraphTreeElement> fTreeElements;
 
+    /**
+     * Constructor
+     *
+     * @param elements
+     *            The elements that are part of this tree render
+     */
     public TimeGraphTreeRender(List<TimeGraphTreeElement> elements) {
         fTreeElements = ImmutableList.copyOf(elements);
     }
 
+    /**
+     * Get a list of all the tree elements in this render.
+     *
+     * This should also contains all the child elements that are also contained
+     * in each element's {@link TimeGraphTreeElement#getChildElements()}. It can
+     * be used to run an action on all elements of a render.
+     *
+     * @return A list of all the tree elements
+     */
     public List<TimeGraphTreeElement> getAllTreeElements() {
         return fTreeElements;
     }

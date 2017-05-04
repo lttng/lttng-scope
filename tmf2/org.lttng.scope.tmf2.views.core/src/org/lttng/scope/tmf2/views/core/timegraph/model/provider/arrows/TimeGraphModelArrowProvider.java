@@ -18,13 +18,27 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+/**
+ * Basic implementation of {@link ITimeGraphModelArrowProvider}. It takes care
+ * of basic definitions of the interface, and lets query definition (the
+ * {@link #getArrowRender} method) up to the subclass.
+ *
+ * @author Alexandre Montplaisir
+ */
 public abstract class TimeGraphModelArrowProvider implements ITimeGraphModelArrowProvider {
 
     private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>(null);
     private final BooleanProperty fEnabledProperty = new SimpleBooleanProperty(false);
     private final TimeGraphArrowSeries fArrowSeries;
 
-    protected TimeGraphModelArrowProvider(TimeGraphArrowSeries arrowSeries) {
+    /**
+     * Constructor
+     *
+     * @param arrowSeries
+     *            The arrow series that will be represented by this arrow
+     *            provider
+     */
+    public TimeGraphModelArrowProvider(TimeGraphArrowSeries arrowSeries) {
         fArrowSeries = arrowSeries;
     }
 

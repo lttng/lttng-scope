@@ -31,15 +31,35 @@ public class TimeGraphArrowRender {
     private final TimeRange fTimeRange;
     private final Collection<TimeGraphArrow> fArrows;
 
+    /**
+     * Constructor
+     *
+     * @param range
+     *            Time range of this arrow render. For reference only, should
+     *            probably match the time range of the query that created this
+     *            render.
+     * @param arrows
+     *            The arrows contained in this render.
+     */
     public TimeGraphArrowRender(TimeRange range, Iterable<TimeGraphArrow> arrows) {
         fTimeRange = range;
         fArrows = ImmutableList.copyOf(arrows);
     }
 
+    /**
+     * Get the time range of this arrow render.
+     *
+     * @return The time range
+     */
     public TimeRange getTimeRange() {
         return fTimeRange;
     }
 
+    /**
+     * Get the arrows contained in this render.
+     *
+     * @return The arrows
+     */
     public Collection<TimeGraphArrow> getArrows() {
         return fArrows;
     }

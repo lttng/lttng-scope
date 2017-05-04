@@ -39,6 +39,12 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
+/**
+ * Basic implementation of a {@link TimeGraphModelStateProvider} backed by a state
+ * system.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
 
     /**
@@ -48,11 +54,38 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
      */
     protected static final class StateIntervalContext {
 
+        /** State system */
         public final ITmfStateSystem ss;
+        /** Base tree element */
         public final StateSystemTimeGraphTreeElement baseTreeElement;
+        /** Source interval */
         public final ITmfStateInterval sourceInterval;
+
+        /**
+         * Full state system query at the start of the interval
+         *
+         * FIXME Remove this!
+         */
         public final List<ITmfStateInterval> fullQueryAtIntervalStart;
 
+        /**
+         * Constructor
+         *
+         * @param ss
+         *            State system
+         * @param baseTreeElement
+         *            Tree element for which the data should be fetched. It may
+         *            not correspond directly to the state's tree element, a
+         *            relative path may be used, for example for additional data
+         *            stored in a separate attribute.
+         * @param sourceInterval
+         *            The state system interval which will be represented by the
+         *            model state interval
+         * @param fullQueryAtIntervalStart
+         *            Full query at the start of the interval. FIXME Remove
+         *            this! This should only be queried on-demand, not for every
+         *            single interval
+         */
         public StateIntervalContext(ITmfStateSystem ss,
                 StateSystemTimeGraphTreeElement baseTreeElement,
                 ITmfStateInterval sourceInterval,
@@ -74,19 +107,26 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
     private transient @Nullable ITmfStateSystem fStateSystem = null;
 
     /**
-     * @param sortingModes
-     * @param filterModes
+     * Constructor
+     *
+     * TODO Maybe merge the various Functions into a single class?
+     *
+     * @param stateDefinitions
+     *            The state definitions used in this provider
      * @param stateSystemModuleId
-     * @param treeRenderFunction
+     *            The ID of the state system from which to fetch the information
      * @param stateNameMappingFunction
+     *            Mapping function from state interval context to state name
      * @param labelMappingFunction
+     *            Mapping function from state interval context to state label
      * @param colorMappingFunction
+     *            Mapping function from state interval context to state color
      * @param lineThicknessMappingFunction
+     *            Mapping function from state interval context to line thickness
      * @param propertiesMappingFunction
-     * @param propertyMappingFunction
-     * @param baseQuarkPattern
+     *            Mapping function from state interval context to properties
      */
-    protected StateSystemModelStateProvider(
+    public StateSystemModelStateProvider(
             List<StateDefinition> stateDefinitions,
             String stateSystemModuleId,
             Function<StateIntervalContext, String> stateNameMappingFunction,

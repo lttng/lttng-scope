@@ -19,20 +19,52 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * The "tree element" is the unit of a timegraph represented by a single line.
+ * State intervals are aligned with tree elements to represent the states of the
+ * attribute represented by its tree element.
+ *
+ * Tree elements can have children, which allows representing them as a tree
+ * structure. At the visualization layer, sub-trees could be allowed to be
+ * expanded/collapsed, which can then change the number of visible tree elements
+ * in the timegraph.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class TimeGraphTreeElement {
 
     private final String fName;
     private final List<TimeGraphTreeElement> fChildElements;
 
+    /**
+     * Constructor, build a tree element by specifying its name and children
+     * elements.
+     *
+     * @param name
+     *            The name this tree element should have.
+     * @param children
+     *            The children tree elements. You can pass an empty list for no
+     *            children.
+     */
     public TimeGraphTreeElement(String name, List<TimeGraphTreeElement> children) {
         fName = name;
         fChildElements = ImmutableList.copyOf(children);
     }
 
+    /**
+     * Get the name of this tree element.
+     *
+     * @return The element's name
+     */
     public String getName() {
         return fName;
     }
 
+    /**
+     * Get the child elements of this tree element.
+     *
+     * @return The child elements
+     */
     public List<TimeGraphTreeElement> getChildElements() {
         return fChildElements;
     }

@@ -22,12 +22,28 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
+/**
+ * Basic implementation of a {@link TimeGraphModelArrowProvider} backed by a
+ * state system.
+ *
+ * @author Alexandre Montplaisir
+ */
 public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowProvider {
 
     private final String fStateSystemModuleId;
 
     private transient @Nullable ITmfStateSystem fStateSystem = null;
 
+    /**
+     * Constructor
+     *
+     * @param arrowSeries
+     *            The arrow series that will be represented by this arrow
+     *            provider
+     * @param stateSystemModuleId
+     *            The ID of the state system from which the information should
+     *            be fetched
+     */
     public StateSystemModelArrowProvider(TimeGraphArrowSeries arrowSeries,
             String stateSystemModuleId) {
         super(arrowSeries);
@@ -52,7 +68,14 @@ public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowP
         });
     }
 
-    protected @Nullable ITmfStateSystem getStateSystem() {
+    /**
+     * The state system from which the data should be fetched. This will be kept
+     * in sync with the {@link #traceProperty}.
+     *
+     * @return The target state system. It will be null if the current trace is
+     *         null.
+     */
+    protected final @Nullable ITmfStateSystem getStateSystem() {
         return fStateSystem;
     }
 
