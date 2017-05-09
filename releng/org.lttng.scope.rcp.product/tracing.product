@@ -4,7 +4,7 @@
 <product name="LTTng Scope" uid="org.lttng.scope.rcp" id="org.lttng.scope.rcp.branding.product" application="org.lttng.scope.rcp.ui.application" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/org.lttng.scope.rcp.branding/icons/tc_about.png"/>
+      <image path="/org.lttng.scope.rcp.branding/icons/scope_about.png"/>
       <text>
          LTTng Scope
 
@@ -42,11 +42,13 @@ http://www.eclipse.org/legal/epl-v10.html
    <launcher name="lttng-scope">
       <linux icon="../org.lttng.scope.rcp.branding/icons/xpm/tc_icon_256x256.xpm"/>
       <macosx icon="../org.lttng.scope.rcp.branding/icons/icns/tc_icon.icns"/>
+      <solaris/>
       <win useIco="true">
          <ico path="../org.lttng.scope.rcp.branding/icons/ico/tc_icon.ico"/>
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
