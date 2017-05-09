@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
+import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
@@ -36,7 +37,7 @@ import javafx.scene.layout.HBox;
  */
 public class ViewerToolBar extends ToolBar {
 
-    private final Image fHelpIcon = new Image(getClass().getResourceAsStream("/icons/toolbar/help.gif")); //$NON-NLS-1$
+    private static final String HELP_ICON_PATH = "/icons/toolbar/help.gif"; //$NON-NLS-1$
 
     /**
      * Constructor
@@ -80,7 +81,8 @@ public class ViewerToolBar extends ToolBar {
     // FIXME Temporary, should be moved to tooltip
     private Button getStateInfoButton(TimeGraphWidget viewer) {
         Button button = new Button();
-        button.setGraphic(new ImageView(fHelpIcon));
+        Image helpIcon = JfxImageFactory.instance().getImageFromResource(HELP_ICON_PATH);
+        button.setGraphic(new ImageView(helpIcon));
         button.setTooltip(new Tooltip("Get State Info")); //$NON-NLS-1$
         button.setOnAction(e -> {
             StateRectangle state = viewer.getSelectedState();
