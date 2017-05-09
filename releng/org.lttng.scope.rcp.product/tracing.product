@@ -35,20 +35,19 @@ http://www.eclipse.org/legal/epl-v10.html
       </vmArgsWin>
    </launcherArgs>
 
-   <windowImages i16="/org.lttng.scope.rcp.branding/icons/png/tc_icon_16x16.png" i32="/org.lttng.scope.rcp.branding/icons/png/tc_icon_32x32.png" i48="/org.lttng.scope.rcp.branding/icons/png/tc_icon_48x48.png" i64="/org.lttng.scope.rcp.branding/icons/png/tc_icon_64x64.png" i128="/org.lttng.scope.rcp.branding/icons/png/tc_icon_128x128.png" i256="/org.lttng.scope.rcp.branding/icons/png/tc_icon_256x256.png"/>
+   <windowImages i16="/org.lttng.scope.rcp.branding/icons/png/scope_icon_16x16.png" i32="/org.lttng.scope.rcp.branding/icons/png/scope_icon_32x32.png" i48="/org.lttng.scope.rcp.branding/icons/png/scope_icon_48x48.png" i64="/org.lttng.scope.rcp.branding/icons/png/scope_icon_64x64.png" i128="/org.lttng.scope.rcp.branding/icons/png/scope_icon_128x128.png" i256="/org.lttng.scope.rcp.branding/icons/png/scope_icon_256x256.png"/>
 
    <splash
       location="org.lttng.scope.rcp.branding" />
    <launcher name="lttng-scope">
-      <linux icon="../org.lttng.scope.rcp.branding/icons/xpm/tc_icon_256x256.xpm"/>
-      <macosx icon="../org.lttng.scope.rcp.branding/icons/icns/tc_icon.icns"/>
+      <linux icon="../org.lttng.scope.rcp.branding/icons/xpm/scope_icon_256x256.xpm"/>
+      <macosx icon="../org.lttng.scope.rcp.branding/icons/icns/scope_icon.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="../org.lttng.scope.rcp.branding/icons/ico/tc_icon.ico"/>
+         <ico path="../org.lttng.scope.rcp.branding/icons/ico/scope_icon.ico"/>
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>

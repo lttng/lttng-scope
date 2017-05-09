@@ -25,7 +25,7 @@
             </property>
             <property
                   name="windowImages"
-                  value="icons/png/tc_icon_16x16.png,icons/png/tc_icon_32x32.png,icons/png/tc_icon_48x48.png,icons/png/tc_icon_64x64.png,icons/png/tc_icon_128x128.png,icons/png/tc_icon_256x256.png">
+                  value="icons/png/scope_icon_16x16.png,icons/png/scope_icon_32x32.png,icons/png/scope_icon_48x48.png,icons/png/scope_icon_64x64.png,icons/png/scope_icon_128x128.png,icons/png/scope_icon_256x256.png">
             </property>
       </product>
    </extension>
