@@ -399,6 +399,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         /* Update the zoom level */
         long windowTimeRange = newVisibleRange.getDuration();
         double timeGraphVisibleWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
+        /* Clamp the width to 1 px (0 is reported if the view is not visible) */
+        timeGraphVisibleWidth = Math.max(1, timeGraphVisibleWidth);
         fNanosPerPixel = windowTimeRange / timeGraphVisibleWidth;
 
         double oldTotalWidth = fTimeGraphPane.getLayoutBounds().getWidth();
