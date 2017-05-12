@@ -13,7 +13,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -94,7 +93,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     // (Could eventually be moved to separate .css file?)
     // ------------------------------------------------------------------------
 
-    private static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
+    static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
     private static final String BACKGROUND_STYLE = "-fx-background-color: rgba(255, 255, 255, 255);"; //$NON-NLS-1$
 
     private static final double SELECTION_STROKE_WIDTH = 1;
@@ -125,6 +124,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final SelectionContext fSelectionCtx = new SelectionContext();
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
+    private final TimeGraphBackgroundControl fBackgroundControl;
     private final TimeGraphArrowControl fArrowControl;
     private final TimeGraphDrawnEventControl fDrawnEventControl;
 
@@ -145,7 +145,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * Children of the time graph pane are split into groups, so we can easily
      * redraw or add only some of them.
      */
-    private final Group fTimeGraphBackgroundLayer;
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
     // TODO Layer for bookmarks
@@ -204,7 +203,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fSelectionRect = new Rectangle();
         fOngoingSelectionRect = new Rectangle();
 
-        fTimeGraphBackgroundLayer = new Group();
+        Group timeGraphBackgroundLayer = new Group();
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
         Group timeGraphArrowsLayer = new Group();
@@ -212,6 +211,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
 
+        fBackgroundControl = new TimeGraphBackgroundControl(this, timeGraphBackgroundLayer);
         fArrowControl = new TimeGraphArrowControl(this, timeGraphArrowsLayer);
         fDrawnEventControl = new TimeGraphDrawnEventControl(this, timeGraphDrawnEventsLayer);
 
@@ -219,7 +219,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * The order of the layers is important here, it will go from back to
          * front.
          */
-        fTimeGraphPane = new Pane(fTimeGraphBackgroundLayer,
+        fTimeGraphPane = new Pane(timeGraphBackgroundLayer,
                 fTimeGraphStatesLayer,
                 fTimeGraphTextLabelsLayer,
                 timeGraphArrowsLayer,
@@ -380,9 +380,10 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
              */
             fTreePane.getChildren().clear();
 
-            fTimeGraphBackgroundLayer.getChildren().clear();
             fTimeGraphStatesLayer.getChildren().clear();
             fTimeGraphTextLabelsLayer.getChildren().clear();
+
+            fBackgroundControl.clear();
             fArrowControl.clear();
             fDrawnEventControl.clear();
 
@@ -594,7 +595,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     treeContents = prepareTreeContents(treeRender, treePaneWidth);
                 }
 
-                paintBackground(verticalPos);
+                /* We can paint the background at this stage. */
+                fBackgroundControl.paintBackground(renderingRange, verticalPos);
 
                 /* Prepare the time graph part */
                 Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
@@ -691,43 +693,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         });
 
         fTaskExecutor.schedule(task);
-    }
-
-    void paintBackground(VerticalPosition vPos) {
-        final int entriesToPrefetch = fDebugOptions.entryPadding.get();
-        int totalNbEntries = fLatestTreeRender.getAllTreeElements().size();
-
-        final double timeGraphWidth = fTimeGraphPane.getWidth();
-        final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * ENTRY_HEIGHT);
-        final double paintBottomPos = Math.min(vPos.fBottomPos + entriesToPrefetch * ENTRY_HEIGHT,
-                /*
-                 * If there are less tree elements than can fill the window,
-                 * stop at the end of the real tree elements.
-                 */
-                totalNbEntries * ENTRY_HEIGHT);
-
-        LinkedList<Line> lines = new LinkedList<>();
-        DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
-                // TODO Java 9 will allow using dropWhile()/takeWhile()/collect
-                .filter(y -> y > paintTopPos)
-                .peek(y -> {
-                    Line line = new Line(0, y, timeGraphWidth, y);
-                    line.setStroke(BACKGROUD_LINES_COLOR);
-                    line.setStrokeWidth(1.0);
-
-                    lines.add(line);
-                })
-                .allMatch(y -> y < paintBottomPos);
-        // The list contains the first element that didn't match the predicate,
-        // we don't want it.
-        if (!lines.isEmpty()) {
-            lines.removeLast();
-        }
-
-        Platform.runLater(() -> {
-            fTimeGraphBackgroundLayer.getChildren().clear();
-            fTimeGraphBackgroundLayer.getChildren().addAll(lines);
-        });
     }
 
     @Override
@@ -1303,7 +1268,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     void paintCurrentLocation() {
         TimeRange currentHorizontalPos = getViewContext().getCurrentVisibleTimeRange();
         VerticalPosition currentVerticalPos = getCurrentVerticalPosition();
-        paintBackground(currentVerticalPos);
         paintArea(currentHorizontalPos, currentVerticalPos, true, true, 0);
     }
 
