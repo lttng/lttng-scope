@@ -46,6 +46,7 @@ import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
@@ -177,6 +178,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         /* We only show the time graph's vertical scrollbar */
         fTreeScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
         fTreeScrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+
+        fTreePane.prefWidthProperty().bind(fTreeScrollPane.widthProperty());
 
         // --------------------------------------------------------------------
         // Prepare the time graph's part scene graph
@@ -485,8 +488,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             long taskSeqNb) {
         final TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
 
-        final long treePaneWidth = Math.round(fTreeScrollPane.getWidth());
-
         /*
          * Request the needed renders and prepare the corresponding UI objects.
          * We may ask for some padding on each side, clamped by the trace's
@@ -556,7 +557,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     treeContents = null;
                 } else {
                     fLatestTreeRender = treeRender;
-                    treeContents = prepareTreeContents(treeRender, treePaneWidth);
+                    treeContents = prepareTreeContents(treeRender, fTreePane.widthProperty());
                 }
 
                 /* We can paint the background at this stage. */
@@ -673,7 +674,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     // Methods related to the Tree area
     // ------------------------------------------------------------------------
 
-    private static Node prepareTreeContents(TimeGraphTreeRender treeRender, double paneWidth) {
+    private static Node prepareTreeContents(TimeGraphTreeRender treeRender, ReadOnlyDoubleProperty widthProperty) {
         /* Prepare the tree element objects */
         List<Label> treeElements = treeRender.getAllTreeElements().stream()
                 // TODO Put as a real tree. TreeView ?
@@ -696,7 +697,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         List<Line> lines = DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
                 .limit(treeElements.size())
                 .mapToObj(y -> {
-                    Line line = new Line(0, y, paneWidth, y);
+                    Line line = new Line();
+                    line.startXProperty().bind(JfxUtils.ZERO_PROPERTY);
+                    line.endXProperty().bind(widthProperty);
+                    line.setStartY(y);
+                    line.setEndY(y);
+
                     line.setStroke(BACKGROUD_LINES_COLOR);
                     line.setStrokeWidth(1.0);
                     return line;
