@@ -73,6 +73,16 @@ public abstract class NavigationMode {
     }
 
     /**
+     * If for some reason this particular mode should not be available to the
+     * user, this should be overridden to return 'false'.
+     *
+     * @return If this mode is enabled
+     */
+    public boolean isEnabled() {
+        return true;
+    }
+
+    /**
      * What to do when the back button is invoked while in this mode.
      *
      * @param viewer

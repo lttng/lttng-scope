@@ -114,6 +114,7 @@ public class NavigationButtons {
                         backButton.setNavMode(nm);
                         forwardButton.setNavMode(nm);
                     });
+                    item.setDisable(!nm.isEnabled());
                     return item;
                 })
                 .collect(Collectors.toList());

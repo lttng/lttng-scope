@@ -36,6 +36,11 @@ public class NavigationModeFollowBookmarks extends NavigationMode {
     }
 
     @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
     public void navigateBackwards(TimeGraphWidget viewer) {
         // TODO NYI
         System.out.println("Follow bookmarks backwards");
