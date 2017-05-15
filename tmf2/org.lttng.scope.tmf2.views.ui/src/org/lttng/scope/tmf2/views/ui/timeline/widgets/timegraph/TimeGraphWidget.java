@@ -46,8 +46,6 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerTo
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -108,12 +106,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * TODO Make this configurable (vertical zoom feature)
      */
     public static final double ENTRY_HEIGHT = 20;
-
-    /**
-     * Double property with a non-modifiable value of 0. For things that should
-     * remain at 0.
-     */
-    private static final ReadOnlyDoubleProperty ZERO_PROPERTY = new SimpleDoubleProperty(0);
 
     // ------------------------------------------------------------------------
     // Instance fields
@@ -300,7 +292,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             rect.setStrokeLineCap(StrokeLineCap.ROUND);
             rect.setFill(SELECTION_FILL_COLOR);
 
-            rect.yProperty().bind(ZERO_PROPERTY);
+            rect.yProperty().bind(JfxUtils.ZERO_PROPERTY);
             rect.heightProperty().bind(fTimeGraphPane.heightProperty());
         });
 

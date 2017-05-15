@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
@@ -31,6 +33,13 @@ import javafx.stage.Window;
  * @author Alexandre Montplaisir
  */
 public final class JfxUtils {
+
+    /**
+     * Double property with a non-modifiable value of 0. For things that should
+     * remain at 0.
+     */
+    public static final ReadOnlyDoubleProperty ZERO_PROPERTY = new SimpleDoubleProperty(0);
+
 
     private static final MethodHandles.Lookup LOOKUP = requireNonNull(MethodHandles.lookup());
     private static final MethodHandle COMPUTE_CLIPPED_TEXT_HANDLE;
