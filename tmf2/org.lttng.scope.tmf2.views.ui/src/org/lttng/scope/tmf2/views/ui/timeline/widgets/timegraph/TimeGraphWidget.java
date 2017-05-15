@@ -45,6 +45,8 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerTo
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -142,7 +144,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
 
     /** Current zoom level */
-    private double fNanosPerPixel = 1.0;
+    private final DoubleProperty fNanosPerPixel = new SimpleDoubleProperty(1.0);
 
     /**
      * Constructor
@@ -364,7 +366,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         double timeGraphVisibleWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
         /* Clamp the width to 1 px (0 is reported if the view is not visible) */
         timeGraphVisibleWidth = Math.max(1, timeGraphVisibleWidth);
-        fNanosPerPixel = windowTimeRange / timeGraphVisibleWidth;
+        fNanosPerPixel.set(windowTimeRange / timeGraphVisibleWidth);
 
         double oldTotalWidth = fTimeGraphPane.getLayoutBounds().getWidth();
         double newTotalWidth = timestampToPaneXPos(fullTimeGraphRange.getEnd()) - timestampToPaneXPos(fullTimeGraphRange.getStart());
@@ -494,7 +496,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         final long renderingStartTime = Math.max(fullTimeGraphRange.getStart(), windowRange.getStart() - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphRange.getEnd(), windowRange.getEnd() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
-        final long resolution = Math.max(1, Math.round(fNanosPerPixel));
+        final long resolution = Math.max(1, Math.round(fNanosPerPixel.get()));
 
         /*
          * Start a new repaint, display the "loading" overlay. The next
@@ -1035,7 +1037,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     double timestampToPaneXPos(long timestamp) {
         TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
-        return timestampToPaneXPos(timestamp, fullTimeGraphRange, fNanosPerPixel);
+        return timestampToPaneXPos(timestamp, fullTimeGraphRange, fNanosPerPixel.get());
     }
 
     @VisibleForTesting
@@ -1060,7 +1062,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     long paneXPosToTimestamp(double x) {
         long fullTimeGraphStartTime = getViewContext().getCurrentTraceFullRange().getStart();
-        return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel);
+        return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel.get());
     }
 
     @VisibleForTesting
@@ -1149,7 +1151,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @VisibleForTesting
     double getCurrentNanosPerPixel() {
-        return fNanosPerPixel;
+        return fNanosPerPixel.get();
     }
 
     @VisibleForTesting
