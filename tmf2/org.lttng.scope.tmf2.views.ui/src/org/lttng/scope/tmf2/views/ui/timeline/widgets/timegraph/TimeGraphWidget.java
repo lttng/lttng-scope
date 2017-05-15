@@ -20,7 +20,6 @@ import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -61,8 +60,6 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -71,7 +68,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -94,10 +90,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
     private static final String BACKGROUND_STYLE = "-fx-background-color: rgba(255, 255, 255, 255);"; //$NON-NLS-1$
 
-    private static final double SELECTION_STROKE_WIDTH = 1;
-    private static final Color SELECTION_STROKE_COLOR = requireNonNull(Color.BLUE);
-    private static final Color SELECTION_FILL_COLOR = requireNonNull(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.4));
-
     private static final int LABEL_SIDE_MARGIN = 10;
 
     /**
@@ -113,12 +105,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     private final DebugOptions fDebugOptions = new DebugOptions();
 
-    private final SelectionContext fSelectionCtx = new SelectionContext();
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
     private final TimeGraphBackgroundControl fBackgroundControl;
     private final TimeGraphArrowControl fArrowControl;
     private final TimeGraphDrawnEventControl fDrawnEventControl;
+    private final TimeGraphSelectionControl fSelectionControl;
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -140,11 +132,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final Group fTimeGraphStatesLayer;
     private final Group fTimeGraphTextLabelsLayer;
     // TODO Layer for bookmarks
-    private final Group fTimeGraphSelectionLayer;
     private final Group fTimeGraphLoadingOverlayLayer;
 
-    private final Rectangle fSelectionRect;
-    private final Rectangle fOngoingSelectionRect;
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
     private final Timer fUiUpdateTimer = new Timer();
@@ -192,20 +181,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // --------------------------------------------------------------------
 
         fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
-        fSelectionRect = new Rectangle();
-        fOngoingSelectionRect = new Rectangle();
 
         Group timeGraphBackgroundLayer = new Group();
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
         Group timeGraphArrowsLayer = new Group();
         Group timeGraphDrawnEventsLayer = new Group();
-        fTimeGraphSelectionLayer = new Group(fSelectionRect, fOngoingSelectionRect);
+        Group timeGraphSelectionLayer = new Group();
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
-
-        fBackgroundControl = new TimeGraphBackgroundControl(this, timeGraphBackgroundLayer);
-        fArrowControl = new TimeGraphArrowControl(this, timeGraphArrowsLayer);
-        fDrawnEventControl = new TimeGraphDrawnEventControl(this, timeGraphDrawnEventsLayer);
 
         /*
          * The order of the layers is important here, it will go from back to
@@ -216,12 +199,15 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 fTimeGraphTextLabelsLayer,
                 timeGraphArrowsLayer,
                 timeGraphDrawnEventsLayer,
-                fTimeGraphSelectionLayer,
+                timeGraphSelectionLayer,
                 fTimeGraphLoadingOverlayLayer);
+
+        fBackgroundControl = new TimeGraphBackgroundControl(this, timeGraphBackgroundLayer);
+        fArrowControl = new TimeGraphArrowControl(this, timeGraphArrowsLayer);
+        fDrawnEventControl = new TimeGraphDrawnEventControl(this, timeGraphDrawnEventsLayer);
+        fSelectionControl = new TimeGraphSelectionControl(this, timeGraphSelectionLayer);
+
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
-        fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
-        fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);
-        fTimeGraphPane.addEventHandler(MouseEvent.MOUSE_RELEASED, fSelectionCtx.fMouseReleasedEventHandler);
 
         /*
          * We control the width of the time graph pane programmatically, so
@@ -281,22 +267,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
 
         // --------------------------------------------------------------------
-        // Selection rectangles setup
-        // --------------------------------------------------------------------
-
-        Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
-            rect.setMouseTransparent(true);
-
-            rect.setStroke(SELECTION_STROKE_COLOR);
-            rect.setStrokeWidth(SELECTION_STROKE_WIDTH);
-            rect.setStrokeLineCap(StrokeLineCap.ROUND);
-            rect.setFill(SELECTION_FILL_COLOR);
-
-            rect.yProperty().bind(JfxUtils.ZERO_PROPERTY);
-            rect.heightProperty().bind(fTimeGraphPane.heightProperty());
-        });
-
-        // --------------------------------------------------------------------
         // Prepare the top-level area
         // --------------------------------------------------------------------
 
@@ -344,12 +314,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public @Nullable Rectangle getSelectionRectangle() {
-        return fSelectionRect;
+        return fSelectionControl.getSelectionRectangle();
     }
 
     @Override
     public @Nullable Rectangle getOngoingSelectionRectangle() {
-        return fOngoingSelectionRect;
+        return fSelectionControl.getOngoingSelectionRectangle();
     }
 
     // ------------------------------------------------------------------------
@@ -689,14 +659,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public void drawSelection(TimeRange selectionRange) {
-        double xStart = timestampToPaneXPos(selectionRange.getStart());
-        double xEnd = timestampToPaneXPos(selectionRange.getEnd());
-        double xWidth = xEnd - xStart;
-
-        fSelectionRect.setX(xStart);
-        fSelectionRect.setWidth(xWidth);
-
-        fSelectionRect.setVisible(true);
+        fSelectionControl.drawSelection(selectionRange);
     }
 
     private void redrawSelection() {
@@ -882,90 +845,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     // ------------------------------------------------------------------------
     // Mouse event listeners
     // ------------------------------------------------------------------------
-
-    /**
-     * These events are to be ignored by the time graph pane, they should
-     * "bubble up" to the scrollpane to be used for panning.
-     */
-    private static final Predicate<MouseEvent> MOUSE_EVENT_IGNORED = e -> {
-        return (e.getButton() == MouseButton.SECONDARY
-                || e.getButton() == MouseButton.MIDDLE
-                || e.isControlDown());
-    };
-
-    /**
-     * Class encapsulating the time range selection, related drawing and
-     * listeners.
-     */
-    private class SelectionContext {
-
-        private boolean fOngoingSelection;
-        private double fMouseOriginX;
-
-        public final EventHandler<MouseEvent> fMousePressedEventHandler = e -> {
-            if (MOUSE_EVENT_IGNORED.test(e)) {
-                return;
-            }
-
-            if (fOngoingSelection) {
-                return;
-            }
-
-            /* Remove the current selection, if there is one */
-            fSelectionRect.setVisible(false);
-
-            fMouseOriginX = e.getX();
-
-            fOngoingSelectionRect.setX(fMouseOriginX);
-            fOngoingSelectionRect.setWidth(0);
-
-            fOngoingSelectionRect.setVisible(true);
-
-            e.consume();
-
-            fOngoingSelection = true;
-        };
-
-        public final EventHandler<MouseEvent> fMouseDraggedEventHandler = e -> {
-            if (MOUSE_EVENT_IGNORED.test(e)) {
-                return;
-            }
-
-            double newX = e.getX();
-            double offsetX = newX - fMouseOriginX;
-
-            if (offsetX > 0) {
-                fOngoingSelectionRect.setX(fMouseOriginX);
-                fOngoingSelectionRect.setWidth(offsetX);
-            } else {
-                fOngoingSelectionRect.setX(newX);
-                fOngoingSelectionRect.setWidth(-offsetX);
-            }
-
-            e.consume();
-        };
-
-        public final EventHandler<MouseEvent> fMouseReleasedEventHandler = e -> {
-            if (MOUSE_EVENT_IGNORED.test(e)) {
-                return;
-            }
-
-            fOngoingSelectionRect.setVisible(false);
-
-            e.consume();
-
-            /* Send a time range selection signal for the currently selected time range */
-            double startX = Math.max(0, fOngoingSelectionRect.getX());
-            // FIXME Possible glitch when selecting backwards outside of the window
-            double endX = Math.min(fTimeGraphPane.getWidth(), startX + fOngoingSelectionRect.getWidth());
-            long tsStart = paneXPosToTimestamp(startX);
-            long tsEnd = paneXPosToTimestamp(endX);
-
-            getControl().updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
-
-            fOngoingSelection = false;
-        };
-    }
 
     /**
      * Class encapsulating the scrolling operations of the time graph pane.

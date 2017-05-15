@@ -1,0 +1,10 @@
+class javafx/scene/input/MouseEvent
+MOUSE_DRAGGED
+ Ljavafx/event/EventType<Ljavafx/scene/input/MouseEvent;>;
+ Ljavafx/event/EventType<L1javafx/scene/input/MouseEvent;>;
+MOUSE_PRESSED
+ Ljavafx/event/EventType<Ljavafx/scene/input/MouseEvent;>;
+ Ljavafx/event/EventType<L1javafx/scene/input/MouseEvent;>;
+MOUSE_RELEASED
+ Ljavafx/event/EventType<Ljavafx/scene/input/MouseEvent;>;
+ Ljavafx/event/EventType<L1javafx/scene/input/MouseEvent;>;
