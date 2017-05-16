@@ -11,15 +11,18 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -36,7 +39,7 @@ import javafx.scene.shape.StrokeLineCap;
  *
  * @author Alexandre Montplaisir
  */
-public class TimeGraphSelectionLayer {
+public class TimeGraphSelectionLayer extends TimeGraphLayer {
 
     /* Style settings. TODO Move to debug options? */
     private static final double SELECTION_STROKE_WIDTH = 1;
@@ -53,8 +56,6 @@ public class TimeGraphSelectionLayer {
                 || e.isControlDown());
     };
 
-    private final TimeGraphWidget fWidget;
-
     private final Rectangle fSelectionRect = new Rectangle();
     private final Rectangle fOngoingSelectionRect = new Rectangle();
 
@@ -65,13 +66,11 @@ public class TimeGraphSelectionLayer {
      *
      * @param widget
      *            The corresponding time graph widget
-     * @param paintTarget
-     *            The Group to which the selection rectangles should be added
      */
-    public TimeGraphSelectionLayer(TimeGraphWidget widget, Group paintTarget) {
-        fWidget = widget;
+    public TimeGraphSelectionLayer(TimeGraphWidget widget) {
+        super(widget);
 
-        final Pane timeGraphPane = fWidget.getTimeGraphPane();
+        final Pane timeGraphPane = getWidget().getTimeGraphPane();
 
         Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
             rect.setMouseTransparent(true);
@@ -92,7 +91,7 @@ public class TimeGraphSelectionLayer {
          */
         fSelectionRect.setVisible(true);
         fOngoingSelectionRect.setVisible(false);
-        paintTarget.getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
+        getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
 
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);
@@ -120,16 +119,27 @@ public class TimeGraphSelectionLayer {
         return fOngoingSelectionRect;
     }
 
+    @Override
+    public void drawContents(TimeGraphTreeRender treeRender, TimeRange timeRange,
+            VerticalPosition vPos, @Nullable FutureTask<?> task) {
+        drawSelection(timeRange);
+    }
+
+    @Override
+    public void clear() {
+        /* We don't have to clear anything */
+    }
+
     /**
      * Draw a new "current" selection. For times where the selection is updated
      * elsewhere in the framework.
      *
-     * @param selectionRange
+     * @param timeRange
      *            The time range of the new selection
      */
-    public void drawSelection(TimeRange selectionRange) {
-        double xStart = fWidget.timestampToPaneXPos(selectionRange.getStart());
-        double xEnd = fWidget.timestampToPaneXPos(selectionRange.getEnd());
+    public void drawSelection(TimeRange timeRange) {
+        double xStart = getWidget().timestampToPaneXPos(timeRange.getStart());
+        double xEnd = getWidget().timestampToPaneXPos(timeRange.getEnd());
         double xWidth = xEnd - xStart;
 
         fSelectionRect.setX(xStart);
@@ -202,11 +212,11 @@ public class TimeGraphSelectionLayer {
             /* Send a time range selection signal for the currently selected time range */
             double startX = Math.max(0, fOngoingSelectionRect.getX());
             // FIXME Possible glitch when selecting backwards outside of the window
-            double endX = Math.min(fWidget.getTimeGraphPane().getWidth(), startX + fOngoingSelectionRect.getWidth());
-            long tsStart = fWidget.paneXPosToTimestamp(startX);
-            long tsEnd = fWidget.paneXPosToTimestamp(endX);
+            double endX = Math.min(getWidget().getTimeGraphPane().getWidth(), startX + fOngoingSelectionRect.getWidth());
+            long tsStart = getWidget().paneXPosToTimestamp(startX);
+            long tsEnd = getWidget().paneXPosToTimestamp(endX);
 
-            fWidget.getControl().updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
+            getWidget().getControl().updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
 
             fOngoingSelection = false;
         };

@@ -29,6 +29,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;
@@ -41,15 +42,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.Shape;
 
-public class TimeGraphDrawnEventLayer {
+public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
 
-    private final TimeGraphWidget fWidget;
-    private final Group fParentGroup;
     private final Map<ITimeGraphDrawnEventProvider, Group> fEventProviders = new HashMap<>();
 
-    public TimeGraphDrawnEventLayer(TimeGraphWidget widget, Group parentGroup) {
-        fWidget = widget;
-        fParentGroup = parentGroup;
+    public TimeGraphDrawnEventLayer(TimeGraphWidget widget) {
+        super(widget);
 
         ObservableSet<ITimeGraphDrawnEventProvider> providers = TimeGraphDrawnEventProviderManager.instance().getRegisteredProviders();
         /* Populate with the initial values */
@@ -77,13 +75,13 @@ public class TimeGraphDrawnEventLayer {
         Group oldGroup = fEventProviders.put(provider, newGroup);
         if (oldGroup == null) {
             Platform.runLater(() -> {
-                fParentGroup.getChildren().add(newGroup);
+                getChildren().add(newGroup);
             });
         } else {
             /* Remove the old group in case there was already one. */
             Platform.runLater(() -> {
-                fParentGroup.getChildren().remove(oldGroup);
-                fParentGroup.getChildren().add(newGroup);
+                getChildren().remove(oldGroup);
+                getChildren().add(newGroup);
             });
         }
 
@@ -95,8 +93,8 @@ public class TimeGraphDrawnEventLayer {
         provider.enabledProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 /* The provider was just enabled */
-                TimeRange timeRange = fWidget.getViewContext().getCurrentVisibleTimeRange();
-                TimeGraphTreeRender treeRender = fWidget.getLatestTreeRender();
+                TimeRange timeRange = getWidget().getViewContext().getCurrentVisibleTimeRange();
+                TimeGraphTreeRender treeRender = getWidget().getLatestTreeRender();
                 // FIXME Use a Task?
                 paintEventsOfProvider(treeRender, timeRange, provider, null);
             } else {
@@ -115,7 +113,7 @@ public class TimeGraphDrawnEventLayer {
         Group group = fEventProviders.remove(provider);
         if (group != null) {
             Platform.runLater(() -> {
-                fParentGroup.getChildren().remove(group);
+                getChildren().remove(group);
             });
         }
         /*
@@ -124,12 +122,15 @@ public class TimeGraphDrawnEventLayer {
          */
     }
 
-    public void paintEvents(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task) {
+    @Override
+    public void drawContents(TimeGraphTreeRender treeRender, TimeRange timeRange,
+            VerticalPosition vPos, @Nullable FutureTask<?> task) {
         fEventProviders.keySet().stream()
                 .filter(provider -> provider.enabledProperty().get())
                 .forEach(provider -> paintEventsOfProvider(treeRender, timeRange, provider, task));
     }
 
+    @Override
     public void clear() {
         fEventProviders.values().forEach(group -> group.getChildren().clear());
     }
@@ -153,7 +154,7 @@ public class TimeGraphDrawnEventLayer {
         Collection<Shape> shapes = eventRender.getEvents().stream()
                 .map(event -> {
                     TimeGraphEvent tgEvent = event.getEvent();
-                    double x = fWidget.timestampToPaneXPos(tgEvent.getTimestamp());
+                    double x = getWidget().timestampToPaneXPos(tgEvent.getTimestamp());
 
                     int treeIndex = treeRender.getAllTreeElements().indexOf(tgEvent.getTreeElement());
                     if (treeIndex == -1) {

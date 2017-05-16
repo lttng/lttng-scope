@@ -192,30 +192,27 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
         fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
 
-        Group timeGraphBackgroundLayer = new Group();
         fTimeGraphStatesLayer = new Group();
         fTimeGraphTextLabelsLayer = new Group();
-        Group timeGraphArrowsLayer = new Group();
-        Group timeGraphDrawnEventsLayer = new Group();
-        Group timeGraphSelectionLayer = new Group();
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
+
+        fTimeGraphPane = new Pane();
+        fBackgroundLayer = new TimeGraphBackgroundLayer(this);
+        fArrowLayer = new TimeGraphArrowLayer(this);
+        fDrawnEventLayer = new TimeGraphDrawnEventLayer(this);
+        fSelectionLayer = new TimeGraphSelectionLayer(this);
 
         /*
          * The order of the layers is important here, it will go from back to
          * front.
          */
-        fTimeGraphPane = new Pane(timeGraphBackgroundLayer,
+        fTimeGraphPane.getChildren().addAll(fBackgroundLayer,
                 fTimeGraphStatesLayer,
                 fTimeGraphTextLabelsLayer,
-                timeGraphArrowsLayer,
-                timeGraphDrawnEventsLayer,
-                timeGraphSelectionLayer,
+                fArrowLayer,
+                fDrawnEventLayer,
+                fSelectionLayer,
                 fTimeGraphLoadingOverlayLayer);
-
-        fBackgroundLayer = new TimeGraphBackgroundLayer(this, timeGraphBackgroundLayer);
-        fArrowLayer = new TimeGraphArrowLayer(this, timeGraphArrowsLayer);
-        fDrawnEventLayer = new TimeGraphDrawnEventLayer(this, timeGraphDrawnEventsLayer);
-        fSelectionLayer = new TimeGraphSelectionLayer(this, timeGraphSelectionLayer);
 
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
 
@@ -566,7 +563,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 }
 
                 /* We can paint the background at this stage. */
-                fBackgroundLayer.paintBackground(renderingRange, verticalPos);
+                fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, this);
 
                 /* Prepare the time graph part */
                 Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
@@ -629,8 +626,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                  * range. Only refetch/repaint them if we moved horizontally.
                  */
                 if (movedHorizontally) {
-                    fArrowLayer.paintArrows(treeRender, renderingRange, this);
-                    fDrawnEventLayer.paintEvents(treeRender, renderingRange, this);
+                    fArrowLayer.drawContents(treeRender, renderingRange, verticalPos, this);
+                    fDrawnEventLayer.drawContents(treeRender, renderingRange, verticalPos, this);
                 }
 
                 if (isCancelled()) {

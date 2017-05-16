@@ -10,15 +10,17 @@
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import java.util.LinkedList;
+import java.util.concurrent.FutureTask;
 import java.util.stream.DoubleStream;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
 /**
@@ -27,39 +29,27 @@ import javafx.scene.shape.Line;
  *
  * @author Alexandre Montplaisir
  */
-public class TimeGraphBackgroundLayer {
-
-    private final TimeGraphWidget fWidget;
-    private final Group fPaintTarget;
+public class TimeGraphBackgroundLayer extends TimeGraphLayer {
 
     /**
      * Constructor
      *
      * @param widget
      *            Main widget which this control supports
-     * @param paintTarget
-     *            The Group to which the scenegraph objects should be added
      */
-    public TimeGraphBackgroundLayer(TimeGraphWidget widget, Group paintTarget) {
-        fWidget = widget;
-        fPaintTarget = paintTarget;
+    public TimeGraphBackgroundLayer(TimeGraphWidget widget) {
+        super(widget);
     }
 
-    /**
-     * Paint the contents
-     *
-     * @param horizontalRange
-     *            The horizontal "position" of the visible window
-     * @param vPos
-     *            The vertical position of the visible window
-     */
-    public void paintBackground(TimeRange horizontalRange, VerticalPosition vPos) {
+    @Override
+    public void drawContents(TimeGraphTreeRender treeRender, TimeRange timeRange,
+            VerticalPosition vPos, @Nullable FutureTask<?> task) {
         final double entryHeight = TimeGraphWidget.ENTRY_HEIGHT;
 
-        final int entriesToPrefetch = fWidget.getDebugOptions().entryPadding.get();
-        int totalNbEntries = fWidget.getLatestTreeRender().getAllTreeElements().size();
+        final int entriesToPrefetch = getWidget().getDebugOptions().entryPadding.get();
+        int totalNbEntries = treeRender.getAllTreeElements().size();
 
-        final double timeGraphWidth = fWidget.getTimeGraphPane().getWidth();
+        final double timeGraphWidth = getWidget().getTimeGraphPane().getWidth();
         final double paintTopPos = Math.max(0.0, vPos.fTopPos - entriesToPrefetch * entryHeight);
         final double paintBottomPos = Math.min(vPos.fBottomPos + entriesToPrefetch * entryHeight,
                 /*
@@ -87,15 +77,14 @@ public class TimeGraphBackgroundLayer {
         }
 
         Platform.runLater(() -> {
-            fPaintTarget.getChildren().clear();
-            fPaintTarget.getChildren().addAll(lines);
+            getChildren().clear();
+            getChildren().addAll(lines);
         });
     }
 
-    /**
-     * Clear the scenegraph objects created by this control.
-     */
+    @Override
     public void clear() {
-        JfxUtils.runOnMainThread(() -> fPaintTarget.getChildren().clear());
+        JfxUtils.runOnMainThread(() -> getChildren().clear());
     }
+
 }

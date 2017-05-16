@@ -25,8 +25,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.LatestTaskExecutor;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -34,15 +34,13 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
 
-public class TimeGraphArrowLayer {
+public class TimeGraphArrowLayer extends TimeGraphLayer {
 
-    private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
-
-    private final TimeGraphWidget fWidget;
     private final Map<ITimeGraphModelArrowProvider, ArrowConfig> fArrowProvidersConfig;
 
-    public TimeGraphArrowLayer(TimeGraphWidget widget, Group paintTarget) {
-        fWidget = widget;
+    public TimeGraphArrowLayer(TimeGraphWidget widget) {
+        super(widget);
+
         Collection<ITimeGraphModelArrowProvider> arrowProviders =
                 widget.getControl().getModelRenderProvider().getArrowProviders();
 
@@ -58,7 +56,7 @@ public class TimeGraphArrowLayer {
 
         fArrowProvidersConfig.values().stream()
                 .map(ArrowConfig::getGroup)
-                .forEach(paintTarget.getChildren()::add);
+                .forEach(getChildren()::add);
 
         /*
          * Add listeners to the registered arrow providers. If providers become
@@ -72,8 +70,8 @@ public class TimeGraphArrowLayer {
                      * The provider is now enabled, we must fetch and display
                      * its arrows
                      */
-                    TimeRange timeRange = fWidget.getViewContext().getCurrentVisibleTimeRange();
-                    TimeGraphTreeRender treeRender = fWidget.getLatestTreeRender();
+                    TimeRange timeRange = getWidget().getViewContext().getCurrentVisibleTimeRange();
+                    TimeGraphTreeRender treeRender = getWidget().getLatestTreeRender();
                     // FIXME Not using a task here, so this might end up running
                     // on the UI thread  and not being cancellable...
                     paintArrowsOfProvider(treeRender, timeRange, ap, null);
@@ -94,13 +92,20 @@ public class TimeGraphArrowLayer {
         });
     }
 
-    public void paintArrows(TimeGraphTreeRender treeRender, TimeRange timeRange, @Nullable FutureTask<?> task) {
+    @Override
+    public void drawContents(TimeGraphTreeRender treeRender, TimeRange timeRange,
+            VerticalPosition vPos, @Nullable FutureTask<?> task) {
         fArrowProvidersConfig.keySet().stream()
                 .filter(arrowProvider -> arrowProvider.enabledProperty().get())
                 .forEach(arrowProvider -> paintArrowsOfProvider(treeRender, timeRange, arrowProvider, task));
     }
 
+    @Override
     public void clear() {
+        /*
+         * Only clear the children's children, not our direct children which
+         * could still be valid.
+         */
         fArrowProvidersConfig.values().stream()
                 .map(ArrowConfig::getGroup)
                 .forEach(group -> group.getChildren().clear());
@@ -113,7 +118,6 @@ public class TimeGraphArrowLayer {
             /* Should not happen... */
             return;
         }
-
 
         TimeGraphArrowRender arrowRender = arrowProvider.getArrowRender(treeRender, timeRange, task);
         Collection<Arrow> arrows = prepareArrows(treeRender, arrowRender, config.getStroke());
@@ -142,8 +146,8 @@ public class TimeGraphArrowLayer {
                     return null;
                 }
 
-                double startX = fWidget.timestampToPaneXPos(startTimestamp);
-                double endX = fWidget.timestampToPaneXPos(endTimestamp);
+                double startX = getWidget().timestampToPaneXPos(startTimestamp);
+                double endX = getWidget().timestampToPaneXPos(endTimestamp);
                 double startY = startIndex * entryHeight + entryHeight / 2;
                 double endY = endIndex * entryHeight + entryHeight / 2;
 
