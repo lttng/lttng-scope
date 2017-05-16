@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,6 +28,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;
@@ -40,13 +41,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.Shape;
 
-public class TimeGraphDrawnEventControl {
+public class TimeGraphDrawnEventLayer {
 
     private final TimeGraphWidget fWidget;
     private final Group fParentGroup;
     private final Map<ITimeGraphDrawnEventProvider, Group> fEventProviders = new HashMap<>();
 
-    public TimeGraphDrawnEventControl(TimeGraphWidget widget, Group parentGroup) {
+    public TimeGraphDrawnEventLayer(TimeGraphWidget widget, Group parentGroup) {
         fWidget = widget;
         fParentGroup = parentGroup;
 
@@ -242,7 +243,7 @@ public class TimeGraphDrawnEventControl {
         return shape;
     }
 
-    synchronized Collection<Shape> getRenderedEvents() {
+    public synchronized Collection<Shape> getRenderedEvents() {
         /*
          * Retrieve the rendered events of each group, and flatten them into a
          * single collection.

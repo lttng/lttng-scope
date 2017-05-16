@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -35,7 +36,7 @@ import javafx.scene.shape.StrokeLineCap;
  *
  * @author Alexandre Montplaisir
  */
-public class TimeGraphSelectionControl {
+public class TimeGraphSelectionLayer {
 
     /* Style settings. TODO Move to debug options? */
     private static final double SELECTION_STROKE_WIDTH = 1;
@@ -67,7 +68,7 @@ public class TimeGraphSelectionControl {
      * @param paintTarget
      *            The Group to which the selection rectangles should be added
      */
-    public TimeGraphSelectionControl(TimeGraphWidget widget, Group paintTarget) {
+    public TimeGraphSelectionLayer(TimeGraphWidget widget, Group paintTarget) {
         fWidget = widget;
 
         final Pane timeGraphPane = fWidget.getTimeGraphPane();

@@ -161,6 +161,6 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
     }
 
     private Collection<Shape> getRenderedEvents() {
-        return getWidget().getDrawnEventControl().getRenderedEvents();
+        return getWidget().getDrawnEventLayer().getRenderedEvents();
     }
 }

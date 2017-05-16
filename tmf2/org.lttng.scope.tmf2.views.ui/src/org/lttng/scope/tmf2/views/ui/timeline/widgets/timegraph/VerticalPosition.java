@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 
-class VerticalPosition {
+public class VerticalPosition {
 
     /**
      * Placeholder for uninitialized vertical positions.

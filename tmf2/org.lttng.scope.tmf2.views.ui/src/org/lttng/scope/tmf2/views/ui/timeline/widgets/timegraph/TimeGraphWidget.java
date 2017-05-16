@@ -40,6 +40,10 @@ import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphSelectionLayer;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -90,7 +94,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     // (Could eventually be moved to separate .css file?)
     // ------------------------------------------------------------------------
 
-    static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
+    public static final Color BACKGROUD_LINES_COLOR = requireNonNull(Color.LIGHTBLUE);
+
     private static final String BACKGROUND_STYLE = "-fx-background-color: rgba(255, 255, 255, 255);"; //$NON-NLS-1$
 
     private static final int LABEL_SIDE_MARGIN = 10;
@@ -110,10 +115,10 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
-    private final TimeGraphBackgroundControl fBackgroundControl;
-    private final TimeGraphArrowControl fArrowControl;
-    private final TimeGraphDrawnEventControl fDrawnEventControl;
-    private final TimeGraphSelectionControl fSelectionControl;
+    private final TimeGraphBackgroundLayer fBackgroundLayer;
+    private final TimeGraphArrowLayer fArrowLayer;
+    private final TimeGraphDrawnEventLayer fDrawnEventLayer;
+    private final TimeGraphSelectionLayer fSelectionLayer;
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -207,10 +212,10 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 timeGraphSelectionLayer,
                 fTimeGraphLoadingOverlayLayer);
 
-        fBackgroundControl = new TimeGraphBackgroundControl(this, timeGraphBackgroundLayer);
-        fArrowControl = new TimeGraphArrowControl(this, timeGraphArrowsLayer);
-        fDrawnEventControl = new TimeGraphDrawnEventControl(this, timeGraphDrawnEventsLayer);
-        fSelectionControl = new TimeGraphSelectionControl(this, timeGraphSelectionLayer);
+        fBackgroundLayer = new TimeGraphBackgroundLayer(this, timeGraphBackgroundLayer);
+        fArrowLayer = new TimeGraphArrowLayer(this, timeGraphArrowsLayer);
+        fDrawnEventLayer = new TimeGraphDrawnEventLayer(this, timeGraphDrawnEventsLayer);
+        fSelectionLayer = new TimeGraphSelectionLayer(this, timeGraphSelectionLayer);
 
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
 
@@ -289,7 +294,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
 
-    TimeGraphTreeRender getLatestTreeRender() {
+    public TimeGraphTreeRender getLatestTreeRender() {
         return fLatestTreeRender;
     }
 
@@ -319,12 +324,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public @Nullable Rectangle getSelectionRectangle() {
-        return fSelectionControl.getSelectionRectangle();
+        return fSelectionLayer.getSelectionRectangle();
     }
 
     @Override
     public @Nullable Rectangle getOngoingSelectionRectangle() {
-        return fSelectionControl.getOngoingSelectionRectangle();
+        return fSelectionLayer.getOngoingSelectionRectangle();
     }
 
     // ------------------------------------------------------------------------
@@ -350,9 +355,9 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             fTimeGraphStatesLayer.getChildren().clear();
             fTimeGraphTextLabelsLayer.getChildren().clear();
 
-            fBackgroundControl.clear();
-            fArrowControl.clear();
-            fDrawnEventControl.clear();
+            fBackgroundLayer.clear();
+            fArrowLayer.clear();
+            fDrawnEventLayer.clear();
 
             /* Also clear whatever cached objects the viewer currently has. */
             fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
@@ -424,13 +429,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 });
 
                 /* Reposition the arrows */
-                fArrowControl.getRenderedArrows().forEach(arrow -> {
+                fArrowLayer.getRenderedArrows().forEach(arrow -> {
                     arrow.setStartX(arrow.getStartX() * factor);
                     arrow.setEndX(arrow.getEndX() * factor);
                 });
 
                 /* Reposition the drawn events */
-                fDrawnEventControl.getRenderedEvents().forEach(event -> {
+                fDrawnEventLayer.getRenderedEvents().forEach(event -> {
                     /*
                      * Drawn events use the "translate" properties to define
                      * their position.
@@ -561,7 +566,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 }
 
                 /* We can paint the background at this stage. */
-                fBackgroundControl.paintBackground(renderingRange, verticalPos);
+                fBackgroundLayer.paintBackground(renderingRange, verticalPos);
 
                 /* Prepare the time graph part */
                 Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
@@ -624,8 +629,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                  * range. Only refetch/repaint them if we moved horizontally.
                  */
                 if (movedHorizontally) {
-                    fArrowControl.paintArrows(treeRender, renderingRange, this);
-                    fDrawnEventControl.paintEvents(treeRender, renderingRange, this);
+                    fArrowLayer.paintArrows(treeRender, renderingRange, this);
+                    fDrawnEventLayer.paintEvents(treeRender, renderingRange, this);
                 }
 
                 if (isCancelled()) {
@@ -662,7 +667,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public void drawSelection(TimeRange selectionRange) {
-        fSelectionControl.drawSelection(selectionRange);
+        fSelectionLayer.drawSelection(selectionRange);
     }
 
     private void redrawSelection() {
@@ -1041,7 +1046,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return TimeRange.of(tsStart, tsEnd);
     }
 
-    double timestampToPaneXPos(long timestamp) {
+    public double timestampToPaneXPos(long timestamp) {
         TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
         return timestampToPaneXPos(timestamp, fullTimeGraphRange, fNanosPerPixel.get());
     }
@@ -1066,7 +1071,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return Math.round(xPos);
     }
 
-    long paneXPosToTimestamp(double x) {
+    public long paneXPosToTimestamp(double x) {
         long fullTimeGraphStartTime = getViewContext().getCurrentTraceFullRange().getStart();
         return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel.get());
     }
@@ -1160,8 +1165,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return fNanosPerPixel.get();
     }
 
-    @VisibleForTesting
-    Pane getTimeGraphPane() {
+    public Pane getTimeGraphPane() {
         return fTimeGraphPane;
     }
 
@@ -1171,12 +1175,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     @VisibleForTesting
-    TimeGraphArrowControl getArrowControl() {
-        return fArrowControl;
+    TimeGraphArrowLayer getArrowLayer() {
+        return fArrowLayer;
     }
 
     @VisibleForTesting
-    TimeGraphDrawnEventControl getDrawnEventControl() {
-        return fDrawnEventControl;
+    TimeGraphDrawnEventLayer getDrawnEventLayer() {
+        return fDrawnEventLayer;
     }
 }

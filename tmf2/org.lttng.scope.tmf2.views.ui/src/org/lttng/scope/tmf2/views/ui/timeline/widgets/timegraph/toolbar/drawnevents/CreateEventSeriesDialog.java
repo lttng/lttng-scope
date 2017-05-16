@@ -20,7 +20,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphDrawnEventControl;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;
@@ -167,7 +167,7 @@ class CreateEventSeriesDialog extends Dialog<@Nullable PredicateDrawnEventProvid
         }
 
         private static Node getGraphicFromSymbol(SymbolStyle symbol, ReadOnlyProperty<Color> colorSource) {
-            Shape graphic = TimeGraphDrawnEventControl.getShapeFromSymbol(symbol);
+            Shape graphic = TimeGraphDrawnEventLayer.getShapeFromSymbol(symbol);
             graphic.fillProperty().bind(colorSource);
             return graphic;
         }

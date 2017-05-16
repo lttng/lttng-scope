@@ -18,8 +18,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.Time
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
-import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphDrawnEventControl;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
 import com.google.common.collect.Iterables;
 
@@ -143,7 +143,7 @@ public class EventSeriesMenuButton extends MenuButton {
             setText(series.getSeriesName());
             selectedProperty().bindBidirectional(provider.enabledProperty());
 
-            Shape graphic = TimeGraphDrawnEventControl.getShapeFromSymbol(series.getSymbolStyle().get());
+            Shape graphic = TimeGraphDrawnEventLayer.getShapeFromSymbol(series.getSymbolStyle().get());
             Color color = JfxColorFactory.getColorFromDef(series.getColor().get());
             graphic.setFill(color);
             setGraphic(graphic);

@@ -45,7 +45,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testArrowDefault() {
-        Collection<Arrow> arrows = getWidget().getArrowControl().getRenderedArrows();
+        Collection<Arrow> arrows = getWidget().getArrowLayer().getRenderedArrows();
         assertTrue(arrows.isEmpty());
     }
 
@@ -61,7 +61,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
 
         repaint();
 
-        Collection<Arrow> arrows = getWidget().getArrowControl().getRenderedArrows();
+        Collection<Arrow> arrows = getWidget().getArrowLayer().getRenderedArrows();
         assertEquals(3, arrows.size());
     }
 
@@ -75,7 +75,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
 
         repaint();
 
-        Collection<Arrow> arrows = getWidget().getArrowControl().getRenderedArrows();
+        Collection<Arrow> arrows = getWidget().getArrowLayer().getRenderedArrows();
         assertEquals(5, arrows.size());
     }
 
@@ -96,7 +96,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
 
         repaint();
 
-        Collection<Arrow> arrows = getWidget().getArrowControl().getRenderedArrows();
+        Collection<Arrow> arrows = getWidget().getArrowLayer().getRenderedArrows();
         assertEquals(2, arrows.size());
     }
 

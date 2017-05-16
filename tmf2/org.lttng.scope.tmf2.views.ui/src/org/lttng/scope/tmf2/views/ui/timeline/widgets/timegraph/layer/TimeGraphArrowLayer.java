@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import java.util.Collection;
 import java.util.Map;
@@ -25,6 +25,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.LatestTaskExecutor;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -32,14 +34,14 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
 
-public class TimeGraphArrowControl {
+public class TimeGraphArrowLayer {
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
     private final TimeGraphWidget fWidget;
     private final Map<ITimeGraphModelArrowProvider, ArrowConfig> fArrowProvidersConfig;
 
-    public TimeGraphArrowControl(TimeGraphWidget widget, Group paintTarget) {
+    public TimeGraphArrowLayer(TimeGraphWidget widget, Group paintTarget) {
         fWidget = widget;
         Collection<ITimeGraphModelArrowProvider> arrowProviders =
                 widget.getControl().getModelRenderProvider().getArrowProviders();
@@ -154,7 +156,7 @@ public class TimeGraphArrowControl {
         return arrows;
     }
 
-    synchronized Collection<Arrow> getRenderedArrows() {
+    public synchronized Collection<Arrow> getRenderedArrows() {
         /*
          * Retrieve the rendered arrows of each group, and flatten them into a
          * single collection.

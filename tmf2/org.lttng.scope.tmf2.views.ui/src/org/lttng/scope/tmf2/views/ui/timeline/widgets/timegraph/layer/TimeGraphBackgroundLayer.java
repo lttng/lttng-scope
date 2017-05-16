@@ -7,13 +7,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
+package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer;
 
 import java.util.LinkedList;
 import java.util.stream.DoubleStream;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -25,7 +27,7 @@ import javafx.scene.shape.Line;
  *
  * @author Alexandre Montplaisir
  */
-public class TimeGraphBackgroundControl {
+public class TimeGraphBackgroundLayer {
 
     private final TimeGraphWidget fWidget;
     private final Group fPaintTarget;
@@ -38,7 +40,7 @@ public class TimeGraphBackgroundControl {
      * @param paintTarget
      *            The Group to which the scenegraph objects should be added
      */
-    public TimeGraphBackgroundControl(TimeGraphWidget widget, Group paintTarget) {
+    public TimeGraphBackgroundLayer(TimeGraphWidget widget, Group paintTarget) {
         fWidget = widget;
         fPaintTarget = paintTarget;
     }
