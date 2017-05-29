@@ -10,7 +10,8 @@
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * {@link TimeGraphWidget} test suite testing seeking operations.

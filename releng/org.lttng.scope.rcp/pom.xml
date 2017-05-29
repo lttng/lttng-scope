@@ -38,6 +38,9 @@
             <configuration>
               <excludes>
                 <plugin id="ca.polymtl.dorsal.libdelorean"/>
+                <plugin id="org.eclipse.tracecompass.ctfreader"/>
+
+                <plugin id="com.efficios.jabberwocky.core"/>
 
                 <plugin id="org.apache.commons.compress"/>
                 <plugin id="org.apache.xerces"/>
@@ -111,8 +114,7 @@
                 <plugin id="org.eclipse.team.ui"/>
 
                 <plugin id="org.eclipse.text"/>
-                
-                <plugin id="org.eclipse.tracecompass.ctfreader"/>
+
                 <plugin id="org.json"/>
                 <plugin id="org.sat4j.core"/>
                 <plugin id="org.sat4j.pb"/>

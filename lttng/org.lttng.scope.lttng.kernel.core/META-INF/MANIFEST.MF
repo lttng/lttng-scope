@@ -28,7 +28,8 @@ Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:
  org.lttng.scope.lttng.kernel.core.views.timegraph.resources,
  org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements,
  org.lttng.scope.lttng.kernel.core.views.timegraph.threads
-Import-Package: com.google.common.annotations,
+Import-Package: com.efficios.jabberwocky.common;version="0.2.3",
+ com.google.common.annotations,
  com.google.common.base,
  com.google.common.cache,
  com.google.common.collect,

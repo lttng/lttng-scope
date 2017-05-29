@@ -23,7 +23,9 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Bridge between a {@link ViewGroupContext} and the {@link TmfSignalManager}.
@@ -59,13 +61,13 @@ public class SignalBridge {
             TmfSignalManager.dispatchSignal(newTraceSignal);
 
             viewContext.currentTraceFullRangeProperty().addListener((observable, oldRange, newRange) -> {
-                TmfTimeRange tmfTimeRange = newRange.toTmfTimeRange();
+                TmfTimeRange tmfTimeRange = TimeRangeUtils.toTmfTimeRange(newRange);
                 TmfSignal signal = new TmfTraceRangeUpdatedSignal(SignalBridge.this, viewContext.getCurrentTrace(), tmfTimeRange);
                 TmfSignalManager.dispatchSignal(signal);
             });
 
             viewContext.currentVisibleTimeRangeProperty().addListener((observable, oldRange, newRange) -> {
-                TmfTimeRange tmfTimeRange = newRange.toTmfTimeRange();
+                TmfTimeRange tmfTimeRange = TimeRangeUtils.toTmfTimeRange(newRange);
                 TmfSignal signal = new TmfWindowRangeUpdatedSignal(SignalBridge.this, tmfTimeRange);
                 fVisibleRangeSignalThrottler.queue(signal);
             });
@@ -73,11 +75,11 @@ public class SignalBridge {
             viewContext.currentSelectionTimeRangeProperty().addListener((observable, oldRange, newRange) -> {
                 TmfSignal signal;
                 if (newRange.isSingleTimestamp()) {
-                    ITmfTimestamp ts = TmfTimestamp.fromNanos(newRange.getStart());
+                    ITmfTimestamp ts = TmfTimestamp.fromNanos(newRange.getStartTime());
                     signal = new TmfSelectionRangeUpdatedSignal(SignalBridge.this, ts);
                 } else {
-                    ITmfTimestamp startTs = TmfTimestamp.fromNanos(newRange.getStart());
-                    ITmfTimestamp endTs = TmfTimestamp.fromNanos(newRange.getEnd());
+                    ITmfTimestamp startTs = TmfTimestamp.fromNanos(newRange.getStartTime());
+                    ITmfTimestamp endTs = TmfTimestamp.fromNanos(newRange.getEndTime());
                     signal = new TmfSelectionRangeUpdatedSignal(SignalBridge.this, startTs, endTs);
                 }
                 TmfSignalManager.dispatchSignal(signal);
@@ -206,7 +208,7 @@ public class SignalBridge {
         if (windowRange == null || trace == null) {
             return;
         }
-        fViewContext.setCurrentVisibleTimeRange(TimeRange.fromTmfTimeRange(windowRange));
+        fViewContext.setCurrentVisibleTimeRange(TimeRangeUtils.fromTmfTimeRange(windowRange));
     }
 
 }

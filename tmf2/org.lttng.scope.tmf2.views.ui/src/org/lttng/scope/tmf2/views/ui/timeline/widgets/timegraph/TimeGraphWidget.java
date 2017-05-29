@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -34,6 +33,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphS
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphStateLayer;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
@@ -362,16 +362,16 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fNanosPerPixel.set(windowTimeRange / timeGraphVisibleWidth);
 
         double oldTotalWidth = fTimeGraphPane.getLayoutBounds().getWidth();
-        double newTotalWidth = timestampToPaneXPos(fullTimeGraphRange.getEnd()) - timestampToPaneXPos(fullTimeGraphRange.getStart());
+        double newTotalWidth = timestampToPaneXPos(fullTimeGraphRange.getEndTime()) - timestampToPaneXPos(fullTimeGraphRange.getStartTime());
         if (newTotalWidth < 1.0) {
             // FIXME
             return;
         }
 
         double newValue;
-        if (newVisibleRange.getStart() == fullTimeGraphRange.getStart()) {
+        if (newVisibleRange.getStartTime() == fullTimeGraphRange.getStartTime()) {
             newValue = fTimeGraphScrollPane.getHmin();
-        } else if (newVisibleRange.getEnd() == fullTimeGraphRange.getEnd()) {
+        } else if (newVisibleRange.getEndTime() == fullTimeGraphRange.getEndTime()) {
             newValue = fTimeGraphScrollPane.getHmax();
         } else {
             /*
@@ -387,7 +387,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
              * See http://stackoverflow.com/a/23518314/4227853 for a great
              * explanation.
              */
-            double startPos = timestampToPaneXPos(newVisibleRange.getStart());
+            double startPos = timestampToPaneXPos(newVisibleRange.getStartTime());
             newValue = startPos / (newTotalWidth - timeGraphVisibleWidth);
         }
 
@@ -484,8 +484,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * start and end.
          */
         final long timeRangePadding = Math.round(windowRange.getDuration() * fDebugOptions.renderRangePadding.get());
-        final long renderingStartTime = Math.max(fullTimeGraphRange.getStart(), windowRange.getStart() - timeRangePadding);
-        final long renderingEndTime = Math.min(fullTimeGraphRange.getEnd(), windowRange.getEnd() + timeRangePadding);
+        final long renderingStartTime = Math.max(fullTimeGraphRange.getStartTime(), windowRange.getStartTime() - timeRangePadding);
+        final long renderingEndTime = Math.min(fullTimeGraphRange.getEndTime(), windowRange.getEndTime() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
 
         /*
@@ -720,7 +720,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             TimeRange visibleRange = getViewContext().getCurrentVisibleTimeRange();
 
             TimeRange currentSelection = getViewContext().getCurrentSelectionTimeRange();
-            long currentSelectionCenter = ((currentSelection.getDuration() / 2) + currentSelection.getStart());
+            long currentSelectionCenter = ((currentSelection.getDuration() / 2) + currentSelection.getStartTime());
             boolean currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter);
 
             long zoomPivot;
@@ -735,7 +735,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 zoomPivot = paneXPosToTimestamp(mouseX);
             } else {
                 /* Pivot on center of visible range */
-                zoomPivot = visibleRange.getStart() + (visibleRange.getDuration() / 2);
+                zoomPivot = visibleRange.getStartTime() + (visibleRange.getDuration() / 2);
             }
 
             /* Prevent going closer than the zoom limit */
@@ -745,15 +745,15 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             double newDuration = visibleRange.getDuration() * (1.0 / newScaleFactor);
             newDuration = Math.max(minDuration, newDuration);
             double durationDelta = newDuration - visibleRange.getDuration();
-            double zoomPivotRatio = (double) (zoomPivot - visibleRange.getStart()) / (double) (visibleRange.getDuration());
+            double zoomPivotRatio = (double) (zoomPivot - visibleRange.getStartTime()) / (double) (visibleRange.getDuration());
 
-            long newStart = visibleRange.getStart() - Math.round(durationDelta * zoomPivotRatio);
-            long newEnd = visibleRange.getEnd() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
+            long newStart = visibleRange.getStartTime() - Math.round(durationDelta * zoomPivotRatio);
+            long newEnd = visibleRange.getEndTime() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
 
             /* Clamp newStart and newEnd to the full trace's range */
             TimeRange fullRange = control.getViewContext().getCurrentTraceFullRange();
-            long traceStart = fullRange.getStart();
-            long traceEnd = fullRange.getEnd();
+            long traceStart = fullRange.getStartTime();
+            long traceEnd = fullRange.getEndTime();
             newStart = Math.max(newStart, traceStart);
             newEnd = Math.min(newEnd, traceEnd);
 
@@ -820,8 +820,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @VisibleForTesting
     static double timestampToPaneXPos(long timestamp, TimeRange fullTimeGraphRange, double nanosPerPixel) {
-        long start = fullTimeGraphRange.getStart();
-        long end = fullTimeGraphRange.getEnd();
+        long start = fullTimeGraphRange.getStartTime();
+        long end = fullTimeGraphRange.getEndTime();
 
         if (timestamp < start) {
             throw new IllegalArgumentException(timestamp + " is smaller than trace start time " + start); //$NON-NLS-1$
@@ -839,7 +839,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     public long paneXPosToTimestamp(double x) {
-        long fullTimeGraphStartTime = getViewContext().getCurrentTraceFullRange().getStart();
+        long fullTimeGraphStartTime = getViewContext().getCurrentTraceFullRange().getStartTime();
         return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel.get());
     }
 

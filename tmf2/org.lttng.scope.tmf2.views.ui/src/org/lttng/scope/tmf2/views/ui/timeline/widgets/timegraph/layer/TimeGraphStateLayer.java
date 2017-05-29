@@ -23,7 +23,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -33,6 +32,8 @@ import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -179,7 +180,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
 
     private Node prepareTimeGrahLabelsContents(Collection<StateRectangle> stateRectangles,
             TimeRange windowRange) {
-        double minX = getWidget().timestampToPaneXPos(windowRange.getStart());
+        double minX = getWidget().timestampToPaneXPos(windowRange.getStartTime());
 
         final String ellipsisStr = DebugOptions.ELLIPSIS_STRING;
         final double ellipsisWidth = getWidget().getDebugOptions().getEllipsisWidth();

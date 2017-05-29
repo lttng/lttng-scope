@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -24,6 +23,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphAr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 
 class TestModelArrowProvider2 extends TimeGraphModelArrowProvider {
@@ -58,7 +58,7 @@ class TestModelArrowProvider2 extends TimeGraphModelArrowProvider {
     }
 
     private static long ts(TimeRange range, double ratio) {
-        return (long) (range.getDuration() * ratio + range.getStart());
+        return (long) (range.getDuration() * ratio + range.getStartTime());
     }
 
 }

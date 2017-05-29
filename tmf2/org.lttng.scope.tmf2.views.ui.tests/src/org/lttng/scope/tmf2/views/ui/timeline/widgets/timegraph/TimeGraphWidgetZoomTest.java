@@ -10,7 +10,8 @@
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * {@link TimeGraphWidget} test suite testing zooming operations.
@@ -107,10 +108,10 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
         double newRangeDuration = initialRangeDuration * (1.0 / (totalFactor));
 
         double durationDelta = newRangeDuration - initialRangeDuration;
-        double zoomPivotRatio = (double) (zoomPivot - initialRange.getStart()) / (double) (initialRange.getDuration());
+        double zoomPivotRatio = (double) (zoomPivot - initialRange.getStartTime()) / (double) (initialRange.getDuration());
 
-        long newStart = initialRange.getStart() - Math.round(durationDelta * zoomPivotRatio);
-        long newEnd = initialRange.getEnd() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
+        long newStart = initialRange.getStartTime() - Math.round(durationDelta * zoomPivotRatio);
+        long newEnd = initialRange.getEndTime() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
 
         /* Apply zoom action(s) */
         for (int i = 0; i < nbSteps; i++) {

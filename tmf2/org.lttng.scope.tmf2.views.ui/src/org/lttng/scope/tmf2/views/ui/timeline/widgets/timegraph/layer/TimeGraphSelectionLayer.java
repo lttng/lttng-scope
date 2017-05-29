@@ -16,11 +16,12 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -148,8 +149,8 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
      *            The time range of the new selection
      */
     public void drawSelection(TimeRange timeRange) {
-        double xStart = getWidget().timestampToPaneXPos(timeRange.getStart());
-        double xEnd = getWidget().timestampToPaneXPos(timeRange.getEnd());
+        double xStart = getWidget().timestampToPaneXPos(timeRange.getStartTime());
+        double xEnd = getWidget().timestampToPaneXPos(timeRange.getEndTime());
         double xWidth = xEnd - xStart;
 
         fSelectionRect.setLayoutX(xStart);

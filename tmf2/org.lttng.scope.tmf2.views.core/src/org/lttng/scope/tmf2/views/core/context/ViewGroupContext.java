@@ -11,7 +11,8 @@ package org.lttng.scope.tmf2.views.core.context;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;

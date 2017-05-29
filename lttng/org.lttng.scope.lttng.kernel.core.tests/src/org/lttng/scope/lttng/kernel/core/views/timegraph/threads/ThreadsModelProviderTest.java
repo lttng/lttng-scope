@@ -32,15 +32,12 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelProvider;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelStateProvider;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsTreeElement;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
@@ -257,7 +254,7 @@ public class ThreadsModelProviderTest {
         int threadQuark = ss.getQuarkRelative(threadsQuark, "0_0");
         List<ITmfStateInterval> intervalsFromSS;
         try {
-            intervalsFromSS = StateSystemUtils.queryHistoryRange(ss, threadQuark, range.getStart(), range.getEnd());
+            intervalsFromSS = StateSystemUtils.queryHistoryRange(ss, threadQuark, range.getStartTime(), range.getEndTime());
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             fail(e.getMessage());
             return;

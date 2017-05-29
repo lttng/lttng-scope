@@ -12,8 +12,7 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.lttng.scope.tmf2.views.core.TimeRange;
-
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 
 /**

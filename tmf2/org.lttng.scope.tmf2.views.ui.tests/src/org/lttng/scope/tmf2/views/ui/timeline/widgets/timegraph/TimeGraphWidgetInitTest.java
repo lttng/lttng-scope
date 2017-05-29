@@ -12,7 +12,8 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * {@link TimeGraphWidget} test checking the initial conditions.
@@ -36,12 +37,12 @@ public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
 
         /* Check the control */
         TimeRange visibleRange = viewer.getControl().getViewContext().getCurrentVisibleTimeRange();
-        assertEquals(expectedStart, visibleRange.getStart());
-        assertEquals(expectedEnd, visibleRange.getEnd());
+        assertEquals(expectedStart, visibleRange.getStartTime());
+        assertEquals(expectedEnd, visibleRange.getEndTime());
 
         /* Check the view itself */
         TimeRange timeRange = viewer.getTimeGraphEdgeTimestamps(null);
-        assertEquals(expectedStart, timeRange.getStart());
-        assertEquals(expectedEnd, timeRange.getEnd());
+        assertEquals(expectedStart, timeRange.getStartTime());
+        assertEquals(expectedEnd, timeRange.getEndTime());
     }
 }

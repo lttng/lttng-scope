@@ -9,9 +9,10 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;

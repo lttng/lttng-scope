@@ -23,8 +23,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Base for {@link TimeGraphWidget} tests, which sets up all the needed
@@ -202,14 +203,14 @@ public abstract class TimeGraphWidgetTestBase {
 
         /* Check the view itself */
         TimeRange timeRange = widget.getTimeGraphEdgeTimestamps(null);
-        long tsStart = timeRange.getStart();
-        long tsEnd = timeRange.getEnd();
+        long tsStart = timeRange.getStartTime();
+        long tsEnd = timeRange.getEndTime();
 
         /* We will tolerate being off by at most 1 pixel */
         double delta = widget.getCurrentNanosPerPixel();
 
-        assertEqualsWithin(expectedRange.getStart(), tsStart, delta);
-        assertEqualsWithin(expectedRange.getEnd(), tsEnd, delta);
+        assertEqualsWithin(expectedRange.getStartTime(), tsStart, delta);
+        assertEqualsWithin(expectedRange.getEndTime(), tsEnd, delta);
     }
 
     /**

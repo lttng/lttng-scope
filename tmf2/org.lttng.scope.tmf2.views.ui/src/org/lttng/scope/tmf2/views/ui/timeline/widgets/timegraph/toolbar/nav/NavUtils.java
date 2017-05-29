@@ -11,8 +11,9 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav;
 
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Common utilities for navigation actions.
@@ -60,11 +61,11 @@ final class NavUtils {
         long newEnd = newStart + windowSpan;
 
         /* Clamp the range to the borders of the pane/trace. */
-        if (newStart < fullTimeGraphRange.getStart()) {
-            newStart = fullTimeGraphRange.getStart();
+        if (newStart < fullTimeGraphRange.getStartTime()) {
+            newStart = fullTimeGraphRange.getStartTime();
             newEnd = newStart + windowSpan;
-        } else if (newEnd > fullTimeGraphRange.getEnd()) {
-            newEnd = fullTimeGraphRange.getEnd();
+        } else if (newEnd > fullTimeGraphRange.getEndTime()) {
+            newEnd = fullTimeGraphRange.getEndTime();
             newStart = newEnd - windowSpan;
         }
 

@@ -12,9 +12,9 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 import java.util.Collections;
 import java.util.List;
 
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 
 /**

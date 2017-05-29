@@ -18,7 +18,6 @@ import java.util.concurrent.FutureTask;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -29,6 +28,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphAr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 
@@ -60,7 +60,7 @@ public class ThreadsModelArrowProviderCpus extends StateSystemModelArrowProvider
         List<List<TimeGraphArrow>> allArrows = new LinkedList<>();
         try {
             for (int threadLineQuark : threadLineQuarks) {
-                List<ITmfStateInterval> intervals = StateSystemUtils.queryHistoryRange(ss, threadLineQuark, timeRange.getStart(), timeRange.getEnd(), 1, task);
+                List<ITmfStateInterval> intervals = StateSystemUtils.queryHistoryRange(ss, threadLineQuark, timeRange.getStartTime(), timeRange.getEndTime(), 1, task);
                 if (task != null && task.isCancelled()) {
                     return TimeGraphArrowRender.EMPTY_RENDER;
                 }

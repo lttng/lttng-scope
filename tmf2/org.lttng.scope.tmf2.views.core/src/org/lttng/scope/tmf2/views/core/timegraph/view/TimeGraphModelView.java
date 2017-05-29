@@ -9,9 +9,10 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.view;
 
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Base class for time graph view objects.

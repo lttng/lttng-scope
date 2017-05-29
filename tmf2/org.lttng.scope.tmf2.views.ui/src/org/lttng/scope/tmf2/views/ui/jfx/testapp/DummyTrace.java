@@ -6,11 +6,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
+import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 public class DummyTrace extends TmfTrace {
 
@@ -21,7 +24,8 @@ public class DummyTrace extends TmfTrace {
     private static final long END_TIME   = 1332170692664579801L;
 
     public DummyTrace() {
-        setTimeRange(TimeRange.of(START_TIME, END_TIME).toTmfTimeRange());
+        TmfTimeRange tmfRange = TimeRangeUtils.toTmfTimeRange(TimeRange.of(START_TIME, END_TIME));
+        setTimeRange(tmfRange);
     }
 
     @Override

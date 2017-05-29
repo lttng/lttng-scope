@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -27,6 +26,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
@@ -49,7 +49,7 @@ class TestModelStateProvider extends TimeGraphModelStateProvider {
         int entryIndex = Integer.valueOf(treeElement.getName().substring(TestModelProvider.ENTRY_NAME_PREFIX.length()));
         long stateLength = entryIndex * DURATION_FACTOR;
 
-        List<TimeGraphStateInterval> intervals = LongStream.iterate(timeRange.getStart(), i -> i + stateLength)
+        List<TimeGraphStateInterval> intervals = LongStream.iterate(timeRange.getStartTime(), i -> i + stateLength)
                 .limit((timeRange.getDuration() / stateLength) + 1)
                 .mapToObj(startTime -> {
                     long endTime = startTime + stateLength - 1;

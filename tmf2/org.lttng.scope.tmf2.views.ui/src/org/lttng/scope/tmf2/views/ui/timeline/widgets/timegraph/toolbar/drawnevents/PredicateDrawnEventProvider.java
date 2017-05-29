@@ -23,7 +23,7 @@ import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest.ExecutionType;
 import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
@@ -34,6 +34,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 
 class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
@@ -69,7 +70,7 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
 
         List<ITmfEvent> traceEvents = new LinkedList<>();
         TmfEventRequest req = new TmfEventRequest(ITmfEvent.class,
-                timeRange.toTmfTimeRange(),
+                TimeRangeUtils.toTmfTimeRange(timeRange),
                 startIndex,
                 ITmfEventRequest.ALL_DATA,
                 ExecutionType.BACKGROUND) {

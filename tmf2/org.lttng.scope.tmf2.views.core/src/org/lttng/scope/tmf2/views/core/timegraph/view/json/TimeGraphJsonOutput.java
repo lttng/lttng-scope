@@ -2,12 +2,13 @@ package org.lttng.scope.tmf2.views.core.timegraph.view.json;
 
 import java.util.List;
 
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 public class TimeGraphJsonOutput extends TimeGraphModelView {
 

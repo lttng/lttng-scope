@@ -15,7 +15,6 @@ import java.util.stream.DoubleStream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -27,6 +26,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 
@@ -108,6 +108,6 @@ final class StubDrawnEventProviders {
     }
 
     private static long ts(TimeRange range, double ratio) {
-        return (long) (range.getDuration() * ratio + range.getStart());
+        return (long) (range.getDuration() * ratio + range.getStartTime());
     }
 }

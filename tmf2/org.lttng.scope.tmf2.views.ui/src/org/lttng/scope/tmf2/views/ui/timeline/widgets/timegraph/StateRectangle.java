@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.base.MoreObjects;
 
 import javafx.application.Platform;
@@ -73,11 +73,11 @@ public class StateRectangle extends Rectangle {
          * valid values.
          */
         TimeRange traceRange = viewer.getControl().getViewContext().getCurrentTraceFullRange();
-        long traceStart = traceRange.getStart();
+        long traceStart = traceRange.getStartTime();
         long intervalStart = interval.getStartTime();
         double xStart = viewer.timestampToPaneXPos(Math.max(traceStart, intervalStart));
 
-        long traceEnd = traceRange.getEnd();
+        long traceEnd = traceRange.getEndTime();
         long intervalEndTime = interval.getEndTime();
         double xEnd = viewer.timestampToPaneXPos(Math.min(traceEnd, intervalEndTime));
 

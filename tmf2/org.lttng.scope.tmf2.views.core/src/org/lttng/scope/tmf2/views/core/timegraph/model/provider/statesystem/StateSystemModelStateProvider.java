@@ -20,7 +20,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.MathUtils;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -32,6 +31,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
@@ -184,7 +184,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         List<TimeGraphStateInterval> intervals;
         try {
             intervals = queryHistoryRange(ss, treeElem,
-                    timeRange.getStart(), timeRange.getEnd(), resolution, task);
+                    timeRange.getStartTime(), timeRange.getEndTime(), resolution, task);
         } catch (AttributeNotFoundException | StateSystemDisposedException e) {
             intervals = Collections.emptyList();
         }

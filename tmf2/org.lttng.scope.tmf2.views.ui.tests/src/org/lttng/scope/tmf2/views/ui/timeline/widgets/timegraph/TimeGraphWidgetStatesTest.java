@@ -21,7 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.lttng.scope.tmf2.views.core.TimeRange;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * {@link TimeGraphWidget} test suite testing the correctness of the rendered

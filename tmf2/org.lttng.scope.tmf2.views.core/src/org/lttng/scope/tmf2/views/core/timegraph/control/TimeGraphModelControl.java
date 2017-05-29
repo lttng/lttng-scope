@@ -11,10 +11,11 @@ package org.lttng.scope.tmf2.views.core.timegraph.control;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
+
+import com.efficios.jabberwocky.common.TimeRange;
 
 import javafx.beans.value.ChangeListener;
 
@@ -242,13 +243,13 @@ public final class TimeGraphModelControl {
     // ------------------------------------------------------------------------
 
     private static void checkTimeRange(TimeRange range) {
-        if (range.getStart() == Long.MAX_VALUE) {
+        if (range.getStartTime() == Long.MAX_VALUE) {
             throw new IllegalArgumentException("You are trying to make me believe the range starts at " + //$NON-NLS-1$
-                    range.getStart() + ". I do not believe you."); //$NON-NLS-1$
+                    range.getStartTime() + ". I do not believe you."); //$NON-NLS-1$
         }
-        if (range.getEnd() == Long.MAX_VALUE) {
+        if (range.getEndTime() == Long.MAX_VALUE) {
             throw new IllegalArgumentException("You are trying to make me believe the range ends at " + //$NON-NLS-1$
-                    range.getEnd() + ". I do not believe you."); //$NON-NLS-1$
+                    range.getEndTime() + ". I do not believe you."); //$NON-NLS-1$
         }
     }
 
@@ -256,13 +257,13 @@ public final class TimeGraphModelControl {
         checkTimeRange(windowRange);
         TimeRange fullRange = fViewContext.getCurrentTraceFullRange();
 
-        if (windowRange.getStart() < fullRange.getStart()) {
-            throw new IllegalArgumentException("Requested window start time: " + windowRange.getStart() + //$NON-NLS-1$
-                    " is smaller than trace start time " + fullRange.getStart()); //$NON-NLS-1$
+        if (windowRange.getStartTime() < fullRange.getStartTime()) {
+            throw new IllegalArgumentException("Requested window start time: " + windowRange.getStartTime() + //$NON-NLS-1$
+                    " is smaller than trace start time " + fullRange.getStartTime()); //$NON-NLS-1$
         }
-        if (windowRange.getEnd() > fullRange.getEnd()) {
-            throw new IllegalArgumentException("Requested window end time: " + windowRange.getEnd() + //$NON-NLS-1$
-                    " is greater than trace end time " + fullRange.getEnd()); //$NON-NLS-1$
+        if (windowRange.getEndTime() > fullRange.getEndTime()) {
+            throw new IllegalArgumentException("Requested window end time: " + windowRange.getEndTime() + //$NON-NLS-1$
+                    " is greater than trace end time " + fullRange.getEndTime()); //$NON-NLS-1$
         }
     }
 
