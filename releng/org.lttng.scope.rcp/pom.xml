@@ -41,6 +41,8 @@
                 <plugin id="org.eclipse.tracecompass.ctfreader"/>
 
                 <plugin id="com.efficios.jabberwocky.core"/>
+                <plugin id="com.efficios.jabberwocky.ctf"/>
+                <plugin id="com.efficios.jabberwocky.lttng"/>
 
                 <plugin id="org.apache.commons.compress"/>
                 <plugin id="org.apache.xerces"/>

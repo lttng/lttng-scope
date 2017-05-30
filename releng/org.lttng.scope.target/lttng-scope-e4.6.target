@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="40">
+<target name="lttng-scope-e4.6" sequenceNumber="41">
 
   <locations>
     <!-- Eclipse Common Build Infrastructure (still needed?) -->
@@ -38,20 +38,19 @@
     </location>
 
     <!-- Core Java tracing libraries -->
-    <!-- Release versions -->
-    <!--
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="com.efficios.jabberwocky.lib" version="0.1.2"/>
-      <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.3"/>
-      <unit id="org.eclipse.tracecompass.ctfreader" version="0.1.2"/>
-      <repository location="https://mvn.efficios.com/p2/releases"/>
-    </location>
-    -->
-    <!-- Snapshots versions -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="com.efficios.jabberwocky.core" version="0.2.3.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.ctf" version="0.2.5.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.core" version="0.2.5.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.lttng" version="0.2.5.SNAPSHOT"/>
+
       <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.5.SNAPSHOT"/>
       <unit id="org.eclipse.tracecompass.ctfreader" version="0.0.0"/>
+
+      <!-- Release repo -->
+      <!--
+      <repository location="https://mvn.efficios.com/p2/releases"/>
+      -->
+      <!-- Snapshots repo -->
       <repository location="https://mvn.efficios.com/p2/snapshots"/>
     </location>
 
