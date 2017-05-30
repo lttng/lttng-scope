@@ -1,77 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="37">
+<target name="lttng-scope-e4.6" sequenceNumber="38">
 
   <locations>
-    <!-- Eclispe Common Build Infrastructure (still needed?) -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <!-- Eclipse Common Build Infrastructure (still needed?) -->
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/cbi/updates/license"/>
     </location>
 
     <!-- Eclipse main repository -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
+
       <unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ui.ide" version="0.0.0"/>
+
+      <!-- RCP requires Equinox and ECF (for the self-update feature) -->
+      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.ui.sdk" version="0.0.0"/>
 
       <!-- Required for UI tests (not included in RCP) -->
       <unit id="org.eclipse.ui.ide.application" version="0.0.0"/>
       <unit id="org.eclipse.core.net" version="0.0.0"/>
 
-      <!-- org.eclipse.core.resources and dependencies -->
-      <unit id="org.eclipse.core.resources" version="0.0.0"/>
       <unit id="org.eclipse.ant.core" version="0.0.0"/>
-      <unit id="org.eclipse.core.filesystem" version="0.0.0"/>
-      <unit id="org.eclipse.core.variables" version="0.0.0"/>
-
-      <!-- org.eclipse.ui.navigator and dependencies -->
-      <unit id="org.eclipse.ui.navigator" version="0.0.0"/>
-      <unit id="org.eclipse.ui.navigator.resources" version="0.0.0"/>
-      <unit id="org.eclipse.ui.views.properties.tabbed" version="0.0.0"/>
-      <unit id="org.eclipse.ui.workbench.texteditor" version="0.0.0"/>
-      <unit id="org.eclipse.ui.forms" version="0.0.0"/>
-      <unit id="org.eclipse.ltk.ui.refactoring" version="0.0.0"/>
-      <unit id="org.eclipse.compare" version="0.0.0"/>
-      <unit id="org.eclipse.compare.core" version="0.0.0"/>
-      <unit id="org.eclipse.ui.editors" version="0.0.0"/>
-      <unit id="org.eclipse.team.core" version="0.0.0"/>
-      <unit id="org.eclipse.team.ui" version="0.0.0"/>
-
-      <!-- For Properties view (also includes Outline) -->
-      <unit id="org.eclipse.ui.views" version="0.0.0"/>
-
-      <!-- org.eclipse.ui.ide and dependencies -->
-      <unit id="org.eclipse.ui.ide" version="0.0.0"/>
-      <unit id="org.eclipse.emf.common.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.emf.ecore.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.jface.text" version="0.0.0"/>
-
-      <!-- RCP requires Equinox and ECF (for the self-update feature) -->
-      <unit id="org.eclipse.equinox.concurrent" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.p2.ui" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.p2.ui.sdk" version="0.0.0"/>
-      <unit id="org.eclipse.equinox.security.ui" version="0.0.0"/>
-
-      <unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.ecf.filetransfer.httpclient4.feature.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature.feature.group" version="0.0.0"/>
-
-      <!-- Dependencies of CDT -->
-      <unit id="org.eclipse.core.filebuffers" version="0.0.0"/>
-      <unit id="org.eclipse.ltk.core.refactoring" version="0.0.0"/>
-      <unit id="org.eclipse.text" version="0.0.0"/>
 
       <repository location="http://download.eclipse.org/eclipse/updates/4.6/"/>
     </location>
 
     <!-- e(fx)clipse for JavaFX integration -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="2.5.0.201610130503"/>
       <repository location="http://download.eclipse.org/efxclipse/runtime-released/2.5.0/site/"/>
     </location>
@@ -79,7 +40,7 @@
     <!-- Core Java tracing libraries -->
     <!-- Release versions -->
     <!--
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="com.efficios.jabberwocky.lib" version="0.1.2"/>
       <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.3"/>
       <unit id="org.eclipse.tracecompass.ctfreader" version="0.1.2"/>
@@ -87,7 +48,7 @@
     </location>
     -->
     <!-- Snapshots versions -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="com.efficios.jabberwocky.lib" version="0.0.0"/>
       <unit id="ca.polymtl.dorsal.libdelorean" version="0.0.0"/>
       <unit id="org.eclipse.tracecompass.ctfreader" version="0.0.0"/>
@@ -95,14 +56,14 @@
     </location>
 
     <!-- CDT -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.cdt.core" version="0.0.0"/>
       <unit id="org.eclipse.cdt.core.native" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tools/cdt/releases/9.1/r"/>
     </location>
 
     <!-- Dependencies packaged in Orbit -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="com.google.guava" version="21.0.0.v20170206-1425"/>
       <unit id="org.apache.commons.io" version="0.0.0"/>
       <unit id="org.json" version="0.0.0"/>
@@ -115,13 +76,11 @@
       <unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
       <unit id="org.antlr.runtime.source" version="3.2.0.v201101311130"/>
 
-      <!-- Dependencies of CDT -->
-      <unit id="com.google.gson" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20170307180635/repository/"/>
     </location>
 
     <!-- Trace Compass test traces -->
-    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.tracecompass.testtraces.tracecompass-test-traces-ctf" version="1.6.0"/>
       <repository location="http://archive.eclipse.org/tracecompass/tracecompass-test-traces/repository/1.6.0"/>
     </location>
