@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.lttng.scope.tmf2.views.core.TimeRange;
@@ -23,6 +24,9 @@ import com.google.common.collect.ImmutableList;
  * @author Alexandre Montplaisir
  */
 public class TimeGraphStateRender {
+
+    /** Non-null reference to a dummy/empty render */
+    public static final TimeGraphStateRender EMPTY_RENDER = new TimeGraphStateRender(TimeRange.of(0, 0), TimeGraphTreeElement.DUMMY_ELEMENT, Collections.emptyList());
 
     private final TimeRange fTimeRange;
     private final TimeGraphTreeElement fTreeElement;

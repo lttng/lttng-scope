@@ -185,6 +185,10 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
             throw new IllegalArgumentException();
         }
 
+        if (task != null && task.isCancelled()) {
+            return TimeGraphStateRender.EMPTY_RENDER;
+        }
+
         // FIXME Add generic type?
         StateSystemTimeGraphTreeElement treeElem = (StateSystemTimeGraphTreeElement) treeElement;
 

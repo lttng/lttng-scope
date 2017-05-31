@@ -12,18 +12,12 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
 import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -31,9 +25,6 @@ import org.lttng.scope.tmf2.views.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
@@ -44,6 +35,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphA
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphSelectionLayer;
+import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphStateLayer;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -61,7 +53,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
@@ -75,8 +66,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 /**
  * Viewer for the {@link TimelineView}, encapsulating all the view's
@@ -115,10 +104,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
+
+    /*
+     * Children of the time graph pane are split into groups, so we can easily
+     * redraw or add only some of them.
+     */
+    // TODO Layer for bookmarks
     private final TimeGraphBackgroundLayer fBackgroundLayer;
+    private final TimeGraphStateLayer fStateLayer;
     private final TimeGraphArrowLayer fArrowLayer;
     private final TimeGraphDrawnEventLayer fDrawnEventLayer;
     private final TimeGraphSelectionLayer fSelectionLayer;
+    private final Group fTimeGraphLoadingOverlayLayer;
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -132,15 +129,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final ScrollPane fTreeScrollPane;
     private final Pane fTimeGraphPane;
     private final ScrollPane fTimeGraphScrollPane;
-
-    /*
-     * Children of the time graph pane are split into groups, so we can easily
-     * redraw or add only some of them.
-     */
-    private final Group fTimeGraphStatesLayer;
-    private final Group fTimeGraphTextLabelsLayer;
-    // TODO Layer for bookmarks
-    private final Group fTimeGraphLoadingOverlayLayer;
 
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
@@ -191,13 +179,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // --------------------------------------------------------------------
 
         fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
-
-        fTimeGraphStatesLayer = new Group();
-        fTimeGraphTextLabelsLayer = new Group();
         fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
 
         fTimeGraphPane = new Pane();
         fBackgroundLayer = new TimeGraphBackgroundLayer(this);
+        fStateLayer = new TimeGraphStateLayer(this);
         fArrowLayer = new TimeGraphArrowLayer(this);
         fDrawnEventLayer = new TimeGraphDrawnEventLayer(this);
         fSelectionLayer = new TimeGraphSelectionLayer(this);
@@ -207,8 +193,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * front.
          */
         fTimeGraphPane.getChildren().addAll(fBackgroundLayer,
-                fTimeGraphStatesLayer,
-                fTimeGraphTextLabelsLayer,
+                fStateLayer,
+                fStateLayer.getLabelGroup(),
                 fArrowLayer,
                 fDrawnEventLayer,
                 fSelectionLayer,
@@ -349,10 +335,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
              */
             fTreePane.getChildren().clear();
 
-            fTimeGraphStatesLayer.getChildren().clear();
-            fTimeGraphTextLabelsLayer.getChildren().clear();
-
             fBackgroundLayer.clear();
+            fStateLayer.clear();
             fArrowLayer.clear();
             fDrawnEventLayer.clear();
 
@@ -415,13 +399,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
                 /* Resize/reposition the state rectangles */
                 double factor = (newTotalWidth / oldTotalWidth);
-                getRenderedStateRectangles().forEach(rect -> {
+                fStateLayer.getRenderedStateRectangles().forEach(rect -> {
                     rect.setX(rect.getX() * factor);
                     rect.setWidth(rect.getWidth() * factor);
                 });
 
                 /* Reposition the text labels (don't stretch them!) */
-                getRenderedStateLabels().forEach(text -> {
+                fStateLayer.getRenderedStateLabels().forEach(text -> {
                     text.setX(text.getX() * factor);
                 });
 
@@ -499,7 +483,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         final long renderingStartTime = Math.max(fullTimeGraphRange.getStart(), windowRange.getStart() - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphRange.getEnd(), windowRange.getEnd() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
-        final long resolution = Math.max(1, Math.round(fNanosPerPixel.get()));
 
         /*
          * Start a new repaint, display the "loading" overlay. The next
@@ -512,46 +495,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
             protected @Nullable Void call() {
-                long start = System.nanoTime();
                 System.err.println("Starting paint task #" + taskSeqNb);
 
-                /*
-                 * The state rectangles are redrawn as soon as we move, either
-                 * horizontally or vertically.
-                 */
-
                 ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
-                ITimeGraphModelStateProvider stateProvider = modelProvider.getStateProvider();
                 TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
-                final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
 
                 if (isCancelled()) {
-                    System.err.println("task #" + taskSeqNb + " was cancelled before generating the states");
                     return null;
                 }
-
-                long afterTreeRender = System.nanoTime();
-
-                final int nbElements = allTreeElements.size();
-
-                int entriesToPrefetch = fDebugOptions.entryPadding.get();
-                int topEntry = Math.max(0,
-                        paneYPosToEntryListIndex(verticalPos.fTopPos, ENTRY_HEIGHT) - entriesToPrefetch);
-                int bottomEntry = Math.min(nbElements,
-                        paneYPosToEntryListIndex(verticalPos.fBottomPos, ENTRY_HEIGHT) + entriesToPrefetch);
-
-                System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
-
-                List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
-                        .map(treeElem -> stateProvider.getStateRender(treeElem, renderingRange, resolution, this))
-                        .collect(Collectors.toList());
-
-                if (isCancelled()) {
-                    System.err.println("task #" + taskSeqNb + " was cancelled before generating the contents");
-                    return null;
-                }
-
-                long afterStateRenders = System.nanoTime();
 
                 /* Prepare the tree part, if needed */
                 @Nullable Node treeContents;
@@ -562,60 +513,27 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                     treeContents = prepareTreeContents(treeRender, fTreePane.widthProperty());
                 }
 
-                /* We can paint the background at this stage. */
-                fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, this);
-
-                /* Prepare the time graph part */
-                Collection<StateRectangle> stateRectangles = prepareStateRectangles(stateRenders, topEntry);
-                Node statesLayerContents = prepareTimeGraphStatesContents(stateRectangles);
-                Node labelsLayerContents = prepareTimeGrahLabelsContents(stateRectangles, windowRange);
-
-                /*
-                 * Go over all state rectangles, and bring the "multi-state"
-                 * ones to the front, to be sure they show on top of the others.
-                 * Note we cannot do the forEach() as part of the stream, that
-                 * would throw a ConcurrentModificationException.
-                 */
-                ((Group) statesLayerContents).getChildren().stream()
-                        .map(node -> (StateRectangle) node)
-                        .filter(rect -> (rect.getStateInterval().isMultiState()))
-                        .collect(Collectors.toList())
-                        .forEach(Node::toFront);
-
                 if (isCancelled()) {
-                    System.err.println("task #" + taskSeqNb + " was cancelled before updating the view");
                     return null;
                 }
 
-                long afterJavaFXObjects = System.nanoTime();
-
-                StringJoiner sj = new StringJoiner(", ", "Repaint breakdown (#" + taskSeqNb + "): ", "")
-                        .add("Generating tree render=" + String.format("%,d", afterTreeRender - start) + " ns")
-                        .add("Generating state renders= " + String.format("%,d", afterStateRenders - afterTreeRender) + " ns")
-                        .add("Generating JavaFX objects=" + String.format("%,d", afterJavaFXObjects - afterStateRenders) + " ns");
-                System.err.println(sj.toString());
-
-                /* Update the view! */
+                /* Update the tree */
                 Platform.runLater(() -> {
-                    long startUI = System.nanoTime();
                     if (treeContents != null) {
                         fTreePane.getChildren().clear();
                         fTreePane.getChildren().add(treeContents);
                     }
-
-                    long afterTreeUI = System.nanoTime();
-
-                    fTimeGraphStatesLayer.getChildren().clear();
-                    fTimeGraphTextLabelsLayer.getChildren().clear();
-                    fTimeGraphStatesLayer.getChildren().add(statesLayerContents);
-                    fTimeGraphTextLabelsLayer.getChildren().add(labelsLayerContents);
-
-                    long endUI = System.nanoTime();
-                    StringJoiner sjui = new StringJoiner(", ", "UI Update (#" + taskSeqNb +"): ", "")
-                            .add("Drawing tree=" + String.format("%,d", afterTreeUI - startUI) + " ns")
-                            .add("Drawing states= " + String.format("%,d", endUI - afterTreeUI) + " ns");
-                    System.err.println(sjui.toString());
                 });
+
+                /* Paint the background. It's very quick so we can do it every time. */
+                fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, this);
+
+                /*
+                 * The state rectangles should be redrawn as soon as we move,
+                 * either horizontally or vertically.
+                 */
+                fStateLayer.setWindowRange(windowRange);
+                fStateLayer.drawContents(treeRender, renderingRange, verticalPos, this);
 
                 if (isCancelled()) {
                     return null;
@@ -719,76 +637,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return stackPane;
     }
 
-    // ------------------------------------------------------------------------
-    // Methods related to the Time Graph area
-    // ------------------------------------------------------------------------
-
-    private Collection<StateRectangle> prepareStateRectangles(
-            List<TimeGraphStateRender> stateRenders, int topEntry) {
-        /* Prepare the colored state rectangles */
-        Collection<StateRectangle> rectangles = IntStream.range(0, stateRenders.size()).parallel()
-                .mapToObj(idx -> getRectanglesForStateRender(stateRenders.get(idx), idx + topEntry))
-                .flatMap(Function.identity())
-                .collect(Collectors.toSet());
-        return rectangles;
-    }
-
-    private Stream<StateRectangle> getRectanglesForStateRender(TimeGraphStateRender stateRender, int entryIndex) {
-        return stateRender.getStateIntervals().stream()
-                .map(interval -> new StateRectangle(this, interval, entryIndex));
-    }
-
-    private static Node prepareTimeGraphStatesContents(Collection<StateRectangle> stateRectangles) {
-        Group group = new Group();
-        group.getChildren().addAll(stateRectangles);
-        return group;
-    }
-
-    private Node prepareTimeGrahLabelsContents(Collection<StateRectangle> stateRectangles,
-            TimeRange windowRange) {
-        double minX = timestampToPaneXPos(windowRange.getStart());
-
-        final String ellipsisStr = DebugOptions.ELLIPSIS_STRING;
-        final Font textFont = fDebugOptions.stateLabelFont.get();
-        final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
-        final Color textColor = Color.WHITE;
-
-        /* Requires a ~2 pixels adjustment to be centered on the states */
-        final double yOffset = ENTRY_HEIGHT / 2.0 + 2.0;
-        Collection<Node> texts = stateRectangles.stream()
-                /* Only try to annotate rectangles that are large enough */
-                .filter(stateRect -> stateRect.getWidth() > fDebugOptions.getEllipsisWidth())
-                .filter(stateRect -> stateRect.getStateInterval().getLabel() != null)
-                .map(stateRect -> {
-                    String labelText = requireNonNull(stateRect.getStateInterval().getLabel());
-                    /* A small offset looks better here */
-                    double textX = Math.max(minX, stateRect.getX()) + 4.0;
-                    double textY = stateRect.getY() + yOffset;
-
-                    double rectEndX = stateRect.getX() + stateRect.getWidth();
-                    double minWidth = rectEndX - textX;
-
-                    String ellipsedText = JfxUtils.computeClippedText(textFont,
-                            labelText,
-                            minWidth,
-                            overrunStyle,
-                            ellipsisStr);
-
-                    if (ellipsedText.equals(ellipsisStr)) {
-                        return null;
-                    }
-
-                    Text text = new Text(textX, textY, ellipsedText);
-                    text.setFont(textFont);
-                    text.setFill(textColor);
-                    return text;
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return new Group(texts);
-    }
-
     private @Nullable StateRectangle fSelectedState = null;
 
     /**
@@ -823,33 +671,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return fSelectedState;
     }
 
-
     /**
-     * Retrieve the state rectangles currently present in the scenegraph. This
-     * should include all currently visible ones, but also possibly more (due to
-     * padding, prefetching, etc.)
+     * Return all state rectangles currently present in the timegraph.
      *
-     * @return The state rectangles
+     * @return The rendered state rectangles
      */
     public Collection<StateRectangle> getRenderedStateRectangles() {
-        if (fTimeGraphStatesLayer.getChildren().isEmpty()) {
-            return Collections.EMPTY_LIST;
-        }
-        Collection<?> stateRectangles = ((Group) fTimeGraphStatesLayer.getChildren().get(0)).getChildren();
-        @SuppressWarnings("unchecked")
-        Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
-        return ret;
-    }
-
-    private Collection<Text> getRenderedStateLabels() {
-        if (fTimeGraphTextLabelsLayer.getChildren().isEmpty()) {
-            return Collections.EMPTY_LIST;
-        }
-        /* The labels are wrapped in a group */
-        Collection<?> texts = ((Group) fTimeGraphTextLabelsLayer.getChildren().get(0)).getChildren();
-        @SuppressWarnings("unchecked")
-        Collection<Text> ret = (@NonNull Collection<Text>) texts;
-        return ret;
+        return fStateLayer.getRenderedStateRectangles();
     }
 
     // ------------------------------------------------------------------------
@@ -1103,7 +931,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return new VerticalPosition(vtop, vbottom);
     }
 
-    private static int paneYPosToEntryListIndex(double yPos, double entryHeight) {
+    public static int paneYPosToEntryListIndex(double yPos, double entryHeight) {
         if (yPos < 0.0 || entryHeight < 0.0) {
             throw new IllegalArgumentException();
         }
@@ -1157,8 +985,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         return fDebugOptions;
     }
 
-    @VisibleForTesting
-    double getCurrentNanosPerPixel() {
+    public double getCurrentNanosPerPixel() {
         return fNanosPerPixel.get();
     }
 

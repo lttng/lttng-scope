@@ -9,6 +9,7 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.tree;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -32,6 +33,9 @@ import com.google.common.collect.ImmutableList;
  * @author Alexandre Montplaisir
  */
 public class TimeGraphTreeElement {
+
+    /** Non-null reference to a dummy element */
+    public static final TimeGraphTreeElement DUMMY_ELEMENT = new TimeGraphTreeElement("Dummy", Collections.emptyList()); //$NON-NLS-1$
 
     private final String fName;
     private final List<TimeGraphTreeElement> fChildElements;
