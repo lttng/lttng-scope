@@ -96,6 +96,9 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      */
     public static final double ENTRY_HEIGHT = 20;
 
+    /** Minimum allowed zoom level, in nanos per pixel */
+    private static final double ZOOM_LIMIT = 1.0;
+
     // ------------------------------------------------------------------------
     // Instance fields
     // ------------------------------------------------------------------------
@@ -792,7 +795,12 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 zoomPivot = visibleRange.getStart() + (visibleRange.getDuration() / 2);
             }
 
+            /* Prevent going closer than the zoom limit */
+            double timeGraphVisibleWidth = Math.max(1, fTimeGraphScrollPane.getViewportBounds().getWidth());
+            double minDuration = ZOOM_LIMIT * timeGraphVisibleWidth;
+
             double newDuration = visibleRange.getDuration() * (1.0 / newScaleFactor);
+            newDuration = Math.max(minDuration, newDuration);
             double durationDelta = newDuration - visibleRange.getDuration();
             double zoomPivotRatio = (double) (zoomPivot - visibleRange.getStart()) / (double) (visibleRange.getDuration());
 
@@ -805,15 +813,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             long traceEnd = fullRange.getEnd();
             newStart = Math.max(newStart, traceStart);
             newEnd = Math.min(newEnd, traceEnd);
-
-            /* Keep at least 1 ns width */
-            if (newStart == newEnd) {
-                if (newEnd == traceEnd) {
-                    newStart--;
-                } else {
-                    newEnd++;
-                }
-            }
 
             control.updateVisibleTimeRange(TimeRange.of(newStart, newEnd), true);
         }
