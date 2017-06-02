@@ -46,8 +46,8 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
 
     private final Map<ITimeGraphDrawnEventProvider, Group> fEventProviders = new HashMap<>();
 
-    public TimeGraphDrawnEventLayer(TimeGraphWidget widget) {
-        super(widget);
+    public TimeGraphDrawnEventLayer(TimeGraphWidget widget, Group parentGroup) {
+        super(widget, parentGroup);
 
         ObservableSet<ITimeGraphDrawnEventProvider> providers = TimeGraphDrawnEventProviderManager.instance().getRegisteredProviders();
         /* Populate with the initial values */
@@ -75,13 +75,13 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
         Group oldGroup = fEventProviders.put(provider, newGroup);
         if (oldGroup == null) {
             Platform.runLater(() -> {
-                getChildren().add(newGroup);
+                getParentGroup().getChildren().add(newGroup);
             });
         } else {
             /* Remove the old group in case there was already one. */
             Platform.runLater(() -> {
-                getChildren().remove(oldGroup);
-                getChildren().add(newGroup);
+                getParentGroup().getChildren().remove(oldGroup);
+                getParentGroup().getChildren().add(newGroup);
             });
         }
 
@@ -113,7 +113,7 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
         Group group = fEventProviders.remove(provider);
         if (group != null) {
             Platform.runLater(() -> {
-                getChildren().remove(group);
+                getParentGroup().getChildren().remove(group);
             });
         }
         /*

@@ -63,9 +63,11 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
      *
      * @param widget
      *            Time graph widget to which this layer belongs
+     * @param parentGroup
+     *            The group to which this layer should add its children
      */
-    public TimeGraphStateLayer(TimeGraphWidget widget) {
-        super(widget);
+    public TimeGraphStateLayer(TimeGraphWidget widget, Group parentGroup) {
+        super(widget, parentGroup);
 
         fStateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
         /*
@@ -138,10 +140,10 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
                 .forEach(Node::toFront);
 
         Platform.runLater(() -> {
-            getChildren().clear();
+            getParentGroup().getChildren().clear();
             getLabelGroup().getChildren().clear();
 
-            getChildren().add(statesLayerContents);
+            getParentGroup().getChildren().add(statesLayerContents);
             getLabelGroup().getChildren().add(labelsLayerContents);
         });
     }
@@ -149,8 +151,8 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
     @Override
     public void clear() {
         JfxUtils.runOnMainThread(() -> {
-            getChildren().clear();
-            fLabelGroup.getChildren().clear();
+            getParentGroup().getChildren().clear();
+            getLabelGroup().getChildren().clear();
         });
     }
 
@@ -229,10 +231,10 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
      * @return The state rectangles
      */
     public Collection<StateRectangle> getRenderedStateRectangles() {
-        if (getChildren().isEmpty()) {
+        if (getParentGroup().getChildren().isEmpty()) {
             return Collections.EMPTY_LIST;
         }
-        Collection<?> stateRectangles = ((Group) getChildren().get(0)).getChildren();
+        Collection<?> stateRectangles = ((Group) getParentGroup().getChildren().get(0)).getChildren();
         @SuppressWarnings("unchecked")
         Collection<StateRectangle> ret = (@NonNull Collection<StateRectangle>) stateRectangles;
         return ret;

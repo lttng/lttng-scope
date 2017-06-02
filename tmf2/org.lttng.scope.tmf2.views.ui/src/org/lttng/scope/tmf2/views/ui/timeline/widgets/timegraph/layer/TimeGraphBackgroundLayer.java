@@ -21,6 +21,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
 /**
@@ -36,9 +37,11 @@ public class TimeGraphBackgroundLayer extends TimeGraphLayer {
      *
      * @param widget
      *            Main widget which this control supports
+     * @param parentGroup
+     *            The group to which this layer should add its children
      */
-    public TimeGraphBackgroundLayer(TimeGraphWidget widget) {
-        super(widget);
+    public TimeGraphBackgroundLayer(TimeGraphWidget widget, Group parentGroup) {
+        super(widget, parentGroup);
     }
 
     @Override
@@ -77,14 +80,14 @@ public class TimeGraphBackgroundLayer extends TimeGraphLayer {
         }
 
         Platform.runLater(() -> {
-            getChildren().clear();
-            getChildren().addAll(lines);
+            getParentGroup().getChildren().clear();
+            getParentGroup().getChildren().addAll(lines);
         });
     }
 
     @Override
     public void clear() {
-        JfxUtils.runOnMainThread(() -> getChildren().clear());
+        JfxUtils.runOnMainThread(() -> getParentGroup().getChildren().clear());
     }
 
 }

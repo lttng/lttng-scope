@@ -118,7 +118,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final TimeGraphArrowLayer fArrowLayer;
     private final TimeGraphDrawnEventLayer fDrawnEventLayer;
     private final TimeGraphSelectionLayer fSelectionLayer;
-    private final Group fTimeGraphLoadingOverlayLayer;
+    private final Group fTimeGraphLoadingOverlayGroup;
 
     private final LatestTaskExecutor fTaskExecutor = new LatestTaskExecutor();
 
@@ -182,26 +182,26 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // --------------------------------------------------------------------
 
         fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
-        fTimeGraphLoadingOverlayLayer = new Group(fTimeGraphLoadingOverlay);
+        fTimeGraphLoadingOverlayGroup = new Group(fTimeGraphLoadingOverlay);
 
         fTimeGraphPane = new Pane();
-        fBackgroundLayer = new TimeGraphBackgroundLayer(this);
-        fStateLayer = new TimeGraphStateLayer(this);
-        fArrowLayer = new TimeGraphArrowLayer(this);
-        fDrawnEventLayer = new TimeGraphDrawnEventLayer(this);
-        fSelectionLayer = new TimeGraphSelectionLayer(this);
+        fBackgroundLayer = new TimeGraphBackgroundLayer(this, new Group());
+        fStateLayer = new TimeGraphStateLayer(this, new Group());
+        fArrowLayer = new TimeGraphArrowLayer(this, new Group());
+        fDrawnEventLayer = new TimeGraphDrawnEventLayer(this, new Group());
+        fSelectionLayer = new TimeGraphSelectionLayer(this, new Group());
 
         /*
          * The order of the layers is important here, it will go from back to
          * front.
          */
-        fTimeGraphPane.getChildren().addAll(fBackgroundLayer,
-                fStateLayer,
+        fTimeGraphPane.getChildren().addAll(fBackgroundLayer.getParentGroup(),
+                fStateLayer.getParentGroup(),
                 fStateLayer.getLabelGroup(),
-                fArrowLayer,
-                fDrawnEventLayer,
-                fSelectionLayer,
-                fTimeGraphLoadingOverlayLayer);
+                fArrowLayer.getParentGroup(),
+                fDrawnEventLayer.getParentGroup(),
+                fSelectionLayer.getParentGroup(),
+                fTimeGraphLoadingOverlayGroup);
 
         fTimeGraphPane.setStyle(BACKGROUND_STYLE);
 

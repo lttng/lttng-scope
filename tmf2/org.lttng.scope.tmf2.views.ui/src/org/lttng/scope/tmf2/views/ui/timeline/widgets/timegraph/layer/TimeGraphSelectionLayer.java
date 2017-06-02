@@ -23,6 +23,7 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -66,9 +67,11 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
      *
      * @param widget
      *            The corresponding time graph widget
+     * @param parentGroup
+     *            The group to which this layer should add its children
      */
-    public TimeGraphSelectionLayer(TimeGraphWidget widget) {
-        super(widget);
+    public TimeGraphSelectionLayer(TimeGraphWidget widget, Group parentGroup) {
+        super(widget, parentGroup);
 
         final Pane timeGraphPane = getWidget().getTimeGraphPane();
 
@@ -91,7 +94,7 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
          */
         fSelectionRect.setVisible(true);
         fOngoingSelectionRect.setVisible(false);
-        getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
+        parentGroup.getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
 
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);

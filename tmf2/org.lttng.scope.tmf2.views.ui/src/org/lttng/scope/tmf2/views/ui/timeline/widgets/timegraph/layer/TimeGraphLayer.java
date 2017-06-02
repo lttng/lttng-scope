@@ -24,18 +24,22 @@ import javafx.scene.Group;
  *
  * @author Alexandre Montplaisir
  */
-public abstract class TimeGraphLayer extends Group {
+public abstract class TimeGraphLayer {
 
     private final TimeGraphWidget fWidget;
+    private final Group fParentGroup;
 
     /**
      * Constructor
      *
      * @param widget
      *            The widget to which this layer belongs
+     * @param parentGroup
+     *            The group to which this layer should add its children
      */
-    public TimeGraphLayer(TimeGraphWidget widget) {
+    public TimeGraphLayer(TimeGraphWidget widget, Group parentGroup) {
         fWidget = widget;
+        fParentGroup = parentGroup;
     }
 
     /**
@@ -45,6 +49,16 @@ public abstract class TimeGraphLayer extends Group {
      */
     protected TimeGraphWidget getWidget() {
         return fWidget;
+    }
+
+    /**
+     * Get this layer's parent group, in which all its generated children should
+     * be added.
+     *
+     * @return The parent group
+     */
+    public Group getParentGroup() {
+        return fParentGroup;
     }
 
     /**

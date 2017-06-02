@@ -38,8 +38,8 @@ public class TimeGraphArrowLayer extends TimeGraphLayer {
 
     private final Map<ITimeGraphModelArrowProvider, ArrowConfig> fArrowProvidersConfig;
 
-    public TimeGraphArrowLayer(TimeGraphWidget widget) {
-        super(widget);
+    public TimeGraphArrowLayer(TimeGraphWidget widget, Group parentGroup) {
+        super(widget, parentGroup);
 
         Collection<ITimeGraphModelArrowProvider> arrowProviders =
                 widget.getControl().getModelRenderProvider().getArrowProviders();
@@ -56,7 +56,7 @@ public class TimeGraphArrowLayer extends TimeGraphLayer {
 
         fArrowProvidersConfig.values().stream()
                 .map(ArrowConfig::getGroup)
-                .forEach(getChildren()::add);
+                .forEach(parentGroup.getChildren()::add);
 
         /*
          * Add listeners to the registered arrow providers. If providers become
