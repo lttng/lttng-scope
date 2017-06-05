@@ -89,7 +89,7 @@ public class TimelineManager {
                     .map(w -> w.getOngoingSelectionRectangle())
                     .filter(Objects::nonNull).map(r -> Objects.requireNonNull(r))
                     .forEach(rect -> {
-                        rect.xProperty().bindBidirectional(fOngoingSelectionX);
+                        rect.layoutXProperty().bindBidirectional(fOngoingSelectionX);
                         rect.widthProperty().bindBidirectional(fOngoingSelectionWidth);
                         rect.visibleProperty().bindBidirectional(fOngoingSelectionVisible);
                     });

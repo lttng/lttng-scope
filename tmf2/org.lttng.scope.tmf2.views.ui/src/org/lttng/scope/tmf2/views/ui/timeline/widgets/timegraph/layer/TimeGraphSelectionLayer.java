@@ -83,6 +83,13 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
             rect.setStrokeLineCap(StrokeLineCap.ROUND);
             rect.setFill(SELECTION_FILL_COLOR);
 
+            /*
+             * We keep the 'x' property at 0, and we'll use 'layoutX' to set the
+             * start position of the rectangles.
+             *
+             * See https://github.com/lttng/lttng-scope/issues/25
+             */
+            rect.xProperty().bind(JfxUtils.ZERO_PROPERTY);
             rect.yProperty().bind(JfxUtils.ZERO_PROPERTY);
             rect.heightProperty().bind(timeGraphPane.heightProperty());
         });
@@ -94,7 +101,7 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
          */
         fSelectionRect.setVisible(true);
         fOngoingSelectionRect.setVisible(false);
-        parentGroup.getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
+        getParentGroup().getChildren().addAll(fSelectionRect, fOngoingSelectionRect);
 
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_PRESSED, fSelectionCtx.fMousePressedEventHandler);
         timeGraphPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, fSelectionCtx.fMouseDraggedEventHandler);
@@ -145,7 +152,7 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
         double xEnd = getWidget().timestampToPaneXPos(timeRange.getEnd());
         double xWidth = xEnd - xStart;
 
-        fSelectionRect.setX(xStart);
+        fSelectionRect.setLayoutX(xStart);
         fSelectionRect.setWidth(xWidth);
 
         fSelectionRect.setVisible(true);
@@ -164,6 +171,7 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
             if (MOUSE_EVENT_IGNORED.test(e)) {
                 return;
             }
+            e.consume();
 
             if (fOngoingSelection) {
                 return;
@@ -174,12 +182,9 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
 
             fMouseOriginX = e.getX();
 
-            fOngoingSelectionRect.setX(fMouseOriginX);
+            fOngoingSelectionRect.setLayoutX(fMouseOriginX);
             fOngoingSelectionRect.setWidth(0);
-
             fOngoingSelectionRect.setVisible(true);
-
-            e.consume();
 
             fOngoingSelection = true;
         };
@@ -188,32 +193,31 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
             if (MOUSE_EVENT_IGNORED.test(e)) {
                 return;
             }
+            e.consume();
 
             double newX = e.getX();
             double offsetX = newX - fMouseOriginX;
 
             if (offsetX > 0) {
-                fOngoingSelectionRect.setX(fMouseOriginX);
+                fOngoingSelectionRect.setLayoutX(fMouseOriginX);
                 fOngoingSelectionRect.setWidth(offsetX);
             } else {
-                fOngoingSelectionRect.setX(newX);
+                fOngoingSelectionRect.setLayoutX(newX);
                 fOngoingSelectionRect.setWidth(-offsetX);
             }
 
-            e.consume();
         };
 
         public final EventHandler<MouseEvent> fMouseReleasedEventHandler = e -> {
             if (MOUSE_EVENT_IGNORED.test(e)) {
                 return;
             }
+            e.consume();
 
             fOngoingSelectionRect.setVisible(false);
 
-            e.consume();
-
             /* Send a time range selection signal for the currently selected time range */
-            double startX = Math.max(0, fOngoingSelectionRect.getX());
+            double startX = Math.max(0, fOngoingSelectionRect.getLayoutX());
             // FIXME Possible glitch when selecting backwards outside of the window
             double endX = Math.min(getWidget().getTimeGraphPane().getWidth(), startX + fOngoingSelectionRect.getWidth());
             long tsStart = getWidget().paneXPosToTimestamp(startX);
