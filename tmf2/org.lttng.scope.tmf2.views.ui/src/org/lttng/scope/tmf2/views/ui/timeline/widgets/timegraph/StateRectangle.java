@@ -21,6 +21,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
 import com.google.common.base.MoreObjects;
@@ -85,7 +86,8 @@ public class StateRectangle extends Rectangle {
         double height = getHeightFromThickness(interval.getLineThickness().get());
         double y = computeY(height);
 
-        setX(xStart);
+        xProperty().bind(JfxUtils.ZERO_PROPERTY);
+        setLayoutX(xStart);
         setY(y);
         setWidth(width);
         setHeight(height);
@@ -205,6 +207,7 @@ public class StateRectangle extends Rectangle {
         Point2D position;
         if (beginning) {
             /* Align to the bottom-left of the rectangle, left-aligned. */
+            /* Yes, it needs to be getX() here (0), not getLayoutX(). */
             position = this.localToScreen(getX(), getY() + getHeight());
         } else {
             /* Align to the bottom-right of the rectangle, right-aligned */

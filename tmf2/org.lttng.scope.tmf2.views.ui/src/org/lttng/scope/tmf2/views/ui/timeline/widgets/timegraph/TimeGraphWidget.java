@@ -403,7 +403,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 /* Resize/reposition the state rectangles */
                 double factor = (newTotalWidth / oldTotalWidth);
                 fStateLayer.getRenderedStateRectangles().forEach(rect -> {
-                    rect.setX(rect.getX() * factor);
+                    rect.setLayoutX(rect.getLayoutX() * factor);
                     rect.setWidth(rect.getWidth() * factor);
                 });
 
