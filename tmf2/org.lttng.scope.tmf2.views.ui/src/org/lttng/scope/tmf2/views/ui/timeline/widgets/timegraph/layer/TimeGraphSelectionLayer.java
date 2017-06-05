@@ -75,12 +75,12 @@ public class TimeGraphSelectionLayer extends TimeGraphLayer {
 
         final Pane timeGraphPane = getWidget().getTimeGraphPane();
 
+        fSelectionRect.setStroke(SELECTION_STROKE_COLOR);
+        fSelectionRect.setStrokeWidth(SELECTION_STROKE_WIDTH);
+        fSelectionRect.setStrokeLineCap(StrokeLineCap.ROUND);
+
         Stream.of(fSelectionRect, fOngoingSelectionRect).forEach(rect -> {
             rect.setMouseTransparent(true);
-
-            rect.setStroke(SELECTION_STROKE_COLOR);
-            rect.setStrokeWidth(SELECTION_STROKE_WIDTH);
-            rect.setStrokeLineCap(StrokeLineCap.ROUND);
             rect.setFill(SELECTION_FILL_COLOR);
 
             /*
