@@ -19,6 +19,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGrap
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import javafx.beans.property.ObjectProperty;
+
 /**
  * Base interface for time graph model providers.
  *
@@ -97,6 +99,21 @@ public interface ITimeGraphModelProvider {
      *            The source trace
      */
     void setTrace(@Nullable ITmfTrace trace);
+
+
+    /**
+     * Get the trace for which this model provider fetches its information.
+     *
+     * @return The current trace
+     */
+    @Nullable ITmfTrace getTrace();
+
+    /**
+     * The property representing the target trace of this model provider.
+     *
+     * @return The trace property
+     */
+    ObjectProperty<@Nullable ITmfTrace> traceProperty();
 
     // ------------------------------------------------------------------------
     // Render providers

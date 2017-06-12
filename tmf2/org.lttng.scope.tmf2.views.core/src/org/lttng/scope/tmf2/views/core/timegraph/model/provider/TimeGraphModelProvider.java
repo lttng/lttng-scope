@@ -107,21 +107,13 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         fTraceProperty.set(trace);
     }
 
-    /**
-     * Get the trace for which this model provider fetches its information.
-     *
-     * @return The current trace
-     */
-    protected final @Nullable ITmfTrace getTrace() {
+    @Override
+    public final @Nullable ITmfTrace getTrace() {
         return fTraceProperty.get();
     }
 
-    /**
-     * The property representing the target trace of this model provider.
-     *
-     * @return The trace property
-     */
-    protected final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
+    @Override
+    public final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
         return fTraceProperty;
     }
 
