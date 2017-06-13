@@ -180,16 +180,17 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
 
         ITmfStateSystem ss = fStateSystem;
-        if (ss == null) {
-            /* Has been called with an invalid trace/treeElement */
-            throw new IllegalArgumentException();
-        }
+        /*
+         * Sometimes ss is null with uninitialized or empty views, just keep the model
+         * empty.
+         */
+        if (ss == null
+                || (task != null && task.isCancelled())
+                /* "Title" entries should be ignored */
+                || !(treeElement instanceof StateSystemTimeGraphTreeElement)) {
 
-        if (task != null && task.isCancelled()) {
             return TimeGraphStateRender.EMPTY_RENDER;
         }
-
-        // FIXME Add generic type?
         StateSystemTimeGraphTreeElement treeElem = (StateSystemTimeGraphTreeElement) treeElement;
 
         /* Prepare the state intervals */

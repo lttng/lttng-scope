@@ -9,13 +9,12 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render.tree;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
+import org.lttng.scope.common.core.StreamUtils.StreamFlattener;
 
 /**
  * Render of a tree of the timegraph. Contains the tree elements that compose
@@ -38,22 +37,31 @@ public class TimeGraphTreeRender {
      * A static reference to an empty render, which can be used to represent an
      * uninitialized state for example (by comparing with ==).
      */
-    public static final TimeGraphTreeRender EMPTY_RENDER = new TimeGraphTreeRender(Collections.emptyList());
+    public static final TimeGraphTreeRender EMPTY_RENDER = new TimeGraphTreeRender(TimeGraphTreeElement.DUMMY_ELEMENT);
 
-    private final List<TimeGraphTreeElement> fTreeElements;
+    private final TimeGraphTreeElement fRootElement;
 
     /**
      * Constructor
      *
-     * @param elements
-     *            The elements that are part of this tree render
+     * @param rootElement
+     *            The root element of the tree
      */
-    public TimeGraphTreeRender(List<TimeGraphTreeElement> elements) {
-        fTreeElements = ImmutableList.copyOf(elements);
+    public TimeGraphTreeRender(TimeGraphTreeElement rootElement) {
+        fRootElement = rootElement;
     }
 
     /**
-     * Get a list of all the tree elements in this render.
+     * Return the root element of this tree.
+     *
+     * @return The root element
+     */
+    public TimeGraphTreeElement getRootElement() {
+        return fRootElement;
+    }
+
+    /**
+     * Get a flattened view of all the tree elements in this render.
      *
      * This should also contains all the child elements that are also contained
      * in each element's {@link TimeGraphTreeElement#getChildElements()}. It can
@@ -62,12 +70,13 @@ public class TimeGraphTreeRender {
      * @return A list of all the tree elements
      */
     public List<TimeGraphTreeElement> getAllTreeElements() {
-        return fTreeElements;
+        StreamFlattener<TimeGraphTreeElement> flattener = new StreamFlattener<>(i -> i.getChildElements().stream());
+        return flattener.flatten(getRootElement()).collect(Collectors.toList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fTreeElements);
+        return Objects.hash(fRootElement);
     }
 
     @Override
@@ -82,7 +91,7 @@ public class TimeGraphTreeRender {
             return false;
         }
         TimeGraphTreeRender other = (TimeGraphTreeRender) obj;
-        return (Objects.equals(fTreeElements, other.fTreeElements));
+        return (Objects.equals(fRootElement, other.fRootElement));
     }
 
 }

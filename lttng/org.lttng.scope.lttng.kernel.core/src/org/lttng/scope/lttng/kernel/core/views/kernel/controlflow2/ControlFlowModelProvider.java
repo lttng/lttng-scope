@@ -149,7 +149,8 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
         }
 
         List<TimeGraphTreeElement> treeElemsList = treeElems.collect(Collectors.toList());
-        return new TimeGraphTreeRender(treeElemsList);
+        TimeGraphTreeElement rootElement = new TimeGraphTreeElement(treeContext.traceName, treeElemsList);
+        return new TimeGraphTreeRender(rootElement);
     };
 
     /**

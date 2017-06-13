@@ -12,12 +12,9 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -27,7 +24,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
-import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
@@ -42,17 +38,13 @@ import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
@@ -61,10 +53,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -128,8 +117,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private final ToolBar fToolBar;
     private final SplitPane fSplitPane;
 
-    private final Pane fTreePane;
-    private final ScrollPane fTreeScrollPane;
+    private final TimeGraphWidgetTreeArea fTreeArea;
+
     private final Pane fTimeGraphPane;
     private final ScrollPane fTimeGraphScrollPane;
 
@@ -168,14 +157,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // Prepare the tree part's scene graph
         // --------------------------------------------------------------------
 
-        fTreePane = new Pane();
-
-        fTreeScrollPane = new ScrollPane(fTreePane);
-        /* We only show the time graph's vertical scrollbar */
-        fTreeScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-        fTreeScrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
-
-        fTreePane.prefWidthProperty().bind(fTreeScrollPane.widthProperty());
+        fTreeArea = new TimeGraphWidgetTreeArea(ENTRY_HEIGHT, getControl().getModelRenderProvider().traceProperty());
 
         // --------------------------------------------------------------------
         // Prepare the time graph's part scene graph
@@ -216,9 +198,22 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * Ensure the time graph pane is always exactly the same vertical size
          * as the tree pane, so they remain aligned.
          */
-        fTimeGraphPane.minHeightProperty().bind(fTreePane.heightProperty());
-        fTimeGraphPane.prefHeightProperty().bind(fTreePane.heightProperty());
-        fTimeGraphPane.maxHeightProperty().bind(fTreePane.heightProperty());
+
+        fTimeGraphPane.minHeightProperty().bind(fTreeArea.currentHeightProperty());
+        fTimeGraphPane.prefHeightProperty().bind(fTreeArea.currentHeightProperty());
+        fTimeGraphPane.maxHeightProperty().bind(fTreeArea.currentHeightProperty());
+
+        /*
+         * Setup clipping on the timegraph pane, meaning its children outside of its
+         * actual boundary should not be rendered. For example, when the tree gets
+         * collapsed, data for hidden entries should be hidden too.
+         */
+        Rectangle clipRect = new Rectangle();
+        clipRect.setX(0);
+        clipRect.setY(0);
+        clipRect.widthProperty().bind(fTimeGraphPane.widthProperty());
+        clipRect.heightProperty().bind(fTimeGraphPane.heightProperty());
+        fTimeGraphPane.setClip(clipRect);
 
         /*
          * Set the loading overlay's size to always follow the size of the pane.
@@ -260,7 +255,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         });
 
         /* Synchronize the two scrollpanes' vertical scroll bars together */
-        fTreeScrollPane.vvalueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
+        fTreeArea.getVerticalScrollBar().valueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
 
         // --------------------------------------------------------------------
         // Prepare the top-level area
@@ -268,7 +263,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
         fToolBar = new ViewerToolBar(this);
 
-        fSplitPane = new SplitPane(fTreeScrollPane, fTimeGraphScrollPane);
+        fSplitPane = new SplitPane(fTreeArea, fTimeGraphScrollPane);
         fSplitPane.setOrientation(Orientation.HORIZONTAL);
 
         fBasePane = new BorderPane();
@@ -336,7 +331,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
              * Clear the generated children of the various groups so they go
              * back to their initial (post-constructor) state.
              */
-            fTreePane.getChildren().clear();
+            fTreeArea.clear();
 
             fBackgroundLayer.clear();
             fStateLayer.clear();
@@ -508,25 +503,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
                 }
 
                 /* Prepare the tree part, if needed */
-                @Nullable Node treeContents;
-                if (treeRender.equals(fLatestTreeRender)) {
-                    treeContents = null;
-                } else {
+                if (!treeRender.equals(fLatestTreeRender)) {
                     fLatestTreeRender = treeRender;
-                    treeContents = prepareTreeContents(treeRender, fTreePane.widthProperty());
+                    fTreeArea.updateTreeContents(treeRender);
                 }
 
                 if (isCancelled()) {
                     return null;
                 }
-
-                /* Update the tree */
-                Platform.runLater(() -> {
-                    if (treeContents != null) {
-                        fTreePane.getChildren().clear();
-                        fTreePane.getChildren().add(treeContents);
-                    }
-                });
 
                 /* Paint the background. It's very quick so we can do it every time. */
                 fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, this);
@@ -591,53 +575,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     private void redrawSelection() {
         TimeRange selectionRange = getViewContext().getCurrentSelectionTimeRange();
         drawSelection(selectionRange);
-    }
-
-    // ------------------------------------------------------------------------
-    // Methods related to the Tree area
-    // ------------------------------------------------------------------------
-
-    private static Node prepareTreeContents(TimeGraphTreeRender treeRender, ReadOnlyDoubleProperty widthProperty) {
-        /* Prepare the tree element objects */
-        List<Label> treeElements = treeRender.getAllTreeElements().stream()
-                // TODO Put as a real tree. TreeView ?
-                .map(elem -> new Label(elem.getName()))
-                .peek(label -> {
-                    label.setPrefHeight(ENTRY_HEIGHT);
-                    label.setPadding(new Insets(0, LABEL_SIDE_MARGIN, 0, LABEL_SIDE_MARGIN));
-                    /*
-                     * Re-set the solid background for the labels, so we do not
-                     * see the background lines through.
-                     */
-                    label.setStyle(BACKGROUND_STYLE);
-                })
-                .collect(Collectors.toList());
-
-        VBox treeElemsBox = new VBox(); // Change to TreeView eventually ?
-        treeElemsBox.getChildren().addAll(treeElements);
-
-        /* Prepare the background layer with the horizontal alignment lines */
-        List<Line> lines = DoubleStream.iterate((ENTRY_HEIGHT / 2), y -> y + ENTRY_HEIGHT)
-                .limit(treeElements.size())
-                .mapToObj(y -> {
-                    Line line = new Line();
-                    line.startXProperty().bind(JfxUtils.ZERO_PROPERTY);
-                    line.endXProperty().bind(widthProperty);
-                    line.setStartY(y);
-                    line.setEndY(y);
-
-                    line.setStroke(BACKGROUD_LINES_COLOR);
-                    line.setStrokeWidth(1.0);
-                    return line;
-                })
-                .collect(Collectors.toList());
-        Pane background = new Pane();
-        background.getChildren().addAll(lines);
-
-        /* Put the background layer and the Tree View into their containers */
-        StackPane stackPane = new StackPane(background, treeElemsBox);
-        stackPane.setStyle(BACKGROUND_STYLE);
-        return stackPane;
     }
 
     private @Nullable StateRectangle fSelectedState = null;
@@ -919,10 +856,10 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         double vvalue = fTimeGraphScrollPane.getVvalue();
 
         /* Get the Y position of the top/bottom edges of the pane */
-        double vmin = fTreeScrollPane.getVmin();
-        double vmax = fTreeScrollPane.getVmax();
-        double contentHeight = fTreePane.getLayoutBounds().getHeight();
-        double viewportHeight = fTreeScrollPane.getViewportBounds().getHeight();
+        double vmin = fTimeGraphScrollPane.getVmin();
+        double vmax = fTimeGraphScrollPane.getVmax();
+        double contentHeight = fTimeGraphPane.getLayoutBounds().getHeight();
+        double viewportHeight = fTimeGraphScrollPane.getViewportBounds().getHeight();
 
         double vtop = Math.max(0, contentHeight - viewportHeight) * (vvalue - vmin) / (vmax - vmin);
         double vbottom = vtop + viewportHeight;

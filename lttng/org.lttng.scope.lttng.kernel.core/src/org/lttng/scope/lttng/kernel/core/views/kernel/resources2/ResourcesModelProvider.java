@@ -85,7 +85,8 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
                 .sorted(Comparator.comparingInt(ResourcesTreeElement::getCpu))
                 .collect(Collectors.toList());
 
-        return new TimeGraphTreeRender(treeElems);
+        TimeGraphTreeElement rootElement = new TimeGraphTreeElement(treeContext.traceName, treeElems);
+        return new TimeGraphTreeRender(rootElement);
     };
 
     /**

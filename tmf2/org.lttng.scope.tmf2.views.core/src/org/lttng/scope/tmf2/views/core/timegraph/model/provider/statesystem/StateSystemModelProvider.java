@@ -43,6 +43,8 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
      */
     protected static final class TreeRenderContext {
 
+        /** Trace name */
+        public final String traceName;
         /** State system */
         public final ITmfStateSystem ss;
         /** Sorting mode */
@@ -64,10 +66,12 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
          * @param fullQueryAtRangeStart
          *            Full query at the start of the time range.
          */
-        public TreeRenderContext(ITmfStateSystem ss,
+        public TreeRenderContext(String traceName,
+                ITmfStateSystem ss,
                 SortingMode sortingMode,
                 Set<FilterMode> filterModes,
                 List<ITmfStateInterval> fullQueryAtRangeStart) {
+            this.traceName = traceName;
             this.ss = ss;
             this.sortingMode = sortingMode;
             this.filterModes = filterModes;
@@ -181,7 +185,11 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
             return TimeGraphTreeRender.EMPTY_RENDER;
         }
 
-        TreeRenderContext treeContext = new TreeRenderContext(ss,
+        ITmfTrace trace = getTrace();
+        String traceName = (trace == null ? "" : trace.getName()); //$NON-NLS-1$
+
+        TreeRenderContext treeContext = new TreeRenderContext(traceName,
+                ss,
                 getCurrentSortingMode(),
                 getActiveFilterModes(),
                 fullStateAtStart);

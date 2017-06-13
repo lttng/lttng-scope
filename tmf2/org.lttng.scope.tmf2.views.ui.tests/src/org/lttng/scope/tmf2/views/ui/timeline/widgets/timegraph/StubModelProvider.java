@@ -32,7 +32,8 @@ class StubModelProvider extends TimeGraphModelProvider {
         List<TimeGraphTreeElement> treeElements = IntStream.range(1, NB_ENTRIES)
             .mapToObj(i -> new TimeGraphTreeElement(ENTRY_NAME_PREFIX + i, Collections.emptyList()))
             .collect(Collectors.toList());
-        TREE_RENDER = new TimeGraphTreeRender(treeElements);
+        TimeGraphTreeElement rootElement = new TimeGraphTreeElement("Dummy trace", treeElements);
+        TREE_RENDER =  new TimeGraphTreeRender(rootElement);
     }
 
     protected StubModelProvider() {
