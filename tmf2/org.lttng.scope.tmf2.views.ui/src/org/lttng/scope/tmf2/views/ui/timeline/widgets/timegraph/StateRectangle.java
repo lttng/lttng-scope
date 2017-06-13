@@ -21,7 +21,6 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
-import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
 import com.google.common.base.MoreObjects;
@@ -86,7 +85,7 @@ public class StateRectangle extends Rectangle {
         double height = getHeightFromThickness(interval.getLineThickness().get());
         double y = computeY(height);
 
-        xProperty().bind(JfxUtils.ZERO_PROPERTY);
+        setX(0);
         setLayoutX(xStart);
         setY(y);
         setWidth(width);
