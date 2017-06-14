@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeCpuElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -75,14 +76,14 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
                     if (cpu == null) {
                         return null;
                     }
-                    return new ResourcesTreeElement(cpu, Collections.emptyList(), baseQuark);
+                    return new ResourcesTreeCpuElement(cpu, Collections.emptyList(), baseQuark);
                 })
                 .filter(Objects::nonNull)
                 /*
                  * Sort entries according to their CPU number (not just an
                  * alphabetical sort!)
                  */
-                .sorted(Comparator.comparingInt(ResourcesTreeElement::getCpu))
+                .sorted(Comparator.comparingInt(ResourcesTreeCpuElement::getCpu))
                 .collect(Collectors.toList());
 
         TimeGraphTreeElement rootElement = new TimeGraphTreeElement(treeContext.traceName, treeElems);

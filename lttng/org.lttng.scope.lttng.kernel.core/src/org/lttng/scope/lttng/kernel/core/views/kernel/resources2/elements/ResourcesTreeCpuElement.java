@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2;
+package org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -21,12 +21,9 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 /**
  * Element of the Resources time graph which represents a CPU.
  *
- * TODO This class only represents "CPU" elements, which are the only one in
- * this timegraph for now. But there might be other ones eventually (IRQs, etc.)
- *
  * @author Alexandre Montplaisir
  */
-public class ResourcesTreeElement extends StateSystemTimeGraphTreeElement {
+public class ResourcesTreeCpuElement extends StateSystemTimeGraphTreeElement {
 
     private final int fCpu;
 
@@ -41,7 +38,7 @@ public class ResourcesTreeElement extends StateSystemTimeGraphTreeElement {
      *            The corresponding quark (under the "CPUs" sub-tree) in the
      *            state system.
      */
-    public ResourcesTreeElement(int cpu,
+    public ResourcesTreeCpuElement(int cpu,
             List<TimeGraphTreeElement> children, int sourceQuark) {
         super(Messages.treeElementPrefixCpu + ' ' + String.valueOf(cpu),
                 children,
