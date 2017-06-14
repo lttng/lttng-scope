@@ -25,6 +25,8 @@ public class Messages extends NLS {
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
     public static String treeElementPrefixCpu;
+    public static String treeElementPrefixIrq;
+    public static String treeElementPrefixSoftIrq;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -13,6 +13,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeCpuElement;
+import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeIrqElement;
+import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeIrqElement.IrqType;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -62,6 +65,10 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
      */
     private static final String[] CPUS_QUARK_PATTERN = { Attributes.CPUS, "*" }; //$NON-NLS-1$
 
+    private static final Comparator<ResourcesTreeIrqElement> IRQ_SORTER = Comparator
+            .<ResourcesTreeIrqElement, IrqType> comparing(treeElem -> treeElem.getIrqType())
+            .thenComparingInt(treeElem -> treeElem.getIrqNumber());
+
     /**
      * Get the tree element name for every cpu.
      */
@@ -70,13 +77,34 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
         ITmfStateSystem ss = treeContext.ss;
 
         List<TimeGraphTreeElement> treeElems = ss.getQuarks(CPUS_QUARK_PATTERN).stream()
-                .map(baseQuark -> {
-                    String cpuStr = ss.getAttributeName(baseQuark);
+                .map(cpuQuark -> {
+                    String cpuStr = ss.getAttributeName(cpuQuark);
                     Integer cpu = Ints.tryParse(cpuStr);
                     if (cpu == null) {
                         return null;
                     }
-                    return new ResourcesTreeCpuElement(cpu, Collections.emptyList(), baseQuark);
+
+                    List<ResourcesTreeIrqElement> children = new LinkedList<>();
+
+                    /* Add the "IRQ" children. */
+                    int irqsQuark = ss.getQuarkRelative(cpuQuark, Attributes.IRQS);
+                    for (int irqQuark : ss.getSubAttributes(irqsQuark, false)) {
+                        int irqNumber = Ints.tryParse(ss.getAttributeName(irqQuark));
+                        children.add(new ResourcesTreeIrqElement(IrqType.IRQ, irqNumber, irqQuark));
+                    }
+
+                    /* Add the "SoftIRQ" children. */
+                    int softIrqsQuark = ss.getQuarkRelative(cpuQuark, Attributes.SOFT_IRQS);
+                    for (int softIrqQuark : ss.getSubAttributes(softIrqsQuark, false)) {
+                        int irqNumber = Ints.tryParse(ss.getAttributeName(softIrqQuark));
+                        children.add(new ResourcesTreeIrqElement(IrqType.SOFTIRQ, irqNumber, softIrqQuark));
+                    }
+
+                    Collections.sort(children, IRQ_SORTER);
+                    /* Generic types are not covariant :/ Use a raw type instead... */
+                    @SuppressWarnings("rawtypes")
+                    List children2 = children;
+                    return new ResourcesTreeCpuElement(cpu, children2, cpuQuark);
                 })
                 .filter(Objects::nonNull)
                 /*
