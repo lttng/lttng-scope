@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 class StubModelProvider extends TimeGraphModelProvider {
 
     public static final String ENTRY_NAME_PREFIX = "Entry #";
+    public static final TimeGraphTreeElement ROOT_ELEMENT;
 
     private static final int NB_ENTRIES = 20;
 
@@ -32,8 +33,8 @@ class StubModelProvider extends TimeGraphModelProvider {
         List<TimeGraphTreeElement> treeElements = IntStream.range(1, NB_ENTRIES)
             .mapToObj(i -> new TimeGraphTreeElement(ENTRY_NAME_PREFIX + i, Collections.emptyList()))
             .collect(Collectors.toList());
-        TimeGraphTreeElement rootElement = new TimeGraphTreeElement("Dummy trace", treeElements);
-        TREE_RENDER =  new TimeGraphTreeRender(rootElement);
+        ROOT_ELEMENT = new TimeGraphTreeElement("Dummy trace", treeElements);
+        TREE_RENDER =  new TimeGraphTreeRender(ROOT_ELEMENT);
     }
 
     protected StubModelProvider() {

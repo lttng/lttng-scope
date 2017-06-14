@@ -46,6 +46,10 @@ class StubModelStateProvider extends TimeGraphModelStateProvider {
     public TimeGraphStateRender getStateRender(TimeGraphTreeElement treeElement,
             TimeRange timeRange, long resolution, @Nullable FutureTask<?> task) {
 
+        if (treeElement == StubModelProvider.ROOT_ELEMENT) {
+            return TimeGraphStateRender.EMPTY_RENDER;
+        }
+
         int entryIndex = Integer.valueOf(treeElement.getName().substring(StubModelProvider.ENTRY_NAME_PREFIX.length()));
         long stateLength = entryIndex * DURATION_FACTOR;
 

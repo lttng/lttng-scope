@@ -136,7 +136,7 @@ public class ControlFlowModelProviderTest {
             List<TimeGraphTreeElement> treeElems = treeRender.getAllTreeElements();
 
             List<String> tidsFromRender = treeElems.stream()
-                    .map(e -> (ControlFlowTreeElement) e)
+                    .filter(e -> e instanceof ControlFlowTreeElement).map(e -> (ControlFlowTreeElement) e)
                     .mapToInt(ControlFlowTreeElement::getTid)
                     .mapToObj(tid -> String.valueOf(tid))
                     .sorted()
@@ -170,7 +170,7 @@ public class ControlFlowModelProviderTest {
                         StateSystemUtils.queryHistoryRange(ss, threadQuark, start, end);
 
                 TimeGraphTreeElement elem = treeElems.stream()
-                        .map(e -> (ControlFlowTreeElement) e)
+                        .filter(e -> e instanceof ControlFlowTreeElement).map(e -> (ControlFlowTreeElement) e)
                         .filter(e -> e.getSourceQuark() == threadQuark)
                         .findFirst()
                         .get();

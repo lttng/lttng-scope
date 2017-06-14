@@ -52,6 +52,7 @@ final class StubDrawnEventProviders {
             TimeGraphDrawnEventSeries series = getEventSeries();
 
             List<TimeGraphDrawnEvent> events = treeRender.getAllTreeElements().stream()
+                    .filter(treeElem -> treeElem != StubModelProvider.ROOT_ELEMENT)
                     /* Keep only entries (2, 4, 6, 8) */
                     .filter(treeElem -> getIndexOfTreeElement(treeElem) < 10)
                     .filter(treeElem -> getIndexOfTreeElement(treeElem) % 2 == 0)
@@ -85,6 +86,7 @@ final class StubDrawnEventProviders {
             TimeGraphDrawnEventSeries series = getEventSeries();
 
             List<TimeGraphDrawnEvent> events = treeRender.getAllTreeElements().stream()
+                    .filter(treeElem -> treeElem != StubModelProvider.ROOT_ELEMENT)
                     /* Keep only entries (1, 3, 5, 7) */
                     .filter(treeElem -> getIndexOfTreeElement(treeElem) < 8)
                     .filter(treeElem -> (getIndexOfTreeElement(treeElem) + 1) % 2 == 0)
