@@ -113,6 +113,12 @@ public class TimeGraphWidgetTreeArea extends BorderPane {
         if (!childItems.isEmpty()) {
             treeItem.getChildren().addAll(childItems);
         }
+
+        // TODO Correctly manage sub-trees being expanded. Disallow it for now.
+        treeItem.setExpanded(true);
+        treeItem.addEventHandler(TreeItem.branchCollapsedEvent(),
+                event -> event.getTreeItem().setExpanded(true));
+
         return treeItem;
     }
 
