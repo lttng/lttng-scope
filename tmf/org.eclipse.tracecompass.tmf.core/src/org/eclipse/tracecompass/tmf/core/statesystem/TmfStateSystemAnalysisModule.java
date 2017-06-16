@@ -244,8 +244,27 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
             analysisReady(false);
             return false;
         }
+
         return !mon.isCanceled();
     }
+
+    /**
+     * Define which aggregation rules should be setup for this state system.
+     *
+     * Note: The rules will be applied when creating, when finished building, and
+     * when re-opening an existing tree. This means that if you want the rules to be
+     * available while building the history, you should make sure to manually create
+     * all attributes you refer to, as they may not exist when first starting.
+     *
+     * Note2: If you create "directory" attributes (attributes that normally won't
+     * contain any state values and are just used for organization) as part of this
+     * method, make sure you insert a null value into them or else it will break at
+     * runtime. This is a known bug.
+     *
+     * @param ss
+     *            The state system on which to setup the rules
+     */
+    protected abstract void setupAggregationRules(ITmfStateSystemBuilder ss);
 
     /**
      * Make the module available and set whether the initialization succeeded or
@@ -297,7 +316,15 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
             try {
                 IStateHistoryBackend backend = StateHistoryBackendFactory.createHistoryTreeBackendExistingFile(
                         id, htFile, version);
-                fStateSystem = StateSystemFactory.newStateSystem(backend, false);
+                ITmfStateSystemBuilder ss = StateSystemFactory.newStateSystem(backend, false);
+
+                /*
+                 * Since we re-use an existing state file, we need to re-setup the configured
+                 * aggregation rules.
+                 */
+                setupAggregationRules(ss);
+
+                fStateSystem = ss;
                 analysisReady(true);
                 return;
             } catch (IOException e) {
@@ -349,6 +376,16 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
     }
 
     private void disposeProvider(boolean deleteFiles) {
+        /*
+         * This method is called whenever a state system finishes building. Now is a
+         * good time to re-run the aggregation rules setup, since it will now take into
+         * consideration all the attributes that were created. Existing rules will
+         * simply be re-applied, avoiding duplicates.
+         */
+        if (fStateSystem != null) {
+            setupAggregationRules(fStateSystem);
+        }
+
         ITmfStateProvider provider = fStateProvider;
         if (provider != null) {
             provider.dispose();
@@ -360,9 +397,13 @@ public abstract class TmfStateSystemAnalysisModule extends TmfAbstractAnalysisMo
     }
 
     private void build(ITmfStateProvider provider) {
-        if (fStateSystem == null) {
+        /* fStateSystem should have been assigned at this point */
+        ITmfStateSystemBuilder ss = fStateSystem;
+        if (ss == null) {
             throw new IllegalArgumentException();
         }
+
+        setupAggregationRules(ss);
 
         ITmfEventRequest request = fRequest;
         if ((request != null) && (!request.isCompleted())) {

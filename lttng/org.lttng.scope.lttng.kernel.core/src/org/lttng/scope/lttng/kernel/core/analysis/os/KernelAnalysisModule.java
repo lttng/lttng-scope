@@ -25,6 +25,8 @@ import org.lttng.scope.lttng.kernel.core.trace.IKernelTrace;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.LttngEventLayout;
 
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+
 /**
  * State System Module for lttng kernel traces
  *
@@ -53,5 +55,10 @@ public class KernelAnalysisModule extends TmfStateSystemAnalysisModule {
     @Override
     protected String getFullHelpText() {
         return nullToEmptyString(Messages.LttngKernelAnalysisModule_Help);
+    }
+
+    @Override
+    protected void setupAggregationRules(ITmfStateSystemBuilder ss) {
+        // TODO Add IRQ aggregation rules
     }
 }

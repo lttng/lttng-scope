@@ -95,4 +95,8 @@ public class TestExperimentAnalysis extends TmfStateSystemAnalysisModule {
             }
         }
     }
+
+    @Override
+    protected void setupAggregationRules(@NonNull ITmfStateSystemBuilder ss) {
+    }
 }

@@ -21,6 +21,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
+
 /**
  * Test State System module
  *
@@ -101,6 +103,10 @@ public class TestStateSystemModule extends TmfStateSystemAnalysisModule {
     @Override
     public @Nullable File getSsFile() {
         return super.getSsFile();
+    }
+
+    @Override
+    protected void setupAggregationRules(ITmfStateSystemBuilder ss) {
     }
 
 }

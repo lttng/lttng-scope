@@ -32,6 +32,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
@@ -248,5 +249,10 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
 
     private static @Nullable String unboxStrOrNull(ITmfStateValue value) {
         return (value.isNull() ? null : value.unboxStr());
+    }
+
+    @Override
+    protected void setupAggregationRules(ITmfStateSystemBuilder ss) {
+        /* No aggregation rules used for now. */
     }
 }
