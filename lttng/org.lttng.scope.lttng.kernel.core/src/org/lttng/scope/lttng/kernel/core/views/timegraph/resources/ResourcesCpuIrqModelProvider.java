@@ -40,6 +40,17 @@ import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 public class ResourcesCpuIrqModelProvider extends ResourcesBaseModelProvider {
 
     /**
+     * Each "CPU" attribute has the following children:
+     *
+     * <ul>
+     * <li>Current_thread</li>
+     * <li>Soft_IRQs</li>
+     * <li>IRQs</li>
+     * </ul>
+     */
+    private static final String[] CPUS_QUARK_PATTERN = { Attributes.CPUS, "*" }; //$NON-NLS-1$
+
+    /**
      * Get the tree element name for every cpu.
      */
     @VisibleForTesting

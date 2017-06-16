@@ -13,7 +13,6 @@ import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
@@ -34,17 +33,6 @@ public abstract class ResourcesBaseModelProvider extends StateSystemModelProvide
     private static final Supplier<ITimeGraphModelStateProvider> STATE_PROVIDER = () -> {
         return new ResourcesModelStateProvider();
     };
-
-    /**
-     * Each "CPU" attribute has the following children:
-     *
-     * <ul>
-     * <li>Current_thread</li>
-     * <li>Soft_IRQs</li>
-     * <li>IRQs</li>
-     * </ul>
-     */
-    protected static final String[] CPUS_QUARK_PATTERN = { Attributes.CPUS, "*" }; //$NON-NLS-1$
 
     /**
      * Comparator to sort IRQ entries in the tree model.
