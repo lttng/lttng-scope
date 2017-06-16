@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static java.util.Objects.requireNonNull;
 
@@ -35,24 +35,24 @@ import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
-public class ControlFlowModelProvider extends StateSystemModelProvider {
+public class ThreadsModelProvider extends StateSystemModelProvider {
 
     private static final Supplier<ITimeGraphModelStateProvider> STATE_PROVIDER = () -> {
-        return new ControlFlowModelStateProvider();
+        return new ThreadsModelStateProvider();
     };
 
     private static final Supplier<List<ITimeGraphModelArrowProvider>> ARROW_PROVIDERS = () -> {
         return ImmutableList.of(
-                new ControlFlowModelArrowProviderCpus()
+                new ThreadsModelArrowProviderCpus()
                 );
     };
 
     private static final List<SortingMode> SORTING_MODES = ImmutableList.of(
-            ControlFlowConfigModes.SORTING_BY_TID,
-            ControlFlowConfigModes.SORTING_BY_THREAD_NAME);
+            ThreadsConfigModes.SORTING_BY_TID,
+            ThreadsConfigModes.SORTING_BY_THREAD_NAME);
 
     private static final List<FilterMode> FILTER_MODES = ImmutableList.of(
-            ControlFlowConfigModes.FILTERING_INACTIVE_ENTRIES);
+            ThreadsConfigModes.FILTERING_INACTIVE_ENTRIES);
 
     // ------------------------------------------------------------------------
     // Tree render
@@ -96,7 +96,7 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
         ITmfStateSystem ss = treeContext.ss;
 //        List<ITmfStateInterval> fullState = treeContext.fullQueryAtRangeStart;
 
-        Stream<ControlFlowTreeElement> treeElems = ss.getQuarks(BASE_QUARK_PATTERN).stream()
+        Stream<ThreadsTreeElement> treeElems = ss.getQuarks(BASE_QUARK_PATTERN).stream()
                 .map(baseQuark -> {
                     String tid = ss.getAttributeName(baseQuark);
 
@@ -118,7 +118,7 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
                         threadName = null;
                     }
 
-                    return new ControlFlowTreeElement(tid, threadName, Collections.emptyList(), baseQuark);
+                    return new ThreadsTreeElement(tid, threadName, Collections.emptyList(), baseQuark);
                 });
 
         /* Run the entries through the active filter modes */
@@ -140,9 +140,9 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
 
         /* Sort entries according to the active sorting mode */
         SortingMode sortingMode = treeContext.sortingMode;
-        if (sortingMode == ControlFlowConfigModes.SORTING_BY_TID) {
-            treeElems = treeElems.sorted(Comparator.comparingInt(ControlFlowTreeElement::getTid));
-        } else if (sortingMode == ControlFlowConfigModes.SORTING_BY_THREAD_NAME) {
+        if (sortingMode == ThreadsConfigModes.SORTING_BY_TID) {
+            treeElems = treeElems.sorted(Comparator.comparingInt(ThreadsTreeElement::getTid));
+        } else if (sortingMode == ThreadsConfigModes.SORTING_BY_THREAD_NAME) {
             treeElems = treeElems.sorted((elem1, elem2) -> {
                 return elem1.getThreadName().compareToIgnoreCase(elem2.getThreadName());
             });
@@ -156,7 +156,7 @@ public class ControlFlowModelProvider extends StateSystemModelProvider {
     /**
      * Constructor
      */
-    public ControlFlowModelProvider() {
+    public ThreadsModelProvider() {
         super(requireNonNull(Messages.threadsProviderName),
                 SORTING_MODES,
                 FILTER_MODES,

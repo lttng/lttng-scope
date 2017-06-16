@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static java.util.Objects.requireNonNull;
 
@@ -38,14 +38,14 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 
-public class ControlFlowModelArrowProviderCpus extends StateSystemModelArrowProvider {
+public class ThreadsModelArrowProviderCpus extends StateSystemModelArrowProvider {
 
     private static final TimeGraphArrowSeries ARROW_SERIES = new TimeGraphArrowSeries(
             requireNonNull(Messages.arrowSeriesCPUs),
             FlatUIColors.RED,
             LineStyle.FULL);
 
-    public ControlFlowModelArrowProviderCpus() {
+    public ThreadsModelArrowProviderCpus() {
         super(ARROW_SERIES, KernelAnalysisModule.ID);
     }
 
@@ -114,7 +114,7 @@ public class ControlFlowModelArrowProviderCpus extends StateSystemModelArrowProv
             // whole
             // array for every single tid.
             return Iterables.find(treeRender.getAllTreeElements(), treeElem -> {
-                ControlFlowTreeElement cfvTreeElem = (ControlFlowTreeElement) treeElem;
+                ThreadsTreeElement cfvTreeElem = (ThreadsTreeElement) treeElem;
                 return (cfvTreeElem.getTid() == tid);
             });
         }
@@ -123,7 +123,7 @@ public class ControlFlowModelArrowProviderCpus extends StateSystemModelArrowProv
         }
         String prefix = "0/" + cpu.toString(); //$NON-NLS-1$
         return Iterables.find(treeRender.getAllTreeElements(), treeElem -> {
-            ControlFlowTreeElement cfvTreeElem = (ControlFlowTreeElement) treeElem;
+            ThreadsTreeElement cfvTreeElem = (ThreadsTreeElement) treeElem;
             return cfvTreeElem.getName().startsWith(prefix);
         });
     }

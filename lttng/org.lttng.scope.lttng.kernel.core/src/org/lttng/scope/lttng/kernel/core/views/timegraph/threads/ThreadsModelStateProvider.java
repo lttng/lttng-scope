@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static java.util.Objects.requireNonNull;
 
@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.views.kernel.KernelAnalysisStateDefinitions;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -36,7 +36,7 @@ import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
-public class ControlFlowModelStateProvider extends StateSystemModelStateProvider {
+public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
 
     // ------------------------------------------------------------------------
     // Label mapping
@@ -166,7 +166,7 @@ public class ControlFlowModelStateProvider extends StateSystemModelStateProvider
     /**
      * Constructor
      */
-    public ControlFlowModelStateProvider() {
+    public ThreadsModelStateProvider() {
         super(STATE_DEFINITIONS,
                 KernelAnalysisModule.ID,
                 STATE_NAME_MAPPING_FUNCTION,

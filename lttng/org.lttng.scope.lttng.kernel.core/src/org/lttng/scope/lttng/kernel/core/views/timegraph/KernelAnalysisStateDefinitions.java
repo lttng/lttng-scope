@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel;
+package org.lttng.scope.lttng.kernel.core.views.timegraph;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel;
+package org.lttng.scope.lttng.kernel.core.views.timegraph;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;

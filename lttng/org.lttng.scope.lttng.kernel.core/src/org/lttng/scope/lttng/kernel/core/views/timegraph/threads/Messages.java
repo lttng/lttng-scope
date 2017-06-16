@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
@@ -24,7 +24,18 @@ public class Messages extends NLS {
 
     private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 
-    public static String resourcesProviderName;
+    public static String ControlFlowSortingModes_ByTid;
+    public static String ControlFlowSortingModes_ByThreadName;
+
+    public static String ControlFlowFilterModes_InactiveEntries;
+
+    public static String threadsProviderName;
+
+    public static String arrowSeriesCPUs;
+
+    public static String propertyNotAvailable;
+    public static String propertyNameCpu;
+    public static String propertyNameSyscall;
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

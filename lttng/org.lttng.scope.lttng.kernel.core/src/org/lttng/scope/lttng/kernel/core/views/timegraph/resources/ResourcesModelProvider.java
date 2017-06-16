@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.resources;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
-import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeCpuElement;
-import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeIrqElement;
-import org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements.ResourcesTreeIrqElement.IrqType;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesCpuTreeElement;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
@@ -65,8 +65,8 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
      */
     private static final String[] CPUS_QUARK_PATTERN = { Attributes.CPUS, "*" }; //$NON-NLS-1$
 
-    private static final Comparator<ResourcesTreeIrqElement> IRQ_SORTER = Comparator
-            .<ResourcesTreeIrqElement, IrqType> comparing(treeElem -> treeElem.getIrqType())
+    private static final Comparator<ResourcesIrqTreeElement> IRQ_SORTER = Comparator
+            .<ResourcesIrqTreeElement, IrqType> comparing(treeElem -> treeElem.getIrqType())
             .thenComparingInt(treeElem -> treeElem.getIrqNumber());
 
     /**
@@ -84,34 +84,34 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
                         return null;
                     }
 
-                    List<ResourcesTreeIrqElement> children = new LinkedList<>();
+                    List<ResourcesIrqTreeElement> children = new LinkedList<>();
 
                     /* Add the "IRQ" children. */
                     int irqsQuark = ss.getQuarkRelative(cpuQuark, Attributes.IRQS);
                     for (int irqQuark : ss.getSubAttributes(irqsQuark, false)) {
                         int irqNumber = Ints.tryParse(ss.getAttributeName(irqQuark));
-                        children.add(new ResourcesTreeIrqElement(IrqType.IRQ, irqNumber, irqQuark));
+                        children.add(new ResourcesIrqTreeElement(IrqType.IRQ, irqNumber, irqQuark));
                     }
 
                     /* Add the "SoftIRQ" children. */
                     int softIrqsQuark = ss.getQuarkRelative(cpuQuark, Attributes.SOFT_IRQS);
                     for (int softIrqQuark : ss.getSubAttributes(softIrqsQuark, false)) {
                         int irqNumber = Ints.tryParse(ss.getAttributeName(softIrqQuark));
-                        children.add(new ResourcesTreeIrqElement(IrqType.SOFTIRQ, irqNumber, softIrqQuark));
+                        children.add(new ResourcesIrqTreeElement(IrqType.SOFTIRQ, irqNumber, softIrqQuark));
                     }
 
                     Collections.sort(children, IRQ_SORTER);
                     /* Generic types are not covariant :/ Use a raw type instead... */
                     @SuppressWarnings("rawtypes")
                     List children2 = children;
-                    return new ResourcesTreeCpuElement(cpu, children2, cpuQuark);
+                    return new ResourcesCpuTreeElement(cpu, children2, cpuQuark);
                 })
                 .filter(Objects::nonNull)
                 /*
                  * Sort entries according to their CPU number (not just an
                  * alphabetical sort!)
                  */
-                .sorted(Comparator.comparingInt(ResourcesTreeCpuElement::getCpu))
+                .sorted(Comparator.comparingInt(ResourcesCpuTreeElement::getCpu))
                 .collect(Collectors.toList());
 
         TimeGraphTreeElement rootElement = new TimeGraphTreeElement(treeContext.traceName, treeElems);

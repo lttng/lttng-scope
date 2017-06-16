@@ -1,4 +1,4 @@
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static java.util.Objects.requireNonNull;
 
@@ -15,7 +15,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 
 import com.google.common.primitives.Ints;
 
-public class ControlFlowTreeElement extends StateSystemTimeGraphTreeElement {
+public class ThreadsTreeElement extends StateSystemTimeGraphTreeElement {
 
     private static final String UNKNOWN_THREAD_NAME = "???"; //$NON-NLS-1$
 
@@ -24,7 +24,7 @@ public class ControlFlowTreeElement extends StateSystemTimeGraphTreeElement {
     private final @Nullable Integer fCpu;
     private final String fThreadName;
 
-    public ControlFlowTreeElement(String tidStr, @Nullable String threadName,
+    public ThreadsTreeElement(String tidStr, @Nullable String threadName,
             List<TimeGraphTreeElement> children, int sourceQuark) {
         super(getElementName(tidStr, threadName),
                 children,

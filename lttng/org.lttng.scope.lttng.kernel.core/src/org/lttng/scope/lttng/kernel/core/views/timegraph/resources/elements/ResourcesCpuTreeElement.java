@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,7 +23,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
  *
  * @author Alexandre Montplaisir
  */
-public class ResourcesTreeCpuElement extends StateSystemTimeGraphTreeElement {
+public class ResourcesCpuTreeElement extends StateSystemTimeGraphTreeElement {
 
     private final int fCpu;
 
@@ -38,7 +38,7 @@ public class ResourcesTreeCpuElement extends StateSystemTimeGraphTreeElement {
      *            The corresponding quark (under the "CPUs" sub-tree) in the
      *            state system.
      */
-    public ResourcesTreeCpuElement(int cpu,
+    public ResourcesCpuTreeElement(int cpu,
             List<TimeGraphTreeElement> children, int sourceQuark) {
         super(Messages.treeElementPrefixCpu + ' ' + String.valueOf(cpu),
                 children,

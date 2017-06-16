@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.resources;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
-import org.lttng.scope.lttng.kernel.core.views.kernel.KernelAnalysisStateDefinitions;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;

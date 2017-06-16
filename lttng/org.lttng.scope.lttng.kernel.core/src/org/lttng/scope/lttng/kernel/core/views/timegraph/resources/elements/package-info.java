@@ -8,4 +8,4 @@
  */
 
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements;

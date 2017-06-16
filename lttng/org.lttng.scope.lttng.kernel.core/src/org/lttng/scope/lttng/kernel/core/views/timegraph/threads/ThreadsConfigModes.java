@@ -7,14 +7,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 
-public interface ControlFlowConfigModes {
+public interface ThreadsConfigModes {
 
     SortingMode SORTING_BY_TID = new SortingMode(nullToEmptyString(Messages.ControlFlowSortingModes_ByTid));
 

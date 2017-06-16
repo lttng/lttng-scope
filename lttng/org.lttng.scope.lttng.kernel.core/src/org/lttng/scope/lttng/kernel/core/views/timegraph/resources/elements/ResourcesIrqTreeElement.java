@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.resources2.elements;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements;
 
 import java.util.Collections;
 
@@ -19,7 +19,7 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.Stat
  *
  * @author Alexandre Montplaisir
  */
-public class ResourcesTreeIrqElement extends StateSystemTimeGraphTreeElement {
+public class ResourcesIrqTreeElement extends StateSystemTimeGraphTreeElement {
 
     /** Type of IRQ */
     public enum IrqType {
@@ -43,7 +43,7 @@ public class ResourcesTreeIrqElement extends StateSystemTimeGraphTreeElement {
      *            The corresponding quark (under the "CPUs" sub-tree) in the state
      *            system.
      */
-    public ResourcesTreeIrqElement(IrqType irqType, int irqNumber, int sourceQuark) {
+    public ResourcesIrqTreeElement(IrqType irqType, int irqNumber, int sourceQuark) {
         super(getName(irqType, irqNumber),
                 Collections.emptyList(),
                 sourceQuark);

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.views.kernel.controlflow2;
+package org.lttng.scope.lttng.kernel.core.views.timegraph.threads;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -32,6 +32,9 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelProvider;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelStateProvider;
+import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsTreeElement;
 import org.lttng.scope.tmf2.views.core.TimeRange;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
@@ -48,11 +51,11 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
- * Tests for {@link ControlFlowModelProvider}.
+ * Tests for {@link ThreadsModelProvider}.
  *
  * @author Alexandre Montplaisir
  */
-public class ControlFlowModelProviderTest {
+public class ThreadsModelProviderTest {
 
 //    /** Timeout the tests after 2 minutes */
 //    @Rule
@@ -65,7 +68,7 @@ public class ControlFlowModelProviderTest {
     private static @Nullable ITmfTrace sfTrace;
     private static @Nullable ITmfStateSystem sfSS;
 
-    private ControlFlowModelProvider provider = new ControlFlowModelProvider();
+    private ThreadsModelProvider provider = new ThreadsModelProvider();
     {
         provider.disableFilterMode(0);
     }
@@ -76,7 +79,7 @@ public class ControlFlowModelProviderTest {
     @Before
     public void setupClass() {
         LttngKernelTrace trace = LttngKernelTestTraceUtils.getTrace(TEST_TRACE);
-        trace.traceOpened(new TmfTraceOpenedSignal(ControlFlowModelProviderTest.class, trace, null));
+        trace.traceOpened(new TmfTraceOpenedSignal(ThreadsModelProviderTest.class, trace, null));
         trace.indexTrace(true);
 
         IAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(trace, KernelAnalysisModule.class, KernelAnalysisModule.ID);
@@ -136,8 +139,8 @@ public class ControlFlowModelProviderTest {
             List<TimeGraphTreeElement> treeElems = treeRender.getAllTreeElements();
 
             List<String> tidsFromRender = treeElems.stream()
-                    .filter(e -> e instanceof ControlFlowTreeElement).map(e -> (ControlFlowTreeElement) e)
-                    .mapToInt(ControlFlowTreeElement::getTid)
+                    .filter(e -> e instanceof ThreadsTreeElement).map(e -> (ThreadsTreeElement) e)
+                    .mapToInt(ThreadsTreeElement::getTid)
                     .mapToObj(tid -> String.valueOf(tid))
                     .sorted()
                     .collect(Collectors.toList());
@@ -170,7 +173,7 @@ public class ControlFlowModelProviderTest {
                         StateSystemUtils.queryHistoryRange(ss, threadQuark, start, end);
 
                 TimeGraphTreeElement elem = treeElems.stream()
-                        .filter(e -> e instanceof ControlFlowTreeElement).map(e -> (ControlFlowTreeElement) e)
+                        .filter(e -> e instanceof ThreadsTreeElement).map(e -> (ThreadsTreeElement) e)
                         .filter(e -> e.getSourceQuark() == threadQuark)
                         .findFirst()
                         .get();
@@ -283,7 +286,7 @@ public class ControlFlowModelProviderTest {
             assertEquals(ssInterval.getEndTime(), renderInterval.getEndEvent().getTimestamp());
 
             ITmfStateValue stateValue = ssInterval.getStateValue();
-            String stateName = ControlFlowModelStateProvider.stateValueToStateDef(stateValue).getName();
+            String stateName = ThreadsModelStateProvider.stateValueToStateDef(stateValue).getName();
             assertEquals(stateName, renderInterval.getStateName());
         }
     }
