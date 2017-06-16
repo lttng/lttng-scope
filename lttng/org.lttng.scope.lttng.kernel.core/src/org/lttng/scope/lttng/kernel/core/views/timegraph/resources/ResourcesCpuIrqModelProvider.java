@@ -17,16 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesCpuTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
@@ -36,38 +32,12 @@ import com.google.common.primitives.Ints;
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
- * Base model provider for the "Resources" time graph. It displays the states of
- * CPUs, as well as the state of IRQs of each CPU.
- *
- * TODO This timegraph only models CPU states. States of IRQs under each CPU
- * should be added at some point.
+ * View model for a Resources view, showing CPUs as the first level, then
+ * per-cpu IRQs as the second level.
  *
  * @author Alexandre Montplaisir
  */
-public class ResourcesModelProvider extends StateSystemModelProvider {
-
-    private static final Supplier<ITimeGraphModelStateProvider> STATE_PROVIDER = () -> {
-        return new ResourcesModelStateProvider();
-    };
-
-    // ------------------------------------------------------------------------
-    // Tree render
-    // ------------------------------------------------------------------------
-
-    /**
-     * Each "CPU" attribute has the following children:
-     *
-     * <ul>
-     * <li>Current_thread</li>
-     * <li>Soft_IRQs</li>
-     * <li>IRQs</li>
-     * </ul>
-     */
-    private static final String[] CPUS_QUARK_PATTERN = { Attributes.CPUS, "*" }; //$NON-NLS-1$
-
-    private static final Comparator<ResourcesIrqTreeElement> IRQ_SORTER = Comparator
-            .<ResourcesIrqTreeElement, IrqType> comparing(treeElem -> treeElem.getIrqType())
-            .thenComparingInt(treeElem -> treeElem.getIrqNumber());
+public class ResourcesCpuIrqModelProvider extends ResourcesBaseModelProvider {
 
     /**
      * Get the tree element name for every cpu.
@@ -121,15 +91,8 @@ public class ResourcesModelProvider extends StateSystemModelProvider {
     /**
      * Constructor
      */
-    public ResourcesModelProvider() {
-        super(requireNonNull(Messages.resourcesProviderName),
-                null,
-                null,
-                STATE_PROVIDER.get(),
-                null,
-                /* Parameters specific to state system render providers */
-                KernelAnalysisModule.ID,
-                SS_TO_TREE_RENDER_FUNCTION);
+    public ResourcesCpuIrqModelProvider() {
+        super(requireNonNull(Messages.resourcesCpuIrqProviderName), SS_TO_TREE_RENDER_FUNCTION);
     }
 
 }
