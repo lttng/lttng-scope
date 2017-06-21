@@ -149,7 +149,6 @@ public class GenerateTestValues {
             module.dispose();
             trace.dispose();
         }
-        System.exit(0);
     }
 
 }
