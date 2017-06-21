@@ -5,9 +5,6 @@
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *   Alexandre Montplaisir - Initial API and implementation
  ******************************************************************************/
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.statesystem;
@@ -25,9 +22,12 @@ import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
  */
 interface TestValues {
 
-    int size = 909;
+    int size = 922;
 
     long[] startTimes = {
+        1331668247314038062L,
+        1331668247314038062L,
+        1331668247314038062L,
         1331668247314038062L,
         1331668247399757985L,
         1331668247316334243L,
@@ -38,7 +38,6 @@ interface TestValues {
         1331668247314046266L,
         1331668247399148733L,
         1331668247316120937L,
-        1331668247314038062L,
         1331668248014183954L,
         1331668248014145796L,
         1331668247314851888L,
@@ -920,6 +919,17 @@ interface TestValues {
         1331668247314038062L,
         1331668247314038062L,
         1331668247314038062L,
+        1331668247966976915L,
+        1331668247340039213L,
+        1331668247960265258L,
+        1331668247619316825L,
+        1331668247314038062L,
+        1331668248004705322L,
+        1331668248011125682L,
+        1331668247619491008L,
+        1331668247340083580L,
+        1331668248011129576L,
+        1331668247959041965L,
         1331668247314038062L,
         1331668247314038062L,
         1331668247314038062L,
@@ -941,15 +951,17 @@ interface TestValues {
 
     long[] endTimes = {
         1331668259054285979L,
-        1331668259054130388L,
-        1331668259054285979L,
-        1331668259054130388L,
-        1331668259054285979L,
         1331668259054285979L,
         1331668259054285979L,
         1331668259054285979L,
         1331668259054130388L,
         1331668259054285979L,
+        1331668259054130388L,
+        1331668259054285979L,
+        1331668259054285979L,
+        1331668259054285979L,
+        1331668259054285979L,
+        1331668259054130388L,
         1331668259054285979L,
         1331668248014185078L,
         1331668248014620024L,
@@ -1832,6 +1844,17 @@ interface TestValues {
         1331668257246987050L,
         1331668257247036372L,
         1331668257247027684L,
+        1331668248021867385L,
+        1331668257323835062L,
+        1331668248486545657L,
+        1331668248140683324L,
+        1331668249548101920L,
+        1331668248015959980L,
+        1331668248015040151L,
+        1331668248140686546L,
+        1331668257323879563L,
+        1331668248015176320L,
+        1331668248015041609L,
         1331668259045096840L,
         1331668259045096840L,
         1331668259045096840L,
@@ -1853,6 +1876,9 @@ interface TestValues {
 
     ITmfStateValue[] values = {
         TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
         TmfStateValue.newValueInt(1),
         TmfStateValue.newValueInt(1),
         TmfStateValue.nullValue(),
@@ -1862,7 +1888,6 @@ interface TestValues {
         TmfStateValue.newValueString("lttng-consumerd"),
         TmfStateValue.newValueInt(20),
         TmfStateValue.newValueInt(20),
-        TmfStateValue.nullValue(),
         TmfStateValue.newValueInt(2),
         TmfStateValue.newValueInt(1397),
         TmfStateValue.nullValue(),
@@ -2133,6 +2158,17 @@ interface TestValues {
         TmfStateValue.newValueInt(20),
         TmfStateValue.newValueString("sys_futex"),
         TmfStateValue.newValueString("firefox"),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
+        TmfStateValue.nullValue(),
         TmfStateValue.nullValue(),
         TmfStateValue.nullValue(),
         TmfStateValue.nullValue(),
