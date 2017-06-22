@@ -48,7 +48,8 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
 
     private static final Function<StateIntervalContext, @Nullable String> LABEL_MAPPING_FUNCTION = ssCtx -> {
         int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
-        ITmfStateValue val = ssCtx.fullQueryAtIntervalStart.get(statusQuark).getStateValue();
+        long startTime = ssCtx.sourceInterval.getStartTime();
+        ITmfStateValue val = ssCtx.ss.querySingleState(startTime, statusQuark).getStateValue();
 
         /* If the status is "syscall", use the name of the syscall as label */
         if (!val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
@@ -58,7 +59,7 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
         String syscallName;
         try {
             int syscallQuark = ssCtx.ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
-            syscallName = ssCtx.fullQueryAtIntervalStart.get(syscallQuark).getStateValue().unboxStr();
+            syscallName = ssCtx.ss.querySingleState(startTime, syscallQuark).getStateValue().unboxStr();
         } catch (AttributeNotFoundException | StateValueTypeException e) {
             return null;
         }
@@ -140,11 +141,12 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
     private static final Function<StateIntervalContext, Map<String, String>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
         /* Include properties for CPU and syscall name. */
         int baseQuark = ssCtx.baseTreeElement.getSourceQuark();
+        long startTime = ssCtx.sourceInterval.getStartTime();
 
         String cpu;
         try {
             int cpuQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.CURRENT_CPU_RQ);
-            ITmfStateValue sv = ssCtx.fullQueryAtIntervalStart.get(cpuQuark).getStateValue();
+            ITmfStateValue sv = ssCtx.ss.querySingleState(startTime, cpuQuark).getStateValue();
             cpu = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : String.valueOf(sv.unboxInt()));
         } catch (AttributeNotFoundException e) {
             cpu = requireNonNull(Messages.propertyNotAvailable);
@@ -153,7 +155,7 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
         String syscall;
         try {
             int syscallNameQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.SYSTEM_CALL);
-            ITmfStateValue sv = ssCtx.fullQueryAtIntervalStart.get(syscallNameQuark).getStateValue();
+            ITmfStateValue sv = ssCtx.ss.querySingleState(startTime, syscallNameQuark).getStateValue();
             syscall = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : sv.unboxStr());
         } catch (AttributeNotFoundException e) {
             syscall = requireNonNull(Messages.propertyNotAvailable);

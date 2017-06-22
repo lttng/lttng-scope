@@ -62,13 +62,6 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         public final ITmfStateInterval sourceInterval;
 
         /**
-         * Full state system query at the start of the interval
-         *
-         * FIXME Remove this!
-         */
-        public final List<ITmfStateInterval> fullQueryAtIntervalStart;
-
-        /**
          * Constructor
          *
          * @param ss
@@ -81,19 +74,13 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
          * @param sourceInterval
          *            The state system interval which will be represented by the
          *            model state interval
-         * @param fullQueryAtIntervalStart
-         *            Full query at the start of the interval. FIXME Remove
-         *            this! This should only be queried on-demand, not for every
-         *            single interval
          */
         public StateIntervalContext(ITmfStateSystem ss,
                 StateSystemTimeGraphTreeElement baseTreeElement,
-                ITmfStateInterval sourceInterval,
-                List<ITmfStateInterval> fullQueryAtIntervalStart) {
+                ITmfStateInterval sourceInterval) {
             this.ss = ss;
             this.baseTreeElement = baseTreeElement;
             this.sourceInterval = sourceInterval;
-            this.fullQueryAtIntervalStart = fullQueryAtIntervalStart;
         }
     }
 
@@ -324,15 +311,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
 
     private TimeGraphStateInterval ssIntervalToModelInterval(ITmfStateSystem ss,
             StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
-        List<ITmfStateInterval> fullState;
-        try {
-            // TODO Big performance improvement low-hanging fruit here
-            fullState = ss.queryFullState(interval.getStartTime());
-        } catch (StateSystemDisposedException e) {
-            fullState = Collections.emptyList();
-            e.printStackTrace();
-        }
-        StateIntervalContext siCtx = new StateIntervalContext(ss, treeElem, interval, fullState);
+        StateIntervalContext siCtx = new StateIntervalContext(ss, treeElem, interval);
         return fIntervalMappingFunction.apply(siCtx);
     }
 
