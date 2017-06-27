@@ -15,14 +15,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
 import org.lttng.scope.common.core.StreamUtils;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-import org.lttng.scope.tmf2.views.ui.activator.internal.Activator;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Orientation;
@@ -37,28 +34,13 @@ public class TimelineView extends TmfView {
     private static final String VIEW_NAME = requireNonNull(Messages.timelineViewName);
 
     private @Nullable TimelineManager fManager;
-    private @Nullable SplitPane fSplitPane;
 
     public TimelineView() {
         super(VIEW_NAME);
     }
 
-    private class RefreshAction extends Action {
-
-        public RefreshAction() {
-            setText(Messages.refreshActionText);
-            setToolTipText(Messages.refreshActionTooltipText);
-            setImageDescriptor(Activator.instance().getImageDescripterFromPath("icons/refresh.gif")); //$NON-NLS-1$
-        }
-
-        @Override
-        public void run() {
-            refreshView();
-        }
-    }
-
     @Override
-    public synchronized void createPartControl(@Nullable Composite parent) {
+    public void createPartControl(@Nullable Composite parent) {
         if (parent == null) {
             return;
         }
@@ -82,37 +64,6 @@ public class TimelineView extends TmfView {
          */
         manager.resetInitialSeparatorPosition();
 
-        fManager = manager;
-        fSplitPane = sp;
-
-        /* Add view toolbar buttons */
-        IToolBarManager toolbarMgr = getViewSite().getActionBars().getToolBarManager();
-        toolbarMgr.add(new RefreshAction());
-
-    }
-
-    /**
-     * Reload the view
-     */
-    private synchronized void refreshView() {
-        TimelineManager oldManager = fManager;
-        SplitPane sp = fSplitPane;
-        if (oldManager == null || sp == null) {
-            return;
-        }
-
-        /* Remove and dispose the existing children */
-        sp.getItems().clear();
-        oldManager.dispose();
-
-        /* Instantiate a new manager, which will recreate the available widgets. */
-        TimelineManager manager = new TimelineManager(ViewGroupContext.getCurrent());
-        Collection<Node> nodes = StreamUtils.getStream(manager.getWidgets())
-                .map(widget -> widget.getRootNode())
-                .collect(Collectors.toList());
-        sp.getItems().addAll(nodes);
-
-        manager.resetInitialSeparatorPosition();
         fManager = manager;
     }
 
