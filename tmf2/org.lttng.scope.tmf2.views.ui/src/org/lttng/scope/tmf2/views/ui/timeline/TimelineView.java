@@ -11,15 +11,12 @@ package org.lttng.scope.tmf2.views.ui.timeline;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tracecompass.tmf.ui.views.TmfView;
-import org.lttng.scope.common.core.StreamUtils;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
+import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.geometry.Orientation;
@@ -34,6 +31,7 @@ public class TimelineView extends TmfView {
     private static final String VIEW_NAME = requireNonNull(Messages.timelineViewName);
 
     private @Nullable TimelineManager fManager;
+    private @Nullable SplitPane fSplitPane;
 
     public TimelineView() {
         super(VIEW_NAME);
@@ -48,13 +46,10 @@ public class TimelineView extends TmfView {
         FXCanvas fxCanvas = new FXCanvas(parent, SWT.NONE);
         SplitPane sp = new SplitPane();
         sp.setOrientation(Orientation.VERTICAL);
+        fSplitPane = sp;
 
-        /* Add the widget to the view */
-        TimelineManager manager = new TimelineManager(ViewGroupContext.getCurrent());
-        Collection<Node> nodes = StreamUtils.getStream(manager.getWidgets())
-                .map(widget -> widget.getRootNode())
-                .collect(Collectors.toList());
-        sp.getItems().addAll(nodes);
+        TimelineManager manager = new TimelineManager(this, ViewGroupContext.getCurrent());
+        fManager = manager;
 
         fxCanvas.setScene(new Scene(sp));
 
@@ -63,14 +58,20 @@ public class TimelineView extends TmfView {
          * Stage/Scene is initialized.
          */
         manager.resetInitialSeparatorPosition();
+    }
 
-        fManager = manager;
+    void addWidget(Node node) {
+        SplitPane sp = requireNonNull(fSplitPane);
+        JfxUtils.runOnMainThread(() -> sp.getItems().add(node));
     }
 
     @Override
     public void dispose() {
         if (fManager != null) {
             fManager.dispose();
+        }
+        if (fSplitPane != null) {
+            fSplitPane.getItems().clear();
         }
     }
 

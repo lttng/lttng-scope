@@ -9,10 +9,9 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Manager for the time graph model providers.
@@ -23,6 +22,22 @@ import com.google.common.collect.ImmutableSet;
  * @author Alexandre Montplaisir
  */
 public final class TimeGraphModelProviderManager {
+
+    /**
+     * Interface for classes displaying Time Graphs. Implement this interface and
+     * register your class using {@link #registerOutput} to receive notifications
+     * about current and newly-registered time graph providers.
+     */
+    public static interface TimeGraphOutput {
+
+        /**
+         * Callback called by the provider manager when model providers are registered.
+         *
+         * @param factory
+         *            The model provider factory
+         */
+        void providerRegistered(ITimeGraphModelProviderFactory factory);
+    }
 
     private static final TimeGraphModelProviderManager INSTANCE = new TimeGraphModelProviderManager();
 
@@ -38,26 +53,47 @@ public final class TimeGraphModelProviderManager {
     }
 
     private final Set<ITimeGraphModelProviderFactory> fRegisteredProviderFactories = new LinkedHashSet<>();
+    private final Set<TimeGraphOutput> fRegisteredOutputs = new HashSet<>();
 
     /**
      * Register a time graph provider by specifying its
-     * {@link ITimeGraphModelProviderFactory}. If a factory is already
-     * registered, this method will have no effect.
+     * {@link ITimeGraphModelProviderFactory}. If a factory is already registered,
+     * this method will have no effect.
      *
      * @param factory
      *            The provider's factory
      */
-    public void registerProviderFactory(ITimeGraphModelProviderFactory factory) {
-        fRegisteredProviderFactories.add(factory);
+    public synchronized void registerProviderFactory(ITimeGraphModelProviderFactory factory) {
+        boolean added = fRegisteredProviderFactories.add(factory);
+        if (added) {
+            fRegisteredOutputs.forEach(output -> output.providerRegistered(factory));
+        }
     }
 
     /**
-     * Get the list of currently registered provider factories.
+     * Register a time graph output to this manager. Upon registration,
+     * notifications will be sent, using {@link TimeGraphOutput#providerRegistered},
+     * for all existing providers. Additional notifications will be sent for future
+     * registered providers.
      *
-     * @return The currently registered factories
+     * @param output
+     *            The time graph output to register
      */
-    public Iterable<ITimeGraphModelProviderFactory> getRegisteredProviderFactories() {
-        return ImmutableSet.copyOf(fRegisteredProviderFactories);
+    public synchronized void registerOutput(TimeGraphOutput output) {
+        /* Send notifications for currently-registered factories */
+        fRegisteredProviderFactories.forEach(factory -> output.providerRegistered(factory));
+        fRegisteredOutputs.add(output);
+    }
+
+    /**
+     * Unregister a previously-registered output, so that it does not receive any
+     * more notifications. Has no effect if the output was not already registered.
+     *
+     * @param output
+     *            The output to unregister
+     */
+    public synchronized void unregisterOutput(TimeGraphOutput output) {
+        fRegisteredOutputs.remove(output);
     }
 
 }

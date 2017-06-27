@@ -9,8 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
@@ -19,22 +18,26 @@ import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
-
-import com.google.common.collect.ImmutableSet;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.shape.Rectangle;
 
-public class TimelineManager {
+public class TimelineManager implements TimeGraphOutput {
 
     private static final double INITIAL_DIVIDER_POSITION = 0.2;
 
-    private final Set<ITimelineWidget> fWidgets = new LinkedHashSet<>();
+    private final TimelineView fView;
+    private final ViewGroupContext fViewContext;
+    private final Set<ITimelineWidget> fWidgets = new HashSet<>();
 
     private final NestingBoolean fHScrollListenerStatus = new NestingBoolean();
 
@@ -47,18 +50,19 @@ public class TimelineManager {
     private final DoubleProperty fOngoingSelectionWidth = new SimpleDoubleProperty();
     private final BooleanProperty fOngoingSelectionVisible = new SimpleBooleanProperty(false);
 
-    public TimelineManager(ViewGroupContext viewContext) {
+    public TimelineManager(TimelineView view, ViewGroupContext viewContext) {
+        fView = view;
+        fViewContext = viewContext;
+        TimeGraphModelProviderManager.instance().registerOutput(this);
+    }
 
-        /* Add widgets for all known timegraph model providers */
-        for (ITimeGraphModelProviderFactory factory : TimeGraphModelProviderManager.instance().getRegisteredProviderFactories()) {
-            /* Instantiate a widget for this provider type */
-            ITimeGraphModelProvider provider = factory.get();
-            TimeGraphModelControl control = new TimeGraphModelControl(viewContext, provider);
-            TimeGraphWidget viewer = new TimeGraphWidget(control, fHScrollListenerStatus);
-            control.attachView(viewer);
-
-            fWidgets.add(viewer);
-        }
+    @Override
+    public void providerRegistered(ITimeGraphModelProviderFactory factory) {
+        /* Instantiate a widget for this provider type */
+        ITimeGraphModelProvider provider = factory.get();
+        TimeGraphModelControl control = new TimeGraphModelControl(fViewContext, provider);
+        TimeGraphWidget viewer = new TimeGraphWidget(control, fHScrollListenerStatus);
+        control.attachView(viewer);
 
         /*
          * Bind properties in a runLater() statement, so that the UI views have
@@ -66,37 +70,35 @@ public class TimelineManager {
          * has effect after the view is visible.
          */
         Platform.runLater(() -> {
-            /* Bind divider positions, where applicable */
-            fWidgets.stream()
-                    .map(w -> w.getSplitPane())
-                    .filter(Objects::nonNull).map(p -> Objects.requireNonNull(p))
-                    .forEach(splitPane -> splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition));
+            /* Bind divider position, if applicable */
+            SplitPane splitPane = viewer.getSplitPane();
+            splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition);
 
-            /* Bind h-scrollbar positions */
-            fWidgets.stream()
-                    .map(w -> w.getTimeBasedScrollPane())
-                    .filter(Objects::nonNull).map(p -> Objects.requireNonNull(p))
-                    .forEach(scrollPane -> scrollPane.hvalueProperty().bindBidirectional(fHScrollValue));
+            /* Bind h-scrollbar position */
+            ScrollPane scrollPane = viewer.getTimeBasedScrollPane();
+            scrollPane.hvalueProperty().bindBidirectional(fHScrollValue);
 
             /* Bind the selection rectangles together */
-            fWidgets.stream()
-                    .map(w -> w.getSelectionRectangle())
-                    .filter(Objects::nonNull).map(r -> Objects.requireNonNull(r))
-                    .forEach(rect -> {
-                        rect.visibleProperty().bindBidirectional(fSelectionVisible);
-                    });
-            fWidgets.stream()
-                    .map(w -> w.getOngoingSelectionRectangle())
-                    .filter(Objects::nonNull).map(r -> Objects.requireNonNull(r))
-                    .forEach(rect -> {
-                        rect.layoutXProperty().bindBidirectional(fOngoingSelectionX);
-                        rect.widthProperty().bindBidirectional(fOngoingSelectionWidth);
-                        rect.visibleProperty().bindBidirectional(fOngoingSelectionVisible);
-                    });
+            Rectangle selectionRect = viewer.getSelectionRectangle();
+            if (selectionRect != null) {
+                selectionRect.visibleProperty().bindBidirectional(fSelectionVisible);
+            }
+            Rectangle ongoingSelectionRect = viewer.getOngoingSelectionRectangle();
+            if (ongoingSelectionRect != null) {
+                ongoingSelectionRect.layoutXProperty().bindBidirectional(fOngoingSelectionX);
+                ongoingSelectionRect.widthProperty().bindBidirectional(fOngoingSelectionWidth);
+                ongoingSelectionRect.visibleProperty().bindBidirectional(fOngoingSelectionVisible);
+            }
         });
+
+        fWidgets.add(viewer);
+        fView.addWidget(viewer.getRootNode());
+
     }
 
     public void dispose() {
+        TimeGraphModelProviderManager.instance().unregisterOutput(this);
+
         fWidgets.forEach(w -> {
             if (w instanceof TimeGraphModelView) {
                 /*
@@ -109,10 +111,7 @@ public class TimelineManager {
                 w.dispose();
             }
         });
-    }
-
-    public Iterable<ITimelineWidget> getWidgets() {
-        return ImmutableSet.copyOf(fWidgets);
+        fWidgets.clear();
     }
 
     void resetInitialSeparatorPosition() {
