@@ -11,7 +11,6 @@ package org.lttng.scope.lttng.kernel.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.ResourcesCpuIrqModelProvider;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.ResourcesIrqModelProvider;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
 
@@ -37,7 +36,7 @@ public class Activator extends ScopeCoreActivator {
         TimeGraphModelProviderManager manager = TimeGraphModelProviderManager.instance();
         manager.registerProviderFactory(() -> new ThreadsModelProvider());
         manager.registerProviderFactory(() -> new ResourcesCpuIrqModelProvider());
-        manager.registerProviderFactory(() -> new ResourcesIrqModelProvider());
+//        manager.registerProviderFactory(() -> new ResourcesIrqModelProvider());
 
         /* Register the built-in LTTng-Analyses descriptors */
 //        try {
