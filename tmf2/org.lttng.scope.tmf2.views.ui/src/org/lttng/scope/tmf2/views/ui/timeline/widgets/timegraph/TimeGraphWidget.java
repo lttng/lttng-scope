@@ -351,8 +351,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         /* Update the zoom level */
         long windowTimeRange = newVisibleRange.getDuration();
         double timeGraphVisibleWidth = fTimeGraphScrollPane.getViewportBounds().getWidth();
-        /* Clamp the width to 1 px (0 is reported if the view is not visible) */
-        timeGraphVisibleWidth = Math.max(1, timeGraphVisibleWidth);
+        if (timeGraphVisibleWidth < 100) {
+            /*
+             * The view's width is reported as 0 if the widget is not yet part of the
+             * scenegraph. Instead target a larger width so that we obtain a value of
+             * nanos-per-pixel that makes sense.
+             */
+            timeGraphVisibleWidth = 2000;
+        }
         fNanosPerPixel.set(windowTimeRange / timeGraphVisibleWidth);
 
         double oldTotalWidth = fTimeGraphPane.getLayoutBounds().getWidth();
