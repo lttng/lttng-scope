@@ -13,8 +13,13 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
@@ -37,50 +42,16 @@ import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
 import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
+/**
+ * State provider for the "Threads" timegraph model.
+ *
+ * @author Alexandre Montplaisir
+ */
 public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
-
-    // ------------------------------------------------------------------------
-    // Label mapping
-    // ------------------------------------------------------------------------
 
     /** Prefixes to strip from syscall names in the labels */
     // TODO This should be inferred from the kernel event layout
     private static final Collection<String> SYSCALL_PREFIXES = Arrays.asList("sys_", "syscall_entry_"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    private static @Nullable String getStateLabel(ITmfStateSystem ss, int sourceQuark, ITmfStateInterval interval) {
-        int statusQuark = sourceQuark;
-        long startTime = interval.getStartTime();
-        ITmfStateValue val = interval.getStateValue();
-
-        /* If the status is "syscall", use the name of the syscall as label */
-        if (!val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
-            return null;
-        }
-
-        String syscallName;
-        try {
-            int syscallQuark = ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
-            syscallName = ss.querySingleState(startTime, syscallQuark).getStateValue().unboxStr();
-        } catch (AttributeNotFoundException | StateValueTypeException e) {
-            return null;
-        }
-
-        /*
-         * Strip the "syscall" prefix part if there is one, it's not useful in
-         * the label.
-         */
-        for (String sysPrefix : SYSCALL_PREFIXES) {
-            if (syscallName.startsWith(sysPrefix)) {
-                syscallName = syscallName.substring(sysPrefix.length());
-            }
-        }
-
-        return syscallName;
-    }
-
-    // ------------------------------------------------------------------------
-    // Color mapping, line thickness
-    // ------------------------------------------------------------------------
 
     /**
      * State definitions used in this provider.
@@ -124,37 +95,6 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
         }
     }
 
-    // ------------------------------------------------------------------------
-    // Properties
-    // ------------------------------------------------------------------------
-
-    private static Map<String, String> getStateProperties(ITmfStateSystem ss, int sourceQuark, ITmfStateInterval interval) {
-        /* Include properties for CPU and syscall name. */
-        int baseQuark = sourceQuark;
-        long startTime = interval.getStartTime();
-
-        String cpu;
-        try {
-            int cpuQuark = ss.getQuarkRelative(baseQuark, Attributes.CURRENT_CPU_RQ);
-            ITmfStateValue sv = ss.querySingleState(startTime, cpuQuark).getStateValue();
-            cpu = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : String.valueOf(sv.unboxInt()));
-        } catch (AttributeNotFoundException e) {
-            cpu = requireNonNull(Messages.propertyNotAvailable);
-        }
-
-        String syscall;
-        try {
-            int syscallNameQuark = ss.getQuarkRelative(baseQuark, Attributes.SYSTEM_CALL);
-            ITmfStateValue sv = ss.querySingleState(startTime, syscallNameQuark).getStateValue();
-            syscall = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : sv.unboxStr());
-        } catch (AttributeNotFoundException e) {
-            syscall = requireNonNull(Messages.propertyNotAvailable);
-        }
-
-        return ImmutableMap.of(requireNonNull(Messages.propertyNameCpu), cpu,
-                requireNonNull(Messages.propertyNameSyscall), syscall);
-    }
-
     /**
      * Constructor
      */
@@ -167,14 +107,82 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
     protected TimeGraphStateInterval createInterval(ITmfStateSystem ss,
             StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
 
-        StateDefinition stateDef = stateValueToStateDef(interval.getStateValue());
+        int statusQuark = treeElem.getSourceQuark();
+        long startTime = interval.getStartTime();
+        ITmfStateValue val = interval.getStateValue();
+
+        StateDefinition stateDef = stateValueToStateDef(val);
+
+        /*
+         * Prepare the quarks we will need for the additional state system query. We
+         * want to add the system call name (if applicable) and the thread's current
+         * CPU.
+         */
+        @Nullable Integer syscallNameQuark;
+        if (val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
+            try {
+                syscallNameQuark = ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
+            } catch (AttributeNotFoundException e) {
+                syscallNameQuark = null;
+            }
+        } else {
+            syscallNameQuark = null;
+        }
+
+        @Nullable Integer cpuQuark;
+        try {
+            cpuQuark = ss.getQuarkRelative(statusQuark, Attributes.CURRENT_CPU_RQ);
+        } catch (AttributeNotFoundException e) {
+            cpuQuark = null;
+        }
+
+        /* Do the query to the state system. */
+        Set<Integer> quarks = Stream.of(syscallNameQuark, cpuQuark)
+                .filter(Objects::nonNull).map(Objects::requireNonNull)
+                .collect(Collectors.toSet());
+        Map<Integer, ITmfStateInterval> results = (quarks.isEmpty() ? Collections.emptyMap() : ss.queryStates(startTime, quarks));
+
+        /* Assign the results */
+        String syscallName;
+        if (syscallNameQuark == null) {
+            syscallName = null;
+        } else {
+            syscallName = requireNonNull(results.get(syscallNameQuark)).getStateValue().unboxStr();
+            /*
+             * Strip the "syscall" prefix part if there is one, it's not useful in the
+             * label.
+             */
+            for (String sysPrefix : SYSCALL_PREFIXES) {
+                if (syscallName.startsWith(sysPrefix)) {
+                    syscallName = syscallName.substring(sysPrefix.length());
+                }
+            }
+        }
+
+        String cpuProperty;
+        if (cpuQuark == null) {
+            cpuProperty = requireNonNull(Messages.propertyNotAvailable);
+        } else {
+          ITmfStateValue sv = requireNonNull(results.get(cpuQuark)).getStateValue();
+          cpuProperty = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : String.valueOf(sv.unboxInt()));
+        }
+
+        /*
+         * If there is no syscall name, use the "Not available" message in the property
+         * (but not in the label!)
+         */
+        String syscallProperty = (syscallName == null ? requireNonNull(Messages.propertyNotAvailable) : syscallName);
+
+        Map<String, String> properties = ImmutableMap.of(
+                requireNonNull(Messages.propertyNameCpu), cpuProperty,
+                requireNonNull(Messages.propertyNameSyscall), syscallProperty);
 
         return new BasicTimeGraphStateInterval(
                 interval.getStartTime(),
                 interval.getEndTime(),
                 treeElem,
                 stateDef,
-                getStateLabel(ss, treeElem.getSourceQuark(), interval),
-                getStateProperties(ss, treeElem.getSourceQuark(), interval));
+                syscallName,
+                properties);
     }
 }
