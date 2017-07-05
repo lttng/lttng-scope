@@ -16,8 +16,12 @@ package org.eclipse.tracecompass.ctf.tmf.core.trace;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +71,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTraceKnownSize;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTraceWithPreDefinedEvents;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
+import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfPersistentlyIndexable;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.ITmfTraceIndexer;
@@ -74,7 +79,14 @@ import org.eclipse.tracecompass.tmf.core.trace.indexer.TmfBTreeTraceIndexer;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 
+import com.efficios.jabberwocky.collection.TraceCollection;
+import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.ctf.trace.generic.GenericCtfTrace;
+import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
+import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -145,6 +157,8 @@ public class CtfTmfTrace extends TmfTrace
 
     /** Reference to the CTF Trace */
     private CTFTrace fTrace;
+
+    private ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> fJwProject;
 
     // -------------------------------------------
     // Constructor
@@ -262,14 +276,56 @@ public class CtfTmfTrace extends TmfTrace
              */
             throw new TmfTraceException(e.getMessage(), e);
         }
+
+        setupJwProject();
+    }
+
+    private void setupJwProject() throws TmfTraceException {
+        Path tracePath = Paths.get(getPath());
+        ITrace<CtfTraceEvent> jwTrace = getJwTrace(tracePath);
+        TraceCollection<CtfTraceEvent, ITrace<CtfTraceEvent>> traceCollection = new TraceCollection<>(Collections.singleton(jwTrace));
+        Collection<TraceCollection<CtfTraceEvent, ITrace<CtfTraceEvent>>> traceCollections = Collections.singleton(traceCollection);
+
+        String projectName = this.getName();
+        Path projectDir = Paths.get(TmfTraceManager.getSupplementaryFileDir(this)).resolve("jw-project"); //$NON-NLS-1$
+        if (!Files.exists(projectDir)) {
+            try {
+                Files.createDirectories(projectDir);
+            } catch (IOException e) {
+                throw new TmfTraceException(e.getMessage(), e);
+            }
+        }
+
+        fJwProject = new TraceProject<>(projectName, projectDir, traceCollections);
+    }
+
+    protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
+        return new GenericCtfTrace(tracePath);
+    }
+
+    /**
+     * @return
+     */
+    public ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> getJwProject() {
+        ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> proj = fJwProject;
+        if (proj == null) {
+            throw new IllegalStateException("Cannot get the project of an uninitialized trace"); //$NON-NLS-1$
+        }
+        return proj;
     }
 
     @Override
     public synchronized void dispose() {
+        ITraceProject<?, ?> project = fJwProject;
+        if (project != null) {
+            JabberwockyProjectManager.instance().disposeResults(project);
+        }
+
         fIteratorManager.dispose();
         if (fTrace != null) {
             fTrace = null;
         }
+
         super.dispose();
     }
 

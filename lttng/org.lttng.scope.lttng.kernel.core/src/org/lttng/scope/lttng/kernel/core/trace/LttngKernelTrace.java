@@ -13,6 +13,7 @@
 
 package org.lttng.scope.lttng.kernel.core.trace;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -41,6 +42,8 @@ import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng29EventLayou
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.LttngEventLayout;
 import org.lttng.scope.lttng.kernel.core.trace.layout.internal.PerfEventLayout;
 
+import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -112,6 +115,11 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
             Class<? extends ITmfEvent> eventType) throws TmfTraceException {
         super.initTrace(resource, path, eventType);
         fOriginTracer = getTracerFromEnv();
+    }
+
+    @Override
+    protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
+        return new com.efficios.jabberwocky.lttng.kernel.trace.LttngKernelTrace(tracePath);
     }
 
     /**
