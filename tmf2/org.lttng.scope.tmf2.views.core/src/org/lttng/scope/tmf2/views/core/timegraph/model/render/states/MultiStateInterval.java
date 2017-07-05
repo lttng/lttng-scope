@@ -11,9 +11,9 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.render.states;
 
 import java.util.Collections;
 
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 /**
@@ -24,12 +24,12 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
  */
 public final class MultiStateInterval extends BasicTimeGraphStateInterval {
 
-    /** Configuration option for the line thickness of multi-state intervals */
-    public static final ConfigOption<LineThickness> MULTI_STATE_THICKNESS_OPTION = new ConfigOption<>(LineThickness.NORMAL);
-
-    private static final String MULTI_STATE_NAME = "Multi-state"; //$NON-NLS-1$
-    private static final ColorDefinition MULTI_STATE_COLOR = new ColorDefinition(0, 0, 0);
-    private static final ConfigOption<ColorDefinition> MULTI_STATE_COLOR_OPTION = new ConfigOption<>(MULTI_STATE_COLOR);
+    /**
+     * State definition for "multi-states"
+     */
+    public static final StateDefinition MULTI_STATE_DEFINITION = new StateDefinition("Multi-state", //$NON-NLS-1$
+            new ColorDefinition(0, 0, 0),
+            LineThickness.NORMAL);
 
     /**
      * Constructor
@@ -45,11 +45,10 @@ public final class MultiStateInterval extends BasicTimeGraphStateInterval {
         super(startTime,
                 endTime,
                 treeElement,
-                MULTI_STATE_NAME,
+                MULTI_STATE_DEFINITION,
                 /* Label */
                 null,
-                MULTI_STATE_COLOR_OPTION,
-                MULTI_STATE_THICKNESS_OPTION,
+                /* Properties */
                 Collections.emptyMap());
     }
 

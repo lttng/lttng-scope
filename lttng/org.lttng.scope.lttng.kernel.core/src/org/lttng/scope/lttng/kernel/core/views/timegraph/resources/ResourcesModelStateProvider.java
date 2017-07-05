@@ -98,12 +98,9 @@ public class ResourcesModelStateProvider extends StateSystemModelStateProvider {
                 interval.getStartTime(),
                 interval.getEndTime(),
                 treeElem,
-
-                stateDef.getName(),
+                stateDef,
                 // Label, none for now TODO
                 null,
-                stateDef.getColor(),
-                stateDef.getLineThickness(),
                 // Properties
                 // TODO Add current thread on this CPU
                 Collections.emptyMap());

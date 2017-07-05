@@ -16,6 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
@@ -31,11 +32,8 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
     private final TimeGraphEvent fStartEvent;
     private final TimeGraphEvent fEndEvent;
 
-    private final String fStateName;
+    private final StateDefinition fStateDef;
     private final @Nullable String fLabel;
-    private final ConfigOption<ColorDefinition> fColor;
-    private final ConfigOption<LineThickness> fLineThickness;
-
     private final Map<String, String> fProperties;
 
     /**
@@ -50,24 +48,18 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
      *            End time
      * @param treeElement
      *            Tree element of this interval
-     * @param stateName
-     *            State name
+     * @param stateDef
+     *            State definition
      * @param label
      *            Label, see {@link #getLabel()}
-     * @param color
-     *            Color
-     * @param lineThickness
-     *            Line thickness
      * @param properties
      *            Properties
      */
     public BasicTimeGraphStateInterval(long start,
             long end,
             TimeGraphTreeElement treeElement,
-            String stateName,
+            StateDefinition stateDef,
             @Nullable String label,
-            ConfigOption<ColorDefinition> color,
-            ConfigOption<LineThickness> lineThickness,
             Map<String, String> properties) {
 
         if (start > end || start < 0 || end < 0) {
@@ -77,10 +69,8 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
         fStartEvent = new TimeGraphEvent(start, treeElement);
         fEndEvent = new TimeGraphEvent(end, treeElement);
 
-        fStateName = stateName;
+        fStateDef = stateDef;
         fLabel = label;
-        fColor = color;
-        fLineThickness = lineThickness;
         fProperties = properties;
     }
 
@@ -96,7 +86,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
 
     @Override
     public String getStateName() {
-        return fStateName;
+        return fStateDef.getName();
     }
 
     @Override
@@ -106,12 +96,12 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
 
     @Override
     public ConfigOption<ColorDefinition> getColorDefinition() {
-        return fColor;
+        return fStateDef.getColor();
     }
 
     @Override
     public ConfigOption<LineThickness> getLineThickness() {
-        return fLineThickness;
+        return fStateDef.getLineThickness();
     }
 
     @Override
@@ -126,7 +116,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fStartEvent, fEndEvent, fStateName, fLabel, fColor, fLineThickness);
+        return Objects.hash(fStartEvent, fEndEvent, fStateDef, fLabel);
     }
 
     @Override
@@ -141,12 +131,10 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
             return false;
         }
         BasicTimeGraphStateInterval other = (BasicTimeGraphStateInterval) obj;
-        return (Objects.equals(fStartEvent, other.fStartEvent)
+        return Objects.equals(fStartEvent, other.fStartEvent)
                 && Objects.equals(fEndEvent, other.fEndEvent)
-                && Objects.equals(fStateName, other.fStateName)
-                && Objects.equals(fLabel, other.fLabel)
-                && Objects.equals(fColor, other.fColor)
-                && fLineThickness == other.fLineThickness);
+                && Objects.equals(fStateDef, other.fStateDef)
+                && Objects.equals(fLabel, other.fLabel);
     }
 
     @Override
@@ -154,7 +142,7 @@ public class BasicTimeGraphStateInterval implements TimeGraphStateInterval {
         return MoreObjects.toStringHelper(this)
                 .add("start", fStartEvent.getTimestamp()) //$NON-NLS-1$
                 .add("end", fEndEvent.getTimestamp()) //$NON-NLS-1$
-                .add("name", fStateName) //$NON-NLS-1$
+                .add("stateDef", fStateDef) //$NON-NLS-1$
                 .toString();
     }
 

@@ -173,11 +173,8 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
                 interval.getStartTime(),
                 interval.getEndTime(),
                 treeElem,
-
-                stateDef.getName(),
+                stateDef,
                 getStateLabel(ss, treeElem.getSourceQuark(), interval),
-                stateDef.getColor(),
-                stateDef.getLineThickness(),
                 getStateProperties(ss, treeElem.getSourceQuark(), interval));
     }
 }

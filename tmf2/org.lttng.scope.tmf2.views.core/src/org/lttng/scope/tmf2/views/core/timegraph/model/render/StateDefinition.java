@@ -9,7 +9,12 @@
 
 package org.lttng.scope.tmf2.views.core.timegraph.model.render;
 
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Class defining the UI reprsentation of a state, as well as default values for
@@ -65,5 +70,36 @@ public class StateDefinition {
      */
     public ConfigOption<LineThickness> getLineThickness() {
         return fLineThickness;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fName, fColor, fLineThickness);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        StateDefinition other = (StateDefinition) obj;
+        return Objects.equals(fName, other.fName)
+                && Objects.equals(fColor, other.fColor)
+                && Objects.equals(fLineThickness, other.fLineThickness);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", fName) //$NON-NLS-1$
+                .add("color", fColor) //$NON-NLS-1$
+                .add("lineThickness", fLineThickness) //$NON-NLS-1$
+                .toString();
     }
 }

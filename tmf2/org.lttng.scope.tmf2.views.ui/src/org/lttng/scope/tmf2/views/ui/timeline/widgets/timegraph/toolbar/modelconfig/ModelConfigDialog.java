@@ -70,7 +70,7 @@ class ModelConfigDialog extends Dialog<@Nullable Void> {
 
         /* Add an "empty row", then the control for multi-state intervals */
         LineThicknessMenuButton multiStateThicknessButton = new LineThicknessMenuButton(widget,
-                MultiStateInterval.MULTI_STATE_THICKNESS_OPTION,
+                MultiStateInterval.MULTI_STATE_DEFINITION.getLineThickness(),
                 widget.getDebugOptions().multiStatePaint);
         grid.appendRow(new Text("")); //$NON-NLS-1$
         grid.appendRow(new Label("Multi-states"), new Text(), multiStateThicknessButton);
