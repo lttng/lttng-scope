@@ -15,25 +15,26 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
@@ -46,10 +47,10 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
     // TODO This should be inferred from the kernel event layout
     private static final Collection<String> SYSCALL_PREFIXES = Arrays.asList("sys_", "syscall_entry_"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final Function<StateIntervalContext, @Nullable String> LABEL_MAPPING_FUNCTION = ssCtx -> {
-        int statusQuark = ssCtx.baseTreeElement.getSourceQuark();
-        long startTime = ssCtx.sourceInterval.getStartTime();
-        ITmfStateValue val = ssCtx.ss.querySingleState(startTime, statusQuark).getStateValue();
+    private static @Nullable String getStateLabel(ITmfStateSystem ss, int sourceQuark, ITmfStateInterval interval) {
+        int statusQuark = sourceQuark;
+        long startTime = interval.getStartTime();
+        ITmfStateValue val = interval.getStateValue();
 
         /* If the status is "syscall", use the name of the syscall as label */
         if (!val.equals(StateValues.PROCESS_STATUS_RUN_SYSCALL_VALUE)) {
@@ -58,8 +59,8 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
 
         String syscallName;
         try {
-            int syscallQuark = ssCtx.ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
-            syscallName = ssCtx.ss.querySingleState(startTime, syscallQuark).getStateValue().unboxStr();
+            int syscallQuark = ss.getQuarkRelative(statusQuark, Attributes.SYSTEM_CALL);
+            syscallName = ss.querySingleState(startTime, syscallQuark).getStateValue().unboxStr();
         } catch (AttributeNotFoundException | StateValueTypeException e) {
             return null;
         }
@@ -75,7 +76,7 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
         }
 
         return syscallName;
-    };
+    }
 
     // ------------------------------------------------------------------------
     // Color mapping, line thickness
@@ -92,11 +93,6 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
             KernelAnalysisStateDefinitions.THREAD_STATE_USERMODE,
             KernelAnalysisStateDefinitions.THREAD_STATE_SYSCALL,
             KernelAnalysisStateDefinitions.THREAD_STATE_INTERRUPTED);
-
-    private static final Function<StateIntervalContext, StateDefinition> STATE_DEF_MAPPING_FUNCTION = ssCtx -> {
-        ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
-        return stateValueToStateDef(val);
-    };
 
     @VisibleForTesting
     static final StateDefinition stateValueToStateDef(ITmfStateValue val) {
@@ -128,25 +124,19 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
         }
     }
 
-    private static final Function<StateIntervalContext, String> STATE_NAME_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getName();
-
-    private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getColor();
-
-    private static final Function<StateIntervalContext, ConfigOption<LineThickness>> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getLineThickness();
-
     // ------------------------------------------------------------------------
     // Properties
     // ------------------------------------------------------------------------
 
-    private static final Function<StateIntervalContext, Map<String, String>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
+    private static Map<String, String> getStateProperties(ITmfStateSystem ss, int sourceQuark, ITmfStateInterval interval) {
         /* Include properties for CPU and syscall name. */
-        int baseQuark = ssCtx.baseTreeElement.getSourceQuark();
-        long startTime = ssCtx.sourceInterval.getStartTime();
+        int baseQuark = sourceQuark;
+        long startTime = interval.getStartTime();
 
         String cpu;
         try {
-            int cpuQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.CURRENT_CPU_RQ);
-            ITmfStateValue sv = ssCtx.ss.querySingleState(startTime, cpuQuark).getStateValue();
+            int cpuQuark = ss.getQuarkRelative(baseQuark, Attributes.CURRENT_CPU_RQ);
+            ITmfStateValue sv = ss.querySingleState(startTime, cpuQuark).getStateValue();
             cpu = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : String.valueOf(sv.unboxInt()));
         } catch (AttributeNotFoundException e) {
             cpu = requireNonNull(Messages.propertyNotAvailable);
@@ -154,8 +144,8 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
 
         String syscall;
         try {
-            int syscallNameQuark = ssCtx.ss.getQuarkRelative(baseQuark, Attributes.SYSTEM_CALL);
-            ITmfStateValue sv = ssCtx.ss.querySingleState(startTime, syscallNameQuark).getStateValue();
+            int syscallNameQuark = ss.getQuarkRelative(baseQuark, Attributes.SYSTEM_CALL);
+            ITmfStateValue sv = ss.querySingleState(startTime, syscallNameQuark).getStateValue();
             syscall = (sv.isNull() ? requireNonNull(Messages.propertyNotAvailable) : sv.unboxStr());
         } catch (AttributeNotFoundException e) {
             syscall = requireNonNull(Messages.propertyNotAvailable);
@@ -163,18 +153,31 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
 
         return ImmutableMap.of(requireNonNull(Messages.propertyNameCpu), cpu,
                 requireNonNull(Messages.propertyNameSyscall), syscall);
-    };
+    }
 
     /**
      * Constructor
      */
     public ThreadsModelStateProvider() {
         super(STATE_DEFINITIONS,
-                KernelAnalysisModule.ID,
-                STATE_NAME_MAPPING_FUNCTION,
-                LABEL_MAPPING_FUNCTION,
-                COLOR_MAPPING_FUNCTION,
-                LINE_THICKNESS_MAPPING_FUNCTION,
-                PROPERTIES_MAPPING_FUNCTION);
+                KernelAnalysisModule.ID);
+    }
+
+    @Override
+    protected TimeGraphStateInterval createInterval(ITmfStateSystem ss,
+            StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
+
+        StateDefinition stateDef = stateValueToStateDef(interval.getStateValue());
+
+        return new BasicTimeGraphStateInterval(
+                interval.getStartTime(),
+                interval.getEndTime(),
+                treeElem,
+
+                stateDef.getName(),
+                getStateLabel(ss, treeElem.getSourceQuark(), interval),
+                stateDef.getColor(),
+                stateDef.getLineThickness(),
+                getStateProperties(ss, treeElem.getSourceQuark(), interval));
     }
 }

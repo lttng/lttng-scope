@@ -12,18 +12,13 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.FutureTask;
-import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.MathUtils;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
@@ -45,47 +40,9 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
  *
  * @author Alexandre Montplaisir
  */
-public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
-
-    /**
-     * The context of a single state interval. Should contain all the
-     * information required to generate the state interval in the render (name,
-     * color, etc.)
-     */
-    protected static final class StateIntervalContext {
-
-        /** State system */
-        public final ITmfStateSystem ss;
-        /** Base tree element */
-        public final StateSystemTimeGraphTreeElement baseTreeElement;
-        /** Source interval */
-        public final ITmfStateInterval sourceInterval;
-
-        /**
-         * Constructor
-         *
-         * @param ss
-         *            State system
-         * @param baseTreeElement
-         *            Tree element for which the data should be fetched. It may
-         *            not correspond directly to the state's tree element, a
-         *            relative path may be used, for example for additional data
-         *            stored in a separate attribute.
-         * @param sourceInterval
-         *            The state system interval which will be represented by the
-         *            model state interval
-         */
-        public StateIntervalContext(ITmfStateSystem ss,
-                StateSystemTimeGraphTreeElement baseTreeElement,
-                ITmfStateInterval sourceInterval) {
-            this.ss = ss;
-            this.baseTreeElement = baseTreeElement;
-            this.sourceInterval = sourceInterval;
-        }
-    }
+public abstract class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
 
     private final String fStateSystemModuleId;
-    private final Function<StateIntervalContext, TimeGraphStateInterval> fIntervalMappingFunction;
 
     /**
      * This state system here is not necessarily the same as the one in the
@@ -96,47 +53,17 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
     /**
      * Constructor
      *
-     * TODO Maybe merge the various Functions into a single class?
-     *
      * @param stateDefinitions
      *            The state definitions used in this provider
      * @param stateSystemModuleId
      *            The ID of the state system from which to fetch the information
-     * @param stateNameMappingFunction
-     *            Mapping function from state interval context to state name
-     * @param labelMappingFunction
-     *            Mapping function from state interval context to state label
-     * @param colorMappingFunction
-     *            Mapping function from state interval context to state color
-     * @param lineThicknessMappingFunction
-     *            Mapping function from state interval context to line thickness
-     * @param propertiesMappingFunction
-     *            Mapping function from state interval context to properties
      */
     public StateSystemModelStateProvider(
             List<StateDefinition> stateDefinitions,
-            String stateSystemModuleId,
-            Function<StateIntervalContext, String> stateNameMappingFunction,
-            Function<StateIntervalContext, @Nullable String> labelMappingFunction,
-            Function<StateIntervalContext, ConfigOption<ColorDefinition>> colorMappingFunction,
-            Function<StateIntervalContext, ConfigOption<LineThickness>> lineThicknessMappingFunction,
-            Function<StateIntervalContext, Map<String, String>> propertiesMappingFunction) {
+            String stateSystemModuleId) {
 
         super(stateDefinitions);
-
         fStateSystemModuleId = stateSystemModuleId;
-
-        fIntervalMappingFunction = ssCtx -> {
-            return new BasicTimeGraphStateInterval(
-                    ssCtx.sourceInterval.getStartTime(),
-                    ssCtx.sourceInterval.getEndTime(),
-                    ssCtx.baseTreeElement,
-                    stateNameMappingFunction.apply(ssCtx),
-                    labelMappingFunction.apply(ssCtx),
-                    colorMappingFunction.apply(ssCtx),
-                    lineThicknessMappingFunction.apply(ssCtx),
-                    propertiesMappingFunction.apply(ssCtx));
-        };
 
         /*
          * Change listener which will take care of keeping the target state
@@ -157,6 +84,27 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         });
 
     }
+
+    /**
+     * Define how this state provider generates model intervals.
+     *
+     * TODO All state system intervals should be queried in one go (using
+     * {@link ITmfStateSystem#queryStates}), including 'interval' that is currently
+     * done as a separate step.
+     *
+     * @param ss
+     *            The target state system
+     * @param treeElem
+     *            The timegraph tree element (FIXME Required because of the state
+     *            interval's constructor, otherwise the subclasses should only need
+     *            the quark)
+     * @param interval
+     *            The source interval
+     * @return The timegraph model interval object, you can use
+     *         {@link BasicTimeGraphStateInterval} for a simple implementation.
+     */
+    protected abstract TimeGraphStateInterval createInterval(ITmfStateSystem ss,
+            StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval);
 
     // ------------------------------------------------------------------------
     // Render generation methods
@@ -244,7 +192,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
              */
             long ts2 = ts + resolution;
             if (stateSystemInterval.getStartTime() <= ts && stateSystemInterval.getEndTime() >= ts2) {
-                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, stateSystemInterval);
+                TimeGraphStateInterval interval = createInterval(ss, treeElem, stateSystemInterval);
                 modelIntervals.add(interval);
                 lastAddedInterval = stateSystemInterval;
             }
@@ -261,7 +209,7 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         } else {
             ITmfStateInterval stateSystemInterval = ss.querySingleState(ts, attributeQuark);
             if (stateSystemInterval.getStartTime() <= ts && stateSystemInterval.getEndTime() >= ts2) {
-                TimeGraphStateInterval interval = ssIntervalToModelInterval(ss, treeElem, stateSystemInterval);
+                TimeGraphStateInterval interval = createInterval(ss, treeElem, stateSystemInterval);
                 modelIntervals.add(interval);
             }
         }
@@ -307,12 +255,6 @@ public class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
         }
 
         return filledIntervals;
-    }
-
-    private TimeGraphStateInterval ssIntervalToModelInterval(ITmfStateSystem ss,
-            StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
-        StateIntervalContext siCtx = new StateIntervalContext(ss, treeElem, interval);
-        return fIntervalMappingFunction.apply(siCtx);
     }
 
 }

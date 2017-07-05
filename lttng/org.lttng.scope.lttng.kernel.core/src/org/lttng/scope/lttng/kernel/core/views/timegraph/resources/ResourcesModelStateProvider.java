@@ -11,23 +11,22 @@ package org.lttng.scope.lttng.kernel.core.views.timegraph.resources;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
+import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateValueTypeException;
+import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
@@ -36,12 +35,6 @@ import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
  * @author Alexandre Montplaisir
  */
 public class ResourcesModelStateProvider extends StateSystemModelStateProvider {
-
-    // ------------------------------------------------------------------------
-    // Label mapping
-    // ------------------------------------------------------------------------
-
-    private static final Function<StateIntervalContext, @Nullable String> LABEL_MAPPING_FUNCTION = ssCtx -> null;
 
     // ------------------------------------------------------------------------
     // Color mapping, line thickness
@@ -57,11 +50,6 @@ public class ResourcesModelStateProvider extends StateSystemModelStateProvider {
             KernelAnalysisStateDefinitions.CPU_STATE_IRQ_ACTIVE,
             KernelAnalysisStateDefinitions.CPU_STATE_SOFTIRQ_ACTIVE,
             KernelAnalysisStateDefinitions.CPU_STATE_SOFTIRQ_RAISED);
-
-    private static final Function<StateIntervalContext, StateDefinition> STATE_DEF_MAPPING_FUNCTION = ssCtx -> {
-        ITmfStateValue val = ssCtx.sourceInterval.getStateValue();
-        return stateValueToStateDef(val);
-    };
 
     @VisibleForTesting
     static final StateDefinition stateValueToStateDef(ITmfStateValue val) {
@@ -93,31 +81,31 @@ public class ResourcesModelStateProvider extends StateSystemModelStateProvider {
         }
     }
 
-    private static final Function<StateIntervalContext, String> STATE_NAME_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getName();
-
-    private static final Function<StateIntervalContext, ConfigOption<ColorDefinition>> COLOR_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getColor();
-
-    private static final Function<StateIntervalContext, ConfigOption<LineThickness>> LINE_THICKNESS_MAPPING_FUNCTION = ssCtx -> STATE_DEF_MAPPING_FUNCTION.apply(ssCtx).getLineThickness();
-
-    // ------------------------------------------------------------------------
-    // Properties
-    // ------------------------------------------------------------------------
-
-    private static final Function<StateIntervalContext, Map<String, String>> PROPERTIES_MAPPING_FUNCTION = ssCtx -> {
-        // TODO Add current thread on this CPU
-        return Collections.emptyMap();
-    };
-
     /**
      * Constructor
      */
     public ResourcesModelStateProvider() {
-        super(STATE_DEFINITIONS,
-                KernelAnalysisModule.ID,
-                STATE_NAME_MAPPING_FUNCTION,
-                LABEL_MAPPING_FUNCTION,
-                COLOR_MAPPING_FUNCTION,
-                LINE_THICKNESS_MAPPING_FUNCTION,
-                PROPERTIES_MAPPING_FUNCTION);
+        super(STATE_DEFINITIONS, KernelAnalysisModule.ID);
+    }
+
+    @Override
+    protected TimeGraphStateInterval createInterval(ITmfStateSystem ss,
+            StateSystemTimeGraphTreeElement treeElem, ITmfStateInterval interval) {
+
+        StateDefinition stateDef = stateValueToStateDef(interval.getStateValue());
+
+        return new BasicTimeGraphStateInterval(
+                interval.getStartTime(),
+                interval.getEndTime(),
+                treeElem,
+
+                stateDef.getName(),
+                // Label, none for now TODO
+                null,
+                stateDef.getColor(),
+                stateDef.getLineThickness(),
+                // Properties
+                // TODO Add current thread on this CPU
+                Collections.emptyMap());
     }
 }
