@@ -12,8 +12,9 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -54,6 +55,6 @@ public abstract class KernelEventHandler {
      * @throws AttributeNotFoundException
      *             if the attribute is not yet create
      */
-    public abstract void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException;
+    public abstract void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException;
 
 }

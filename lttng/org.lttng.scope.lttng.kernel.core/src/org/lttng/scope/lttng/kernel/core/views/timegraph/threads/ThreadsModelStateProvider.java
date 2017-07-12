@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
@@ -99,8 +99,7 @@ public class ThreadsModelStateProvider extends StateSystemModelStateProvider {
      * Constructor
      */
     public ThreadsModelStateProvider() {
-        super(STATE_DEFINITIONS,
-                KernelAnalysisModule.ID);
+        super(STATE_DEFINITIONS, KernelAnalysis.instance());
     }
 
     @Override

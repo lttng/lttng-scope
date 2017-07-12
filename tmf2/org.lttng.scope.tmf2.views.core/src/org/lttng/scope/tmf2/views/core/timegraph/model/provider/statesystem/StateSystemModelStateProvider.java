@@ -15,8 +15,9 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
@@ -26,7 +27,9 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphSt
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.efficios.jabberwocky.analysis.statesystem.StateSystemAnalysis;
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
@@ -42,8 +45,6 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
  */
 public abstract class StateSystemModelStateProvider extends TimeGraphModelStateProvider {
 
-    private final String fStateSystemModuleId;
-
     /**
      * This state system here is not necessarily the same as the one in the
      * {@link StateSystemModelProvider}!
@@ -55,15 +56,15 @@ public abstract class StateSystemModelStateProvider extends TimeGraphModelStateP
      *
      * @param stateDefinitions
      *            The state definitions used in this provider
-     * @param stateSystemModuleId
-     *            The ID of the state system from which to fetch the information
+     * @param stateSystemAnalysis
+     *            State system analysis generating the state system used by this
+     *            provider
      */
     public StateSystemModelStateProvider(
             List<StateDefinition> stateDefinitions,
-            String stateSystemModuleId) {
+            StateSystemAnalysis stateSystemAnalysis) {
 
         super(stateDefinitions);
-        fStateSystemModuleId = stateSystemModuleId;
 
         /*
          * Change listener which will take care of keeping the target state
@@ -71,16 +72,15 @@ public abstract class StateSystemModelStateProvider extends TimeGraphModelStateP
          */
         traceProperty().addListener((obs, oldValue, newValue) -> {
             ITmfTrace trace = newValue;
-            if (trace == null) {
+            if (!(trace instanceof CtfTmfTrace)) {
                 fStateSystem = null;
                 return;
             }
 
-            // FIXME Remove the extra thread once we move to Jabberwocky
-            Thread thread = new Thread(() -> {
-                fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
-            });
-            thread.start();
+            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
+            ITraceProject<?, ?> project = ctfTrace.getJwProject();
+            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
 
     }

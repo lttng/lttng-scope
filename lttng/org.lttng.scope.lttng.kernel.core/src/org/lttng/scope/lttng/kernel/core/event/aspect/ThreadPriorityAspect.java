@@ -21,7 +21,11 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.common.core.NonNullUtils;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
+import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
+
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -32,7 +36,7 @@ import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
  * This aspect finds the priority of the thread running from this event using
- * the {@link KernelAnalysisModule}.
+ * the {@link KernelAnalysis}.
  *
  * @author Christian Mansky
  */
@@ -57,15 +61,14 @@ public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
     @Override
     public @Nullable Integer resolve(ITmfEvent event) {
         final @NonNull ITmfTrace trace = event.getTrace();
-        KernelAnalysisModule kernelAnalysis = TmfTraceUtils.getAnalysisModuleOfClass(trace, KernelAnalysisModule.class, KernelAnalysisModule.ID);
-        if (kernelAnalysis == null) {
+        if (!(trace instanceof LttngKernelTrace)) {
             return null;
         }
-
-        ITmfStateSystem ss = kernelAnalysis.getStateSystem();
-        if (ss == null) {
-            return null;
-        }
+        LttngKernelTrace kTrace = (LttngKernelTrace) trace;
+        ITraceProject<?, ?> project = kTrace.getJwProject();
+        KernelAnalysis analysis = KernelAnalysis.instance();
+        JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);
 
         Integer tid = KernelTidAspect.INSTANCE.resolve(event);
         if (tid == null) {

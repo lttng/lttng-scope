@@ -21,13 +21,20 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
+import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelThreadInformationProvider;
+import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
+
+import com.efficios.jabberwocky.project.ITraceProject;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * This aspect finds the ID of the thread running from this event using the
- * {@link KernelAnalysisModule}.
+ * {@link KernelAnalysis}.
  *
  * @author Geneviève Bastien
  */
@@ -66,20 +73,18 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
         }
 
         /* Find the analysis module for the trace */
-        KernelAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(event.getTrace(),
-                KernelAnalysisModule.class, KernelAnalysisModule.ID);
-        if (analysis == null) {
+        final @NonNull ITmfTrace trace = event.getTrace();
+        if (!(trace instanceof LttngKernelTrace)) {
             return null;
         }
+        LttngKernelTrace kTrace = (LttngKernelTrace) trace;
+        ITraceProject<?, ?> project = kTrace.getJwProject();
+        KernelAnalysis analysis = KernelAnalysis.instance();
+        JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);
+
         long ts = event.getTimestamp().toNanos();
-        while (block && !analysis.isQueryable(ts) && !monitor.isCanceled()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return KernelThreadInformationProvider.getThreadOnCpu(analysis, cpu, ts);
+        return KernelThreadInformationProvider.getThreadOnCpu(ss, cpu, ts);
     }
 
 }

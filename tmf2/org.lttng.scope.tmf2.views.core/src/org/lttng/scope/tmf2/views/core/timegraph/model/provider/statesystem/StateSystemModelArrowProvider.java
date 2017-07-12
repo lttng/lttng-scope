@@ -12,14 +12,17 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.analysis.statesystem.StateSystemAnalysis;
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
@@ -30,8 +33,6 @@ import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
  * @author Alexandre Montplaisir
  */
 public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowProvider {
-
-    private final String fStateSystemModuleId;
 
     private transient @Nullable ITmfStateSystem fStateSystem = null;
 
@@ -46,9 +47,8 @@ public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowP
      *            be fetched
      */
     public StateSystemModelArrowProvider(TimeGraphArrowSeries arrowSeries,
-            String stateSystemModuleId) {
+            StateSystemAnalysis stateSystemAnalysis) {
         super(arrowSeries);
-        fStateSystemModuleId = stateSystemModuleId;
 
         /*
          * Change listener which will take care of keeping the target state
@@ -56,16 +56,15 @@ public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowP
          */
         traceProperty().addListener((obs, oldValue, newValue) -> {
             ITmfTrace trace = newValue;
-            if (trace == null) {
+            if (!(trace instanceof CtfTmfTrace)) {
                 fStateSystem = null;
                 return;
             }
 
-            // FIXME Remove the extra thread once we move to Jabberwocky
-            Thread thread = new Thread(() -> {
-                fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
-            });
-            thread.start();
+            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
+            ITraceProject<?, ?> project = ctfTrace.getJwProject();
+            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
     }
 

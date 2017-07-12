@@ -12,8 +12,9 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -34,7 +35,7 @@ public class ProcessExitHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
         /* No state modifications tracked atm */
     }
 

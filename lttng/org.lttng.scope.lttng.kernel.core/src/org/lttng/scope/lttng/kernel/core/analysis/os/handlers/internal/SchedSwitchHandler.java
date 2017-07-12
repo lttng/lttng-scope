@@ -14,12 +14,14 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
 import static java.util.Objects.requireNonNull;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.LinuxValues;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.FieldValue.StringValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -43,30 +45,26 @@ public class SchedSwitchHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        if (cpu == null) {
-            return;
-        }
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
 
-        ITmfEventField content = event.getContent();
-        String prevProcessName = requireNonNull((String) content.getField(getLayout().fieldPrevComm()).getValue());
-        Integer prevTid = ((Long) content.getField(getLayout().fieldPrevTid()).getValue()).intValue();
-        Long prevState = requireNonNull((Long) content.getField(getLayout().fieldPrevState()).getValue());
-        Integer prevPrio = ((Long) content.getField(getLayout().fieldPrevPrio()).getValue()).intValue();
-        String nextProcessName = requireNonNull((String) content.getField(getLayout().fieldNextComm()).getValue());
-        Integer nextTid = ((Long) content.getField(getLayout().fieldNextTid()).getValue()).intValue();
-        Integer nextPrio = ((Long) content.getField(getLayout().fieldNextPrio()).getValue()).intValue();
+        String prevProcessName = requireNonNull(event.getField(getLayout().fieldPrevComm(), StringValue.class)).getValue();
+        Long prevTid = requireNonNull(event.getField(getLayout().fieldPrevTid(), IntegerValue.class)).getValue();
+        Long prevState = requireNonNull(event.getField(getLayout().fieldPrevState(), IntegerValue.class)).getValue();
+        Long prevPrio = requireNonNull(event.getField(getLayout().fieldPrevPrio(), IntegerValue.class)).getValue();
+        String nextProcessName = requireNonNull(event.getField(getLayout().fieldNextComm(), StringValue.class)).getValue();
+        Long nextTid = requireNonNull(event.getField(getLayout().fieldNextTid(), IntegerValue.class)).getValue();
+        Long nextPrio = requireNonNull(event.getField(getLayout().fieldNextPrio(), IntegerValue.class)).getValue();
 
         /* Will never return null since "cpu" is null checked */
-        String formerThreadAttributeName = Attributes.buildThreadAttributeName(prevTid, cpu);
-        String currenThreadAttributeName = Attributes.buildThreadAttributeName(nextTid, cpu);
+        String formerThreadAttributeName = Attributes.buildThreadAttributeName(prevTid.intValue(), cpu);
+        String currenThreadAttributeName = Attributes.buildThreadAttributeName(nextTid.intValue(), cpu);
 
         int nodeThreads = KernelEventHandlerUtils.getNodeThreads(ss);
         int formerThreadNode = ss.getQuarkRelativeAndAdd(nodeThreads, formerThreadAttributeName);
         int newCurrentThreadNode = ss.getQuarkRelativeAndAdd(nodeThreads, currenThreadAttributeName);
 
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        long timestamp = event.getTimestamp();
         /*
          * Set the status of the process that got scheduled out. This will also
          * set it's current CPU run queue accordingly.
@@ -92,17 +90,17 @@ public class SchedSwitchHandler extends KernelEventHandler {
         setProcessExecName(ss, nextProcessName, newCurrentThreadNode, timestamp);
 
         /* Set the current prio for the former process */
-        setProcessPrio(ss, prevPrio, formerThreadNode, timestamp);
+        setProcessPrio(ss, prevPrio.intValue(), formerThreadNode, timestamp);
 
         /* Set the current prio for the new process */
-        setProcessPrio(ss, nextPrio, newCurrentThreadNode, timestamp);
+        setProcessPrio(ss, nextPrio.intValue(), newCurrentThreadNode, timestamp);
 
         /* Set the current scheduled process on the relevant CPU */
         int currentCPUNode = KernelEventHandlerUtils.getCurrentCPUNode(cpu, ss);
-        setCpuProcess(ss, nextTid, timestamp, currentCPUNode);
+        setCpuProcess(ss, nextTid.intValue(), timestamp, currentCPUNode);
 
         /* Set the status of the CPU itself */
-        setCpuStatus(ss, nextTid, newCurrentThreadNode, timestamp, currentCPUNode);
+        setCpuStatus(ss, nextTid.intValue(), newCurrentThreadNode, timestamp, currentCPUNode);
     }
 
     private static void setOldProcessStatus(ITmfStateSystemBuilder ss,
@@ -161,7 +159,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
         return state == 0;
     }
 
-    private static void setCpuStatus(ITmfStateSystemBuilder ss, Integer nextTid, Integer newCurrentThreadNode, long timestamp, int currentCPUNode)
+    private static void setCpuStatus(ITmfStateSystemBuilder ss, int nextTid, int newCurrentThreadNode, long timestamp, int currentCPUNode)
             throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
@@ -180,7 +178,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, currentCPUNode);
     }
 
-    private static void setCpuProcess(ITmfStateSystemBuilder ss, Integer nextTid, long timestamp, int currentCPUNode)
+    private static void setCpuProcess(ITmfStateSystemBuilder ss, int nextTid, long timestamp, int currentCPUNode)
             throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
@@ -189,7 +187,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, quark);
     }
 
-    private static void setProcessPrio(ITmfStateSystemBuilder ss, Integer prio, Integer threadNode, long timestamp)
+    private static void setProcessPrio(ITmfStateSystemBuilder ss, int prio, int threadNode, long timestamp)
             throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;
@@ -198,7 +196,7 @@ public class SchedSwitchHandler extends KernelEventHandler {
         ss.modifyAttribute(timestamp, value, quark);
     }
 
-    private static void setProcessExecName(ITmfStateSystemBuilder ss, String processName, Integer threadNode, long timestamp)
+    private static void setProcessExecName(ITmfStateSystemBuilder ss, String processName, int threadNode, long timestamp)
             throws StateValueTypeException, AttributeNotFoundException {
         int quark;
         ITmfStateValue value;

@@ -9,10 +9,12 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -38,15 +40,16 @@ public class SchedMigrateTaskHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        Long tid = event.getContent().getFieldValue(Long.class, getLayout().fieldTid());
-        Long destCpu = event.getContent().getFieldValue(Long.class, getLayout().fieldDestCpu());
-
-        if (tid == null || destCpu == null) {
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        IntegerValue tidField = event.getField(getLayout().fieldTid(), IntegerValue.class);
+        IntegerValue destCpuField = event.getField(getLayout().fieldDestCpu(), IntegerValue.class);
+        if (tidField == null || destCpuField == null) {
             return;
         }
 
-        long t = event.getTimestamp().toNanos();
+        Long tid = tidField.getValue();
+        Long destCpu = destCpuField.getValue();
+        long t = event.getTimestamp();
 
         String threadAttributeName = Attributes.buildThreadAttributeName(tid.intValue(), null);
         if (threadAttributeName == null) {

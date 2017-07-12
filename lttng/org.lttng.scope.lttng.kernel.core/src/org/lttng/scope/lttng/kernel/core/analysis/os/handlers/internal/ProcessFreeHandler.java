@@ -12,9 +12,13 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -35,12 +39,11 @@ public class ProcessFreeHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
+        Long tid = requireNonNull(event.getField(getLayout().fieldTid(), IntegerValue.class)).getValue();
 
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        Integer tid = ((Long) event.getContent().getField(getLayout().fieldTid()).getValue()).intValue();
-
-        String threadAttributeName = Attributes.buildThreadAttributeName(tid, cpu);
+        String threadAttributeName = Attributes.buildThreadAttributeName(tid.intValue(), cpu);
         if (threadAttributeName == null) {
             return;
         }
@@ -49,6 +52,6 @@ public class ProcessFreeHandler extends KernelEventHandler {
          * Remove the process and all its sub-attributes from the current state
          */
         int quark = ss.getQuarkRelativeAndAdd(KernelEventHandlerUtils.getNodeThreads(ss), threadAttributeName);
-        ss.removeAttribute(KernelEventHandlerUtils.getTimestamp(event), quark);
+        ss.removeAttribute(event.getTimestamp(), quark);
     }
 }

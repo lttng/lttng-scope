@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
@@ -163,7 +163,7 @@ public class ThreadsModelProvider extends StateSystemModelProvider {
                 STATE_PROVIDER.get(),
                 ARROW_PROVIDERS.get(),
                 /* Parameters specific to state system render providers */
-                KernelAnalysisModule.ID,
+                KernelAnalysis.instance(),
                 SS_TO_TREE_RENDER_FUNCTION);
 
         enableFilterMode(0);

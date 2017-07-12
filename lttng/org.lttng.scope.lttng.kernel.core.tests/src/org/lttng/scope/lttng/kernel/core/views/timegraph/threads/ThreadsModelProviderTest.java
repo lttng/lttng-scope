@@ -16,28 +16,30 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
-import org.eclipse.tracecompass.tmf.core.signal.TmfTraceOpenedSignal;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.Timeout;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
@@ -54,9 +56,9 @@ import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
  */
 public class ThreadsModelProviderTest {
 
-//    /** Timeout the tests after 2 minutes */
-//    @Rule
-//    public TestRule timeoutRule = new Timeout(2, TimeUnit.MINUTES);
+    /** Timeout the tests after 2 minutes */
+    @Rule
+    public TestRule timeoutRule = new Timeout(2, TimeUnit.MINUTES);
 
     private static final long NANOS_PER_SECOND = 1000000000L;
 
@@ -76,29 +78,17 @@ public class ThreadsModelProviderTest {
     @Before
     public void setupClass() {
         LttngKernelTrace trace = LttngKernelTestTraceUtils.getTrace(TEST_TRACE);
-        trace.traceOpened(new TmfTraceOpenedSignal(ThreadsModelProviderTest.class, trace, null));
         trace.indexTrace(true);
 
-        IAnalysisModule analysis = TmfTraceUtils.getAnalysisModuleOfClass(trace, KernelAnalysisModule.class, KernelAnalysisModule.ID);
-        assertNotNull(analysis);
-        analysis.schedule(); // Should have run, just in case
-        analysis.waitForCompletion();
-
-        ITmfStateSystem ss = TmfStateSystemAnalysisModule.getStateSystem(trace, KernelAnalysisModule.ID);
+        ITraceProject<?, ?> project = trace.getJwProject();
+        JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, KernelAnalysis.instance());
         assertNotNull(ss);
 
         sfTrace = trace;
         sfSS = ss;
 
         provider.setTrace(trace);
-
-        // FIXME Very ugly hack to work-around the delay introduced by the calls
-        // to getStateSystem() that are done in separate threads. Remove once we
-        // move to Jabberwocky and avoid the need of those separate threads.
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
     }
 
     /**

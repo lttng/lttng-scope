@@ -17,7 +17,7 @@ import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
@@ -46,7 +46,7 @@ public class ThreadsModelArrowProviderCpus extends StateSystemModelArrowProvider
             LineStyle.FULL);
 
     public ThreadsModelArrowProviderCpus() {
-        super(ARROW_SERIES, KernelAnalysisModule.ID);
+        super(ARROW_SERIES, KernelAnalysis.instance());
     }
 
     @Override

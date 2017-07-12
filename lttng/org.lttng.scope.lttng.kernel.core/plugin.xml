@@ -2,19 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.linuxtools.tmf.core.analysis">
-      <module
-            analysis_module="org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule"
-            automatic="true"
-            id="org.eclipse.tracecompass.analysis.os.linux.kernel"
-            name="%analysis.linuxkernel">
-         <tracetype
-               applies="true"
-               class="org.lttng.scope.lttng.kernel.core.trace.IKernelTrace">
-         </tracetype>
-      </module>
-   </extension>
-   <extension
          point="org.eclipse.linuxtools.tmf.core.tracetype">
       <type
             category="org.eclipse.linuxtools.ctf.tmf.core.category.ctf"

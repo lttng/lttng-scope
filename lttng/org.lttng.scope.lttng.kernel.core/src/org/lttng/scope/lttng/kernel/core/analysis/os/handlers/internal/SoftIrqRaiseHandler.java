@@ -12,10 +12,14 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -37,12 +41,10 @@ public class SoftIrqRaiseHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        Integer softIrqId = ((Long) event.getContent().getField(getLayout().fieldVec()).getValue()).intValue();
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        if (cpu == null) {
-            return;
-        }
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
+        Long softIrqId = requireNonNull(event.getField(getLayout().fieldVec(), IntegerValue.class)).getValue();
+
         /*
          * Mark this SoftIRQ as *raised* in the resource tree.
          */
@@ -51,7 +53,7 @@ public class SoftIrqRaiseHandler extends KernelEventHandler {
         ITmfStateValue value = (isInSoftirq(ss.queryOngoingState(quark)) ?
                 StateValues.SOFT_IRQ_RAISED_RUNNING_VALUE :
                 StateValues.SOFT_IRQ_RAISED_VALUE);
-        ss.modifyAttribute(KernelEventHandlerUtils.getTimestamp(event), value, quark);
+        ss.modifyAttribute(event.getTimestamp(), value, quark);
 
     }
 

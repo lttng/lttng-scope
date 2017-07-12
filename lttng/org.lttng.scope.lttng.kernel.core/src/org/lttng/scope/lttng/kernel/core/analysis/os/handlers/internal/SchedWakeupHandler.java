@@ -12,10 +12,14 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -40,14 +44,14 @@ public class SchedWakeupHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        final int tid = ((Long) event.getContent().getField(getLayout().fieldTid()).getValue()).intValue();
-        final int prio = ((Long) event.getContent().getField(getLayout().fieldPrio()).getValue()).intValue();
-        Long targetCpu = event.getContent().getFieldValue(Long.class, getLayout().fieldTargetCpu());
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
+        final Long tid = requireNonNull(event.getField(getLayout().fieldTid(), IntegerValue.class)).getValue();
+        final Long prio = requireNonNull(event.getField(getLayout().fieldPrio(), IntegerValue.class)).getValue();
+        Long targetCpu = requireNonNull(event.getField(getLayout().fieldTargetCpu(), IntegerValue.class)).getValue();
 
-        String threadAttributeName = Attributes.buildThreadAttributeName(tid, cpu);
-        if (cpu == null || targetCpu == null || threadAttributeName == null) {
+        String threadAttributeName = Attributes.buildThreadAttributeName(tid.intValue(), cpu);
+        if (threadAttributeName == null) {
             return;
         }
 
@@ -60,7 +64,7 @@ public class SchedWakeupHandler extends KernelEventHandler {
          */
         int status = ss.queryOngoingState(threadNode).unboxInt();
         ITmfStateValue value = null;
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        long timestamp = event.getCpu();
         if (status != StateValues.PROCESS_STATUS_RUN_SYSCALL &&
                 status != StateValues.PROCESS_STATUS_RUN_USERMODE) {
             value = StateValues.PROCESS_STATUS_WAIT_FOR_CPU_VALUE;
@@ -77,7 +81,7 @@ public class SchedWakeupHandler extends KernelEventHandler {
          * it shows in ftrace with a sched_wakeup.
          */
         quark = ss.getQuarkRelativeAndAdd(threadNode, Attributes.PRIO);
-        value = TmfStateValue.newValueInt(prio);
+        value = TmfStateValue.newValueInt(prio.intValue());
         ss.modifyAttribute(timestamp, value, quark);
     }
 }

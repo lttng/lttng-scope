@@ -15,12 +15,14 @@ package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 import static java.util.Objects.requireNonNull;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.LinuxValues;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.FieldValue.StringValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -44,36 +46,38 @@ public class StateDumpHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        ITmfEventField content = event.getContent();
-        Integer eventCpu = KernelEventHandlerUtils.getCpu(event);
-        int tid = ((Long) content.getField("tid").getValue()).intValue(); //$NON-NLS-1$
-        int pid = ((Long) content.getField("pid").getValue()).intValue(); //$NON-NLS-1$
-        int ppid = ((Long) content.getField("ppid").getValue()).intValue(); //$NON-NLS-1$
-        int status = ((Long) content.getField("status").getValue()).intValue(); //$NON-NLS-1$
-        String name = requireNonNull((String) content.getField("name").getValue()); //$NON-NLS-1$
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int eventCpu = event.getCpu();
+        Long tid = requireNonNull(event.getField("tid", IntegerValue.class)).getValue(); //$NON-NLS-1$
+        Long pid =  requireNonNull(event.getField("pid", IntegerValue.class)).getValue(); //$NON-NLS-1$
+        Long ppid = requireNonNull(event.getField("ppid", IntegerValue.class)).getValue(); //$NON-NLS-1$
+        Long status = requireNonNull(event.getField("status", IntegerValue.class)).getValue(); //$NON-NLS-1$
+        String name = requireNonNull(event.getField("name", StringValue.class)).getValue(); //$NON-NLS-1$
+
         /* Only present in LTTng 2.10+ */
-        @Nullable Long cpuField = content.getFieldValue(Long.class, "cpu"); //$NON-NLS-1$
+        IntegerValue cpuFieldValue = event.getField("cpu", IntegerValue.class); //$NON-NLS-1$
+        @Nullable Long cpuField = (cpuFieldValue == null ? null : cpuFieldValue.getValue());
+
         /*
          * "mode" could be interesting too, but it doesn't seem to be populated
          * with anything relevant for now.
          */
 
-        String threadAttributeName = Attributes.buildThreadAttributeName(tid, eventCpu);
+        String threadAttributeName = Attributes.buildThreadAttributeName(tid.intValue(), eventCpu);
         if (threadAttributeName == null) {
             return;
         }
 
         int curThreadNode = ss.getQuarkRelativeAndAdd(KernelEventHandlerUtils.getNodeThreads(ss), threadAttributeName);
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        long timestamp = event.getTimestamp();
         /* Set the process' name */
         setProcessName(ss, name, curThreadNode, timestamp);
 
         /* Set the process' PPID */
-        setPpid(ss, tid, pid, ppid, curThreadNode, timestamp);
+        setPpid(ss, tid.intValue(), pid.intValue(), ppid.intValue(), curThreadNode, timestamp);
 
         /* Set the process' status */
-        setStatus(ss, status, curThreadNode, cpuField, timestamp);
+        setStatus(ss, status.intValue(), curThreadNode, cpuField, timestamp);
     }
 
     private static void setStatus(ITmfStateSystemBuilder ss, int status, int curThreadNode, @Nullable Long cpu, long timestamp) {

@@ -9,8 +9,12 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -34,17 +38,15 @@ public class IPIExitHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        if (cpu == null) {
-            return;
-        }
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
         int currentThreadNode = KernelEventHandlerUtils.getCurrentThreadNode(cpu, ss);
-        Integer irqId = ((Long) event.getContent().getField(getLayout().fieldIPIVector()).getValue()).intValue();
+        Long irqId = requireNonNull(event.getField(getLayout().fieldIPIVector(), IntegerValue.class)).getValue();
+
         /* Put this IRQ back to inactive in the resource tree */
         int quark = ss.getQuarkRelativeAndAdd(KernelEventHandlerUtils.getNodeIRQs(cpu, ss), irqId.toString());
         TmfStateValue value = TmfStateValue.nullValue();
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        long timestamp = event.getTimestamp();
         ss.modifyAttribute(timestamp, value, quark);
 
         /* Set the previous process back to running */

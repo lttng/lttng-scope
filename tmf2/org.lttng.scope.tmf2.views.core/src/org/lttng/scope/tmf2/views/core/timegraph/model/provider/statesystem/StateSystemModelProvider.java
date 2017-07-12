@@ -17,12 +17,16 @@ import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
+import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+
+import com.efficios.jabberwocky.analysis.statesystem.StateSystemAnalysis;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
@@ -96,9 +100,7 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
         }
     }
 
-    private final String fStateSystemModuleId;
     private final Function<TreeRenderContext, TimeGraphTreeRender> fTreeRenderFunction;
-
     private final Map<ITmfStateSystem, CachedTreeRender> fLastTreeRenders = new WeakHashMap<>();
 
     private transient @Nullable ITmfStateSystem fStateSystem = null;
@@ -116,8 +118,9 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
      *            The state provider part of this model provider
      * @param arrowProviders
      *            The arrow provider(s) supplied by this model provider
-     * @param stateSystemModuleId
-     *            ID of the state system from which data will be fetched
+     * @param stateSystemAnalysis
+     *            State system analysis generating the state system used by this
+     *            provider
      * @param treeRenderFunction
      *            Function to generate a tree render for a given tree context
      */
@@ -126,12 +129,11 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
             @Nullable List<FilterMode> filterModes,
             ITimeGraphModelStateProvider stateProvider,
             @Nullable List<ITimeGraphModelArrowProvider> arrowProviders,
-            String stateSystemModuleId,
+            StateSystemAnalysis stateSystemAnalysis,
             Function<TreeRenderContext, TimeGraphTreeRender> treeRenderFunction) {
 
         super(name, sortingModes, filterModes, stateProvider, arrowProviders);
 
-        fStateSystemModuleId = stateSystemModuleId;
         fTreeRenderFunction = treeRenderFunction;
 
         /*
@@ -140,22 +142,15 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
          */
         traceProperty().addListener((obs, oldValue, newValue) -> {
             ITmfTrace trace = newValue;
-            if (trace == null) {
+            if (!(trace instanceof CtfTmfTrace)) {
                 fStateSystem = null;
                 return;
             }
 
-            /*
-             * Set the state system in another thread, so that if it blocks on
-             * waitForInitialization, it does not block the application
-             * thread...
-             *
-             * FIXME We ought to get rid of this blocking in Jabberwocky.
-             */
-            Thread thread = new Thread(() -> {
-                fStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, fStateSystemModuleId);
-            });
-            thread.start();
+            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
+            ITraceProject<?, ?> project = ctfTrace.getJwProject();
+            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
     }
 

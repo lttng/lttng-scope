@@ -12,10 +12,13 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -36,13 +39,12 @@ public class PiSetprioHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        ITmfEventField content = event.getContent();
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        Integer tid = ((Long) content.getField(getLayout().fieldTid()).getValue()).intValue();
-        Integer prio = ((Long) content.getField(getLayout().fieldNewPrio()).getValue()).intValue();
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
+        Long tid = requireNonNull(event.getField(getLayout().fieldTid(), IntegerValue.class)).getValue();
+        Long prio = requireNonNull(event.getField(getLayout().fieldNewPrio(), IntegerValue.class)).getValue();
 
-        String threadAttributeName = Attributes.buildThreadAttributeName(tid, cpu);
+        String threadAttributeName = Attributes.buildThreadAttributeName(tid.intValue(), cpu);
         if (threadAttributeName == null) {
             return;
         }
@@ -51,7 +53,7 @@ public class PiSetprioHandler extends KernelEventHandler {
 
         /* Set the current prio for the new process */
         int quark = ss.getQuarkRelativeAndAdd(updateThreadNode, Attributes.PRIO);
-        ITmfStateValue value = TmfStateValue.newValueInt(prio);
-        ss.modifyAttribute(KernelEventHandlerUtils.getTimestamp(event), value, quark);
+        ITmfStateValue value = TmfStateValue.newValueInt(prio.intValue());
+        ss.modifyAttribute(event.getTimestamp(), value, quark);
     }
 }

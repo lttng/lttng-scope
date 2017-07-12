@@ -10,16 +10,15 @@
  *
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.core.analysis.os.internal;
+package org.lttng.scope.lttng.kernel.core.analysis.os;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.lttng.kernel.core.activator.internal.Activator;
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.IPIEntryHandler;
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.IPIExitHandler;
@@ -40,7 +39,14 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.StateDump
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SysEntryHandler;
 import org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal.SysExitHandler;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng29EventLayout;
 
+import com.efficios.jabberwocky.analysis.statesystem.StateSystemAnalysis;
+import com.efficios.jabberwocky.collection.ITraceCollection;
+import com.efficios.jabberwocky.collection.TraceCollection;
+import com.efficios.jabberwocky.lttng.kernel.trace.LttngKernelTrace;
+import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.collect.ImmutableMap;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
@@ -73,7 +79,14 @@ import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
  *
  * @author Alexandre Montplaisir
  */
-public class KernelStateProvider extends AbstractTmfStateProvider {
+public class KernelAnalysis extends StateSystemAnalysis {
+
+    // FIXME Layout shouldn't be fixed, should come from the trace
+    private static final KernelAnalysis INSTANCE = new KernelAnalysis(Lttng29EventLayout.getInstance());
+
+    public static final KernelAnalysis instance() {
+        return INSTANCE;
+    }
 
     // ------------------------------------------------------------------------
     // Static fields
@@ -102,14 +115,14 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
     /**
      * Instantiate a new state provider plugin.
      *
-     * @param trace
-     *            The LTTng 2.0 kernel trace directory
+     * FIXME Pass the layout to the call to execute(), somehow.
+     *
      * @param layout
      *            The event layout to use for this state provider. Usually
      *            depending on the tracer implementation.
      */
-    public KernelStateProvider(ITmfTrace trace, ILttngKernelEventLayout layout) {
-        super(trace, "Kernel"); //$NON-NLS-1$
+    public KernelAnalysis(ILttngKernelEventLayout layout) {
+        super();
         fLayout = layout;
         fEventNames = buildEventNames(layout);
 
@@ -157,29 +170,55 @@ public class KernelStateProvider extends AbstractTmfStateProvider {
     }
 
     // ------------------------------------------------------------------------
-    // IStateChangeInput
+    // IAnalysis
     // ------------------------------------------------------------------------
 
     @Override
-    public int getVersion() {
+    public boolean appliesTo(@Nullable ITraceProject<?, ?> project) {
+        return (project != null && projectContainsKernelTrace(project));
+    }
+
+    @Override
+    public boolean canExecute(@Nullable ITraceProject<?, ?> project) {
+        return (project != null && projectContainsKernelTrace(project));
+    }
+
+    private static boolean projectContainsKernelTrace(ITraceProject<?, ?> project) {
+        return project.getTraceCollections().stream()
+                .flatMap(collection -> collection.getTraces().stream())
+                .anyMatch(trace -> trace instanceof LttngKernelTrace);
+    }
+
+    // ------------------------------------------------------------------------
+    // StateSystemAnalysis
+    // ------------------------------------------------------------------------
+
+    @Override
+    public int getProviderVersion() {
         return VERSION;
     }
 
     @Override
-    public KernelStateProvider getNewInstance() {
-        return new KernelStateProvider(this.getTrace(), fLayout);
+    public ITraceCollection<?, ?> filterTraces(@Nullable ITraceProject<?, ?> project) {
+        requireNonNull(project);
+        Collection<LttngKernelTrace> kernelTraces = project.getTraceCollections().stream()
+                .flatMap(collection -> collection.getTraces().stream())
+                .filter(trace -> trace instanceof LttngKernelTrace)
+                .map(trace -> (LttngKernelTrace) trace)
+                .collect(Collectors.toList());
+        return new TraceCollection<>(kernelTraces);
     }
 
     @Override
-    protected void eventHandle(@Nullable ITmfEvent event) {
-        if (event == null) {
-            return;
+    public void handleEvent(@Nullable ITmfStateSystemBuilder ss, @Nullable ITraceEvent event) {
+        if (ss == null || event == null) {
+            /* JDT doesn't recognize Kotlin's non-null types */
+            throw new IllegalStateException();
         }
 
-        final String eventName = event.getName();
+        final String eventName = event.getEventName();
 
         try {
-            final ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
             /*
              * Feed event to the history system if it's known to cause a state
              * transition.

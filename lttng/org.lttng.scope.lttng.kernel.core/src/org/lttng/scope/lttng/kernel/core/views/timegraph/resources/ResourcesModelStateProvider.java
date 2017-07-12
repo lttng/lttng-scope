@@ -12,7 +12,7 @@ package org.lttng.scope.lttng.kernel.core.views.timegraph.resources;
 import java.util.Collections;
 import java.util.List;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysisModule;
+import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
@@ -85,7 +85,7 @@ public class ResourcesModelStateProvider extends StateSystemModelStateProvider {
      * Constructor
      */
     public ResourcesModelStateProvider() {
-        super(STATE_DEFINITIONS, KernelAnalysisModule.ID);
+        super(STATE_DEFINITIONS, KernelAnalysis.instance());
     }
 
     @Override

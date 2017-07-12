@@ -12,11 +12,15 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.FieldValue.StringValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -39,13 +43,11 @@ public class ProcessForkHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
-        ITmfEventField content = event.getContent();
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        String childProcessName = (String) content.getField(getLayout().fieldChildComm()).getValue();
-
-        Integer parentTid = ((Long) content.getField(getLayout().fieldParentTid()).getValue()).intValue();
-        Integer childTid = ((Long) content.getField(getLayout().fieldChildTid()).getValue()).intValue();
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
+        int cpu = event.getCpu();
+        String childProcessName = requireNonNull(event.getField(getLayout().fieldChildComm(), StringValue.class)).getValue();
+        int parentTid = Long.valueOf(requireNonNull(event.getField(getLayout().fieldParentTid(), IntegerValue.class)).getValue()).intValue();
+        int childTid = Long.valueOf(requireNonNull(event.getField(getLayout().fieldChildTid(), IntegerValue.class)).getValue()).intValue();
 
         String parentThreadAttributeName = Attributes.buildThreadAttributeName(parentTid, cpu);
         if (parentThreadAttributeName == null) {
@@ -65,7 +67,7 @@ public class ProcessForkHandler extends KernelEventHandler {
         /* Assign the PPID to the new process */
         int quark = ss.getQuarkRelativeAndAdd(childTidNode, Attributes.PPID);
         ITmfStateValue value = TmfStateValue.newValueInt(parentTid);
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        long timestamp = event.getTimestamp();
         ss.modifyAttribute(timestamp, value, quark);
 
         /* Set the new process' exec_name */

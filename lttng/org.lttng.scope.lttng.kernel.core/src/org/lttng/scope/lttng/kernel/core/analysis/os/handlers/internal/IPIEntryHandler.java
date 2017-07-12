@@ -9,9 +9,13 @@
 
 package org.lttng.scope.lttng.kernel.core.analysis.os.handlers.internal;
 
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
+import static java.util.Objects.requireNonNull;
+
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
@@ -36,13 +40,10 @@ public class IPIEntryHandler extends KernelEventHandler {
     }
 
     @Override
-    public void handleEvent(ITmfStateSystemBuilder ss, ITmfEvent event) throws AttributeNotFoundException {
+    public void handleEvent(ITmfStateSystemBuilder ss, ITraceEvent event) throws AttributeNotFoundException {
 
-        Integer cpu = KernelEventHandlerUtils.getCpu(event);
-        if (cpu == null) {
-            return;
-        }
-        Integer irqId = ((Long) event.getContent().getField(getLayout().fieldIPIVector()).getValue()).intValue();
+        int cpu = event.getCpu();
+        Long irqId = requireNonNull(event.getField(getLayout().fieldIPIVector(), IntegerValue.class)).getValue();
 
         /*
          * Mark this IRQ as active in the resource tree. The state value = the
@@ -50,8 +51,8 @@ public class IPIEntryHandler extends KernelEventHandler {
          */
         int quark = ss.getQuarkRelativeAndAdd(KernelEventHandlerUtils.getNodeIRQs(cpu, ss), irqId.toString());
 
-        ITmfStateValue value = TmfStateValue.newValueInt(cpu.intValue());
-        long timestamp = KernelEventHandlerUtils.getTimestamp(event);
+        ITmfStateValue value = TmfStateValue.newValueInt(cpu);
+        long timestamp = event.getTimestamp();
         ss.modifyAttribute(timestamp, value, quark);
 
         /* Change the status of the running process to interrupted */
