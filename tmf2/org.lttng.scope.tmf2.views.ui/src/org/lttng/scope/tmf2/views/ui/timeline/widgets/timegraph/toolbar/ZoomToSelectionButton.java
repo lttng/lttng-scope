@@ -9,9 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
@@ -37,11 +35,9 @@ class ZoomToSelectionButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {
-            TmfTimeRange range = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange();
-            TimeRange timeRange = TimeRangeUtils.fromTmfTimeRange(range);
+            TimeRange timeRange = ViewGroupContext.getCurrent().getCurrentSelectionTimeRange();
             /*
-             * Only actually zoom if the selection is a time range, not a single
-             * timestamp.
+             * Only actually zoom if the selection is a time range, not a single timestamp.
              */
             if (timeRange.getDuration() > 0) {
                 viewer.getControl().updateVisibleTimeRange(timeRange, true);

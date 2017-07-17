@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.tracecompass.tmf.ui.views.TmfView;
+import org.eclipse.ui.part.ViewPart;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
@@ -24,17 +24,15 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 
-public class TimelineView extends TmfView {
+public class TimelineView extends ViewPart {
 
     public static final String VIEW_ID = "org.lttng.scope.views.timeline"; //$NON-NLS-1$
-
-    private static final String VIEW_NAME = requireNonNull(Messages.timelineViewName);
 
     private @Nullable TimelineManager fManager;
     private @Nullable SplitPane fSplitPane;
 
     public TimelineView() {
-        super(VIEW_NAME);
+        super();
     }
 
     @Override

@@ -12,7 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.tracecompass.tmf.ui.views.TmfView;
+import org.eclipse.ui.part.ViewPart;
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
@@ -28,7 +28,7 @@ import javafx.scene.Scene;
  * This class is required to be public because it is called by Eclipse's
  * extension mechanisms.
  */
-public class StubView extends TmfView {
+public class StubView extends ViewPart {
 
     /** The view's ID */
     public static final String VIEW_ID = "org.lttng.scope.tmf2.views.ui.tests.timegraph.swtjfx"; //$NON-NLS-1$
@@ -42,7 +42,7 @@ public class StubView extends TmfView {
      * Constructor
      */
     public StubView() {
-        super(VIEW_ID);
+        super();
         fModelRenderProvider = new StubModelProvider();
         fModelControl = new TimeGraphModelControl(ViewGroupContext.getCurrent(), fModelRenderProvider);
     }

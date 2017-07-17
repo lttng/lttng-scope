@@ -9,8 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav;
 
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.efficios.jabberwocky.common.TimeRange;
@@ -42,9 +41,9 @@ final class NavUtils {
         viewer.getControl().updateTimeRangeSelection(TimeRange.of(timestamp, timestamp));
 
         TimeRange fullTimeGraphRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
-        TmfTimeRange windowRange = TmfTraceManager.getInstance().getCurrentTraceContext().getWindowRange();
-        long windowStart = windowRange.getStartTime().toNanos();
-        long windowEnd = windowRange.getEndTime().toNanos();
+        TimeRange windowRange = ViewGroupContext.getCurrent().getCurrentVisibleTimeRange();
+        long windowStart = windowRange.getStartTime();
+        long windowEnd = windowRange.getEndTime();
         if (windowStart <= timestamp && timestamp <= windowEnd) {
             /* Timestamp is still in the visible range, don't touch anything. */
             return;
