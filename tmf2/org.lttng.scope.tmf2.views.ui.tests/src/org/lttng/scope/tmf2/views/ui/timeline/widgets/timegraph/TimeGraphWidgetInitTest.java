@@ -28,12 +28,8 @@ public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
     public void testInitialPosition() {
         TimeGraphWidget viewer = getWidget();
 
-        /*
-         * The initial range of the trace is from 100000 to 150000, the viewer
-         * should be showing that initially.
-         */
         final long expectedStart = StubTrace.FULL_TRACE_START_TIME;
-        final long expectedEnd = StubTrace.FULL_TRACE_START_TIME + StubTrace.INITIAL_RANGE_OFFSET;
+        final long expectedEnd = StubTrace.FULL_TRACE_END_TIME;
 
         /* Check the control */
         TimeRange visibleRange = viewer.getControl().getViewContext().getCurrentVisibleTimeRange();

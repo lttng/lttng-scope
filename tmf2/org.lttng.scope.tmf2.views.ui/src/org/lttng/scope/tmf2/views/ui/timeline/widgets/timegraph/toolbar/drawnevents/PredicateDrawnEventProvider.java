@@ -9,6 +9,8 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.drawnevents;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,12 +20,6 @@ import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
-import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest.ExecutionType;
-import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
@@ -35,6 +31,9 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTree
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.ITraceProjectIterator;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.collect.ImmutableList;
 
 class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
@@ -43,77 +42,78 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
     private static final int MAX = 2000;
 
     private final ITimeGraphModelProvider fModelProvider;
-    private final Predicate<ITmfEvent> fPredicate;
+    private final Predicate<ITraceEvent> fPredicate;
 
     public PredicateDrawnEventProvider(TimeGraphDrawnEventSeries drawnEventSeries,
             ITimeGraphModelProvider modelProvider,
-            Predicate<ITmfEvent> predicate) {
+            Predicate<ITraceEvent> predicate) {
         super(drawnEventSeries);
         fModelProvider = modelProvider;
         fPredicate = predicate;
 
         /* Just use whatever trace is currently active */
-        traceProperty().bind(ViewGroupContext.getCurrent().currentTraceProperty());
+        traceProjectProperty().bind(ViewGroupContext.getCurrent().currentTraceProjectProperty());
     }
 
     @Override
     public TimeGraphDrawnEventRender getEventRender(TimeGraphTreeRender treeRender,
             TimeRange timeRange, @Nullable FutureTask<?> task) {
 
-        /* Very TMF-specific */
-        ITmfTrace trace = traceProperty().get();
-        if (trace == null) {
+        /*
+         * FIXME Extremely slow due to iterating from the start of the trace every
+         * single time. JW doesn't allow seeking by timestamp directly yet.
+         *
+         * Final version should keep an iterator at the last selection, so we can
+         * continue using it.
+         */
+        ITraceProject<?, ?> project = traceProjectProperty().get();
+        if (project == null) {
             return new TimeGraphDrawnEventRender(timeRange, Collections.EMPTY_LIST);
         }
 
-        long startIndex = 0;
+        int matches = 0;
+        List<ITraceEvent> matchingEvents = new LinkedList<>();
+        try (ITraceProjectIterator<?> iter = project.iterator()) {
+            while (iter.hasNext()) {
+                ITraceEvent event = requireNonNull(iter.next());
 
-        List<ITmfEvent> traceEvents = new LinkedList<>();
-        TmfEventRequest req = new TmfEventRequest(ITmfEvent.class,
-                TimeRangeUtils.toTmfTimeRange(timeRange),
-                startIndex,
-                ITmfEventRequest.ALL_DATA,
-                ExecutionType.BACKGROUND) {
+                // Replace this by an iterator seek once implemented
+                if (event.getTimestamp() < timeRange.getStartTime()) {
+                    continue;
+                }
 
-            private int matches = 0;
-
-            @Override
-            public void handleData(ITmfEvent event) {
-                super.handleData(event);
-                if (task != null && task.isCancelled()) {
-                    cancel();
+                if (event.getTimestamp() > timeRange.getEndTime()) {
+                    break;
                 }
 
                 if (fPredicate.test(event)) {
-                    matches++;
-                    traceEvents.add(event);
-                    if (matches > MAX) {
-                        done();
+                    matchingEvents.add(event);
+                    if (matches++ > MAX) {
+                        break;
                     }
                 }
             }
-        };
-        trace.sendRequest(req);
-        try {
-            req.waitForCompletion();
-        } catch (InterruptedException e) {
+
+            // Stream version for Java 9:
+//            StreamUtils.getStream(iter)
+//                .dropWhile(event -> event.getTimestamp() < timeRange.getStartTime())
+//                .takeWhile(event -> event.getTimestamp() <= timeRange.getEndTime())
+//                .filter(fPredicate)
+//                .limit(MAX)
+//                .collect(ImmutableList.toImmutableList());
         }
 
-        if (req.isCancelled()) {
-            return new TimeGraphDrawnEventRender(timeRange, Collections.EMPTY_LIST);
-        }
-
-        List<TimeGraphDrawnEvent> drawnEvents = traceEvents.stream()
+        List<TimeGraphDrawnEvent> drawnEvents = matchingEvents.stream()
                 /* trace event -> TimeGraphEvent */
                 .map(traceEvent -> {
-                    long timestamp = traceEvent.getTimestamp().toNanos();
+                    long timestamp = traceEvent.getTimestamp();
                     /*
                      * Find the matching tree element for this trace event, if
                      * there is one.
                      */
                     Optional<TimeGraphTreeElement> treeElem = treeRender.getAllTreeElements().stream()
                             .filter(elem -> {
-                                Predicate<ITmfEvent> predicate = elem.getEventMatching();
+                                Predicate<ITraceEvent> predicate = elem.getEventMatching();
                                 if (predicate == null) {
                                     return false;
                                 }

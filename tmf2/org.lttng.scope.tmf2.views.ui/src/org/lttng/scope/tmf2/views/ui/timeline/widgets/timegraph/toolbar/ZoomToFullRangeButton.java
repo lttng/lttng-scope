@@ -33,7 +33,7 @@ class ZoomToFullRangeButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToFullRangeActionDescription));
         setOnAction(e -> {
-            TimeRange fullRange = viewer.getControl().getViewContext().getCurrentTraceFullRange();
+            TimeRange fullRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
             viewer.getControl().updateVisibleTimeRange(fullRange, true);
         });
     }

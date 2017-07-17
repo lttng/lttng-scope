@@ -10,13 +10,12 @@
 package org.lttng.scope.tmf2.views.core.timegraph.control;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.value.ChangeListener;
 
@@ -70,10 +69,10 @@ public final class TimeGraphModelControl {
         fView = view;
 
         /*
-         * Initially populate the view with the context of the current trace.
+         * Initially populate the view with the context of the current trace project.
          */
-        ITmfTrace trace = getViewContext().getCurrentTrace();
-        initializeForTrace(trace);
+        ITraceProject<?, ?> project = getViewContext().getCurrentTraceProject();
+        initializeForProject(project);
     }
 
     @Nullable TimeGraphModelView getView() {
@@ -90,8 +89,8 @@ public final class TimeGraphModelControl {
     }
 
     private void attachListeners(ViewGroupContext viewContext) {
-        viewContext.currentTraceProperty().addListener((observable, oldTrace, newTrace) -> {
-            initializeForTrace(newTrace);
+        viewContext.currentTraceProjectProperty().addListener((observable, oldProject, newProject) -> {
+            initializeForProject(newProject);
 
             viewContext.currentSelectionTimeRangeProperty().addListener((obs, oldRange, newRange) -> {
                 drawSelection(newRange);
@@ -130,24 +129,23 @@ public final class TimeGraphModelControl {
     /**
      * Initialize this timegraph for a new trace.
      *
-     * @param trace
-     *            The trace to initialize in the view. If it is null it indcates
-     *            'no trace'.
+     * @param traceProject
+     *            The project to initialize in the view. If it is null it indcates
+     *            'no trace project'.
      */
-    public synchronized void initializeForTrace(@Nullable ITmfTrace trace) {
+    public synchronized void initializeForProject(@Nullable ITraceProject<?, ?> traceProject) {
         TimeGraphModelView view = fView;
         if (view == null) {
             return;
         }
         view.clear();
 
-        if (!(trace instanceof CtfTmfTrace)) {
+        if (traceProject == null) {
             fRenderProvider.setTraceProject(null);
             /* View will remain cleared */
             return;
         }
-        CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
-        fRenderProvider.setTraceProject(ctfTrace.getJwProject());
+        fRenderProvider.setTraceProject(traceProject);
 
         TimeRange currentVisibleRange = fViewContext.getCurrentVisibleTimeRange();
         checkWindowTimeRange(currentVisibleRange);
@@ -162,7 +160,7 @@ public final class TimeGraphModelControl {
      * so that a repaint will show updated information.
      */
     public void repaintCurrentArea() {
-        ITmfTrace trace = fViewContext.getCurrentTrace();
+        ITraceProject<?, ?> trace = fViewContext.getCurrentTraceProject();
         TimeRange currentRange = fViewContext.getCurrentVisibleTimeRange();
         if (trace == null || currentRange == ViewGroupContext.UNINITIALIZED_RANGE) {
             return;
@@ -190,8 +188,6 @@ public final class TimeGraphModelControl {
             view.drawSelection(selectionRange);
         }
     }
-
-
 
     // ------------------------------------------------------------------------
     // View -> Control operations (Control external API)
@@ -257,7 +253,8 @@ public final class TimeGraphModelControl {
 
     private void checkWindowTimeRange(TimeRange windowRange) {
         checkTimeRange(windowRange);
-        TimeRange fullRange = fViewContext.getCurrentTraceFullRange();
+
+        TimeRange fullRange = fViewContext.getCurrentProjectFullRange();
 
         if (windowRange.getStartTime() < fullRange.getStartTime()) {
             throw new IllegalArgumentException("Requested window start time: " + windowRange.getStartTime() + //$NON-NLS-1$

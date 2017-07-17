@@ -12,12 +12,12 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -41,7 +41,7 @@ public interface ITimeGraphDrawnEventProvider {
      *
      * @return The target trace
      */
-    ObjectProperty<@Nullable ITmfTrace> traceProperty();
+    ObjectProperty<@Nullable ITraceProject<?, ?>> traceProjectProperty();
 
     /**
      * The 'enabled' property of this provider. A provider can be created and

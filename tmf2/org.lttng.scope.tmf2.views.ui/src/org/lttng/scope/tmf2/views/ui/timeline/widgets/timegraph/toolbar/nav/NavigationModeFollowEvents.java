@@ -13,20 +13,13 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Predicate;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 /**
  * Navigation mode using the current entry's events. It looks through all events
@@ -75,43 +68,51 @@ public class NavigationModeFollowEvents extends NavigationMode {
         navigate(viewer, true);
     }
 
-    private void navigate(TimeGraphWidget viewer, boolean forward) {
+    @Override
+    public boolean isEnabled() {
+        // TODO Re-enable
+        return false;
+    }
+
+    private static void navigate(TimeGraphWidget viewer, boolean forward) {
         StateRectangle state = viewer.getSelectedState();
-        ITmfTrace trace = viewer.getControl().getViewContext().getCurrentTrace();
-        if (state == null || trace == null) {
+        ITraceProject<?, ?> project = viewer.getControl().getViewContext().getCurrentTraceProject();
+        if (state == null || project == null) {
             return;
         }
-        Predicate<ITmfEvent> predicate = state.getStateInterval().getTreeElement().getEventMatching();
+        Predicate<ITraceEvent> predicate = state.getStateInterval().getTreeElement().getEventMatching();
         if (predicate == null) {
             /* The tree element does not support navigating by events. */
             return;
         }
 
-        String jobName = (forward ? Messages.sfNextEventJobName : Messages.sfPreviousEventJobName);
+        // TODO Reimplement outside of TMF
 
-        Job job = new Job(jobName) {
-            @Override
-            protected IStatus run(@Nullable IProgressMonitor monitor) {
-                long currentTime = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange().getStartTime().toNanos();
-                ITmfContext ctx = trace.seekEvent(TmfTimestamp.fromNanos(currentTime));
-                long rank = ctx.getRank();
-                ctx.dispose();
-
-                ITmfEvent event = (forward ?
-                        TmfTraceUtils.getNextEventMatching(trace, rank, predicate, monitor) :
-                        TmfTraceUtils.getPreviousEventMatching(trace, rank, predicate, monitor));
-                if (event != null) {
-                    NavUtils.selectNewTimestamp(viewer, event.getTimestamp().toNanos());
-                }
-                return Status.OK_STATUS;
-            }
-        };
-
-        /*
-         * Make subsequent jobs not run concurrently, but wait after one
-         * another.
-         */
-        job.setRule(fSearchActionMutexRule);
-        job.schedule();
+//        String jobName = (forward ? Messages.sfNextEventJobName : Messages.sfPreviousEventJobName);
+//
+//        Job job = new Job(jobName) {
+//            @Override
+//            protected IStatus run(@Nullable IProgressMonitor monitor) {
+//                long currentTime = TmfTraceManager.getInstance().getCurrentTraceContext().getSelectionRange().getStartTime().toNanos();
+//                ITmfContext ctx = trace.seekEvent(TmfTimestamp.fromNanos(currentTime));
+//                long rank = ctx.getRank();
+//                ctx.dispose();
+//
+//                ITmfEvent event = (forward ?
+//                        TmfTraceUtils.getNextEventMatching(trace, rank, predicate, monitor) :
+//                        TmfTraceUtils.getPreviousEventMatching(trace, rank, predicate, monitor));
+//                if (event != null) {
+//                    NavUtils.selectNewTimestamp(viewer, event.getTimestamp().toNanos());
+//                }
+//                return Status.OK_STATUS;
+//            }
+//        };
+//
+//        /*
+//         * Make subsequent jobs not run concurrently, but wait after one
+//         * another.
+//         */
+//        job.setRule(fSearchActionMutexRule);
+//        job.schedule();
     }
 }

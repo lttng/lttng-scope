@@ -41,7 +41,7 @@ final class NavUtils {
         /* Update the selection to the new timestamp. */
         viewer.getControl().updateTimeRangeSelection(TimeRange.of(timestamp, timestamp));
 
-        TimeRange fullTimeGraphRange = viewer.getControl().getViewContext().getCurrentTraceFullRange();
+        TimeRange fullTimeGraphRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
         TmfTimeRange windowRange = TmfTraceManager.getInstance().getCurrentTraceContext().getWindowRange();
         long windowStart = windowRange.getStartTime().toNanos();
         long windowEnd = windowRange.getEndTime().toNanos();

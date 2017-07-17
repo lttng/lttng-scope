@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.primitives.Ints;
 
 public class ThreadsTreeElement extends StateSystemTimeGraphTreeElement {
@@ -63,13 +62,13 @@ public class ThreadsTreeElement extends StateSystemTimeGraphTreeElement {
     }
 
     @Override
-    public @Nullable Predicate<ITmfEvent> getEventMatching() {
+    public @Nullable Predicate<ITraceEvent> getEventMatching() {
         /*
          * This tree element represents a thread ID. Return true for events
          * whose TID aspect is the same as the TID of this element.
          */
         return event -> {
-            Integer eventTid = KernelTidAspect.INSTANCE.resolve(event);
+            Integer eventTid = KernelTidAspect.resolve(event);
             if (eventTid == null) {
                 return false;
             }
@@ -81,13 +80,7 @@ public class ThreadsTreeElement extends StateSystemTimeGraphTreeElement {
              * CPU.
              */
             int elemCpu = requireNonNull(fCpu).intValue();
-            // TODO The notion of CPU should move to the framework
-            int eventCpu;
-            if (event instanceof CtfTmfEvent) {
-                eventCpu = ((CtfTmfEvent) event).getCPU();
-            } else {
-                eventCpu = 0;
-            }
+            int eventCpu = event.getCpu();
             return (eventTid.intValue() == fTid
                     && eventCpu == elemCpu);
         };

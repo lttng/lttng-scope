@@ -9,13 +9,13 @@
 
 package org.lttng.scope.tmf2.views.core.context;
 
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSelectionRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalThrottler;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceClosedSignal;
-import org.eclipse.tracecompass.tmf.core.signal.TmfTraceRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfTraceSelectedSignal;
 import org.eclipse.tracecompass.tmf.core.signal.TmfWindowRangeUpdatedSignal;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
@@ -26,6 +26,7 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 /**
  * Bridge between a {@link ViewGroupContext} and the {@link TmfSignalManager}.
@@ -53,25 +54,24 @@ public class SignalBridge {
         TmfSignalManager.register(this);
         fViewContext = viewContext;
 
-        viewContext.currentTraceProperty().addListener((obs, oldTrace, newTrace) -> {
-            if (newTrace == null) {
+        viewContext.currentTraceProjectProperty().addListener((obs, oldProject, newProject) -> {
+            if (newProject == null) {
                 return;
             }
-            TmfSignal newTraceSignal = new TmfTraceSelectedSignal(SignalBridge.this, newTrace);
-            TmfSignalManager.dispatchSignal(newTraceSignal);
 
-            viewContext.currentTraceFullRangeProperty().addListener((observable, oldRange, newRange) -> {
-                TmfTimeRange tmfTimeRange = TimeRangeUtils.toTmfTimeRange(newRange);
-                TmfSignal signal = new TmfTraceRangeUpdatedSignal(SignalBridge.this, viewContext.getCurrentTrace(), tmfTimeRange);
-                TmfSignalManager.dispatchSignal(signal);
-            });
+            // Currently nothing on the JW side can affect the selected trace/project, so we
+            // don't need to send the trace selected signal
+//            TmfSignal newTraceSignal = new TmfTraceSelectedSignal(SignalBridge.this, newTrace);
+//            TmfSignalManager.dispatchSignal(newTraceSignal);
 
+            /* Synchronize the visible range with TMF */
             viewContext.currentVisibleTimeRangeProperty().addListener((observable, oldRange, newRange) -> {
                 TmfTimeRange tmfTimeRange = TimeRangeUtils.toTmfTimeRange(newRange);
                 TmfSignal signal = new TmfWindowRangeUpdatedSignal(SignalBridge.this, tmfTimeRange);
                 fVisibleRangeSignalThrottler.queue(signal);
             });
 
+            /* Synchronize the range selection with TMF */
             viewContext.currentSelectionTimeRangeProperty().addListener((observable, oldRange, newRange) -> {
                 TmfSignal signal;
                 if (newRange.isSingleTimestamp()) {
@@ -110,8 +110,15 @@ public class SignalBridge {
         if (signal.getSource() == this) {
             return;
         }
+
+        ITraceProject<?, ?> project;
         ITmfTrace trace = signal.getTrace();
-        fViewContext.setCurrentTrace(trace);
+        if (trace instanceof CtfTmfTrace) {
+            project = ((CtfTmfTrace) trace).getJwProject();
+        } else {
+            project = null;
+        }
+        fViewContext.setCurrentTraceProject(project);
     }
 
     /**
@@ -125,35 +132,11 @@ public class SignalBridge {
         if (signal.getSource() == this) {
             return;
         }
+
+        /* Set the current project to null if there is no more active trace */
         if (TmfTraceManager.getInstance().getActiveTrace() == null) {
-            fViewContext.setCurrentTrace(null);
+            fViewContext.setCurrentTraceProject(null);
         }
-    }
-
-    /**
-     * Handler for the trace range updated signal
-     *
-     * @param signal
-     *            Received signal
-     */
-    @TmfSignalHandler
-    public void traceRangeUpdated(TmfTraceRangeUpdatedSignal signal) {
-        if (signal.getSource() == this) {
-            return;
-        }
-        /*
-         * This signal is a disaster, it's very inconsistent, has no guarantee
-         * of even showing up and sometimes gives values outside of the trace's
-         * own range. Best to ignore its contents completely.
-         */
-
-        ITmfTrace trace = fViewContext.getCurrentTrace();
-        if (trace == null) {
-            return;
-        }
-        long traceStart = trace.getStartTime().toNanos();
-        long traceEnd = trace.getEndTime().toNanos();
-        fViewContext.setCurrentTraceFullRange(TimeRange.of(traceStart, traceEnd));
     }
 
     /**
@@ -185,8 +168,8 @@ public class SignalBridge {
             range = TimeRange.of(rangeStart, rangeEnd);
         }
 
-        ITmfTrace trace = fViewContext.getCurrentTrace();
-        if (trace == null) {
+        ITraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
+        if (project == null) {
             return;
         }
         fViewContext.setCurrentSelectionTimeRange(range);
@@ -204,8 +187,8 @@ public class SignalBridge {
             return;
         }
         TmfTimeRange windowRange = signal.getCurrentRange();
-        ITmfTrace trace = fViewContext.getCurrentTrace();
-        if (windowRange == null || trace == null) {
+        ITraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
+        if (windowRange == null || project == null) {
             return;
         }
         fViewContext.setCurrentVisibleTimeRange(TimeRangeUtils.fromTmfTimeRange(windowRange));

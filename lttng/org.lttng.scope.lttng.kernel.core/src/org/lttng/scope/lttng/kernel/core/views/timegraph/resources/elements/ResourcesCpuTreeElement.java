@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEvent;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
+
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 /**
  * Element of the Resources time graph which represents a CPU.
@@ -57,15 +57,8 @@ public class ResourcesCpuTreeElement extends StateSystemTimeGraphTreeElement {
     }
 
     @Override
-    public @NonNull Predicate<ITmfEvent> getEventMatching() {
-        return event -> {
-            // FIXME The notion of CPU should be in the base framework.
-            if (!(event instanceof CtfTmfEvent)) {
-                return false;
-            }
-            CtfTmfEvent ctfEvent = (CtfTmfEvent) event;
-            return (fCpu == ctfEvent.getCPU());
-        };
+    public @NonNull Predicate<ITraceEvent> getEventMatching() {
+        return (event -> fCpu == event.getCpu());
     }
 
 }

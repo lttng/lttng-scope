@@ -346,7 +346,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public void seekVisibleRange(TimeRange newVisibleRange) {
-        final TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
+        final TimeRange fullTimeGraphRange = getViewContext().getCurrentProjectFullRange();
 
         /* Update the zoom level */
         long windowTimeRange = newVisibleRange.getDuration();
@@ -476,7 +476,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     void paintArea(TimeRange windowRange, VerticalPosition verticalPos,
             boolean movedHorizontally, boolean movedVertically,
             long taskSeqNb) {
-        final TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
+        final TimeRange fullTimeGraphRange = getViewContext().getCurrentProjectFullRange();
 
         /*
          * Request the needed renders and prepare the corresponding UI objects.
@@ -751,7 +751,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             long newEnd = visibleRange.getEndTime() + Math.round(durationDelta - (durationDelta * zoomPivotRatio));
 
             /* Clamp newStart and newEnd to the full trace's range */
-            TimeRange fullRange = control.getViewContext().getCurrentTraceFullRange();
+            TimeRange fullRange = control.getViewContext().getCurrentProjectFullRange();
             long traceStart = fullRange.getStartTime();
             long traceEnd = fullRange.getEndTime();
             newStart = Math.max(newStart, traceStart);
@@ -814,7 +814,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     public double timestampToPaneXPos(long timestamp) {
-        TimeRange fullTimeGraphRange = getViewContext().getCurrentTraceFullRange();
+        TimeRange fullTimeGraphRange = getViewContext().getCurrentProjectFullRange();
         return timestampToPaneXPos(timestamp, fullTimeGraphRange, fNanosPerPixel.get());
     }
 
@@ -839,7 +839,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     public long paneXPosToTimestamp(double x) {
-        long fullTimeGraphStartTime = getViewContext().getCurrentTraceFullRange().getStartTime();
+        long fullTimeGraphStartTime = getViewContext().getCurrentProjectFullRange().getStartTime();
         return paneXPosToTimestamp(x, fTimeGraphPane.getWidth(), fullTimeGraphStartTime, fNanosPerPixel.get());
     }
 

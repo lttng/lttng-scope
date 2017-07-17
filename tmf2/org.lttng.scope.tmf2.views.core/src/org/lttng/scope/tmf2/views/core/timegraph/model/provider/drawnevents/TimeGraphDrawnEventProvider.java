@@ -10,8 +10,9 @@
 package org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -27,7 +28,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public abstract class TimeGraphDrawnEventProvider implements ITimeGraphDrawnEventProvider {
 
-    private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<@Nullable ITraceProject<?, ?>> fTraceProjectProperty = new SimpleObjectProperty<>(null);
     private final BooleanProperty fEnabledProperty = new SimpleBooleanProperty(false);
     private final TimeGraphDrawnEventSeries fDrawnEventSeries;
 
@@ -42,8 +43,8 @@ public abstract class TimeGraphDrawnEventProvider implements ITimeGraphDrawnEven
     }
 
     @Override
-    public final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
-        return fTraceProperty;
+    public final ObjectProperty<@Nullable ITraceProject<?, ?>> traceProjectProperty() {
+        return fTraceProjectProperty;
     }
 
     @Override

@@ -10,9 +10,9 @@
 package org.lttng.scope.tmf2.views.core.context;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -29,11 +29,12 @@ public class ViewGroupContext {
     /** Value representing uninitialized timestamps */
     public static final TimeRange UNINITIALIZED_RANGE = TimeRange.of(0, 0);
 
+    private static final long DEFAULT_INITIAL_OFFSET = (1L * 100 * 1000 * 1000); // 100 ms (0.1 s)
+
     private final SignalBridge fSignalBridge;
 
-    private final ObjectProperty<@Nullable ITmfTrace> fCurrentTrace = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<@Nullable ITraceProject<?, ?>> fCurrentTraceProject = new SimpleObjectProperty<>(null);
 
-    private ObjectProperty<TimeRange> fCurrentTraceFullRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
     private ObjectProperty<TimeRange> fCurrentVisibleTimeRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
     private ObjectProperty<TimeRange> fCurrentSelectionRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
 
@@ -76,27 +77,24 @@ public class ViewGroupContext {
     /**
      * Set the current trace being displayed by this view context.
      *
-     * @param trace
-     *            The trace, can be null to indicate no trace
+     * @param traceProject
+     *            The trace project, can be null to indicate no trace
      */
-    public void setCurrentTrace(@Nullable ITmfTrace trace) {
+    public void setCurrentTraceProject(@Nullable ITraceProject<?, ?> traceProject) {
         /* On trace change, adjust the other properties accordingly. */
-        if (trace == null) {
-            fCurrentTraceFullRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
+        if (traceProject == null) {
             fCurrentVisibleTimeRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
             fCurrentSelectionRange = new SimpleObjectProperty<>(UNINITIALIZED_RANGE);
-
         } else {
-            long traceStart = trace.getStartTime().toNanos();
-            long traceEnd = trace.getEndTime().toNanos();
-            long visibleRangeEnd = Math.min(traceStart + trace.getInitialRangeOffset().toNanos(), traceEnd);
+            long start = traceProject.getStartTime();
+            long end = traceProject.getEndTime();
+            long visibleRangeEnd = Math.min(start + DEFAULT_INITIAL_OFFSET, end);
 
-            fCurrentTraceFullRange = new SimpleObjectProperty<>((TimeRange.of(traceStart, traceEnd)));
-            fCurrentVisibleTimeRange = new SimpleObjectProperty<>((TimeRange.of(traceStart, visibleRangeEnd)));
-            fCurrentSelectionRange = new SimpleObjectProperty<>((TimeRange.of(traceStart, traceStart)));
+            fCurrentVisibleTimeRange = new SimpleObjectProperty<>((TimeRange.of(start, visibleRangeEnd)));
+            fCurrentSelectionRange = new SimpleObjectProperty<>((TimeRange.of(start, start)));
         }
 
-        fCurrentTrace.set(trace);
+        fCurrentTraceProject.set(traceProject);
     }
 
     /**
@@ -104,49 +102,19 @@ public class ViewGroupContext {
      *
      * @return The context's current trace. Can be null to indicate no trace.
      */
-    public @Nullable ITmfTrace getCurrentTrace() {
-        return fCurrentTrace.get();
+    public @Nullable ITraceProject<?, ?> getCurrentTraceProject() {
+        return fCurrentTraceProject.get();
     }
 
     /**
      * The current trace property.
      *
-     * Make sure you use {@link #setCurrentTrace} to modify the current trace.
+     * Make sure you use {@link #setCurrentTraceProject} to modify the current trace.
      *
      * @return The current trace property.
      */
-    public ReadOnlyObjectProperty<@Nullable ITmfTrace> currentTraceProperty() {
-        return fCurrentTrace;
-    }
-
-    /**
-     * Set a new full range for the current trace
-     *
-     * @param range
-     *            The new full range of the trace
-     */
-    public void setCurrentTraceFullRange(TimeRange range) {
-        fCurrentTraceFullRange.set(range);
-    }
-
-    /**
-     * Get the full range of the current trace.
-     *
-     * @return The full range of the trace
-     */
-    public TimeRange getCurrentTraceFullRange() {
-        return fCurrentTraceFullRange.get();
-    }
-
-    /**
-     * The property representing the full range of the current trace.
-     *
-     * TODO This property should move to the trace object itself.
-     *
-     * @return The full range property
-     */
-    public ObjectProperty<TimeRange> currentTraceFullRangeProperty() {
-        return fCurrentTraceFullRange;
+    public ReadOnlyObjectProperty<@Nullable ITraceProject<?, ?>> currentTraceProjectProperty() {
+        return fCurrentTraceProject;
     }
 
     /**
@@ -208,4 +176,17 @@ public class ViewGroupContext {
         return fCurrentSelectionRange;
     }
 
+    /**
+     * Utility method to get the full range of the current active trace project.
+     *
+     * @return The full range of the current trace project, or
+     *         {@link #UNINITIALIZED_RANGE} if there is no active project.
+     */
+    public TimeRange getCurrentProjectFullRange() {
+        ITraceProject<?, ?> project = getCurrentTraceProject();
+        if (project == null) {
+            return UNINITIALIZED_RANGE;
+        }
+        return TimeRange.of(project.getStartTime(), project.getEndTime());
+    }
 }

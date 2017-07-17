@@ -27,8 +27,10 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelThreadInformationProvider;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 
 import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
@@ -85,6 +87,24 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
 
         long ts = event.getTimestamp().toNanos();
         return KernelThreadInformationProvider.getThreadOnCpu(ss, cpu, ts);
+    }
+
+    /**
+     *
+     * Aspect resolver for JW events. Can replace the main method once aspects move
+     * to JW.
+     *
+     * @param event
+     *            The event
+     * @return The TID of this event, if applicable
+     */
+    public static @Nullable Integer resolve(ITraceEvent event) {
+        ITraceProject<?, ?> project = ViewGroupContext.getCurrent().getCurrentTraceProject();
+        KernelAnalysis analysis = KernelAnalysis.instance();
+        JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);
+
+        return KernelThreadInformationProvider.getThreadOnCpu(ss, event.getCpu(), event.getTimestamp());
     }
 
 }

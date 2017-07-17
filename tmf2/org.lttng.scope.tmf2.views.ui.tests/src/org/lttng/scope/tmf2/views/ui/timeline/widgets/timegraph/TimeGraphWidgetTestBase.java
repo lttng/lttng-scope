@@ -16,7 +16,6 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -33,7 +32,7 @@ import com.efficios.jabberwocky.common.TimeRange;
  */
 public abstract class TimeGraphWidgetTestBase {
 
-    private static @Nullable ITmfTrace sfTrace;
+    private static @Nullable StubProject sfProject;
     private static @Nullable Display sfDisplay;
     private static @Nullable StubView sfView;
     private static @Nullable TimeGraphWidget sfWidget;
@@ -42,7 +41,8 @@ public abstract class TimeGraphWidgetTestBase {
     /** Class initialization */
     @BeforeClass
     public static void setupClass() {
-        sfTrace = new StubTrace();
+        StubTrace trace = new StubTrace();
+        sfProject = new StubProject(trace);
 
         StubView view;
         try {
@@ -66,7 +66,8 @@ public abstract class TimeGraphWidgetTestBase {
         viewer.getDebugOptions().isScrollingListenersEnabled.set(false);
 
         updateUI();
-        control.getViewContext().setCurrentTrace(sfTrace);
+
+        control.getViewContext().setCurrentTraceProject(sfProject);
         updateUI();
 
         sfView = view;
@@ -90,12 +91,12 @@ public abstract class TimeGraphWidgetTestBase {
             sfView.dispose();
         }
 
-        if (sfTrace != null) {
-            sfTrace.dispose();
+        if (sfProject != null) {
+            sfProject.close();
         }
 
         sfView = null;
-        sfTrace = null;
+        sfProject = null;
         sfDisplay = null;
         sfWidget = null;
         sfControl = null;

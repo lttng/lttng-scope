@@ -9,76 +9,43 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfContext;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
+import java.util.Collections;
 
-class StubTrace extends TmfTrace {
+import com.efficios.jabberwocky.trace.ITraceIterator;
+import com.efficios.jabberwocky.trace.Trace;
+import com.efficios.jabberwocky.trace.event.TraceEvent;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.UnmodifiableIterator;
+
+class StubTrace extends Trace<TraceEvent> {
 
     public static final long FULL_TRACE_START_TIME = 100000L;
     public static final long FULL_TRACE_END_TIME = 200000L;
-    public static final long INITIAL_RANGE_OFFSET = 50000L;
 
-    @Override
-    public ITmfTimestamp getStartTime() {
-        return TmfTimestamp.fromNanos(FULL_TRACE_START_TIME);
+    private static class StubTraceIterator implements ITraceIterator<TraceEvent> {
+
+        private final UnmodifiableIterator<TraceEvent> events = Iterators.forArray(
+                new TraceEvent(FULL_TRACE_START_TIME, 0, "StubEvent", Collections.emptyMap(), null),
+                new TraceEvent(FULL_TRACE_END_TIME, 0, "StubEvent", Collections.emptyMap(), null));
+
+        @Override
+        public boolean hasNext() {
+            return events.hasNext();
+        }
+
+        @Override
+        public TraceEvent next() {
+            return events.next();
+        }
+
+        @Override
+        public void close() {
+        }
     }
 
     @Override
-    public ITmfTimestamp getEndTime() {
-        return TmfTimestamp.fromNanos(FULL_TRACE_END_TIME);
-    }
-
-    @Override
-    public ITmfTimestamp getInitialRangeOffset() {
-        return TmfTimestamp.fromNanos(INITIAL_RANGE_OFFSET);
-    }
-
-    // ------------------------------------------------------------------------
-    // Useless stuff
-    // ------------------------------------------------------------------------
-
-    @Override
-    public IStatus validate(@Nullable IProject project, @Nullable String path) {
-        return Status.OK_STATUS;
-    }
-
-    @Override
-    public @Nullable IResource getResource() {
-        return null;
-    }
-
-    @Override
-    public @Nullable ITmfLocation getCurrentLocation() {
-        return null;
-    }
-
-    @Override
-    public double getLocationRatio(@Nullable ITmfLocation location) {
-        return 0.0;
-    }
-
-    @Override
-    public @Nullable ITmfContext seekEvent(@Nullable ITmfLocation location) {
-        return null;
-    }
-
-    @Override
-    public @Nullable ITmfContext seekEvent(double ratio) {
-        return null;
-    }
-
-    @Override
-    public @Nullable ITmfEvent parseEvent(@Nullable ITmfContext context) {
-        return null;
+    public ITraceIterator<TraceEvent> iterator() {
+        return new StubTraceIterator();
     }
 
 }

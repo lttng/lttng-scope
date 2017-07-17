@@ -15,8 +15,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
@@ -85,7 +85,7 @@ public class TimeGraphTreeElement {
      *
      * @return The event matching predicate, if there is one
      */
-    public @Nullable Predicate<ITmfEvent> getEventMatching() {
+    public @Nullable Predicate<ITraceEvent> getEventMatching() {
         /* Sub-classes can override */
         return null;
     }

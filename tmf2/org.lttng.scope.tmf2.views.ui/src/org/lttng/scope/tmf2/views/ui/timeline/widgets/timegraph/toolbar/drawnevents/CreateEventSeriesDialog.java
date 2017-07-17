@@ -12,7 +12,6 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.drawnev
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
@@ -21,6 +20,8 @@ import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGr
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
+
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;
@@ -114,7 +115,7 @@ class CreateEventSeriesDialog extends Dialog<@Nullable PredicateDrawnEventProvid
             }
 
             TimeGraphDrawnEventSeries series = generateEventSeries();
-            Predicate<ITmfEvent> predicate = event -> event.getName().equals(eventName);
+            Predicate<ITraceEvent> predicate = event -> event.getEventName().equals(eventName);
             return new PredicateDrawnEventProvider(series, modelProvider, predicate);
         });
 

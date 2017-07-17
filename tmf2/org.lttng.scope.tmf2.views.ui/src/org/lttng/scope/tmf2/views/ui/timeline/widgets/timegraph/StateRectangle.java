@@ -72,7 +72,7 @@ public class StateRectangle extends Rectangle {
          * start/end times. Make sure to clamp the interval's bounds to the
          * valid values.
          */
-        TimeRange traceRange = viewer.getControl().getViewContext().getCurrentTraceFullRange();
+        TimeRange traceRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
         long traceStart = traceRange.getStartTime();
         long intervalStart = interval.getStartTime();
         double xStart = viewer.timestampToPaneXPos(Math.max(traceStart, intervalStart));
