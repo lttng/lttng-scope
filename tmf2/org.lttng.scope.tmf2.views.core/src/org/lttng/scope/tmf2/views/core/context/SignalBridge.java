@@ -23,7 +23,6 @@ import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimeRange;
 import org.eclipse.tracecompass.tmf.core.timestamp.TmfTimestamp;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
-import org.lttng.scope.tmf2.views.core.TimeRangeUtils;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.ITraceProject;
@@ -66,7 +65,7 @@ public class SignalBridge {
 
             /* Synchronize the visible range with TMF */
             viewContext.currentVisibleTimeRangeProperty().addListener((observable, oldRange, newRange) -> {
-                TmfTimeRange tmfTimeRange = TimeRangeUtils.toTmfTimeRange(newRange);
+                TmfTimeRange tmfTimeRange = toTmfTimeRange(newRange);
                 TmfSignal signal = new TmfWindowRangeUpdatedSignal(SignalBridge.this, tmfTimeRange);
                 fVisibleRangeSignalThrottler.queue(signal);
             });
@@ -191,7 +190,31 @@ public class SignalBridge {
         if (windowRange == null || project == null) {
             return;
         }
-        fViewContext.setCurrentVisibleTimeRange(TimeRangeUtils.fromTmfTimeRange(windowRange));
+        fViewContext.setCurrentVisibleTimeRange(fromTmfTimeRange(windowRange));
+    }
+
+    // ------------------------------------------------------------------------
+    // Util methods
+    // ------------------------------------------------------------------------
+
+    /**
+     * Convert a {@link TimeRange} range into a {@link TmfTimeRange}.
+     *
+     * @return The equivalent TmfTimeRange
+     */
+    private static TmfTimeRange toTmfTimeRange(TimeRange range) {
+        return new TmfTimeRange(TmfTimestamp.fromNanos(range.getStartTime()), TmfTimestamp.fromNanos(range.getEndTime()));
+    }
+
+    /**
+     * Create a {@link TimeRange} from a {@link TmfTimeRange}.
+     *
+     * @param tmfRange
+     *            The TmfTimeRange
+     * @return The TimeRange
+     */
+    private static TimeRange fromTmfTimeRange(TmfTimeRange tmfRange) {
+        return TimeRange.of(tmfRange.getStartTime().toNanos(), tmfRange.getEndTime().toNanos());
     }
 
 }
