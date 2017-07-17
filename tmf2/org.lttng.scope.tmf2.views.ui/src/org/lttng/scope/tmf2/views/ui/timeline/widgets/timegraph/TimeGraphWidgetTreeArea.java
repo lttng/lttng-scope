@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
+import com.efficios.jabberwocky.project.ITraceProject;
 import com.sun.javafx.scene.control.skin.TreeViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
@@ -57,7 +57,7 @@ public class TimeGraphWidgetTreeArea extends BorderPane {
     /**
      * Constructor
      */
-    public TimeGraphWidgetTreeArea(double entryHeight, ObjectProperty<@Nullable ITmfTrace> targetTraceProperty) {
+    public TimeGraphWidgetTreeArea(double entryHeight, ObjectProperty<@Nullable ITraceProject<?, ?>> targetTraceProjectProperty) {
         TreeItem<String> treeRoot = new TreeItem<>();
         treeRoot.setExpanded(true);
 

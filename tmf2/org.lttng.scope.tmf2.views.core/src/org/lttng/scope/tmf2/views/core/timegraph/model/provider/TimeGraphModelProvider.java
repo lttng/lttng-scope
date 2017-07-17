@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
+import com.efficios.jabberwocky.project.ITraceProject;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -49,7 +49,7 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
     private final Set<FilterMode> fActiveFilterModes = new HashSet<>();
     private SortingMode fCurrentSortingMode;
 
-    private final ObjectProperty<@Nullable ITmfTrace> fTraceProperty = new SimpleObjectProperty<>();
+    private final ObjectProperty<@Nullable ITraceProject<?, ?>> fTraceProjectProperty = new SimpleObjectProperty<>();
 
     /**
      * Constructor
@@ -73,7 +73,7 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         fName = name;
 
         fStateProvider = stateProvider;
-        stateProvider.traceProperty().bind(fTraceProperty);
+        stateProvider.traceProjectProperty().bind(fTraceProjectProperty);
 
         if (sortingModes == null || sortingModes.isEmpty()) {
             fSortingModes = ImmutableList.of(DEFAULT_SORTING_MODE);
@@ -94,7 +94,7 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
         } else {
             fArrowProviders = ImmutableList.copyOf(arrowProviders);
         }
-        fArrowProviders.forEach(ap -> ap.traceProperty().bind(fTraceProperty));
+        fArrowProviders.forEach(ap -> ap.traceProjectProperty().bind(fTraceProjectProperty));
     }
 
     @Override
@@ -103,18 +103,18 @@ public abstract class TimeGraphModelProvider implements ITimeGraphModelProvider 
     }
 
     @Override
-    public final void setTrace(@Nullable ITmfTrace trace) {
-        fTraceProperty.set(trace);
+    public final void setTraceProject(@Nullable ITraceProject<?, ?> trace) {
+        fTraceProjectProperty.set(trace);
     }
 
     @Override
-    public final @Nullable ITmfTrace getTrace() {
-        return fTraceProperty.get();
+    public final @Nullable ITraceProject<?, ?> getTraceProject() {
+        return fTraceProjectProperty.get();
     }
 
     @Override
-    public final ObjectProperty<@Nullable ITmfTrace> traceProperty() {
-        return fTraceProperty;
+    public final ObjectProperty<@Nullable ITraceProject<?, ?>> traceProjectProperty() {
+        return fTraceProjectProperty;
     }
 
     @Override

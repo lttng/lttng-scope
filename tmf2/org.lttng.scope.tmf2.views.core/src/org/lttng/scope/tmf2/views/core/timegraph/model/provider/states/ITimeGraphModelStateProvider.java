@@ -14,13 +14,13 @@ import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.property.ObjectProperty;
 
@@ -39,7 +39,7 @@ public interface ITimeGraphModelStateProvider {
      *
      * @return The trace property
      */
-    ObjectProperty<@Nullable ITmfTrace> traceProperty();
+    ObjectProperty<@Nullable ITraceProject<?, ?>> traceProjectProperty();
 
     /**
      * Get an aggregated list of {@link StateDefinition} used in this provider.

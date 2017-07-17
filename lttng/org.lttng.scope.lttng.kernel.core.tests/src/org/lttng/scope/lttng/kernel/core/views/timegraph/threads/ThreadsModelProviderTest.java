@@ -88,7 +88,7 @@ public class ThreadsModelProviderTest {
         sfTrace = trace;
         sfSS = ss;
 
-        provider.setTrace(trace);
+        provider.setTraceProject(project);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ThreadsModelProviderTest {
             sfTrace.dispose();
         }
 
-        provider.setTrace(null);
+        provider.setTraceProject(null);
     }
 
     /**

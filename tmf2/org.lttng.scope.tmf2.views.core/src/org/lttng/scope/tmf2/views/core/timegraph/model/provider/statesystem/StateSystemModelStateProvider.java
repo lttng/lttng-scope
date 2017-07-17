@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.MathUtils;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
@@ -70,17 +68,16 @@ public abstract class StateSystemModelStateProvider extends TimeGraphModelStateP
          * Change listener which will take care of keeping the target state
          * system up to date.
          */
-        traceProperty().addListener((obs, oldValue, newValue) -> {
-            ITmfTrace trace = newValue;
-            if (!(trace instanceof CtfTmfTrace)) {
+        traceProjectProperty().addListener((obs, oldValue, newValue) -> {
+            ITraceProject<?, ?> project = newValue;
+            if (project != null
+                    && stateSystemAnalysis.appliesTo(project)
+                    && stateSystemAnalysis.canExecute(project)) {
+                JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+                fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
+            } else {
                 fStateSystem = null;
-                return;
             }
-
-            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
-            ITraceProject<?, ?> project = ctfTrace.getJwProject();
-            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
-            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
 
     }

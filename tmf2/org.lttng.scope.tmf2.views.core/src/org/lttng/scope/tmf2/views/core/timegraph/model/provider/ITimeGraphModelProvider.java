@@ -14,10 +14,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+
+import com.efficios.jabberwocky.project.ITraceProject;
 
 import javafx.beans.property.ObjectProperty;
 
@@ -98,7 +99,7 @@ public interface ITimeGraphModelProvider {
      * @param trace
      *            The source trace
      */
-    void setTrace(@Nullable ITmfTrace trace);
+    void setTraceProject(@Nullable ITraceProject<?, ?> trace);
 
 
     /**
@@ -106,14 +107,14 @@ public interface ITimeGraphModelProvider {
      *
      * @return The current trace
      */
-    @Nullable ITmfTrace getTrace();
+    @Nullable ITraceProject<?, ?> getTraceProject();
 
     /**
      * The property representing the target trace of this model provider.
      *
      * @return The trace property
      */
-    ObjectProperty<@Nullable ITmfTrace> traceProperty();
+    ObjectProperty<@Nullable ITraceProject<?, ?>> traceProjectProperty();
 
     // ------------------------------------------------------------------------
     // Render providers

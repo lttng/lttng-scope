@@ -17,8 +17,6 @@ import java.util.function.Function;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
@@ -140,17 +138,16 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
          * Change listener which will take care of keeping the target state
          * system up to date.
          */
-        traceProperty().addListener((obs, oldValue, newValue) -> {
-            ITmfTrace trace = newValue;
-            if (!(trace instanceof CtfTmfTrace)) {
+        traceProjectProperty().addListener((obs, oldValue, newValue) -> {
+            ITraceProject<?, ?> project = newValue;
+            if (project != null
+                    && stateSystemAnalysis.appliesTo(project)
+                    && stateSystemAnalysis.canExecute(project)) {
+                JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+                fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
+            } else {
                 fStateSystem = null;
-                return;
             }
-
-            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
-            ITraceProject<?, ?> project = ctfTrace.getJwProject();
-            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
-            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
     }
 
@@ -180,8 +177,8 @@ public abstract class StateSystemModelProvider extends TimeGraphModelProvider {
             return TimeGraphTreeRender.EMPTY_RENDER;
         }
 
-        ITmfTrace trace = getTrace();
-        String traceName = (trace == null ? "" : trace.getName()); //$NON-NLS-1$
+        ITraceProject<?, ?> traceProject = getTraceProject();
+        String traceName = (traceProject == null ? "" : traceProject.getName()); //$NON-NLS-1$
 
         TreeRenderContext treeContext = new TreeRenderContext(traceName,
                 ss,

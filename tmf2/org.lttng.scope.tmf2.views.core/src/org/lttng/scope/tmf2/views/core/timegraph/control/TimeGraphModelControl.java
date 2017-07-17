@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.core.timegraph.control;
 
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
@@ -134,18 +135,19 @@ public final class TimeGraphModelControl {
      *            'no trace'.
      */
     public synchronized void initializeForTrace(@Nullable ITmfTrace trace) {
-        fRenderProvider.setTrace(trace);
-
         TimeGraphModelView view = fView;
         if (view == null) {
             return;
         }
         view.clear();
 
-        if (trace == null) {
-            /* View will remain cleared, good */
+        if (!(trace instanceof CtfTmfTrace)) {
+            fRenderProvider.setTraceProject(null);
+            /* View will remain cleared */
             return;
         }
+        CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
+        fRenderProvider.setTraceProject(ctfTrace.getJwProject());
 
         TimeRange currentVisibleRange = fViewContext.getCurrentVisibleTimeRange();
         checkWindowTimeRange(currentVisibleRange);

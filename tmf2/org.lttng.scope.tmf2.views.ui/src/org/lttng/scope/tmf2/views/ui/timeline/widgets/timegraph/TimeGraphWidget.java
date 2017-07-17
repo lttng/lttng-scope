@@ -157,7 +157,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // Prepare the tree part's scene graph
         // --------------------------------------------------------------------
 
-        fTreeArea = new TimeGraphWidgetTreeArea(ENTRY_HEIGHT, getControl().getModelRenderProvider().traceProperty());
+        fTreeArea = new TimeGraphWidgetTreeArea(ENTRY_HEIGHT, getControl().getModelRenderProvider().traceProjectProperty());
 
         // --------------------------------------------------------------------
         // Prepare the time graph's part scene graph

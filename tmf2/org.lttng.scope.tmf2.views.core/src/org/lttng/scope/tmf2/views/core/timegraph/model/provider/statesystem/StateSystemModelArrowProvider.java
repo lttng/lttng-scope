@@ -12,8 +12,6 @@ package org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
@@ -40,11 +38,10 @@ public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowP
      * Constructor
      *
      * @param arrowSeries
-     *            The arrow series that will be represented by this arrow
+     *            The arrow series that will be represented by this arrow provider
+     * @param stateSystemAnalysis
+     *            State system analysis generating the state system used by this
      *            provider
-     * @param stateSystemModuleId
-     *            The ID of the state system from which the information should
-     *            be fetched
      */
     public StateSystemModelArrowProvider(TimeGraphArrowSeries arrowSeries,
             StateSystemAnalysis stateSystemAnalysis) {
@@ -54,17 +51,16 @@ public abstract class StateSystemModelArrowProvider extends TimeGraphModelArrowP
          * Change listener which will take care of keeping the target state
          * system up to date.
          */
-        traceProperty().addListener((obs, oldValue, newValue) -> {
-            ITmfTrace trace = newValue;
-            if (!(trace instanceof CtfTmfTrace)) {
+        traceProjectProperty().addListener((obs, oldValue, newValue) -> {
+            ITraceProject<?, ?> project = newValue;
+            if (project != null
+                    && stateSystemAnalysis.appliesTo(project)
+                    && stateSystemAnalysis.canExecute(project)) {
+                JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
+                fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
+            } else {
                 fStateSystem = null;
-                return;
             }
-
-            CtfTmfTrace ctfTrace = (CtfTmfTrace) trace;
-            ITraceProject<?, ?> project = ctfTrace.getJwProject();
-            JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
-            fStateSystem = (ITmfStateSystem) mgr.getAnalysisResults(project, stateSystemAnalysis);
         });
     }
 
