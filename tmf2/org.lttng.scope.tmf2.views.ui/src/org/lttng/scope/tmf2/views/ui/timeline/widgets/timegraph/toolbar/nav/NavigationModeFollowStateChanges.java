@@ -17,9 +17,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 
 /**
  * Navigation mode using state changes. It goes to the end/start of the current

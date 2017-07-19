@@ -9,7 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
@@ -35,7 +35,7 @@ class ZoomToSelectionButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {
-            TimeRange timeRange = ViewGroupContext.getCurrent().getCurrentSelectionTimeRange();
+            TimeRange timeRange = ViewGroupContextManager.getCurrent().getCurrentSelectionTimeRange();
             /*
              * Only actually zoom if the selection is a time range, not a single timestamp.
              */

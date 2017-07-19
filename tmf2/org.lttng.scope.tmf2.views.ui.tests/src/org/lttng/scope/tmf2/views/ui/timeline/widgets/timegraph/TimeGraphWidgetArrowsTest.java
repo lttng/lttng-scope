@@ -16,8 +16,9 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
+
+import com.efficios.jabberwocky.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 
 /**
  * {@link TimeGraphWidget} test suite testing arrow-related operations.

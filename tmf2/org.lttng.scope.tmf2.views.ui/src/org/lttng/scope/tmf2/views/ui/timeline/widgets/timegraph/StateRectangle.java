@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
 import com.google.common.base.MoreObjects;
 
 import javafx.application.Platform;

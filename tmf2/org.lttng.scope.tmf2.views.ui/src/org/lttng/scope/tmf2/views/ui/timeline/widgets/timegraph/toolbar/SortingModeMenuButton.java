@@ -13,9 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;

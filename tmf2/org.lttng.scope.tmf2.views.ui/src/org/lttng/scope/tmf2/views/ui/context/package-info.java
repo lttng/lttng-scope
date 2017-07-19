@@ -8,4 +8,4 @@
  */
 
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.lttng.scope.tmf2.views.ui.jfx.testapp;
+package org.lttng.scope.tmf2.views.ui.context;

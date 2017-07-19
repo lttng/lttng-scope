@@ -12,9 +12,8 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.context.ViewGroupContext;
 
 /**
  * It was quickly determined that having mouse listeners start repaint tasks

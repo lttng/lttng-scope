@@ -19,10 +19,6 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
-import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
-import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
@@ -34,6 +30,10 @@ import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphS
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
+import com.efficios.jabberwocky.timegraph.view.TimeGraphModelView;
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;
@@ -345,7 +345,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     }
 
     @Override
-    public void seekVisibleRange(TimeRange newVisibleRange) {
+    public void seekVisibleRange(@Nullable TimeRange newVisibleRange) {
+        requireNonNull(newVisibleRange);
         final TimeRange fullTimeGraphRange = getViewContext().getCurrentProjectFullRange();
 
         /* Update the zoom level */

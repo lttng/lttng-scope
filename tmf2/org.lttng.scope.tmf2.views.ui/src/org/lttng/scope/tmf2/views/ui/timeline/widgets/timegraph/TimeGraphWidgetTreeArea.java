@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
 import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.sun.javafx.scene.control.skin.TreeViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 

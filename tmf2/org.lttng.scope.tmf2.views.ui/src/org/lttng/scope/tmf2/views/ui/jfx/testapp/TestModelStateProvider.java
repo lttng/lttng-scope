@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.TimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.provider.states.TimeGraphModelStateProvider;
+import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateRender;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
@@ -62,8 +62,8 @@ class TestModelStateProvider extends TimeGraphModelStateProvider {
     }
 
     private static final Iterator<StateDefinition> STATE_DEFINITIONS = Iterators.cycle(
-            new StateDefinition("State 1", new ColorDefinition(128, 0, 0), LineThickness.NORMAL), //$NON-NLS-1$
-            new StateDefinition("State 2", new ColorDefinition(0, 0, 128), LineThickness.NORMAL)); //$NON-NLS-1$
+            new StateDefinition("State 1", new ColorDefinition(128, 0, 0, ColorDefinition.MAX), LineThickness.NORMAL), //$NON-NLS-1$
+            new StateDefinition("State 2", new ColorDefinition(0, 0, 128, ColorDefinition.MAX), LineThickness.NORMAL)); //$NON-NLS-1$
 
     private static synchronized StateDefinition getNextStateDef() {
         return STATE_DEFINITIONS.next();

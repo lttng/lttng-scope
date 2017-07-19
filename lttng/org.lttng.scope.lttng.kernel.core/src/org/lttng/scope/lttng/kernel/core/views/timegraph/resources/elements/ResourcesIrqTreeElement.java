@@ -11,7 +11,7 @@ package org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements;
 
 import java.util.Collections;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 
 /**
  * Element of the Resources time graph which represents an IRQ (Software or

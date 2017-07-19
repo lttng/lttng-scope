@@ -16,12 +16,12 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;

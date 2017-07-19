@@ -12,12 +12,13 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
 import org.lttng.scope.tmf2.views.ui.jfx.Arrow;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries;
 
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;

@@ -33,13 +33,13 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateRender;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.Iterables;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;

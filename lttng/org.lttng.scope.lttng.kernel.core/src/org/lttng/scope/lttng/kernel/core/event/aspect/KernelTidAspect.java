@@ -27,7 +27,7 @@ import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelThreadInformationProvider;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
@@ -99,7 +99,7 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
      * @return The TID of this event, if applicable
      */
     public static @Nullable Integer resolve(ITraceEvent event) {
-        ITraceProject<?, ?> project = ViewGroupContext.getCurrent().getCurrentTraceProject();
+        ITraceProject<?, ?> project = ViewGroupContextManager.getCurrent().getCurrentTraceProject();
         KernelAnalysis analysis = KernelAnalysis.instance();
         JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
         ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);

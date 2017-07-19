@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrow;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
+import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrow;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowRender;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 import com.google.common.collect.ImmutableList;
 
 class StubModelArrowProvider2 extends TimeGraphModelArrowProvider {
@@ -32,7 +32,7 @@ class StubModelArrowProvider2 extends TimeGraphModelArrowProvider {
 
     private static final TimeGraphArrowSeries ARROW_SERIES = new TimeGraphArrowSeries(
             SERIES_NAME,
-            new ColorDefinition(0, 255, 0),
+            new ColorDefinition(0, 255, 0, ColorDefinition.MAX),
             LineStyle.FULL);
 
     public StubModelArrowProvider2() {

@@ -18,17 +18,17 @@ import java.util.concurrent.FutureTask;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrow;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
+import com.efficios.jabberwocky.timegraph.model.render.FlatUIColors;
+import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrow;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowRender;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries;
+import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 

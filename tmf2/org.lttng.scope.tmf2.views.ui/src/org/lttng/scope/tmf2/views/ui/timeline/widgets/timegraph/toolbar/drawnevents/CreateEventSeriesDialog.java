@@ -12,16 +12,16 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.drawnev
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
+import com.efficios.jabberwocky.config.ConfigOption;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;

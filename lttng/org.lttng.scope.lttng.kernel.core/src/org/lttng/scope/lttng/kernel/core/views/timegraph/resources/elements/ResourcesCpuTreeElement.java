@@ -12,10 +12,8 @@ package org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
 
 /**
@@ -57,7 +55,7 @@ public class ResourcesCpuTreeElement extends StateSystemTimeGraphTreeElement {
     }
 
     @Override
-    public @NonNull Predicate<ITraceEvent> getEventMatching() {
+    public Predicate<ITraceEvent> getEventMatching() {
         return (event -> fCpu == event.getCpu());
     }
 

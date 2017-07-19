@@ -14,9 +14,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
+
+import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;
@@ -44,7 +45,7 @@ public class StubView extends ViewPart {
     public StubView() {
         super();
         fModelRenderProvider = new StubModelProvider();
-        fModelControl = new TimeGraphModelControl(ViewGroupContext.getCurrent(), fModelRenderProvider);
+        fModelControl = new TimeGraphModelControl(ViewGroupContextManager.getCurrent(), fModelRenderProvider);
     }
 
     @Override

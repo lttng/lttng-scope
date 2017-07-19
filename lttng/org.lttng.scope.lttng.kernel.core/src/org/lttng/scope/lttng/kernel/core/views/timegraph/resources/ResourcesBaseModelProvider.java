@@ -16,9 +16,11 @@ import java.util.function.Supplier;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+
+import com.efficios.jabberwocky.timegraph.model.provider.states.ITimeGraphModelStateProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider.TreeRenderContext;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 
 /**
  * Base class for Resources (for now, CPUs and IRQs) model providers.

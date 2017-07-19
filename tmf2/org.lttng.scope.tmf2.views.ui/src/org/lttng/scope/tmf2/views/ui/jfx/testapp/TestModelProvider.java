@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
-
+import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
 
 class TestModelProvider extends TimeGraphModelProvider {

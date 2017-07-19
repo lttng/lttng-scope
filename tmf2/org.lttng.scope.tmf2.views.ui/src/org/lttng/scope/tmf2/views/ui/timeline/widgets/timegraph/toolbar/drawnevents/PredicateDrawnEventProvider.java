@@ -20,19 +20,19 @@ import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.project.ITraceProjectIterator;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.collect.ImmutableList;
 
@@ -52,7 +52,7 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
         fPredicate = predicate;
 
         /* Just use whatever trace is currently active */
-        traceProjectProperty().bind(ViewGroupContext.getCurrent().currentTraceProjectProperty());
+        traceProjectProperty().bind(ViewGroupContextManager.getCurrent().currentTraceProjectProperty());
     }
 
     @Override

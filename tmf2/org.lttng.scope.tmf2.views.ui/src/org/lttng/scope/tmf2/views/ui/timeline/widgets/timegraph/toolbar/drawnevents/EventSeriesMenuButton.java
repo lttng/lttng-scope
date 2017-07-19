@@ -12,15 +12,15 @@ package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.drawnev
 import java.util.Optional;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import com.google.common.collect.Iterables;
 
 import javafx.application.Platform;

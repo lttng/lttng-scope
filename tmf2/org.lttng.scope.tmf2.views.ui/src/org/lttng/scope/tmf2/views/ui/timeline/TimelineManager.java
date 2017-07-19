@@ -13,14 +13,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.lttng.scope.tmf2.views.core.NestingBoolean;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
-import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.ITimeGraphModelProviderFactory;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
-import org.lttng.scope.tmf2.views.core.timegraph.view.TimeGraphModelView;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.context.ViewGroupContext;
+import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProviderFactory;
+import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager;
+import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
+import com.efficios.jabberwocky.timegraph.view.TimeGraphModelView;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

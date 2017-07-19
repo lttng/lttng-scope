@@ -14,16 +14,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.MultiStateInterval;
 import org.lttng.scope.tmf2.views.ui.jfx.CountingGridPane;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.config.ConfigOption;
+import com.efficios.jabberwocky.timegraph.model.provider.states.ITimeGraphModelStateProvider;
+import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.timegraph.model.render.states.MultiStateInterval;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.event.ActionEvent;

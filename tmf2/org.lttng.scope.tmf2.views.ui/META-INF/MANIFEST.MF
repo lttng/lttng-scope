@@ -15,8 +15,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.lttng.scope.common.ui,
  org.lttng.scope.tmf2.project.core,
  org.lttng.scope.tmf2.views.core,
- com.efficios.jabberwocky.core
+ com.efficios.jabberwocky.core,
+ com.efficios.jabberwocky.timegraph
 Export-Package: org.lttng.scope.tmf2.views.ui.activator.internal;x-internal:=true,
+ org.lttng.scope.tmf2.views.ui.context,
  org.lttng.scope.tmf2.views.ui.jfx,
  org.lttng.scope.tmf2.views.ui.jfx.examples,
  org.lttng.scope.tmf2.views.ui.timeline,

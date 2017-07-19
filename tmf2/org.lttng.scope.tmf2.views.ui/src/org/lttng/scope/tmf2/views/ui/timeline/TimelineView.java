@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
 import javafx.embed.swt.FXCanvas;
@@ -46,7 +46,7 @@ public class TimelineView extends ViewPart {
         sp.setOrientation(Orientation.VERTICAL);
         fSplitPane = sp;
 
-        TimelineManager manager = new TimelineManager(this, ViewGroupContext.getCurrent());
+        TimelineManager manager = new TimelineManager(this, ViewGroupContextManager.getCurrent());
         fManager = manager;
 
         fxCanvas.setScene(new Scene(sp));

@@ -9,10 +9,10 @@
 
 package org.lttng.scope.lttng.kernel.core.views.timegraph;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.FlatUIColors;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.LineThickness;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.timegraph.model.render.FlatUIColors;
+import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 
 /**
  * State definitions used in the views of the kernel analysis.

@@ -25,6 +25,7 @@ import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.context.ViewGroupContext;
 import com.efficios.jabberwocky.project.ITraceProject;
 
 /**

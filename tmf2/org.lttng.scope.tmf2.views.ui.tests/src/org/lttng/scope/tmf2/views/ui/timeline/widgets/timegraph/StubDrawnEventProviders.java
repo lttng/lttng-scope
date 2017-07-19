@@ -15,18 +15,18 @@ import java.util.stream.DoubleStream;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.config.ConfigOption;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 
@@ -40,7 +40,7 @@ final class StubDrawnEventProviders {
 
         private static final TimeGraphDrawnEventSeries EVENT_SERIES = new TimeGraphDrawnEventSeries(
                 "Event Series Alpha",
-                new ConfigOption<>(new ColorDefinition(0, 255, 0)),
+                new ConfigOption<>(new ColorDefinition(0, 255, 0, ColorDefinition.MAX)),
                 new ConfigOption<>(SymbolStyle.CIRCLE));
 
         public StubDrawnEventProvider1() {
@@ -74,7 +74,7 @@ final class StubDrawnEventProviders {
 
         private static final TimeGraphDrawnEventSeries EVENT_SERIES = new TimeGraphDrawnEventSeries(
                 "Event Series Zeta",
-                new ConfigOption<>(new ColorDefinition(255, 255, 0)),
+                new ConfigOption<>(new ColorDefinition(255, 255, 0, ColorDefinition.MAX)),
                 new ConfigOption<>(SymbolStyle.CROSS));
 
         public StubDrawnEventProvider2() {

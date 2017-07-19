@@ -14,9 +14,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 
+import com.efficios.jabberwocky.config.ConfigOption;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 

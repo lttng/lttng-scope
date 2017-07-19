@@ -12,7 +12,7 @@ package org.lttng.scope.tmf2.views.ui.jfx;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.ColorDefinition;
+import com.efficios.jabberwocky.views.common.ColorDefinition;
 
 import javafx.scene.paint.Color;
 
@@ -33,7 +33,7 @@ public final class JfxColorFactory {
     public static synchronized Color getColorFromDef(ColorDefinition colorDef) {
         Color color = COLOR_MAP.get(colorDef);
         if (color == null) {
-            color = Color.rgb(colorDef.fRed, colorDef.fGreen, colorDef.fBlue, (double) colorDef.fAlpha / (double) ColorDefinition.MAX);
+            color = Color.rgb(colorDef.getRed(), colorDef.getGreen(), colorDef.getBlue(), (double) colorDef.getAlpha() / (double) ColorDefinition.MAX);
             COLOR_MAP.put(colorDef, color);
         }
         return color;

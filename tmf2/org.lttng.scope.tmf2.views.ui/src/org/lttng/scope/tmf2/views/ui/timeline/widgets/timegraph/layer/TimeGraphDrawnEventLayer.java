@@ -19,18 +19,18 @@ import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.TimeGraphEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.tree.TimeGraphTreeRender;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxColorFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
+import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;

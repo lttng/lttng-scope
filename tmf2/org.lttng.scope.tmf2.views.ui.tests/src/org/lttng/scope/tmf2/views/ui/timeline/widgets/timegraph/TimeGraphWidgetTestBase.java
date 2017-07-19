@@ -22,9 +22,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.lttng.scope.tmf2.views.core.timegraph.control.TimeGraphModelControl;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
 
 /**
  * Base for {@link TimeGraphWidget} tests, which sets up all the needed

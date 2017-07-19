@@ -9,7 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar.nav;
 
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContext;
+import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.efficios.jabberwocky.common.TimeRange;
@@ -41,7 +41,7 @@ final class NavUtils {
         viewer.getControl().updateTimeRangeSelection(TimeRange.of(timestamp, timestamp));
 
         TimeRange fullTimeGraphRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
-        TimeRange windowRange = ViewGroupContext.getCurrent().getCurrentVisibleTimeRange();
+        TimeRange windowRange = ViewGroupContextManager.getCurrent().getCurrentVisibleTimeRange();
         long windowStart = windowRange.getStartTime();
         long windowEnd = windowRange.getEndTime();
         if (windowStart <= timestamp && timestamp <= windowEnd) {

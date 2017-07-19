@@ -15,12 +15,12 @@ import java.util.List;
 import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
-import org.lttng.scope.tmf2.views.core.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.StateDefinition;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.BasicTimeGraphStateInterval;
-import org.lttng.scope.tmf2.views.core.timegraph.model.render.states.TimeGraphStateInterval;
 
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
+import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
+import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 

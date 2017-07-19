@@ -11,8 +11,9 @@ package org.lttng.scope.tmf2.views.ui.timeline;
 
 import static java.util.Objects.requireNonNull;
 
-import org.lttng.scope.tmf2.views.core.config.ConfigOption;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
+
+import com.efficios.jabberwocky.config.ConfigOption;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
