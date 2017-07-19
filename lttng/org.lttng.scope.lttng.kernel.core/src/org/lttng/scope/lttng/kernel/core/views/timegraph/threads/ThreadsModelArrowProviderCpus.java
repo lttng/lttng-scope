@@ -111,9 +111,11 @@ public class ThreadsModelArrowProviderCpus extends StateSystemModelArrowProvider
     private static TimeGraphTreeElement getTreeElementFromThread(TimeGraphTreeRender treeRender, int tid, @Nullable Integer cpu) {
         if (tid != 0) {
             // FIXME Could be improved via indexing, to avoid iterating the
-            // whole
-            // array for every single tid.
+            // whole array for every single tid.
             return Iterables.find(treeRender.getAllTreeElements(), treeElem -> {
+                if (!(treeElem instanceof ThreadsTreeElement)) {
+                    return false;
+                }
                 ThreadsTreeElement cfvTreeElem = (ThreadsTreeElement) treeElem;
                 return (cfvTreeElem.getTid() == tid);
             });
@@ -123,6 +125,9 @@ public class ThreadsModelArrowProviderCpus extends StateSystemModelArrowProvider
         }
         String prefix = "0/" + cpu.toString(); //$NON-NLS-1$
         return Iterables.find(treeRender.getAllTreeElements(), treeElem -> {
+            if (!(treeElem instanceof ThreadsTreeElement)) {
+                return false;
+            }
             ThreadsTreeElement cfvTreeElem = (ThreadsTreeElement) treeElem;
             return cfvTreeElem.getName().startsWith(prefix);
         });
