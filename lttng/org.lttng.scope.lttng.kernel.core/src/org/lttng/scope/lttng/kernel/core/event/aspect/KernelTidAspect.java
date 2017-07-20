@@ -23,12 +23,12 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelThreadInformationProvider;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelThreadInformationProvider;
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
 

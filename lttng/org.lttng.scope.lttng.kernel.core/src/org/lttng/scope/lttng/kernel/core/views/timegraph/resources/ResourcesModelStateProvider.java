@@ -12,10 +12,10 @@ package org.lttng.scope.lttng.kernel.core.views.timegraph.resources;
 import java.util.Collections;
 import java.util.List;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
-import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.StateValues;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;

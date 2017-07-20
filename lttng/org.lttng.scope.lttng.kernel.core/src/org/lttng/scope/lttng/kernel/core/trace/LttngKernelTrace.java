@@ -34,15 +34,15 @@ import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.lttng.scope.lttng.kernel.core.activator.internal.Activator;
 import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.lttng.kernel.core.event.aspect.ThreadPriorityAspect;
-import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng26EventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng27EventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng28EventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng29EventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.LttngEventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.PerfEventLayout;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.ILttngKernelEventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng26EventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng27EventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng28EventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng29EventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.LttngEventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.PerfEventLayout;
 import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 

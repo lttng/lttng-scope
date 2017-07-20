@@ -13,13 +13,12 @@ import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider.TreeRenderContext;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 
 /**

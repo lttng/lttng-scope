@@ -16,10 +16,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.elements.ResourcesIrqTreeElement.IrqType;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.annotations.VisibleForTesting;

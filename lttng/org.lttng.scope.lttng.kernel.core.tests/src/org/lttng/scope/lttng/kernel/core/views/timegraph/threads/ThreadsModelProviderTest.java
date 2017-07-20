@@ -28,13 +28,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 import org.lttng.scope.lttng.kernel.core.tests.shared.LttngKernelTestTraceUtils;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
 import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateRender;

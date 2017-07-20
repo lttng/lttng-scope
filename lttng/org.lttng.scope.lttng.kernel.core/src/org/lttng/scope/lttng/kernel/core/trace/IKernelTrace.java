@@ -14,7 +14,8 @@ package org.lttng.scope.lttng.kernel.core.trace;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
+
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.ILttngKernelEventLayout;
 
 /**
  * Trace type that represents a Linux kernel trace.

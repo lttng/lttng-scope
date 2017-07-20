@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.concurrent.FutureTask;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelArrowProvider;
 import com.efficios.jabberwocky.timegraph.model.render.FlatUIColors;
 import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;

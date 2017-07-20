@@ -19,15 +19,11 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
-
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.states.ITimeGraphModelStateProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelProvider.TreeRenderContext;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.annotations.VisibleForTesting;

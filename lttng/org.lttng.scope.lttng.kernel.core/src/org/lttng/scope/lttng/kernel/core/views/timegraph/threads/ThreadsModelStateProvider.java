@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
-import org.lttng.scope.lttng.kernel.core.analysis.os.KernelAnalysis;
-import org.lttng.scope.lttng.kernel.core.analysis.os.StateValues;
 import org.lttng.scope.lttng.kernel.core.views.timegraph.KernelAnalysisStateDefinitions;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.StateValues;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemModelStateProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;

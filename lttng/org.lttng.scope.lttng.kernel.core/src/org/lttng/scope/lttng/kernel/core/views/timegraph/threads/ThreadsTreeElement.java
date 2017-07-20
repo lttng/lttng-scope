@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.lttng.kernel.core.analysis.os.Attributes;
 import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 
+import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
 import com.efficios.jabberwocky.timegraph.model.provider.statesystem.StateSystemTimeGraphTreeElement;
 import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;

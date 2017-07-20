@@ -19,8 +19,9 @@ import org.lttng.scope.lami.core.module.LamiAnalysis;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryException;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
-import org.lttng.scope.lttng.kernel.core.trace.layout.ILttngKernelEventLayout;
-import org.lttng.scope.lttng.kernel.core.trace.layout.internal.Lttng27EventLayout;
+
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.ILttngKernelEventLayout;
+import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng27EventLayout;
 
 /**
  * Loader of LTTng analyses.
