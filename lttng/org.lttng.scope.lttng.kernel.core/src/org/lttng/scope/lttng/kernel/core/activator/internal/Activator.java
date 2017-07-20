@@ -10,9 +10,9 @@
 package org.lttng.scope.lttng.kernel.core.activator.internal;
 
 import org.lttng.scope.common.core.ScopeCoreActivator;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.resources.ResourcesCpuIrqModelProvider;
-import org.lttng.scope.lttng.kernel.core.views.timegraph.threads.ThreadsModelProvider;
 
+import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuIrqModelProvider;
+import com.efficios.jabberwocky.lttng.kernel.views.timegraph.threads.ThreadsModelProvider;
 import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager;
 
 /**
