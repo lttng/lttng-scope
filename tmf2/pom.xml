@@ -27,8 +27,6 @@
   <modules>
     <module>org.lttng.scope.tmf2.project.core</module>
     <module>org.lttng.scope.tmf2.project.core.tests</module>
-    <module>org.lttng.scope.tmf2.project.ui</module>
-    <module>org.lttng.scope.tmf2.project.ui.tests</module>
 
     <module>org.lttng.scope.tmf2.views.core</module>
     <module>org.lttng.scope.tmf2.views.core.tests</module>
