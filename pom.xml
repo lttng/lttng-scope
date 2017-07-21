@@ -153,7 +153,6 @@
 
   <modules>
     <module>common</module>
-    <module>ctf</module>
     <module>lami</module>
     <module>lttng</module>
     <module>tmf</module>

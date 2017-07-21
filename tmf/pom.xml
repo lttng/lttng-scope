@@ -25,9 +25,17 @@
   <name>Trace Compass TMF Parent</name>
 
   <modules>
+    <module>org.eclipse.tracecompass.ctf.tmf.core</module>
     <module>org.eclipse.tracecompass.tmf.core</module>
-    <!-- <module>org.eclipse.tracecompass.tmf.core.tests</module> -->
     <module>org.eclipse.tracecompass.tmf.ui</module>
+    
+    <!--
+      Since none of these plugins (or their dependencies) change, these
+      tests should not break. Skip them normally, it speeds up the build
+      tremendously.
+    -->
+    <!-- <module>org.eclipse.tracecompass.ctf.tmf.core.tests</module> -->
+    <!-- <module>org.eclipse.tracecompass.tmf.core.tests</module> -->
     <!-- <module>org.eclipse.tracecompass.tmf.ui.tests</module> -->
   </modules>
 
