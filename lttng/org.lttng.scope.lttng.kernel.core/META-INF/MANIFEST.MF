@@ -14,14 +14,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.ctf.tmf.core,
  org.lttng.scope.common.core,
  org.lttng.scope.lami.core,
- org.lttng.scope.tmf2.views.core,
  org.lttng.scope.tmf2.project.core,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.ctf,
  com.efficios.jabberwocky.lttng,
  com.efficios.jabberwocky.timegraph,
- ca.polymtl.dorsal.libdelorean,
- org.eclipse.tracecompass.ctfreader
+ ca.polymtl.dorsal.libdelorean
 Export-Package: org.lttng.scope.lttng.kernel.core.activator.internal;x-internal:=true,
  org.lttng.scope.lttng.kernel.core.event.aspect,
  org.lttng.scope.lttng.kernel.core.trace
