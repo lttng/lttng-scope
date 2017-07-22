@@ -17,7 +17,7 @@ import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;
+import org.lttng.scope.ui.timeline.TimelineView;
 
 /**
  * The default LTTng perspective.

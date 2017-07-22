@@ -11,5 +11,5 @@ Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.core.resources,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.timegraph
-Export-Package: org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph
+Export-Package: org.lttng.scope.ui.timeline.widgets.timegraph
 Import-Package: com.google.common.io;version="21.0.0"

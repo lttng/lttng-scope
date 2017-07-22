@@ -5,7 +5,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 0.2.0.qualifier
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.lttng.scope.jabberwocky;singleton:=true
-Bundle-Activator: org.lttng.scope.tmf2.project.core.activator.internal.Activator
+Bundle-Activator: org.lttng.scope.jabberwocky.activator.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-ExtensibleAPI: true
@@ -13,6 +13,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.lttng.scope.common.core,
  com.efficios.jabberwocky.core
-Export-Package: org.lttng.scope.tmf2.project.core,
- org.lttng.scope.tmf2.project.core.activator.internal;x-internal:=true
+Export-Package: org.lttng.scope.jabberwocky,
+ org.lttng.scope.jabberwocky.activator.internal;x-internal:=true
 Import-Package: com.google.common.collect

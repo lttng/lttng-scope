@@ -20,8 +20,8 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.common.core.NonNullUtils;
+import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
-import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
 
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;

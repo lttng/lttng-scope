@@ -79,7 +79,7 @@ import org.eclipse.tracecompass.tmf.core.trace.indexer.TmfBTreeTraceIndexer;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.ITmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
-import org.lttng.scope.tmf2.project.core.JabberwockyProjectManager;
+import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 
 import com.efficios.jabberwocky.collection.TraceCollection;
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
