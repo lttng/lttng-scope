@@ -8,7 +8,7 @@
  */
 
 
-package org.lttng.scope.tmf2.views.core;
+package org.lttng.scope.common.core;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,7 @@ import static org.junit.Assert.fail;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Test;
+import org.lttng.scope.common.core.NestingBoolean;
 
 /**
  * Tests for the {@link NestingBoolean} class.

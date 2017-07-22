@@ -12,7 +12,7 @@ package org.lttng.scope.tmf2.views.ui.timeline;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.lttng.scope.tmf2.views.core.NestingBoolean;
+import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.efficios.jabberwocky.context.ViewGroupContext;

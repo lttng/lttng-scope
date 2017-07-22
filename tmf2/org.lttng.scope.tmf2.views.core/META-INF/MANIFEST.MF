@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.ctf,
  com.efficios.jabberwocky.timegraph
-Export-Package: org.lttng.scope.tmf2.views.core,
- org.lttng.scope.tmf2.views.core.activator.internal;x-internal:=true
+Export-Package: org.lttng.scope.tmf2.views.core.activator.internal;x-internal:=true
 Import-Package: com.efficios.jabberwocky.common;version="0.2.3",
  com.google.common.annotations;version="15.0.0",
  com.google.common.base,

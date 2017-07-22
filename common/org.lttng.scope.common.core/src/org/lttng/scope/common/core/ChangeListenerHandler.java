@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.core;
+package org.lttng.scope.common.core;
 
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;

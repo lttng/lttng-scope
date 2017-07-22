@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.lttng.scope.common.core,
  org.lttng.scope.common.ui,
  org.lttng.scope.jabberwocky,
- org.lttng.scope.tmf2.views.core,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.timegraph,
  com.efficios.jabberwocky.ctf

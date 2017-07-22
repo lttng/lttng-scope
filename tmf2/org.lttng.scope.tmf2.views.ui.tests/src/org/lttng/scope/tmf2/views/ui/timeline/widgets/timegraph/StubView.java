@@ -13,7 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.lttng.scope.tmf2.views.core.NestingBoolean;
+import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.ui.context.ViewGroupContextManager;
 
 import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.NestingBoolean;
+import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.tmf2.views.ui.timeline.DebugOptions;
 import org.lttng.scope.tmf2.views.ui.timeline.ITimelineWidget;
 import org.lttng.scope.tmf2.views.ui.timeline.TimelineView;

@@ -7,11 +7,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.core;
+package org.lttng.scope.common.core.math;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.lttng.scope.common.core.math.MathUtils;
 
 /**
  * Tests for {@link MathUtils}.
