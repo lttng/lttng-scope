@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>org.lttng.scope.releng-parent</artifactId>
+    <artifactId>org.lttng.scope</artifactId>
     <groupId>org.lttng.scope</groupId>
     <version>0.2.0-SNAPSHOT</version>
   </parent>

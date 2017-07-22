@@ -152,13 +152,46 @@
   </profiles>
 
   <modules>
-    <module>common</module>
-    <module>lami</module>
-    <module>lttng</module>
-    <module>tmf</module>
-    <module>tmf2</module>
+    <module>org.eclipse.tracecompass.ctf.tmf.core</module>
+    <module>org.eclipse.tracecompass.tmf.core</module>
+    <module>org.eclipse.tracecompass.tmf.ui</module>
 
-    <module>releng</module>
+    <!-- These tests however are needed by other test plugins elsewhere -->
+    <module>org.eclipse.tracecompass.ctf.tmf.core.tests</module>
+
+    <!--
+      Since none of these plugins (or their dependencies) change, these
+      tests should not break. Skip them normally, it speeds up the build
+      tremendously.
+    -->
+    <!-- <module>org.eclipse.tracecompass.tmf.core.tests</module> -->
+    <!-- <module>org.eclipse.tracecompass.tmf.ui.tests</module> -->
+
+    <module>org.lttng.scope.common.core</module>
+    <module>org.lttng.scope.common.core.tests</module>
+    <module>org.lttng.scope.common.ui</module>
+
+    <module>org.lttng.scope.lami.core</module>
+    <module>org.lttng.scope.lami.core.tests</module>
+    <module>org.lttng.scope.lami.ui</module>
+
+    <module>org.lttng.scope.lttng.kernel.core</module>
+    <module>org.lttng.scope.lttng.kernel.ui</module>
+    <module>org.lttng.scope.lttng.ust.core</module>
+    <module>org.lttng.scope.lttng.ust.core.tests</module>
+    <module>org.lttng.scope.lttng.ust.ui</module>
+
+    <module>org.lttng.scope.jabberwocky</module>
+    <module>org.lttng.scope.ui</module>
+    <module>org.lttng.scope.ui.tests</module>
+
+    <!-- Put releng stuff at the end so the RCP is built last -->
+    <module>org.lttng.scope.rcp.branding</module>
+    <module>org.lttng.scope.rcp.branding.feature</module>
+    <module>org.lttng.scope.rcp</module>
+    <module>org.lttng.scope.rcp.product</module>
+    <module>org.lttng.scope.rcp.ui</module>
+    <module>org.lttng.scope.target</module>
   </modules>
 
   <build>
@@ -385,7 +418,7 @@
             <encoding>UTF-8</encoding>
             <useProjectSettings>true</useProjectSettings>
             <compilerArguments>
-              <annotationpath>common/org.lttng.scope.common.core/annotations</annotationpath>
+              <annotationpath>org.lttng.scope.common.core/annotations</annotationpath>
             </compilerArguments>
             <extraClasspathElements>
               <!-- Include the jfxswt.jar, which contains the JavaFX embedding functionality -->
