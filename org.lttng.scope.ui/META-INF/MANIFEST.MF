@@ -18,7 +18,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.lttng.scope.common.ui,
  org.lttng.scope.jabberwocky,
  com.efficios.jabberwocky.core,
- com.efficios.jabberwocky.timegraph,
  com.efficios.jabberwocky.ctf
 Export-Package: org.lttng.scope.ui.activator.internal;x-internal:=true,
  org.lttng.scope.ui.context,
