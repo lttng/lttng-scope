@@ -2,6 +2,31 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.lttng.scope.ui.perspective.PerspectiveFactory"
+            icon="icons/perspective/lttng.png"
+            id="org.lttng.scope.ui.perspective"
+            name="%perspective.name">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            associatedExtensionId="org.eclipse.linuxtools.tmf.ui.navigator.content"
+            menuGroupId="org.eclipse.linuxtools.tmf.ui.views.ui.wizards.menuGroupId"
+            type="new"
+            wizardId="org.eclipse.linuxtools.tmf.ui.views.ui.wizards.newProject">
+         <enablement>
+            <with variable="activeWorkbenchWindow.activePerspective">
+               <equals
+                     value="org.lttng.scope.ui.perspective">
+               </equals>
+            </with>
+         </enablement>
+      </commonWizard>
+   </extension>
+   <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"

@@ -20,5 +20,4 @@ Require-Bundle: org.eclipse.core.resources,
  org.lttng.scope.lttng.kernel.core,
  org.lttng.scope.ui
 Import-Package: com.google.common.collect
-Export-Package: org.lttng.scope.lttng.kernel.ui.activator.internal;x-internal:=true,
- org.lttng.scope.lttng.kernel.ui.views.internal;x-internal:=true
+Export-Package: org.lttng.scope.lttng.kernel.ui.activator.internal;x-internal:=true

@@ -10,7 +10,7 @@
  *   Francois Chouinard - Initial API and implementation
  *******************************************************************************/
 
-package org.lttng.scope.lttng.kernel.ui.views.internal;
+package org.lttng.scope.ui.perspective;
 
 import org.eclipse.tracecompass.tmf.ui.project.wizards.NewTmfProjectWizard;
 import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
@@ -25,7 +25,7 @@ import org.lttng.scope.ui.timeline.TimelineView;
 public class PerspectiveFactory implements IPerspectiveFactory {
 
     /** Perspective ID */
-    public static final String ID = "org.eclipse.linuxtools.lttng2.kernel.ui.perspective"; //$NON-NLS-1$
+    public static final String ID = "org.lttng.scope.ui.perspective"; //$NON-NLS-1$
 
     // LTTng views
     private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
