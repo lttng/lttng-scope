@@ -399,7 +399,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.lttng.scope.tmf2.project.core"
+         id="org.lttng.scope.jabberwocky"
          download-size="0"
          install-size="0"
          version="0.0.0"

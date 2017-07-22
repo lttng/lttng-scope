@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.lttng.scope.common.core,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.ctf,
- org.lttng.scope.tmf2.project.core
+ org.lttng.scope.jabberwocky
 Export-Package: org.eclipse.tracecompass.ctf.tmf.core,
  org.eclipse.tracecompass.ctf.tmf.core.activator.internal;x-internal:=true,
  org.eclipse.tracecompass.ctf.tmf.core.context,
