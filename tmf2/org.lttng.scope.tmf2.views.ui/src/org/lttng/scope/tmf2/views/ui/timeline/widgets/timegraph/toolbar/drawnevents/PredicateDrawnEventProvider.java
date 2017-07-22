@@ -20,7 +20,7 @@ import java.util.concurrent.FutureTask;
 import java.util.function.Predicate;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
+import org.lttng.scope.tmf2.views.ui.context.ViewGroupContextManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.ITraceProject;

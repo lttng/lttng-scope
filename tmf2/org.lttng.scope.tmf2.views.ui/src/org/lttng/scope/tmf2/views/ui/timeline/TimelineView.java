@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
+import org.lttng.scope.tmf2.views.ui.context.ViewGroupContextManager;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxUtils;
 
 import javafx.embed.swt.FXCanvas;

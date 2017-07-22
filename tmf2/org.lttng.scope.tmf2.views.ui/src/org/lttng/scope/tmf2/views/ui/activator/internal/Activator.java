@@ -10,6 +10,7 @@
 package org.lttng.scope.tmf2.views.ui.activator.internal;
 
 import org.lttng.scope.common.ui.ScopeUIActivator;
+import org.lttng.scope.tmf2.views.ui.context.ViewGroupContextManager;
 
 import javafx.application.Platform;
 
@@ -36,6 +37,7 @@ public class Activator extends ScopeUIActivator {
 
     @Override
     protected void stopActions() {
+        ViewGroupContextManager.cleanup();
     }
 
 }

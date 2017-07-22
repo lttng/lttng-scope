@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.tmf2.views.core.context;
+package org.lttng.scope.tmf2.views.ui.context;
 
 import com.efficios.jabberwocky.context.ViewGroupContext;
 

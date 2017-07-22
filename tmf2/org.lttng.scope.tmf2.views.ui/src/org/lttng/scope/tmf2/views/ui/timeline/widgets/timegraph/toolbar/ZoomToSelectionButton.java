@@ -9,7 +9,7 @@
 
 package org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.toolbar;
 
-import org.lttng.scope.tmf2.views.core.context.ViewGroupContextManager;
+import org.lttng.scope.tmf2.views.ui.context.ViewGroupContextManager;
 import org.lttng.scope.tmf2.views.ui.jfx.JfxImageFactory;
 import org.lttng.scope.tmf2.views.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
