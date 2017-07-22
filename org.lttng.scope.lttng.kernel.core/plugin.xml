@@ -12,4 +12,11 @@
             trace_type="org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace">
       </type>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.ui.tracetypeui">
+      <type
+            icon="icons/tracetype/lttng.png"
+            tracetype="org.eclipse.linuxtools.lttng2.kernel.tracetype">
+      </type>
+   </extension>
 </plugin>

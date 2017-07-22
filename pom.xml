@@ -176,7 +176,6 @@
     <module>org.lttng.scope.lami.ui</module>
 
     <module>org.lttng.scope.lttng.kernel.core</module>
-    <module>org.lttng.scope.lttng.kernel.ui</module>
     <module>org.lttng.scope.lttng.ust.core</module>
     <module>org.lttng.scope.lttng.ust.core.tests</module>
     <module>org.lttng.scope.lttng.ust.ui</module>
