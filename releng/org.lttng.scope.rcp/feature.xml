@@ -406,7 +406,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.lttng.scope.tmf2.views.ui"
+         id="org.lttng.scope.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

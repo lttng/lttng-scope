@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.lttng.scope.tmf2.views.ui.tests</name>
+	<name>org.lttng.scope.ui.tests</name>
 	<comment></comment>
 	<projects>
 	</projects>

@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Version: 0.2.0.qualifier
 Bundle-Localization: plugin
-Bundle-SymbolicName: org.lttng.scope.tmf2.views.ui;singleton:=true
+Bundle-SymbolicName: org.lttng.scope.ui;singleton:=true
 Bundle-Activator: org.lttng.scope.tmf2.views.ui.activator.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
