@@ -27,8 +27,6 @@
   <modules>
     <module>org.lttng.scope.jabberwocky</module>
 
-    <module>org.lttng.scope.tmf2.views.core</module>
-    <module>org.lttng.scope.tmf2.views.core.tests</module>
     <module>org.lttng.scope.tmf2.views.ui</module>
     <module>org.lttng.scope.tmf2.views.ui.tests</module>
   </modules>
