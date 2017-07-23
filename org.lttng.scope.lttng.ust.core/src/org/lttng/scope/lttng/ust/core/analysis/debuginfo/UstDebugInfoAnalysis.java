@@ -21,15 +21,13 @@ import org.eclipse.jdt.annotation.Nullable;
 import com.efficios.jabberwocky.analysis.statesystem.StateSystemAnalysis;
 import com.efficios.jabberwocky.collection.ITraceCollection;
 import com.efficios.jabberwocky.collection.TraceCollection;
-import com.efficios.jabberwocky.ctf.trace.CtfTrace;
-import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.ctf.trace.CtfTraceUtilsKt;
 import com.efficios.jabberwocky.lttng.ust.trace.LttngUstTrace;
 import com.efficios.jabberwocky.lttng.ust.trace.layout.ILttngUstEventLayout;
 import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst28EventLayout;
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.trace.ITrace;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
-import com.google.common.primitives.Ints;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 
@@ -77,9 +75,9 @@ public class UstDebugInfoAnalysis extends StateSystemAnalysis {
     }
 
     private static final Predicate<LttngUstTrace> tracerIsLttng28OrAbove = trace -> {
-        String tracerName = getTracerName(trace);
-        Integer majorVersion = getTracerMajorVersion(trace);
-        Integer minorVersion = getTracerMinorVersion(trace);
+        String tracerName = CtfTraceUtilsKt.getTracerName(trace);
+        Integer majorVersion = CtfTraceUtilsKt.getTracerMajorVersion(trace);
+        Integer minorVersion = CtfTraceUtilsKt.getTracerMinorVersion(trace);
 
         if (tracerName == null || majorVersion == null || minorVersion == null) {
             return false;
@@ -137,59 +135,6 @@ public class UstDebugInfoAnalysis extends StateSystemAnalysis {
 
         /* Actual state changes are handled by the stateProvider object */
         stateProvider.eventHandle(defs, ss, event);
-    }
-
-    // ------------------------------------------------------------------------
-    // CtfUtils (move to Kotlin extension methods?)
-    // ------------------------------------------------------------------------
-
-    /**
-     * Convenience method to get the tracer name from the trace's metadata. The
-     * leading and trailing "" will be stripped from the returned string.
-     *
-     * @param trace
-     *            The trace to query
-     * @return The tracer's name, or null if it is not defined in the metadata.
-     */
-    private static @Nullable String getTracerName(CtfTrace<CtfTraceEvent> trace) {
-        String str = trace.getEnvironment().get("tracer_name"); //$NON-NLS-1$
-        if (str == null) {
-            return null;
-        }
-        /* Remove the "" at the start and end of the string */
-        return str.replaceAll("^\"|\"$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * Convenience method to get the tracer's major version from the trace
-     * metadata.
-     *
-     * @param trace
-     *            The trace to query
-     * @return The tracer's major version, or null if it is not defined.
-     */
-    private static @Nullable Integer getTracerMajorVersion(CtfTrace<CtfTraceEvent> trace) {
-        String str = trace.getEnvironment().get("tracer_major"); //$NON-NLS-1$
-        if (str == null) {
-            return null;
-        }
-        return Ints.tryParse(str);
-    }
-
-    /**
-     * Convenience method to get the tracer's minor version from the trace
-     * metadata.
-     *
-     * @param trace
-     *            The trace to query
-     * @return The tracer's minor version, or null if it is not defined.
-     */
-    private static @Nullable Integer getTracerMinorVersion(CtfTrace<CtfTraceEvent> trace) {
-        String str = trace.getEnvironment().get("tracer_minor"); //$NON-NLS-1$
-        if (str == null) {
-            return null;
-        }
-        return Ints.tryParse(str);
     }
 
 }
