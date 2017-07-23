@@ -23,10 +23,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTraceValidationStatus;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
@@ -37,11 +35,6 @@ import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoFunctionAsp
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoSourceAspect;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
-import com.efficios.jabberwocky.lttng.ust.trace.layout.ILttngUstEventLayout;
-import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst20EventLayout;
-import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst27EventLayout;
-import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst28EventLayout;
-import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst29EventLayout;
 import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 
@@ -71,8 +64,6 @@ public class LttngUstTrace extends CtfTmfTrace {
         LTTNG_UST_ASPECTS = builder.build();
     }
 
-    private @Nullable ILttngUstEventLayout fLayout = null;
-
     /**
      * Default constructor
      */
@@ -80,54 +71,15 @@ public class LttngUstTrace extends CtfTmfTrace {
         super(LttngUstEventFactory.instance());
     }
 
-    /**
-     * Get the event layout to use with this trace. This normally depends on the
-     * tracer's version.
-     *
-     * @return The event layout
-     */
-    public @NonNull ILttngUstEventLayout getEventLayout() {
-        ILttngUstEventLayout layout = fLayout;
-        if (layout == null) {
-            throw new IllegalStateException("Cannot get the layout of a non-initialized trace!"); //$NON-NLS-1$
-        }
-        return layout;
-    }
-
     @Override
     public void initTrace(IResource resource, String path,
             Class<? extends ITmfEvent> eventType) throws TmfTraceException {
         super.initTrace(resource, path, eventType);
-
-        /* Determine the event layout to use from the tracer's version */
-        fLayout = getLayoutFromEnv();
     }
 
     @Override
     protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
         return new com.efficios.jabberwocky.lttng.ust.trace.LttngUstTrace(tracePath);
-    }
-
-    private @NonNull ILttngUstEventLayout getLayoutFromEnv() {
-        String tracerName = CtfUtils.getTracerName(this);
-        int tracerMajor = CtfUtils.getTracerMajorVersion(this);
-        int tracerMinor = CtfUtils.getTracerMinorVersion(this);
-
-        if (TRACER_NAME.equals(tracerName)) {
-            if (tracerMajor >= 2) {
-                if (tracerMinor >= 9) {
-                    return LttngUst29EventLayout.getInstance();
-                } else if (tracerMinor >= 8) {
-                    return LttngUst28EventLayout.getInstance();
-                } else if (tracerMinor >= 7) {
-                    return LttngUst27EventLayout.getInstance();
-                }
-                return LttngUst20EventLayout.getInstance();
-            }
-        }
-
-        /* Fallback to the UST 2.0 layout and hope for the best */
-        return LttngUst20EventLayout.getInstance();
     }
 
     @Override

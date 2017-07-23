@@ -13,15 +13,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
 import org.eclipse.tracecompass.tmf.core.analysis.ondemand.OnDemandAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.lttng.scope.lami.core.module.LamiAnalysis;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryException;
 import org.lttng.scope.lami.core.module.LamiAnalysisFactoryFromConfigFile;
 import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
-
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.ILttngKernelEventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng27EventLayout;
 
 /**
  * Loader of LTTng analyses.
@@ -39,9 +37,10 @@ final class LttngAnalysesLoader {
         /* LTTng-Analysis is supported only on LTTng >= 2.7 kernel traces */
         if (trace instanceof LttngKernelTrace) {
             final LttngKernelTrace kernelTrace = (LttngKernelTrace) trace;
-            final ILttngKernelEventLayout layout = kernelTrace.getKernelEventLayout();
-
-            if (layout instanceof Lttng27EventLayout) {
+            int tracerMajorVersion = CtfUtils.getTracerMajorVersion(kernelTrace);
+            int tracerMinorVersion = CtfUtils.getTracerMinorVersion(kernelTrace);
+            if (tracerMajorVersion >= 3
+                    || (tracerMajorVersion == 2 && tracerMinorVersion >= 7)) {
                 return true;
             }
         }

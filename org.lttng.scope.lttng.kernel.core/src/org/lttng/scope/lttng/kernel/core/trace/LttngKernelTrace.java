@@ -26,7 +26,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.ctf.tmf.core.event.CtfTmfEventType;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTraceValidationStatus;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
@@ -36,13 +35,6 @@ import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.lttng.kernel.core.event.aspect.ThreadPriorityAspect;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.ILttngKernelEventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng26EventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng27EventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng28EventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.Lttng29EventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.LttngEventLayout;
-import com.efficios.jabberwocky.lttng.kernel.trace.layout.PerfEventLayout;
 import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 
@@ -52,25 +44,8 @@ import com.google.common.collect.ImmutableSet;
  *
  * @author Alexandre Montplaisir
  */
-public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
+public class LttngKernelTrace extends CtfTmfTrace {
 
-    /**
-     * Supported Linux kernel tracers
-     */
-    private enum OriginTracer {
-        LTTNG(LttngEventLayout.getInstance()),
-        LTTNG26(Lttng26EventLayout.getInstance()),
-        LTTNG27(Lttng27EventLayout.getInstance()),
-        LTTNG28(Lttng28EventLayout.getInstance()),
-        LTTNG29(Lttng29EventLayout.getInstance()),
-        PERF(PerfEventLayout.getInstance());
-
-        private final @NonNull ILttngKernelEventLayout fLayout;
-
-        private OriginTracer(@NonNull ILttngKernelEventLayout layout) {
-            fLayout = layout;
-        }
-    }
 
     /**
      * Event aspects available for all Lttng Kernel traces
@@ -91,9 +66,6 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
      */
     private static final int CONFIDENCE = 100;
 
-    /** The tracer which originated this trace */
-    private OriginTracer fOriginTracer = null;
-
     /**
      * Default constructor
      */
@@ -102,54 +74,14 @@ public class LttngKernelTrace extends CtfTmfTrace implements IKernelTrace {
     }
 
     @Override
-    public @NonNull ILttngKernelEventLayout getKernelEventLayout() {
-        OriginTracer tracer = fOriginTracer;
-        if (tracer == null) {
-            throw new IllegalStateException("Cannot get the layout of a non-initialized trace!"); //$NON-NLS-1$
-        }
-        return tracer.fLayout;
-    }
-
-    @Override
     public void initTrace(IResource resource, String path,
             Class<? extends ITmfEvent> eventType) throws TmfTraceException {
         super.initTrace(resource, path, eventType);
-        fOriginTracer = getTracerFromEnv();
     }
 
     @Override
     protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
         return new com.efficios.jabberwocky.lttng.kernel.trace.LttngKernelTrace(tracePath);
-    }
-
-    /**
-     * Identify which tracer generated a trace from its metadata.
-     */
-    private OriginTracer getTracerFromEnv() {
-        String tracerName = CtfUtils.getTracerName(this);
-        int tracerMajor = CtfUtils.getTracerMajorVersion(this);
-        int tracerMinor = CtfUtils.getTracerMinorVersion(this);
-
-        if ("perf".equals(tracerName)) { //$NON-NLS-1$
-            return OriginTracer.PERF;
-
-        } else if ("lttng-modules".equals(tracerName)) { //$NON-NLS-1$
-            /* Look for specific versions of LTTng */
-            if (tracerMajor >= 2) {
-                if (tracerMinor >= 9) {
-                    return OriginTracer.LTTNG29;
-                } else if (tracerMinor >= 8) {
-                    return OriginTracer.LTTNG28;
-                } else if (tracerMinor >= 7) {
-                    return OriginTracer.LTTNG27;
-                } else if (tracerMinor >= 6) {
-                    return OriginTracer.LTTNG26;
-                }
-            }
-        }
-
-        /* Use base LTTng layout as default */
-        return OriginTracer.LTTNG;
     }
 
     /**
