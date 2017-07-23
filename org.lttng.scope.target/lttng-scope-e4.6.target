@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="lttng-scope-e4.6" sequenceNumber="50">
+<target name="lttng-scope-e4.6" sequenceNumber="51">
 
   <locations>
     <!-- Eclipse Common Build Infrastructure (still needed?) -->
@@ -39,9 +39,9 @@
 
     <!-- Core Java tracing libraries -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="com.efficios.jabberwocky.ctf" version="0.2.17.SNAPSHOT"/>
-      <unit id="com.efficios.jabberwocky.core" version="0.2.17.SNAPSHOT"/>
-      <unit id="com.efficios.jabberwocky.lttng" version="0.2.17.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.ctf" version="0.2.18.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.core" version="0.2.18.SNAPSHOT"/>
+      <unit id="com.efficios.jabberwocky.lttng" version="0.2.18.SNAPSHOT"/>
 
       <unit id="ca.polymtl.dorsal.libdelorean" version="0.6.6.SNAPSHOT"/>
       <unit id="org.eclipse.tracecompass.ctfreader" version="0.0.0"/>

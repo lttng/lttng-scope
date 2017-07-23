@@ -11,9 +11,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.lttng.scope.lttng.ust.core.activator.internal;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui",
  org.lttng.scope.lttng.ust.core.analysis.debuginfo,
  org.lttng.scope.lttng.ust.core.analysis.debuginfo.internal;x-internal:=true,
- org.lttng.scope.lttng.ust.core.trace,
- org.lttng.scope.lttng.ust.core.trace.layout,
- org.lttng.scope.lttng.ust.core.trace.layout.internal;x-internal:=true
+ org.lttng.scope.lttng.ust.core.trace
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.tracecompass.tmf.core,

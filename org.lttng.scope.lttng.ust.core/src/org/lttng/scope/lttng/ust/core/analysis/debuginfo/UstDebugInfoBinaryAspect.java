@@ -17,7 +17,6 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
-import org.lttng.scope.lttng.ust.core.trace.layout.ILttngUstEventLayout;
 
 /**
  * Event aspect of UST traces that indicate the binary callsite (binary, symbol
@@ -53,11 +52,9 @@ public class UstDebugInfoBinaryAspect implements ITmfEventAspect<BinaryCallsite>
         }
         LttngUstTrace trace = (LttngUstTrace) event.getTrace();
 
-        ILttngUstEventLayout layout = trace.getEventLayout();
-
         /* We need both the vpid and ip contexts */
-        ITmfEventField vpidField = event.getContent().getField(layout.contextVpid());
-        ITmfEventField ipField = event.getContent().getField(layout.contextIp());
+        ITmfEventField vpidField = event.getContent().getField("context._vpid"); //$NON-NLS-1$
+        ITmfEventField ipField = event.getContent().getField("context._ip"); //$NON-NLS-1$
         if (vpidField == null || ipField == null) {
             return null;
         }

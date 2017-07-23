@@ -35,13 +35,13 @@ import org.lttng.scope.lttng.ust.core.activator.internal.Activator;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoFunctionAspect;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoSourceAspect;
-import org.lttng.scope.lttng.ust.core.trace.layout.ILttngUstEventLayout;
-import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst20EventLayout;
-import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst27EventLayout;
-import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst28EventLayout;
-import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst29EventLayout;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.lttng.ust.trace.layout.ILttngUstEventLayout;
+import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst20EventLayout;
+import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst27EventLayout;
+import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst28EventLayout;
+import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst29EventLayout;
 import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 
