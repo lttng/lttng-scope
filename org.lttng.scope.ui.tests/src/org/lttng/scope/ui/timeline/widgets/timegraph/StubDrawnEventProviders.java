@@ -16,17 +16,17 @@ import java.util.stream.DoubleStream;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.config.ConfigOption;
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
-import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 

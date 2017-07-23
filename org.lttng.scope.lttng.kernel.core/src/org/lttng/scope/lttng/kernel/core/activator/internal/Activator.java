@@ -13,7 +13,7 @@ import org.lttng.scope.common.core.ScopeCoreActivator;
 
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuIrqModelProvider;
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.threads.ThreadsModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager;
+import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager;
 
 /**
  * Plugin activator

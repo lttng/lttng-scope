@@ -16,12 +16,12 @@ import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.efficios.jabberwocky.context.ViewGroupContext;
-import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProviderFactory;
-import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager;
-import com.efficios.jabberwocky.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
-import com.efficios.jabberwocky.timegraph.view.TimeGraphModelView;
+import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProviderFactory;
+import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager;
+import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
+import com.efficios.jabberwocky.views.timegraph.view.TimeGraphModelView;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

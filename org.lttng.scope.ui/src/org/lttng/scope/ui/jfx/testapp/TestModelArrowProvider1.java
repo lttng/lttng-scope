@@ -15,15 +15,15 @@ import java.util.concurrent.FutureTask;
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
-import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
-import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrow;
-import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowRender;
-import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries;
-import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArrow;
+import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArrowRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArrowSeries;
+import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArrowSeries.LineStyle;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
 
 class TestModelArrowProvider1 extends TimeGraphModelArrowProvider {

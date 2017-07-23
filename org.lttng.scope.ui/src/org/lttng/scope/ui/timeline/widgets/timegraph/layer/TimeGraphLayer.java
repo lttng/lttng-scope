@@ -16,7 +16,7 @@ import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.ui.timeline.widgets.timegraph.VerticalPosition;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 
 import javafx.scene.Group;
 

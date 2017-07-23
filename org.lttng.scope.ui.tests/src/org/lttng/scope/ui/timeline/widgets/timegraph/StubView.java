@@ -15,10 +15,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.context.ViewGroupContextManager;
-import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 
 import javafx.embed.swt.FXCanvas;
 import javafx.scene.Scene;

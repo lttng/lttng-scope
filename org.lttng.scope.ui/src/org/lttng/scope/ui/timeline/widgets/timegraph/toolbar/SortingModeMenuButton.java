@@ -15,8 +15,8 @@ import java.util.stream.IntStream;
 
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
 
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;

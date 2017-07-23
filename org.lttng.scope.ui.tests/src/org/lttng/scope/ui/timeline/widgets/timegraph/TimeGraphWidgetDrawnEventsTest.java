@@ -16,12 +16,11 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.ui.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider1;
 import org.lttng.scope.ui.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider2;
 
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
 
 import javafx.scene.shape.Shape;
 

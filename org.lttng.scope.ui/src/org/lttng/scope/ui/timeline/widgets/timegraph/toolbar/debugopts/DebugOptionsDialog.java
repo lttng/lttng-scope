@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.ui.timeline.DebugOptions;
 
-import com.efficios.jabberwocky.config.ConfigOption;
+import com.efficios.jabberwocky.common.ConfigOption;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 

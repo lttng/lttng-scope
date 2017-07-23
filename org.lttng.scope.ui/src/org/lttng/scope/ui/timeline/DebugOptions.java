@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
 
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.config.ConfigOption;
+import com.efficios.jabberwocky.common.ConfigOption;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -131,13 +131,10 @@ public class DebugOptions {
     // State labels
     // ------------------------------------------------------------------------
 
-    public final ConfigOption<Font> stateLabelFont = new ConfigOption<Font>(requireNonNull(new Text().getFont())) {
-        @Override
-        public void set(Font value) {
-            super.set(value);
-            recomputeEllipsisWidth();
-        }
-    };
+    public final ConfigOption<Font> stateLabelFont = new ConfigOption<>(requireNonNull(new Text().getFont()));
+    {
+        stateLabelFont.addListener((obs) -> recomputeEllipsisWidth());
+    }
 
     public static final String ELLIPSIS_STRING = "..."; //$NON-NLS-1$
 

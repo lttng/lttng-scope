@@ -30,10 +30,10 @@ import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphStateLayer;
 import org.lttng.scope.ui.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.timegraph.control.TimeGraphModelControl;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
-import com.efficios.jabberwocky.timegraph.view.TimeGraphModelView;
+import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
+import com.efficios.jabberwocky.views.timegraph.view.TimeGraphModelView;
 import com.google.common.annotations.VisibleForTesting;
 
 import javafx.application.Platform;

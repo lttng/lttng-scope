@@ -19,14 +19,14 @@ import java.util.stream.LongStream;
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.timegraph.model.provider.states.TimeGraphModelStateProvider;
-import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
-import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
-import com.efficios.jabberwocky.timegraph.model.render.states.BasicTimeGraphStateInterval;
-import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
-import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateRender;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.provider.states.TimeGraphModelStateProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.views.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.BasicTimeGraphStateInterval;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateInterval;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 

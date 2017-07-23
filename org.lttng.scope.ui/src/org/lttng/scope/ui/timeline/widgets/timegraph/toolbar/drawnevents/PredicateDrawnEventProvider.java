@@ -25,15 +25,15 @@ import org.lttng.scope.ui.context.ViewGroupContextManager;
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.project.ITraceProjectIterator;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
-import com.efficios.jabberwocky.timegraph.model.render.TimeGraphEvent;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeElement;
-import com.efficios.jabberwocky.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
 
 class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {

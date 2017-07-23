@@ -21,8 +21,8 @@ import org.lttng.scope.ui.jfx.JfxColorFactory;
 import org.lttng.scope.ui.timeline.DebugOptions;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
-import com.efficios.jabberwocky.timegraph.model.render.states.TimeGraphStateInterval;
+import com.efficios.jabberwocky.views.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateInterval;
 import com.google.common.base.MoreObjects;
 
 import javafx.application.Platform;

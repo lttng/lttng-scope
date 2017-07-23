@@ -16,9 +16,9 @@ import org.lttng.scope.ui.jfx.Arrow;
 import org.lttng.scope.ui.jfx.JfxColorFactory;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
-import com.efficios.jabberwocky.timegraph.model.render.arrows.TimeGraphArrowSeries;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.ITimeGraphModelArrowProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArrowSeries;
 
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;

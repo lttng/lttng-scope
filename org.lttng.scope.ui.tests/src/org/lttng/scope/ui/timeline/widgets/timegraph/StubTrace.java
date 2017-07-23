@@ -22,11 +22,11 @@ class StubTrace extends Trace<TraceEvent> {
     public static final long FULL_TRACE_START_TIME = 100000L;
     public static final long FULL_TRACE_END_TIME = 200000L;
 
-    private static class StubTraceIterator implements ITraceIterator<TraceEvent> {
+    private class StubTraceIterator implements ITraceIterator<TraceEvent> {
 
         private final UnmodifiableIterator<TraceEvent> events = Iterators.forArray(
-                new TraceEvent(FULL_TRACE_START_TIME, 0, "StubEvent", Collections.emptyMap(), null),
-                new TraceEvent(FULL_TRACE_END_TIME, 0, "StubEvent", Collections.emptyMap(), null));
+                new TraceEvent(StubTrace.this, FULL_TRACE_START_TIME, 0, "StubEvent", Collections.emptyMap(), null),
+                new TraceEvent(StubTrace.this, FULL_TRACE_END_TIME, 0, "StubEvent", Collections.emptyMap(), null));
 
         @Override
         public boolean hasNext() {

@@ -16,12 +16,12 @@ import org.lttng.scope.ui.jfx.CountingGridPane;
 import org.lttng.scope.ui.jfx.JfxColorFactory;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
-import com.efficios.jabberwocky.config.ConfigOption;
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
+import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;

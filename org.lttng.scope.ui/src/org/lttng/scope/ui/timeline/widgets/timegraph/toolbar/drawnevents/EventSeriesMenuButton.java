@@ -17,10 +17,10 @@ import org.lttng.scope.ui.jfx.JfxUtils;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
-import com.efficios.jabberwocky.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
-import com.efficios.jabberwocky.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
-import com.efficios.jabberwocky.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.ITimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import com.google.common.collect.Iterables;
 
 import javafx.application.Platform;

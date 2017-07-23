@@ -19,12 +19,12 @@ import org.lttng.scope.ui.jfx.JfxColorFactory;
 import org.lttng.scope.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.config.ConfigOption;
-import com.efficios.jabberwocky.timegraph.model.provider.states.ITimeGraphModelStateProvider;
-import com.efficios.jabberwocky.timegraph.model.render.LineThickness;
-import com.efficios.jabberwocky.timegraph.model.render.StateDefinition;
-import com.efficios.jabberwocky.timegraph.model.render.states.MultiStateInterval;
+import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.provider.states.ITimeGraphModelStateProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.LineThickness;
+import com.efficios.jabberwocky.views.timegraph.model.render.StateDefinition;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.MultiStateInterval;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.event.ActionEvent;
