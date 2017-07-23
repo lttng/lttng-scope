@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo.internal;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
 
 import static java.util.Objects.requireNonNull;
 
@@ -15,18 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.statesystem.AbstractTmfStateProvider;
-import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
 import org.eclipse.tracecompass.tmf.core.util.Pair;
 import org.lttng.scope.common.core.log.TraceCompassLog;
-import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
-import com.efficios.jabberwocky.lttng.ust.trace.layout.ILttngUstEventLayout;
 import com.efficios.jabberwocky.lttng.ust.trace.layout.LttngUst28EventLayout;
-import com.google.common.collect.ImmutableMap;
+import com.efficios.jabberwocky.trace.event.FieldValue.ArrayValue;
+import com.efficios.jabberwocky.trace.event.FieldValue.IntegerValue;
+import com.efficios.jabberwocky.trace.event.FieldValue.StringValue;
+import com.efficios.jabberwocky.trace.event.ITraceEvent;
 import com.google.common.io.BaseEncoding;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
@@ -63,7 +60,7 @@ import ca.polymtl.dorsal.libdelorean.statevalue.TmfStateValue;
  * @author Alexandre Montplaisir
  * @author Simon Marchi
  */
-public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
+class UstDebugInfoAnalysisStateProvider {
 
     /** State system attribute name for the in-memory binary size */
     public static final String MEMSZ_ATTRIB = "memsz"; //$NON-NLS-1$
@@ -80,22 +77,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
     /** State system attribute name for the debug link of the binary */
     public static final String DEBUG_LINK_ATTRIB = "debug_link"; //$NON-NLS-1$
 
-    /** Version of this state provider */
-    private static final int VERSION = 5;
-
-    private static final Logger LOGGER = TraceCompassLog.getLogger(UstDebugInfoStateProvider.class);
-
-    private static final int DL_DLOPEN_INDEX = 1;
-    private static final int DL_BUILD_ID_INDEX = 2;
-    private static final int DL_DEBUG_LINK_INDEX = 3;
-    private static final int DL_DLCLOSE_INDEX = 4;
-    private static final int STATEDUMP_BIN_INFO_INDEX = 5;
-    private static final int STATEDUMP_BUILD_ID_INDEX = 6;
-    private static final int STATEDUMP_DEBUG_LINK_INDEX = 7;
-    private static final int STATEDUMP_START_INDEX = 8;
-
-    private final LttngUst28EventLayout fLayout;
-    private final Map<String, Integer> fEventNames;
+    private static final Logger LOGGER = TraceCompassLog.getLogger(UstDebugInfoAnalysisStateProvider.class);
 
     /**
      * Map of the latest statedump's timestamps, per VPID: Map<vpid, timestamp>
@@ -162,50 +144,28 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
 
     /**
      * Constructor
-     *
-     * @param trace
-     *            trace
      */
-    public UstDebugInfoStateProvider(LttngUstTrace trace) {
-        super(trace, "Ust:DebugInfo"); //$NON-NLS-1$
-        ILttngUstEventLayout layout = trace.getEventLayout();
-        if (!(layout instanceof LttngUst28EventLayout)) {
-            /* This analysis only support UST 2.8+ traces */
-            throw new IllegalStateException("Debug info analysis was started with an incompatible trace."); //$NON-NLS-1$
-        }
-        fLayout = (LttngUst28EventLayout) layout;
-        fEventNames = buildEventNames(fLayout);
+    public UstDebugInfoAnalysisStateProvider() {
     }
 
-    private static Map<String, Integer> buildEventNames(LttngUst28EventLayout layout) {
-        ImmutableMap.Builder<String, Integer> builder = ImmutableMap.builder();
-        builder.put(layout.eventDlOpen(), DL_DLOPEN_INDEX);
-        builder.put(layout.eventDlBuildId(), DL_BUILD_ID_INDEX);
-        builder.put(layout.eventDlDebugLink(), DL_DEBUG_LINK_INDEX);
-        builder.put(layout.eventDlClose(), DL_DLCLOSE_INDEX);
-        builder.put(layout.eventStatedumpBinInfo(), STATEDUMP_BIN_INFO_INDEX);
-        builder.put(layout.eventStateDumpBuildId(), STATEDUMP_BUILD_ID_INDEX);
-        builder.put(layout.eventStateDumpDebugLink(), STATEDUMP_DEBUG_LINK_INDEX);
-        builder.put(layout.eventStatedumpStart(), STATEDUMP_START_INDEX);
-        return builder.build();
-    }
+    public void eventHandle(UstDebugInfoAnalysisDefinitions defs,
+            ITmfStateSystemBuilder ss, ITraceEvent event) {
 
-    @Override
-    protected void eventHandle(ITmfEvent event) {
+        LttngUst28EventLayout layout = defs.getLayout();
+
         /*
          * We require the "vpid" context to build the state system. The rest of
          * the analysis also needs the "ip" context, but the state provider part
          * does not.
          */
-        final Long vpid = event.getContent().getFieldValue(Long.class, fLayout.contextVpid());
-        if (vpid == null) {
+        final IntegerValue vpidField = event.getField(layout.contextVpid(), IntegerValue.class);
+        if (vpidField == null) {
             return;
         }
+        Long vpid = vpidField.getValue();
 
-        final @NonNull ITmfStateSystemBuilder ss = requireNonNull(getStateSystemBuilder());
-
-        String name = event.getName();
-        Integer index = fEventNames.get(name);
+        String name = event.getEventName();
+        Integer index = defs.getIndexOfName(name);
         if (index == null) {
             /* Untracked event type */
             return;
@@ -213,34 +173,34 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
         int intIndex = index.intValue();
 
         switch (intIndex) {
-        case STATEDUMP_START_INDEX: {
+        case UstDebugInfoAnalysisDefinitions.STATEDUMP_START_INDEX: {
             handleStatedumpStart(event, vpid, ss);
             break;
         }
 
-        case STATEDUMP_BIN_INFO_INDEX:
-            handleBinInfo(event, vpid, ss, true);
+        case UstDebugInfoAnalysisDefinitions.STATEDUMP_BIN_INFO_INDEX:
+            handleBinInfo(layout, event, vpid, ss, true);
             break;
-        case DL_DLOPEN_INDEX:
-            handleBinInfo(event, vpid, ss, false);
-            break;
-
-        case STATEDUMP_BUILD_ID_INDEX:
-            handleBuildId(event, vpid, ss, true);
-            break;
-        case DL_BUILD_ID_INDEX:
-            handleBuildId(event, vpid, ss, false);
+        case UstDebugInfoAnalysisDefinitions.DL_DLOPEN_INDEX:
+            handleBinInfo(layout, event, vpid, ss, false);
             break;
 
-        case STATEDUMP_DEBUG_LINK_INDEX:
-            handleDebugLink(event, vpid, ss, true);
+        case UstDebugInfoAnalysisDefinitions.STATEDUMP_BUILD_ID_INDEX:
+            handleBuildId(layout, event, vpid, ss, true);
             break;
-        case DL_DEBUG_LINK_INDEX:
-            handleDebugLink(event, vpid, ss, false);
+        case UstDebugInfoAnalysisDefinitions.DL_BUILD_ID_INDEX:
+            handleBuildId(layout, event, vpid, ss, false);
             break;
 
-        case DL_DLCLOSE_INDEX: {
-            handleClose(event, vpid, ss);
+        case UstDebugInfoAnalysisDefinitions.STATEDUMP_DEBUG_LINK_INDEX:
+            handleDebugLink(layout, event, vpid, ss, true);
+            break;
+        case UstDebugInfoAnalysisDefinitions.DL_DEBUG_LINK_INDEX:
+            handleDebugLink(layout, event, vpid, ss, false);
+            break;
+
+        case UstDebugInfoAnalysisDefinitions.DL_DLCLOSE_INDEX: {
+            handleClose(layout, event, vpid, ss);
             break;
         }
 
@@ -335,8 +295,8 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
      * When a process does an exec, a new statedump is done and all previous
      * mappings are now invalid.
      */
-    private void handleStatedumpStart(ITmfEvent event, final Long vpid, final ITmfStateSystemBuilder ss) {
-        long ts = event.getTimestamp().getValue();
+    private void handleStatedumpStart(ITraceEvent event, final Long vpid, final ITmfStateSystemBuilder ss) {
+        long ts = event.getTimestamp();
         fLatestStatedumpStarts.put(vpid, ts);
 
         try {
@@ -358,24 +318,32 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
      *            Indicates if it comes from a statedump event, or a
      *            dlopen/lib:load event.
      */
-    private void handleBinInfo(ITmfEvent event, final Long vpid,
+    private void handleBinInfo(LttngUst28EventLayout layout, ITraceEvent event, final Long vpid,
             final ITmfStateSystemBuilder ss, boolean statedump) {
-        Long baddr = event.getContent().getFieldValue(Long.class, fLayout.fieldBaddr());
-        Long memsz = event.getContent().getFieldValue(Long.class, fLayout.fieldMemsz());
-        String path = event.getContent().getFieldValue(String.class, fLayout.fieldPath());
-        Long hasBuildIdValue = event.getContent().getFieldValue(Long.class, fLayout.fieldHasBuildId());
-        Long hasDebugLinkValue = event.getContent().getFieldValue(Long.class, fLayout.fieldHasDebugLink());
-        Long isPicValue = event.getContent().getFieldValue(Long.class, fLayout.fieldIsPic());
+        // "?.getValue()" would be sooo much cleaner...
+        IntegerValue baddrField = event.getField(layout.fieldBaddr(), IntegerValue.class);
+        IntegerValue memszField = event.getField(layout.fieldMemsz(), IntegerValue.class);
+        StringValue pathField = event.getField(layout.fieldPath(), StringValue.class);
+        IntegerValue hasBuildIdField = event.getField(layout.fieldHasBuildId(), IntegerValue.class);
+        IntegerValue hasDebugLinkField = event.getField(layout.fieldHasDebugLink(), IntegerValue.class);
+        IntegerValue isPicField = event.getField(layout.fieldIsPic(), IntegerValue.class);
 
-        if (baddr == null ||
-                memsz == null ||
-                path == null ||
-                hasBuildIdValue == null ||
-                hasDebugLinkValue == null ||
-                (statedump && isPicValue == null)) {
+        if (baddrField == null ||
+                memszField == null ||
+                pathField == null ||
+                hasBuildIdField == null ||
+                hasDebugLinkField == null ||
+                (statedump && isPicField == null)) {
             LOGGER.warning(() -> "[UstDebugInfoStateProvider:InvalidBinInfoEvent] event=" + event.toString()); //$NON-NLS-1$
             return;
         }
+
+        long baddr = baddrField.getValue();
+        long memsz = memszField.getValue();
+        String path = pathField.getValue();
+        long hasBuildIdValue = hasBuildIdField.getValue();
+        long hasDebugLinkValue = hasDebugLinkField.getValue();
+        @Nullable Long isPicValue = (isPicField == null ? null : isPicField.getValue());
 
         /*
          * Dlopen/load events do not have an is_pic field, it is taken for
@@ -400,22 +368,25 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
      *            Indicates if it comes from a statedump event, or a
      *            dlopen/lib:build_id event.
      */
-    private void handleBuildId(ITmfEvent event, final Long vpid,
+    private void handleBuildId(LttngUst28EventLayout layout, ITraceEvent event, final Long vpid,
             final ITmfStateSystemBuilder ss, boolean statedump) {
-        long[] buildIdArray = event.getContent().getFieldValue(long[].class, fLayout.fieldBuildId());
-        Long baddr = event.getContent().getFieldValue(Long.class, fLayout.fieldBaddr());
+        ArrayValue<IntegerValue> buildIdArrayField = event.getField(layout.fieldBuildId(), ArrayValue.class);
+        IntegerValue baddrField = event.getField(layout.fieldBaddr(), IntegerValue.class);
 
-        if (buildIdArray == null || baddr == null) {
+        if (buildIdArrayField == null || baddrField == null) {
             LOGGER.warning(() -> "[UstDebugInfoStateProvider:InvalidBuildIdEvent] event=" + event.toString()); //$NON-NLS-1$
             return;
         }
+
+        IntegerValue[] buildIdArray = buildIdArrayField.getElements();
+        long baddr = baddrField.getValue();
 
         /*
          * Decode the buildID from the byte array in the trace field.
          * Use lower-case encoding, since this is how eu-readelf
          * displays it.
          */
-        String buildId = requireNonNull(BaseEncoding.base16().encode(longArrayToByteArray(buildIdArray)).toLowerCase());
+        String buildId = requireNonNull(BaseEncoding.base16().encode(integerValueArrayToByteArray(buildIdArray)).toLowerCase());
 
         long ts = getBinInfoTimeStamp(event, vpid, statedump);
         PendingBinInfo p = retrievePendingBinInfo(vpid, baddr);
@@ -432,15 +403,18 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
         processPendingBinInfo(p, ts, ss);
     }
 
-    private void handleDebugLink(ITmfEvent event, final Long vpid,
+    private void handleDebugLink(LttngUst28EventLayout layout, ITraceEvent event, final Long vpid,
             final ITmfStateSystemBuilder ss, boolean statedump) {
-        Long baddr = event.getContent().getFieldValue(Long.class, fLayout.fieldBaddr());
-        String debugLink = event.getContent().getFieldValue(String.class, fLayout.fieldDebugLinkFilename());
+        IntegerValue baddrField = event.getField(layout.fieldBaddr(), IntegerValue.class);
+        StringValue debugLinkField = event.getField(layout.fieldDebugLinkFilename(), StringValue.class);
 
-        if (baddr == null || debugLink == null) {
+        if (baddrField == null || debugLinkField == null) {
             LOGGER.warning(() -> "[UstDebugInfoStateProvider:InvalidDebugLinkEvent] event=" + event.toString()); //$NON-NLS-1$
             return;
         }
+
+        long baddr = baddrField.getValue();
+        String debugLink = debugLinkField.getValue();
 
         long ts = getBinInfoTimeStamp(event, vpid, statedump);
 
@@ -458,17 +432,19 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
      *
      * Uses fields: Long baddr
      */
-    private void handleClose(ITmfEvent event, final Long vpid, final ITmfStateSystemBuilder ss) {
-        Long baddr = event.getContent().getFieldValue(Long.class, fLayout.fieldBaddr());
+    private static void handleClose(LttngUst28EventLayout layout, ITraceEvent event, final Long vpid, final ITmfStateSystemBuilder ss) {
+        IntegerValue baddrField = event.getField(layout.fieldBaddr(), IntegerValue.class);
 
-        if (baddr == null) {
+        if (baddrField == null) {
             LOGGER.warning(() -> "[UstDebugInfoStateProvider:InvalidDlCloseEvent] event=" + event.toString()); //$NON-NLS-1$
             return;
         }
 
+        Long baddr = baddrField.getValue();
+
         try {
             int quark = ss.getQuarkAbsolute(vpid.toString(), baddr.toString());
-            long ts = event.getTimestamp().getValue();
+            long ts = event.getTimestamp();
             ss.removeAttribute(ts, quark);
         } catch (AttributeNotFoundException e) {
             /*
@@ -500,7 +476,7 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
      *            if it is a dlopen/lib:load event.
      * @return The timestamp to use
      */
-    private long getBinInfoTimeStamp(ITmfEvent event, final Long vpid, boolean statedump) {
+    private long getBinInfoTimeStamp(ITraceEvent event, final Long vpid, boolean statedump) {
         if (statedump) {
             Long statedumpStartTime = fLatestStatedumpStarts.get(vpid);
             if (statedumpStartTime != null) {
@@ -508,33 +484,17 @@ public class UstDebugInfoStateProvider extends AbstractTmfStateProvider {
             }
         }
 
-        return event.getTimestamp().getValue();
+        return event.getTimestamp();
     }
 
     /**
      * Until we can use Java 8 IntStream, see
-     * http://stackoverflow.com/a/28008477/4227853.
      */
-    private static byte[] longArrayToByteArray(long[] array) {
+    private static byte[] integerValueArrayToByteArray(IntegerValue[] array) {
         byte[] ret = new byte[array.length];
         for (int i = 0; i < array.length; i++) {
-            ret[i] = (byte) array[i];
+            ret[i] = (byte) array[i].getValue();
         }
         return ret;
-    }
-
-    @Override
-    public ITmfStateProvider getNewInstance() {
-        return new UstDebugInfoStateProvider(getTrace());
-    }
-
-    @Override
-    public LttngUstTrace getTrace() {
-        return (LttngUstTrace) super.getTrace();
-    }
-
-    @Override
-    public int getVersion() {
-        return VERSION;
     }
 }

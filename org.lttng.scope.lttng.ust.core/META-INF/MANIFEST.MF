@@ -10,7 +10,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.lttng.scope.lttng.ust.core.activator.internal;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui",
  org.lttng.scope.lttng.ust.core.analysis.debuginfo,
- org.lttng.scope.lttng.ust.core.analysis.debuginfo.internal;x-internal:=true,
  org.lttng.scope.lttng.ust.core.trace
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -18,6 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.tracecompass.ctf.tmf.core,
  org.eclipse.tracecompass.ctfreader,
  org.lttng.scope.common.core,
+ org.lttng.scope.jabberwocky,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.ctf,
  com.efficios.jabberwocky.lttng,
@@ -26,4 +26,5 @@ Import-Package: com.google.common.annotations;version="15.0.0",
  com.google.common.base,
  com.google.common.cache,
  com.google.common.collect,
- com.google.common.io
+ com.google.common.io,
+ com.google.common.primitives

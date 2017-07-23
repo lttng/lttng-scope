@@ -22,17 +22,12 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.tracecompass.ctf.tmf.core.tests.shared.CtfTmfTestTraceUtils;
+import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.testtraces.ctf.CtfTestTrace;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
-import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest.ExecutionType;
 import org.eclipse.tracecompass.tmf.core.request.TmfEventRequest;
-import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.signal.TmfTraceOpenedSignal;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.lttng.scope.lttng.ust.core.tests.shared.LttngUstTestTraceUtils;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstEvent;
@@ -43,37 +38,21 @@ import com.google.common.collect.Lists;
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
- * Tests for the {@link UstDebugInfoAnalysisModule}
+ * Tests for the {@link UstDebugInfoAnalysis}
  *
  * @author Alexandre Montplaisir
  */
 @NonNullByDefault({})
-public class UstDebugInfoAnalysisModuleTest {
+public class UstDebugInfoAnalysisTest {
 
     private static final @NonNull CtfTestTrace REAL_TEST_TRACE = CtfTestTrace.DEBUG_INFO4;
     private static final @NonNull CtfTestTrace SYNTH_EXEC_TRACE = CtfTestTrace.DEBUG_INFO_SYNTH_EXEC;
     private static final @NonNull CtfTestTrace SYNTH_TWO_PROCESSES_TRACE = CtfTestTrace.DEBUG_INFO_SYNTH_TWO_PROCESSES;
     private static final @NonNull CtfTestTrace SYNTH_BUILDID_DEBUGLINK_TRACE = CtfTestTrace.DEBUG_INFO_SYNTH_BUILDID_DEBUGLINK;
     private static final @NonNull CtfTestTrace INVALID_TRACE = CtfTestTrace.CYG_PROFILE;
+    private static final @NonNull CtfTestTrace NON_UST_TRACE = CtfTestTrace.KERNEL;
 
-    private UstDebugInfoAnalysisModule fModule;
-
-    /**
-     * Test setup
-     */
-    @Before
-    public void setup() {
-        fModule = new UstDebugInfoAnalysisModule();
-    }
-
-    /**
-     * Test cleanup
-     */
-    @After
-    public void tearDown() {
-        fModule.dispose();
-        fModule = null;
-    }
+    private UstDebugInfoAnalysis analysis = UstDebugInfoAnalysis.instance();
 
     /**
      * Test that the analysis can execute on a valid trace.
@@ -81,7 +60,8 @@ public class UstDebugInfoAnalysisModuleTest {
     @Test
     public void testCanExecute() {
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(REAL_TEST_TRACE);
-        assertTrue(fModule.canExecute(trace));
+        assertTrue(analysis.appliesTo(trace.getJwProject()));
+        assertTrue(analysis.canExecute(trace.getJwProject()));
         LttngUstTestTraceUtils.dispose(REAL_TEST_TRACE);
     }
 
@@ -90,21 +70,19 @@ public class UstDebugInfoAnalysisModuleTest {
      * (LTTng-UST < 2.8 in this case).
      */
     @Test
-    public void testCannotExcecute() {
+    public void testAppliesButCannotExcecute() {
         LttngUstTrace invalidTrace = LttngUstTestTraceUtils.getTrace(INVALID_TRACE);
-        assertFalse(fModule.canExecute(invalidTrace));
+        assertTrue(analysis.appliesTo(invalidTrace.getJwProject()));
+        assertFalse(analysis.canExecute(invalidTrace.getJwProject()));
         LttngUstTestTraceUtils.dispose(INVALID_TRACE);
     }
 
-    private void executeModule(ITmfTrace trace) {
-        assertNotNull(trace);
-        try {
-            fModule.setTrace(trace);
-        } catch (TmfAnalysisException e) {
-            fail();
-        }
-        fModule.schedule();
-        fModule.waitForCompletion();
+    @Test
+    public void testDoesNotApply() {
+        CtfTmfTrace kernelTrace = CtfTmfTestTraceUtils.getTrace(NON_UST_TRACE);
+        assertFalse(analysis.appliesTo(kernelTrace.getJwProject()));
+        assertFalse(analysis.canExecute(kernelTrace.getJwProject()));
+        LttngUstTestTraceUtils.dispose(NON_UST_TRACE);
     }
 
     /**
@@ -113,8 +91,7 @@ public class UstDebugInfoAnalysisModuleTest {
     @Test
     public void testExecution() {
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(REAL_TEST_TRACE);
-        executeModule(trace);
-        ITmfStateSystem ss = fModule.getStateSystem();
+        ITmfStateSystem ss = analysis.execute(trace.getJwProject(), null, null);
         assertNotNull(ss);
         LttngUstTestTraceUtils.dispose(REAL_TEST_TRACE);
     }
@@ -129,17 +106,6 @@ public class UstDebugInfoAnalysisModuleTest {
     @Test
     public void testBinaryCallsites() {
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(REAL_TEST_TRACE);
-
-        /*
-         * Fake a "trace opened" signal, so that the relevant analyses are
-         * started.
-         */
-        TmfTraceOpenedSignal signal = new TmfTraceOpenedSignal(this, trace, null);
-        TmfSignalManager.dispatchSignal(signal);
-
-        UstDebugInfoAnalysisModule module = TmfTraceUtils.getAnalysisModuleOfClass(trace, UstDebugInfoAnalysisModule.class, UstDebugInfoAnalysisModule.ID);
-        assertNotNull(module);
-        module.waitForCompletion();
 
         /* Send a request to get the 3 events we are interested in */
         List<@NonNull LttngUstEvent> events = new ArrayList<>();
@@ -177,18 +143,19 @@ public class UstDebugInfoAnalysisModuleTest {
         int vpid = 1337;
 
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(SYNTH_EXEC_TRACE);
-        executeModule(trace);
+        ITmfStateSystem ss = analysis.execute(trace.getJwProject(), null, null);
+        UstDebugInfoAnalysisResults results =  new UstDebugInfoAnalysisResults(ss);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo", null, null, false);
-        matchingFile = fModule.getMatchingFile(4000000, vpid, 0x400100);
+        matchingFile = results.getMatchingFile(4000000, vpid, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = null;
-        matchingFile = fModule.getMatchingFile(8000000, vpid, 0x400100);
+        matchingFile = results.getMatchingFile(8000000, vpid, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x500000, "/tmp/bar", null, null, false);
-        matchingFile = fModule.getMatchingFile(9000000, vpid, 0x500100);
+        matchingFile = results.getMatchingFile(9000000, vpid, 0x500100);
         assertEquals(expected, matchingFile);
 
         LttngUstTestTraceUtils.dispose(SYNTH_EXEC_TRACE);
@@ -205,14 +172,15 @@ public class UstDebugInfoAnalysisModuleTest {
         int vpid2 = 2001;
 
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(SYNTH_TWO_PROCESSES_TRACE);
-        executeModule(trace);
+        ITmfStateSystem ss = analysis.execute(trace.getJwProject(), null, null);
+        UstDebugInfoAnalysisResults results =  new UstDebugInfoAnalysisResults(ss);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "/tmp/debuglink1", false);
-        matchingFile = fModule.getMatchingFile(11000000, vpid1, 0x400100);
+        matchingFile = results.getMatchingFile(11000000, vpid1, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/bar", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "/tmp/debuglink2", false);
-        matchingFile = fModule.getMatchingFile(12000000, vpid2, 0x400100);
+        matchingFile = results.getMatchingFile(12000000, vpid2, 0x400100);
         assertEquals(expected, matchingFile);
 
         LttngUstTestTraceUtils.dispose(SYNTH_TWO_PROCESSES_TRACE);
@@ -227,22 +195,23 @@ public class UstDebugInfoAnalysisModuleTest {
         UstDebugInfoLoadedBinaryFile matchingFile, expected;
 
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(SYNTH_BUILDID_DEBUGLINK_TRACE);
-        executeModule(trace);
+        ITmfStateSystem ss = analysis.execute(trace.getJwProject(), null, null);
+        UstDebugInfoAnalysisResults results =  new UstDebugInfoAnalysisResults(ss);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo_nn", null, null, false);
-        matchingFile = fModule.getMatchingFile(17000000, 1337, 0x400100);
+        matchingFile = results.getMatchingFile(17000000, 1337, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo_yn", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, false);
-        matchingFile = fModule.getMatchingFile(18000000, 1338, 0x400100);
+        matchingFile = results.getMatchingFile(18000000, 1338, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo_ny", null, "/tmp/debug_link1", false);
-        matchingFile = fModule.getMatchingFile(19000000, 1339, 0x400100);
+        matchingFile = results.getMatchingFile(19000000, 1339, 0x400100);
         assertEquals(expected, matchingFile);
 
         expected = new UstDebugInfoLoadedBinaryFile(0x400000, "/tmp/foo_yy", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "/tmp/debug_link2", false);
-        matchingFile = fModule.getMatchingFile(20000000, 1340, 0x400100);
+        matchingFile = results.getMatchingFile(20000000, 1340, 0x400100);
         assertEquals(expected, matchingFile);
 
         LttngUstTestTraceUtils.dispose(SYNTH_BUILDID_DEBUGLINK_TRACE);
@@ -254,9 +223,10 @@ public class UstDebugInfoAnalysisModuleTest {
     @Test
     public void testGetAllBinaries() {
         LttngUstTrace trace = LttngUstTestTraceUtils.getTrace(REAL_TEST_TRACE);
-        executeModule(trace);
+        ITmfStateSystem ss = analysis.execute(trace.getJwProject(), null, null);
+        UstDebugInfoAnalysisResults results =  new UstDebugInfoAnalysisResults(ss);
 
-        List<UstDebugInfoBinaryFile> actualBinaries = Lists.newArrayList(fModule.getAllBinaries());
+        List<UstDebugInfoBinaryFile> actualBinaries = Lists.newArrayList(results.getAllBinaries());
         List<UstDebugInfoBinaryFile> expectedBinaries = Lists.newArrayList(
                 new UstDebugInfoBinaryFile("/home/simark/src/babeltrace/tests/debug-info-data/libhello_so",
                                            "cdd98cdd87f7fe64c13b6daad553987eafd40cbb", null, true),

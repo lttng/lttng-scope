@@ -15,7 +15,6 @@ import org.eclipse.tracecompass.tmf.ui.symbols.DefaultSymbolProvider;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProviderPreferencePage;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.BinaryCallsite;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.FunctionLocation;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
 import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoFunctionAspect;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;

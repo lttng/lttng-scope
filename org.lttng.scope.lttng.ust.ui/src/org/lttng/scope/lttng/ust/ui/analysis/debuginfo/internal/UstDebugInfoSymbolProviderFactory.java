@@ -11,10 +11,9 @@ package org.lttng.scope.lttng.ust.ui.analysis.debuginfo.internal;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProvider;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProviderFactory;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysisModule;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysis;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
 /**
@@ -31,11 +30,12 @@ public class UstDebugInfoSymbolProviderFactory implements ISymbolProviderFactory
          * This applies only to UST traces that fulfill the DebugInfo analysis
          * requirements.
          */
-        UstDebugInfoAnalysisModule module = TmfTraceUtils.getAnalysisModuleOfClass(trace,
-                UstDebugInfoAnalysisModule.class, UstDebugInfoAnalysisModule.ID);
-
-        if (module != null && trace instanceof LttngUstTrace) {
-            return new UstDebugInfoSymbolProvider((LttngUstTrace) trace);
+        if (!(trace instanceof LttngUstTrace)) {
+            return null;
+        }
+        LttngUstTrace ustTrace = (LttngUstTrace) trace;
+        if (UstDebugInfoAnalysis.instance().canExecute(ustTrace.getJwProject())) {
+            return new UstDebugInfoSymbolProvider(ustTrace);
         }
         return null;
     }

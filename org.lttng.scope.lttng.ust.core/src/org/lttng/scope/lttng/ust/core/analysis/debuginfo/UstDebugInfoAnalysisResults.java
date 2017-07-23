@@ -1,18 +1,15 @@
-/*******************************************************************************
- * Copyright (c) 2015, 2016 EfficiOS Inc., Alexandre Montplaisir
+/*
+ * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ */
 
 package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalLong;
 import java.util.Set;
@@ -20,19 +17,11 @@ import java.util.TreeSet;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfUtils;
-import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
-import org.eclipse.tracecompass.tmf.core.statesystem.ITmfStateProvider;
-import org.eclipse.tracecompass.tmf.core.statesystem.TmfStateSystemAnalysisModule;
-import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.internal.UstDebugInfoStateProvider;
-import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
-import ca.polymtl.dorsal.libdelorean.ITmfStateSystemBuilder;
 import ca.polymtl.dorsal.libdelorean.StateSystemUtils;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
@@ -41,65 +30,15 @@ import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
 import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 
 /**
- * Analysis to provide TMF Callsite information by mapping IP (instruction
- * pointer) contexts to address/line numbers via debug information.
- *
- * @author Alexandre Montplaisir
+ * Wrapper around a state system produced by the {@link UstDebugInfoAnalysis}.
  */
-public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
+public class UstDebugInfoAnalysisResults {
 
-    /**
-     * Analysis ID, it should match that in the plugin.xml file
-     */
-    public static final String ID = "org.eclipse.linuxtools.lttng2.ust.analysis.debuginfo"; //$NON-NLS-1$
+    private final ITmfStateSystem stateSystem;
 
-    @Override
-    protected ITmfStateProvider createStateProvider() {
-        return new UstDebugInfoStateProvider(requireNonNull(getTrace()));
+    public UstDebugInfoAnalysisResults(ITmfStateSystem ss) {
+        stateSystem = ss;
     }
-
-    @Override
-    public boolean setTrace(ITmfTrace trace) throws TmfAnalysisException {
-        if (!(trace instanceof LttngUstTrace)) {
-            return false;
-        }
-        return super.setTrace(trace);
-    }
-
-    @Override
-    protected @Nullable LttngUstTrace getTrace() {
-        return (LttngUstTrace) super.getTrace();
-    }
-
-    @Override
-    public boolean canExecute(ITmfTrace trace) {
-        /* The analysis can only work with LTTng-UST traces... */
-        if (!(trace instanceof LttngUstTrace)) {
-            return false;
-        }
-        LttngUstTrace ustTrace = (LttngUstTrace) trace;
-        String tracerName = CtfUtils.getTracerName(ustTrace);
-        int majorVersion = CtfUtils.getTracerMajorVersion(ustTrace);
-        int minorVersion = CtfUtils.getTracerMinorVersion(ustTrace);
-
-        /* ... taken with UST >= 2.8 ... */
-        if (!LttngUstTrace.TRACER_NAME.equals(tracerName)) {
-            return false;
-        }
-        if (majorVersion < 2) {
-            return false;
-        }
-        if (majorVersion == 2 && minorVersion < 8) {
-            return false;
-        }
-
-        /* ... that respect the ip/vpid contexts requirements. */
-        return super.canExecute(trace);
-    }
-
-    // ------------------------------------------------------------------------
-    // Class-specific operations
-    // ------------------------------------------------------------------------
 
     /**
      * Return all the binaries that were detected in the trace.
@@ -107,11 +46,7 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
      * @return The binaries (executables or libraries) referred to in the trace.
      */
     public Collection<UstDebugInfoBinaryFile> getAllBinaries() {
-        ITmfStateSystem ss = getStateSystem();
-        if (ss == null) {
-            /* State system might not yet be initialized */
-            return Collections.EMPTY_SET;
-        }
+        final ITmfStateSystem ss = stateSystem;
 
         final @NonNull Set<UstDebugInfoBinaryFile> files = new TreeSet<>();
         ImmutableList.Builder<Integer> builder = ImmutableList.builder();
@@ -123,10 +58,10 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
 
         try {
             for (Integer baddrQuark : baddrQuarks) {
-                int buildIdQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.BUILD_ID_ATTRIB);
-                int debugLinkQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.DEBUG_LINK_ATTRIB);
-                int pathQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.PATH_ATTRIB);
-                int isPICQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.IS_PIC_ATTRIB);
+                int buildIdQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.BUILD_ID_ATTRIB);
+                int debugLinkQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.DEBUG_LINK_ATTRIB);
+                int pathQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.PATH_ATTRIB);
+                int isPICQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.IS_PIC_ATTRIB);
                 long ts = ss.getStartTime();
 
                 /*
@@ -184,11 +119,7 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
     @VisibleForTesting
     public @Nullable UstDebugInfoLoadedBinaryFile getMatchingFile(long ts, long vpid, long ip) {
         try {
-            final ITmfStateSystem ss = getStateSystem();
-            if (ss == null) {
-                /* State system might not yet be initialized */
-                return null;
-            }
+            final ITmfStateSystem ss = stateSystem;
 
             List<Integer> possibleBaddrQuarks = ss.getQuarks(String.valueOf(vpid), "*"); //$NON-NLS-1$
             List<ITmfStateInterval> state = ss.queryFullState(ts);
@@ -213,7 +144,7 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
             final int baddrQuark = ss.getQuarkAbsolute(String.valueOf(vpid),
                                                        String.valueOf(baddr));
 
-            final int memszQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.MEMSZ_ATTRIB);
+            final int memszQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.MEMSZ_ATTRIB);
             final long memsz = state.get(memszQuark).getStateValue().unboxLong();
 
             /* Make sure the 'ip' fits the range of this object. */
@@ -225,18 +156,18 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
                 return null;
             }
 
-            final int pathQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.PATH_ATTRIB);
+            final int pathQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.PATH_ATTRIB);
             String filePath = state.get(pathQuark).getStateValue().unboxStr();
 
-            final int buildIdQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.BUILD_ID_ATTRIB);
+            final int buildIdQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.BUILD_ID_ATTRIB);
             ITmfStateValue buildIdValue = state.get(buildIdQuark).getStateValue();
             String buildId = unboxStrOrNull(buildIdValue);
 
-            final int debugLinkQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.DEBUG_LINK_ATTRIB);
+            final int debugLinkQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.DEBUG_LINK_ATTRIB);
             ITmfStateValue debugLinkValue = state.get(debugLinkQuark).getStateValue();
             String debugLink = unboxStrOrNull(debugLinkValue);
 
-            final int isPicQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoStateProvider.IS_PIC_ATTRIB);
+            final int isPicQuark = ss.getQuarkRelative(baddrQuark, UstDebugInfoAnalysisStateProvider.IS_PIC_ATTRIB);
             boolean isPic = state.get(isPicQuark).getStateValue().unboxInt() != 0;
 
             return new UstDebugInfoLoadedBinaryFile(baddr, filePath, buildId, debugLink, isPic);
@@ -249,10 +180,5 @@ public class UstDebugInfoAnalysisModule extends TmfStateSystemAnalysisModule {
 
     private static @Nullable String unboxStrOrNull(ITmfStateValue value) {
         return (value.isNull() ? null : value.unboxStr());
-    }
-
-    @Override
-    protected void setupAggregationRules(ITmfStateSystemBuilder ss) {
-        /* No aggregation rules used for now. */
     }
 }

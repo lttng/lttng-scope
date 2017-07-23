@@ -17,7 +17,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.internal.FileOffsetMapper;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
 /**

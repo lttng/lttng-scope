@@ -15,8 +15,12 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEventField;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
-import org.eclipse.tracecompass.tmf.core.trace.TmfTraceUtils;
+import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
+
+import com.efficios.jabberwocky.project.ITraceProject;
+
+import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
 
 /**
  * Event aspect of UST traces that indicate the binary callsite (binary, symbol
@@ -85,17 +89,18 @@ public class UstDebugInfoBinaryAspect implements ITmfEventAspect<BinaryCallsite>
          * First match the IP to the correct binary or library, by using the
          * UstDebugInfoAnalysis.
          */
-        UstDebugInfoAnalysisModule module =
-                TmfTraceUtils.getAnalysisModuleOfClass(trace,
-                        UstDebugInfoAnalysisModule.class, UstDebugInfoAnalysisModule.ID);
-        if (module == null) {
-            /*
-             * The analysis is not available for this trace, we won't be
-             * able to find the information.
-             */
+        ITraceProject project = trace.getJwProject();
+        UstDebugInfoAnalysis analysis = UstDebugInfoAnalysis.instance();
+
+        if (!analysis.canExecute(project)) {
             return null;
         }
-        UstDebugInfoLoadedBinaryFile file = module.getMatchingFile(ts, pid, ip);
+
+        Object res = JabberwockyProjectManager.instance().getAnalysisResults(project, analysis);
+        ITmfStateSystem ss = (ITmfStateSystem) res;
+        UstDebugInfoAnalysisResults results = new UstDebugInfoAnalysisResults(ss);
+
+        UstDebugInfoLoadedBinaryFile file = results.getMatchingFile(ts, pid, ip);
         if (file == null) {
             return null;
         }
