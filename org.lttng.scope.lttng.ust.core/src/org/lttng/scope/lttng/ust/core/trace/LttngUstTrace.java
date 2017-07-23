@@ -14,6 +14,7 @@
 
 package org.lttng.scope.lttng.ust.core.trace;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 
@@ -40,6 +41,8 @@ import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst27EventLayou
 import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst28EventLayout;
 import org.lttng.scope.lttng.ust.core.trace.layout.internal.LttngUst29EventLayout;
 
+import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
+import com.efficios.jabberwocky.trace.ITrace;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -98,6 +101,11 @@ public class LttngUstTrace extends CtfTmfTrace {
 
         /* Determine the event layout to use from the tracer's version */
         fLayout = getLayoutFromEnv();
+    }
+
+    @Override
+    protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
+        return new com.efficios.jabberwocky.lttng.ust.trace.LttngUstTrace(tracePath);
     }
 
     private @NonNull ILttngUstEventLayout getLayoutFromEnv() {

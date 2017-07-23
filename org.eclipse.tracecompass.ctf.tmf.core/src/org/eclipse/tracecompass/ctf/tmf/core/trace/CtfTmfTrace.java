@@ -81,7 +81,6 @@ import org.eclipse.tracecompass.tmf.core.trace.indexer.checkpoint.TmfCheckpoint;
 import org.eclipse.tracecompass.tmf.core.trace.location.ITmfLocation;
 import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 
-import com.efficios.jabberwocky.collection.TraceCollection;
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
 import com.efficios.jabberwocky.ctf.trace.generic.GenericCtfTrace;
 import com.efficios.jabberwocky.project.ITraceProject;
@@ -283,8 +282,6 @@ public class CtfTmfTrace extends TmfTrace
     private void setupJwProject() throws TmfTraceException {
         Path tracePath = Paths.get(getPath());
         ITrace<CtfTraceEvent> jwTrace = getJwTrace(tracePath);
-        TraceCollection<CtfTraceEvent, ITrace<CtfTraceEvent>> traceCollection = new TraceCollection<>(Collections.singleton(jwTrace));
-        Collection<TraceCollection<CtfTraceEvent, ITrace<CtfTraceEvent>>> traceCollections = Collections.singleton(traceCollection);
 
         String projectName = this.getName();
         Path projectDir = Paths.get(TmfTraceManager.getSupplementaryFileDir(this)).resolve("jw-project"); //$NON-NLS-1$
@@ -296,7 +293,7 @@ public class CtfTmfTrace extends TmfTrace
             }
         }
 
-        fJwProject = new TraceProject<>(projectName, projectDir, traceCollections);
+        fJwProject = TraceProject.ofSingleTrace(projectName, projectDir, jwTrace);
     }
 
     protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
