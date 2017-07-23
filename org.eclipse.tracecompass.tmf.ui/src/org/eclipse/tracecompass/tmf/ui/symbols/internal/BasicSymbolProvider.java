@@ -113,10 +113,9 @@ public class BasicSymbolProvider implements ISymbolProvider {
                             if (file.isFile()) {
                                 Map<String, String> result;
                                 if (fKind == SourceKind.BINARY) {
-                                    result = FunctionNameMapper.mapFromBinaryFile(file);
-                                } else {
-                                    result = FunctionNameMapper.mapFromNmTextFile(file);
+                                    throw new UnsupportedOperationException();
                                 }
+                                result = FunctionNameMapper.mapFromNmTextFile(file);
                                 if (result != null) {
                                     fMapping = result;
                                 }

@@ -59,5 +59,4 @@ Export-Package: org.eclipse.tracecompass.tmf.ui,
 Import-Package: com.google.common.annotations,
  com.google.common.base,
  com.google.common.cache,
- com.google.common.collect,
- org.eclipse.cdt.core
+ com.google.common.collect
