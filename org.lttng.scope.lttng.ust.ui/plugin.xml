@@ -8,12 +8,4 @@
             tracetype="org.eclipse.linuxtools.lttng2.ust.tracetype">
       </type>
    </extension>
-   <extension
-         point="org.eclipse.tracecompass.tmf.ui.symbolProvider">
-      <providerFactory
-            class="org.lttng.scope.lttng.ust.ui.analysis.debuginfo.internal.UstDebugInfoSymbolProviderFactory"
-            id="org.eclipse.tracecompass.lttng2.ust.ui.analysis.debuginfo.providerFactory"
-            priority="50">
-      </providerFactory>
-   </extension>
 </plugin>

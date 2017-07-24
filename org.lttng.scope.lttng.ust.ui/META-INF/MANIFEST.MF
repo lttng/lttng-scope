@@ -20,8 +20,7 @@ Require-Bundle: org.eclipse.core.resources,
  com.efficios.jabberwocky.core,
  com.efficios.jabberwocky.ctf,
  com.efficios.jabberwocky.lttng
-Export-Package: org.lttng.scope.lttng.ust.ui.activator.internal;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui.tests",
- org.lttng.scope.lttng.ust.ui.analysis.debuginfo.internal;x-internal:=true
+Export-Package: org.lttng.scope.lttng.ust.ui.activator.internal;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui.tests"
 Import-Package: com.google.common.base,
  com.google.common.collect,
  org.swtchart
