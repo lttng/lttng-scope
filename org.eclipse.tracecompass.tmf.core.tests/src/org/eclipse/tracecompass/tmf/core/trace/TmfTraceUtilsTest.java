@@ -14,7 +14,6 @@ package org.eclipse.tracecompass.tmf.core.trace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -27,16 +26,12 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
-import org.eclipse.tracecompass.tmf.core.analysis.AnalysisManagerTest;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfCpuAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
-import org.eclipse.tracecompass.tmf.core.signal.TmfTraceOpenedSignal;
 import org.eclipse.tracecompass.tmf.core.tests.shared.TmfTestTrace;
-import org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.TestAnalysis;
 import org.eclipse.tracecompass.tmf.core.tests.stubs.trace.TmfTraceStub;
 import org.junit.After;
 import org.junit.Before;
@@ -115,39 +110,6 @@ public class TmfTraceUtilsTest {
     // ------------------------------------------------------------------------
     // Test methods
     // ------------------------------------------------------------------------
-
-    /**
-     * Test the {@link TmfTraceUtils#getAnalysisModuleOfClass} method.
-     */
-    @Test
-    public void testGetModulesByClass() {
-        TmfTrace trace = fTrace;
-        assertNotNull(trace);
-
-        /* Open the trace, the modules should be populated */
-        trace.traceOpened(new TmfTraceOpenedSignal(this, trace, null));
-
-        Iterable<TestAnalysis> testModules = TmfTraceUtils.getAnalysisModulesOfClass(trace, TestAnalysis.class);
-        assertTrue(testModules.iterator().hasNext());
-
-        int count = 0;
-        for (TestAnalysis module : testModules) {
-            assertNotNull(module);
-            count++;
-        }
-        /*
-         * FIXME: The exact count depends on the context the test is run (full
-         * test suite or this file only), but there must be at least 2 modules
-         */
-        assertTrue(count >= 2);
-
-        TestAnalysis module = TmfTraceUtils.getAnalysisModuleOfClass(trace, TestAnalysis.class, AnalysisManagerTest.MODULE_PARAM);
-        assertNotNull(module);
-        IAnalysisModule traceModule = trace.getAnalysisModule(AnalysisManagerTest.MODULE_PARAM);
-        assertNotNull(traceModule);
-        assertEquals(module, traceModule);
-
-    }
 
     /**
      * Test the {@link TmfTraceUtils#resolveEventAspectOfClassForEvent(ITmfTrace, Class, ITmfEvent)} method.

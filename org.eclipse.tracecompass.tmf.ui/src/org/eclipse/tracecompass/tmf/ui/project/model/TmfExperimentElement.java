@@ -15,8 +15,6 @@
 
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,8 +43,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.tracecompass.tmf.core.TmfCommonConstants;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleHelper;
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.project.model.TmfTraceType;
 import org.eclipse.tracecompass.tmf.core.project.model.TraceTypeHelper;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
@@ -203,23 +199,6 @@ public class TmfExperimentElement extends TmfCommonProjectElement implements IPr
         ITmfTrace experiment = getTrace();
         if (experiment == null) {
             return;
-        }
-
-        /* super.refreshChildren() above should have set this */
-        TmfViewsElement viewsElement = requireNonNull(getChildElementViews());
-
-        Map<String, TmfAnalysisElement> analysisMap = new HashMap<>();
-        for (TmfAnalysisElement analysis : getAvailableAnalysis()) {
-            analysisMap.put(analysis.getAnalysisId(), analysis);
-        }
-        for (IAnalysisModuleHelper module : TmfAnalysisManager.getAnalysisModules().values()) {
-            if (!analysisMap.containsKey(module.getId()) && module.appliesToExperiment() && (experiment.getAnalysisModule(module.getId()) != null)) {
-                IFolder newresource = ResourcesPlugin.getWorkspace().getRoot().getFolder(getResource().getFullPath().append(module.getId()));
-                TmfAnalysisElement analysis = new TmfAnalysisElement(module.getName(), newresource, viewsElement, module);
-                viewsElement.addChild(analysis);
-                analysis.refreshChildren();
-                analysisMap.put(module.getId(), analysis);
-            }
         }
     }
 

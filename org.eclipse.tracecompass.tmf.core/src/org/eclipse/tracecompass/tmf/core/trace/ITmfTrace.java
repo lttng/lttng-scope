@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
 import org.eclipse.tracecompass.tmf.core.component.ITmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
@@ -234,27 +233,6 @@ public interface ITmfTrace extends ITmfEventProvider {
      *            Should we block the caller until indexing is finished, or not.
      */
     void indexTrace(boolean waitForCompletion);
-
-    // ------------------------------------------------------------------------
-    // Analysis getters
-    // ------------------------------------------------------------------------
-
-    /**
-     * Returns an analysis module with the given ID.
-     *
-     * @param id
-     *            The analysis module ID
-     * @return The {@link IAnalysisModule} object, or null if an analysis with
-     *         the given ID does no exist.
-     */
-    @Nullable IAnalysisModule getAnalysisModule(String id);
-
-    /**
-     * Get a list of all analysis modules currently available for this trace.
-     *
-     * @return An iterable view of the analysis modules
-     */
-    @NonNull Iterable<@NonNull IAnalysisModule> getAnalysisModules();
 
     // ------------------------------------------------------------------------
     // Aspect getters

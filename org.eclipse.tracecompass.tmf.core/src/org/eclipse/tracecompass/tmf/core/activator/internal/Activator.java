@@ -9,7 +9,6 @@
 
 package org.eclipse.tracecompass.tmf.core.activator.internal;
 
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 import org.lttng.scope.common.core.ScopeCoreActivator;
@@ -33,13 +32,11 @@ public class Activator extends ScopeCoreActivator {
     @Override
     protected void startActions() {
         TmfTraceManager.getInstance();
-        TmfAnalysisManager.initialize();
     }
 
     @Override
     protected void stopActions() {
         TmfTraceManager.getInstance().dispose();
-        TmfAnalysisManager.dispose();
         TmfSignalManager.dispose();
     }
 

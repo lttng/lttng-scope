@@ -18,29 +18,16 @@ package org.eclipse.tracecompass.tmf.core.trace;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.tracecompass.tmf.core.activator.internal.Activator;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModule;
-import org.eclipse.tracecompass.tmf.core.analysis.IAnalysisModuleHelper;
-import org.eclipse.tracecompass.tmf.core.analysis.TmfAnalysisManager;
 import org.eclipse.tracecompass.tmf.core.component.TmfEventProvider;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.ITmfLostEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.aspect.TmfBaseAspects;
-import org.eclipse.tracecompass.tmf.core.exceptions.TmfAnalysisException;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.request.ITmfEventRequest;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalHandler;
@@ -128,9 +115,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
 
     // The trace indexer
     private ITmfTraceIndexer fIndexer;
-
-    private final Map<String, IAnalysisModule> fAnalysisModules =
-            Collections.synchronizedMap(new LinkedHashMap<String, IAnalysisModule>());
 
     // ------------------------------------------------------------------------
     // Construction
@@ -270,53 +254,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
         getIndexer().buildIndex(0, TmfTimeRange.ETERNITY, waitForCompletion);
     }
 
-    /**
-     * Instantiate the applicable analysis modules and executes the analysis
-     * modules that are meant to be automatically executed
-     *
-     * @return An IStatus indicating whether the analysis could be run
-     *         successfully or not
-     */
-    protected IStatus executeAnalysis() {
-        MultiStatus status = new MultiStatus(Activator.instance().getPluginId(), IStatus.OK, null, null);
-
-        /* First modules are initialized */
-        Map<String, IAnalysisModuleHelper> modules = TmfAnalysisManager.getAnalysisModules(this.getClass());
-        for (IAnalysisModuleHelper helper : modules.values()) {
-            try {
-                IAnalysisModule module = helper.newModule(this);
-                if (module == null) {
-                    continue;
-                }
-                fAnalysisModules.put(module.getId(), module);
-            } catch (TmfAnalysisException e) {
-                status.add(new Status(IStatus.WARNING, Activator.instance().getPluginId(), e.getMessage()));
-            }
-        }
-
-        /* Once all modules are initialized, automatic modules are executed */
-        for (IAnalysisModule module : getAnalysisModules()) {
-            if (module.isAutomatic()) {
-                status.add(module.schedule());
-            }
-        }
-        return status;
-    }
-
-    @Override
-    public IAnalysisModule getAnalysisModule(String analysisId) {
-        return fAnalysisModules.get(analysisId);
-    }
-
-
-    @Override
-    public Iterable<IAnalysisModule> getAnalysisModules() {
-        synchronized (fAnalysisModules) {
-            Set<IAnalysisModule> modules = new HashSet<>(fAnalysisModules.values());
-            return modules;
-        }
-    }
-
     @Override
     public Iterable<ITmfEventAspect<?>> getEventAspects() {
         /* By default we provide only the base aspects valid for all trace types */
@@ -332,15 +269,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
         if (getIndexer() != null) {
             getIndexer().dispose();
         }
-
-        /* Clean up the analysis modules */
-        synchronized (fAnalysisModules) {
-            for (IAnalysisModule module : fAnalysisModules.values()) {
-                module.dispose();
-            }
-            fAnalysisModules.clear();
-        }
-
         super.dispose();
     }
 
@@ -631,10 +559,6 @@ public abstract class TmfTrace extends TmfEventProvider implements ITmfTrace, IT
          * The signal is either for this trace, or for an experiment containing
          * this trace.
          */
-        IStatus status = executeAnalysis();
-        if (!status.isOK()) {
-            Activator.instance().getLog().log(status);
-        }
 
         TmfTraceManager.refreshSupplementaryFiles(this);
 

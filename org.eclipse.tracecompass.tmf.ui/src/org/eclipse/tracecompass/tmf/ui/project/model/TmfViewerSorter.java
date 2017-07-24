@@ -25,7 +25,6 @@ public class TmfViewerSorter extends ViewerSorter {
     private static int TRACE_FOLDER_PRIO = 1;
     private static int EXPERIMENT_ELEMENT_PRIO = 2;
     private static int TRACE_ELEMENT_PRIO = 3;
-    private static int VIEWS_PRIO = 4;
     private static int ON_DEMAND_ANALYSIS_PRIO = 5;
     private static int REPORTS_PRIO = 6;
 
@@ -40,8 +39,6 @@ public class TmfViewerSorter extends ViewerSorter {
             prio = TRACE_ELEMENT_PRIO;
         } else if (element instanceof TmfExperimentElement) {
             prio = EXPERIMENT_ELEMENT_PRIO;
-        } else if (element instanceof TmfViewsElement) {
-            prio = VIEWS_PRIO;
         } else if (element instanceof TmfOnDemandAnalysesElement) {
             prio = ON_DEMAND_ANALYSIS_PRIO;
         } else if (element instanceof TmfReportsElement) {

@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -73,7 +72,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
     private static final String BOOKMARKS_HIDDEN_FILE = ".bookmarks"; //$NON-NLS-1$
 
     /* Direct child elements */
-    private TmfViewsElement fViewsElement = null;
     private TmfOnDemandAnalysesElement fOnDemandAnalysesElement = null;
     private TmfReportsElement fReportsElement = null;
 
@@ -115,14 +113,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
         /* Get the base path to put the resource to */
         IPath tracePath = getResource().getFullPath();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-
-        if (fViewsElement == null) {
-            /* Add the "Views" node */
-            IFolder viewsNodeRes = root.getFolder(tracePath.append(TmfViewsElement.PATH_ELEMENT));
-            fViewsElement = new TmfViewsElement(viewsNodeRes, this);
-            addChild(fViewsElement);
-        }
-        fViewsElement.refreshChildren();
 
         if (fOnDemandAnalysesElement == null) {
             /* Add the "On-demand Analyses" node */
@@ -174,15 +164,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
     // ------------------------------------------------------------------------
     // Operations
     // ------------------------------------------------------------------------
-
-    /**
-     * Get the child element "Views". There should always be one.
-     *
-     * @return The child element
-     */
-    protected TmfViewsElement getChildElementViews() {
-        return fViewsElement;
-    }
 
     /**
      * Get the child element "Reports".
@@ -405,17 +386,6 @@ public abstract class TmfCommonProjectElement extends TmfProjectModelElement {
 
         }
         return null;
-    }
-
-    /**
-     * Get the list of analysis elements
-     *
-     * @return Array of analysis elements
-     */
-    public List<TmfAnalysisElement> getAvailableAnalysis() {
-        return getChildElementViews().getChildren().stream()
-            .map(elem -> (TmfAnalysisElement) elem)
-            .collect(Collectors.toList());
     }
 
     // ------------------------------------------------------------------------

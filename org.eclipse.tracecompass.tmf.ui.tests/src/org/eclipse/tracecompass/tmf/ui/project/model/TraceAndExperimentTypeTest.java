@@ -13,7 +13,6 @@
 package org.eclipse.tracecompass.tmf.ui.project.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -162,26 +161,6 @@ public class TraceAndExperimentTypeTest {
         assertNotNull(table);
         assertTrue(table.getClass().equals(TmfEventsTable.class));
 
-    }
-
-    /**
-     * Test that the analysis get populated under an experiment of the proper type
-     */
-    @Test
-    public void testExperimentTypeAnalysis() {
-
-        /* Set the trace type of the experiment */
-        IResource resource = fExperiment.getResource();
-        try {
-            resource.setPersistentProperty(TmfCommonConstants.TRACETYPE, TEST_EXPERIMENT_TYPE);
-            fExperiment.refreshTraceType();
-        } catch (CoreException e) {
-            fail(e.getMessage());
-        }
-
-        /* Force the refresh of the experiment */
-        fExperiment.getParent().refresh();
-        assertFalse(fExperiment.getAvailableAnalysis().isEmpty());
     }
 
 }

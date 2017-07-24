@@ -8,8 +8,7 @@ Bundle-SymbolicName: org.eclipse.tracecompass.tmf.core.tests;singleton:=true
 Fragment-Host: org.eclipse.tracecompass.tmf.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.0.0"
-Export-Package: org.eclipse.tracecompass.tmf.core.analysis,
- org.eclipse.tracecompass.tmf.core.analysis.ondemand,
+Export-Package: org.eclipse.tracecompass.tmf.core.analysis.ondemand,
  org.eclipse.tracecompass.tmf.core.callstack,
  org.eclipse.tracecompass.tmf.core.component,
  org.eclipse.tracecompass.tmf.core.event,
@@ -20,7 +19,6 @@ Export-Package: org.eclipse.tracecompass.tmf.core.analysis,
  org.eclipse.tracecompass.tmf.core.signal,
  org.eclipse.tracecompass.tmf.core.tests.shared,
  org.eclipse.tracecompass.tmf.core.tests.stubs,
- org.eclipse.tracecompass.tmf.core.tests.stubs.analysis,
  org.eclipse.tracecompass.tmf.core.tests.stubs.analysis.ondemand,
  org.eclipse.tracecompass.tmf.core.tests.stubs.component,
  org.eclipse.tracecompass.tmf.core.tests.stubs.event,
