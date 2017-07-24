@@ -51,7 +51,6 @@ Export-Package: org.eclipse.tracecompass.tmf.ui,
  org.eclipse.tracecompass.tmf.ui.views.filter,
  org.eclipse.tracecompass.tmf.ui.views.histogram,
  org.eclipse.tracecompass.tmf.ui.views.internal;x-internal:=true,
- org.eclipse.tracecompass.tmf.ui.views.statesystem,
  org.eclipse.tracecompass.tmf.ui.widgets.rawviewer,
  org.eclipse.tracecompass.tmf.ui.widgets.virtualtable
 Import-Package: com.google.common.annotations,
