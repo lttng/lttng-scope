@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
@@ -18,6 +18,10 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
 
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.BinaryCallsite;
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysis;
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysisResults;
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoLoadedBinaryFile;
 import com.efficios.jabberwocky.project.ITraceProject;
 
 import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;

@@ -30,9 +30,9 @@ import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.exceptions.TmfTraceException;
 import org.eclipse.tracecompass.tmf.core.trace.TraceValidationStatus;
 import org.lttng.scope.lttng.ust.core.activator.internal.Activator;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoFunctionAspect;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoSourceAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoBinaryAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoFunctionAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoSourceAspect;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
 import com.efficios.jabberwocky.trace.ITrace;

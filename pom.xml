@@ -156,9 +156,6 @@
     <module>org.eclipse.tracecompass.tmf.core</module>
     <module>org.eclipse.tracecompass.tmf.ui</module>
 
-    <!-- These tests however are needed by other test plugins elsewhere -->
-    <module>org.eclipse.tracecompass.ctf.tmf.core.tests</module>
-
     <!--
       Since none of these plugins (or their dependencies) change, these
       tests should not break. Skip them normally, it speeds up the build
@@ -166,6 +163,7 @@
     -->
     <!-- <module>org.eclipse.tracecompass.tmf.core.tests</module> -->
     <!-- <module>org.eclipse.tracecompass.tmf.ui.tests</module> -->
+    <!-- <module>org.eclipse.tracecompass.ctf.tmf.core.tests</module> -->
 
     <module>org.lttng.scope.common.core</module>
     <module>org.lttng.scope.common.core.tests</module>
@@ -177,7 +175,6 @@
 
     <module>org.lttng.scope.lttng.kernel.core</module>
     <module>org.lttng.scope.lttng.ust.core</module>
-    <module>org.lttng.scope.lttng.ust.core.tests</module>
     <module>org.lttng.scope.lttng.ust.ui</module>
 
     <module>org.lttng.scope.jabberwocky</module>

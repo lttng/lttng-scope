@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
@@ -18,6 +18,8 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
 import org.eclipse.tracecompass.tmf.core.event.lookup.TmfCallsite;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
+
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.BinaryCallsite;
 
 /**
  * Event aspect of UST traces to generate a {@link TmfCallsite} using the debug

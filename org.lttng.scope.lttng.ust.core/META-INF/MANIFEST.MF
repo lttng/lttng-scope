@@ -9,7 +9,7 @@ Bundle-Activator: org.lttng.scope.lttng.ust.core.activator.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.lttng.scope.lttng.ust.core.activator.internal;x-friends:="org.eclipse.tracecompass.lttng2.ust.ui",
- org.lttng.scope.lttng.ust.core.analysis.debuginfo,
+ org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect,
  org.lttng.scope.lttng.ust.core.trace
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,

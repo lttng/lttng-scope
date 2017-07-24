@@ -13,11 +13,12 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.ui.symbols.DefaultSymbolProvider;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProviderPreferencePage;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.BinaryCallsite;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.FunctionLocation;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoBinaryAspect;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoFunctionAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoBinaryAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoFunctionAspect;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
+
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.BinaryCallsite;
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.FunctionLocation;
 
 /**
  * Symbol provider for UST traces with debug information.

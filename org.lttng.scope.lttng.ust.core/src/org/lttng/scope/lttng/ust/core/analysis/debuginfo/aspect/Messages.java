@@ -7,9 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -18,7 +17,6 @@ import org.eclipse.osgi.util.NLS;
  * @author Alexandre Montplaisir
  * @noreference Messages class
  */
-@NonNullByDefault({})
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 

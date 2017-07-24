@@ -18,7 +18,7 @@ import org.eclipse.tracecompass.ctf.tmf.core.trace.CtfTmfTrace;
 import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfCallsite;
 import org.eclipse.tracecompass.tmf.core.event.lookup.ITmfSourceLookup;
 import org.eclipse.tracecompass.tmf.core.timestamp.ITmfTimestamp;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoSourceAspect;
+import org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect.UstDebugInfoSourceAspect;
 
 /**
  * Event type for use in LTTng-UST traces.

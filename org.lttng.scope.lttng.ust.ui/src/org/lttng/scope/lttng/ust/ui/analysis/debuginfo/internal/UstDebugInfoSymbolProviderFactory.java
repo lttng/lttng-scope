@@ -13,8 +13,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.trace.ITmfTrace;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProvider;
 import org.eclipse.tracecompass.tmf.ui.symbols.ISymbolProviderFactory;
-import org.lttng.scope.lttng.ust.core.analysis.debuginfo.UstDebugInfoAnalysis;
 import org.lttng.scope.lttng.ust.core.trace.LttngUstTrace;
+
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysis;
 
 /**
  * Factory to create {@link UstDebugInfoSymbolProvider}. Provided to TMF via

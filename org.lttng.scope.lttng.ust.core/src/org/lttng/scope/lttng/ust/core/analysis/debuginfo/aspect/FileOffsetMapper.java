@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect;
 
 import static java.util.Objects.requireNonNull;
 

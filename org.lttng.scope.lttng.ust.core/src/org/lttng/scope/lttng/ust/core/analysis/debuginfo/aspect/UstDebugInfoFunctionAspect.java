@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package org.lttng.scope.lttng.ust.core.analysis.debuginfo;
+package org.lttng.scope.lttng.ust.core.analysis.debuginfo.aspect;
 
 import static org.lttng.scope.common.core.NonNullUtils.nullToEmptyString;
 
@@ -16,6 +16,9 @@ import java.io.File;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import org.eclipse.tracecompass.tmf.core.event.aspect.ITmfEventAspect;
+
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.BinaryCallsite;
+import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.FunctionLocation;
 
 /**
  * Aspect for the function location obtained with the UST debug info.
