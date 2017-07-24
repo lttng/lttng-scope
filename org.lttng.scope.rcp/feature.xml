@@ -83,13 +83,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.lttng.scope.lttng.ust.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="ca.polymtl.dorsal.libdelorean"
          download-size="0"
          install-size="0"

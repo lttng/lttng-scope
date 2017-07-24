@@ -12,4 +12,11 @@
             trace_type="org.lttng.scope.lttng.ust.core.trace.LttngUstTrace">
       </type>
    </extension>
+   <extension
+         point="org.eclipse.linuxtools.tmf.ui.tracetypeui">
+      <type
+            icon="icons/tracetype/lttng-ust.png"
+            tracetype="org.eclipse.linuxtools.lttng2.ust.tracetype">
+      </type>
+   </extension>
 </plugin>

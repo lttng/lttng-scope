@@ -175,7 +175,6 @@
 
     <module>org.lttng.scope.lttng.kernel.core</module>
     <module>org.lttng.scope.lttng.ust.core</module>
-    <module>org.lttng.scope.lttng.ust.ui</module>
 
     <module>org.lttng.scope.jabberwocky</module>
     <module>org.lttng.scope.ui</module>

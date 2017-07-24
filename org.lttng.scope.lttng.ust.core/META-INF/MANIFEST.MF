@@ -14,6 +14,7 @@ Export-Package: org.lttng.scope.lttng.ust.core.activator.internal;x-friends:="or
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.tracecompass.tmf.core,
+ org.eclipse.tracecompass.tmf.ui,
  org.eclipse.tracecompass.ctf.tmf.core,
  org.eclipse.tracecompass.ctfreader,
  org.lttng.scope.common.core,
