@@ -43,8 +43,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.tracecompass.tmf.core.signal.TmfSignalManager;
 import org.lttng.scope.lami.core.aspect.LamiTableEntryAspect;
 import org.lttng.scope.lami.core.module.LamiChartModel;
-import org.lttng.scope.lami.core.module.LamiTableEntry;
 import org.lttng.scope.lami.core.module.LamiChartModel.ChartType;
+import org.lttng.scope.lami.core.module.LamiTableEntry;
 import org.lttng.scope.lami.ui.format.LamiLabelFormat;
 import org.lttng.scope.lami.ui.format.LamiTimeStampFormat;
 import org.lttng.scope.lami.ui.signals.LamiSelectionUpdateSignal;
@@ -421,7 +421,11 @@ public class LamiScatterViewer extends LamiXYChartViewer {
              * on selection in the future
              */
             ArrayList<Color> colors = new ArrayList<>();
-            for (int i = 0; i < series.getXSeries().length; i++) {
+            double[] xSeries = series.getXSeries();
+            if (xSeries == null) {
+                continue;
+            }
+            for (int i = 0; i < xSeries.length; i++) {
                 Color color = ((ILineSeries) series).getSymbolColor();
                 colors.add(requireNonNull(color));
             }
