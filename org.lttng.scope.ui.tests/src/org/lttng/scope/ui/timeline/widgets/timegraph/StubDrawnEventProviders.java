@@ -28,7 +28,6 @@ import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGra
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Ints;
 
 final class StubDrawnEventProviders {
 
@@ -104,7 +103,7 @@ final class StubDrawnEventProviders {
 
     private static int getIndexOfTreeElement(TimeGraphTreeElement treeElem) {
         String nb = treeElem.getName().substring("Entry #".length());
-        return Ints.tryParse(nb);
+        return Integer.parseInt(nb);
     }
 
     private static long ts(TimeRange range, double ratio) {
