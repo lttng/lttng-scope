@@ -30,7 +30,7 @@ import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelThreadInformationProvider;
 import com.efficios.jabberwocky.project.ITraceProject;
 
-import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 
 /**
  * This aspect finds the ID of the thread running from this event using the
@@ -81,7 +81,7 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
         ITraceProject<?, ?> project = kTrace.getJwProject();
         KernelAnalysis analysis = KernelAnalysis.instance();
         JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
-        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);
+        IStateSystemReader ss = (IStateSystemReader) mgr.getAnalysisResults(project, analysis);
 
         long ts = event.getTimestamp().toNanos();
         return KernelThreadInformationProvider.getThreadOnCpu(ss, cpu, ts);

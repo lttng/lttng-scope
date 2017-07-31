@@ -27,12 +27,12 @@ import com.efficios.jabberwocky.lttng.kernel.analysis.os.Attributes;
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.project.ITraceProject;
 
-import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
-import ca.polymtl.dorsal.libdelorean.interval.ITmfStateInterval;
-import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.interval.IStateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.IStateValue;
 
 /**
  * This aspect finds the priority of the thread running from this event using
@@ -68,7 +68,7 @@ public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
         ITraceProject<?, ?> project = kTrace.getJwProject();
         KernelAnalysis analysis = KernelAnalysis.instance();
         JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
-        ITmfStateSystem ss = (ITmfStateSystem) mgr.getAnalysisResults(project, analysis);
+        IStateSystemReader ss = (IStateSystemReader) mgr.getAnalysisResults(project, analysis);
 
         Integer tid = KernelTidAspect.INSTANCE.resolve(event);
         if (tid == null) {
@@ -84,8 +84,8 @@ public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
                 cpu = TmfTraceUtils.resolveIntEventAspectOfClassForEvent(trace, TmfCpuAspect.class, event);
             }
             int execPrioQuark = ss.getQuarkAbsolute(Attributes.THREADS, Attributes.buildThreadAttributeName(tid, cpu), Attributes.PRIO);
-            ITmfStateInterval interval = ss.querySingleState(ts, execPrioQuark);
-            ITmfStateValue prioValue = interval.getStateValue();
+            IStateInterval interval = ss.querySingleState(ts, execPrioQuark);
+            IStateValue prioValue = interval.getStateValue();
             /* We know the prio must be an Integer */
             execPrio = prioValue.unboxInt();
         } catch (AttributeNotFoundException | StateSystemDisposedException | TimeRangeException e) {

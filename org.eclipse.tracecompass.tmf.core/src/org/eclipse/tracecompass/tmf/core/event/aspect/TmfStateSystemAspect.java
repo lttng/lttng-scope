@@ -20,10 +20,10 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 
-import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
-import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.IStateValue;
 
 /**
  * Aspect representing a query in a given state system, at the timestamp of the
@@ -37,7 +37,7 @@ import ca.polymtl.dorsal.libdelorean.statevalue.ITmfStateValue;
 public class TmfStateSystemAspect implements ITmfEventAspect<String> {
 
     private final @Nullable String fName;
-    private final ITmfStateSystem fSS;
+    private final IStateSystemReader fSS;
     private final int fAttribute;
 
     /**
@@ -51,7 +51,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
      * @param attributeQuark
      *            The quark of the attribute in the state system to look for
      */
-    public TmfStateSystemAspect(@Nullable String name, ITmfStateSystem ss, int attributeQuark) {
+    public TmfStateSystemAspect(@Nullable String name, IStateSystemReader ss, int attributeQuark) {
         fName = name;
         fSS = ss;
         fAttribute = attributeQuark;
@@ -77,7 +77,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
     @Override
     public @Nullable String resolve(ITmfEvent event) {
         try {
-            ITmfStateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
+            IStateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
             return requireNonNull(value.toString());
         } catch (StateSystemDisposedException | AttributeNotFoundException e) {
             return null;

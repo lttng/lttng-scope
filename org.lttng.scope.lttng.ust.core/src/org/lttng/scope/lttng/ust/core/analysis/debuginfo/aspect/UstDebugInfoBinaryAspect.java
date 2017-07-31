@@ -24,7 +24,7 @@ import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysi
 import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoLoadedBinaryFile;
 import com.efficios.jabberwocky.project.ITraceProject;
 
-import ca.polymtl.dorsal.libdelorean.ITmfStateSystem;
+import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 
 /**
  * Event aspect of UST traces that indicate the binary callsite (binary, symbol
@@ -101,7 +101,7 @@ public class UstDebugInfoBinaryAspect implements ITmfEventAspect<BinaryCallsite>
         }
 
         Object res = JabberwockyProjectManager.instance().getAnalysisResults(project, analysis);
-        ITmfStateSystem ss = (ITmfStateSystem) res;
+        IStateSystemReader ss = (IStateSystemReader) res;
         UstDebugInfoAnalysisResults results = new UstDebugInfoAnalysisResults(ss);
 
         UstDebugInfoLoadedBinaryFile file = results.getMatchingFile(ts, pid, ip);

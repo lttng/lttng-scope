@@ -40,6 +40,7 @@
                 <plugin id="ca.polymtl.dorsal.libdelorean"/>
                 <plugin id="org.eclipse.tracecompass.ctfreader"/>
 
+                <plugin id="com.efficios.jabberwocky.deps"/>
                 <plugin id="com.efficios.jabberwocky.core"/>
                 <plugin id="com.efficios.jabberwocky.ctf"/>
                 <plugin id="com.efficios.jabberwocky.lttng"/>
