@@ -38,4 +38,5 @@ Import-Package: com.efficios.jabberwocky.common;version="0.2.3",
  com.google.common.base,
  com.google.common.collect,
  com.google.common.primitives,
+ kotlin.jvm.functions,
  kotlin.jvm.internal.markers

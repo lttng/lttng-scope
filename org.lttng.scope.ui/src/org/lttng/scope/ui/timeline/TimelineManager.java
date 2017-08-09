@@ -14,9 +14,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.TimelineWidget.TimelineWidgetUpdateTask;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.ui.timeline.widgets.xychart.XYChartFullRangeWidget;
+import org.lttng.scope.ui.timeline.widgets.xychart.XYChartVisibleRangeWidget;
 
 import com.efficios.jabberwocky.context.ViewGroupContext;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
@@ -25,6 +28,11 @@ import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelPr
 import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager;
 import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager.TimeGraphOutput;
 import com.efficios.jabberwocky.views.timegraph.view.TimeGraphModelView;
+import com.efficios.jabberwocky.views.xychart.control.XYChartControl;
+import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider;
+import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager;
+import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager.XYChartModelProviderFactory;
+import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager.XYChartOutput;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -35,7 +43,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.shape.Rectangle;
 
-public class TimelineManager implements TimeGraphOutput {
+public class TimelineManager implements TimeGraphOutput, XYChartOutput {
 
     /* Application-wide debug options */
     public static final DebugOptions DEBUG_OPTIONS = new DebugOptions();
@@ -63,6 +71,7 @@ public class TimelineManager implements TimeGraphOutput {
         fView = view;
         fViewContext = viewContext;
         TimeGraphModelProviderManager.instance().registerOutput(this);
+        XYChartModelProviderManager.INSTANCE.registerOutput(this);
 
         /* Start the periodic redraw thread */
         long delay = DEBUG_OPTIONS.uiUpdateDelay.get();
@@ -106,7 +115,44 @@ public class TimelineManager implements TimeGraphOutput {
 
         fWidgets.add(viewer);
         fView.addWidget(viewer.getRootNode());
+    }
 
+    @Override
+    public void providerRegistered(@NonNull XYChartModelProviderFactory factory) {
+        /*
+         * Since XY chart data scales well to very large time ranges (each data point
+         * simply represents an aggregate of a larger time range), we will create two
+         * widgets for each XY chart provider: a "visible range" one and a full range
+         * one.
+         *
+         * Note we will use the same provider for both widgets, so that setting changes
+         * are propagated to both widgets. Each widget needs its own control object
+         * though.
+         */
+        XYChartModelProvider provider = factory.invoke();
+
+        /* Create the "visible range" widget. */
+        XYChartControl visibleRangecontrol = new XYChartControl(fViewContext, provider);
+        XYChartVisibleRangeWidget visibleRangeWidget = new XYChartVisibleRangeWidget(visibleRangecontrol);
+        visibleRangecontrol.setView(visibleRangeWidget);
+        fWidgets.add(visibleRangeWidget);
+        fView.addWidget(visibleRangeWidget.getRootNode());
+
+        /* Create the "full range" widget. */
+        XYChartControl fullRangeControl = new XYChartControl(fViewContext, provider);
+        XYChartFullRangeWidget fullRangeWidget = new XYChartFullRangeWidget(fullRangeControl);
+        fullRangeControl.setView(fullRangeWidget);
+        fWidgets.add(fullRangeWidget);
+        fView.addWidget(fullRangeWidget.getRootNode());
+
+        /* Bind properties accordingly */
+        Platform.runLater(() -> {
+            /* Bind divider position, if applicable */
+            SplitPane splitPane = visibleRangeWidget.getSplitPane();
+            splitPane.getDividers().get(0).positionProperty().bindBidirectional(fDividerPosition);
+
+            // TODO Bind selection rectangles once implemented
+        });
     }
 
     public void dispose() {

@@ -12,6 +12,9 @@ package org.lttng.scope.ui.activator.internal;
 import org.lttng.scope.common.ui.ScopeUIActivator;
 import org.lttng.scope.ui.context.ViewGroupContextManager;
 
+import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider;
+import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager;
+
 import javafx.application.Platform;
 
 /**
@@ -33,6 +36,9 @@ public class Activator extends ScopeUIActivator {
     @Override
     protected void startActions() {
         Platform.setImplicitExit(false);
+
+        XYChartModelProviderManager xyChartMgr = XYChartModelProviderManager.INSTANCE;
+        xyChartMgr.registerProviderFactory(() -> new EventStatsXYChartProvider());
     }
 
     @Override
