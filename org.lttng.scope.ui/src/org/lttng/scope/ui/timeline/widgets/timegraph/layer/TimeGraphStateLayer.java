@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -53,6 +54,8 @@ import javafx.scene.text.Text;
  * @author Alexandre Montplaisir
  */
 public class TimeGraphStateLayer extends TimeGraphLayer {
+
+    private static final Logger LOGGER = Logger.getLogger(TimeGraphStateLayer.class.getName());
 
     private final Group fLabelGroup = new Group();
     private final ITimeGraphModelStateProvider fStateProvider;
@@ -114,7 +117,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
         final int bottomEntry = Math.min(nbElements,
                 TimeGraphWidget.paneYPosToEntryListIndex(vPos.fBottomPos, TimeGraphWidget.ENTRY_HEIGHT) + entriesToPrefetch);
 
-        System.out.println("topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
+        LOGGER.finest(() -> "topEntry=" + topEntry +", bottomEntry=" + bottomEntry);
 
         List<TimeGraphStateRender> stateRenders = allTreeElements.subList(topEntry, bottomEntry).stream()
                 .map(treeElem -> fStateProvider.getStateRender(treeElem, timeRange, resolution, task))

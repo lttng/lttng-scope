@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -66,6 +67,8 @@ import javafx.scene.shape.Rectangle;
  * @author Alexandre Montplaisir
  */
 public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidget {
+
+    private static final Logger LOGGER = Logger.getLogger(TimeGraphWidget.class.getName());
 
     // ------------------------------------------------------------------------
     // Style definitions
@@ -500,7 +503,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         Task<@Nullable Void> task = new Task<@Nullable Void>() {
             @Override
             protected @Nullable Void call() {
-                System.err.println("Starting paint task #" + taskSeqNb);
+                LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
 
                 ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
                 TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
@@ -548,7 +551,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
                 /* Painting is finished, turn off the loading overlay */
                 Platform.runLater(() -> {
-                    System.err.println("fading out overlay");
+                    LOGGER.finest(() -> "fading out overlay"); //$NON-NLS-1$
                     fTimeGraphLoadingOverlay.fadeOut();
                     if (fRepaintLatch != null) {
                         fRepaintLatch.countDown();
@@ -559,7 +562,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             }
         };
 
-        System.err.println("Queueing task #" + taskSeqNb);
+        LOGGER.finer(() -> "Queueing task #" + taskSeqNb); //$NON-NLS-1$
 
         /*
          * Attach a listener to the task to receive exceptions thrown within the
@@ -644,20 +647,20 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
             if (!fDebugOptions.isScrollingListenersEnabled.get()) {
-                System.out.println("HScroll event ignored due to debug option");
+                LOGGER.finest(() -> "HScroll event ignored due to debug option"); //$NON-NLS-1$
                 return;
             }
             if (!fHScrollListenerStatus.enabledProperty().get()) {
-                System.out.println("HScroll listener triggered but inactive");
+                LOGGER.finest(() -> "HScroll listener triggered but inactive"); //$NON-NLS-1$
                 return;
             }
 
-            System.out.println("HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString());
+            LOGGER.finest(() -> "HScroll change listener triggered, oldval=" + oldValue.toString() + ", newval=" + newValue.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 
             /* We need to specify the new value here, or else the old one will be used */
             TimeRange range = getTimeGraphEdgeTimestamps(newValue.doubleValue());
 
-            System.out.println("Sending visible range update: " + range.toString());
+            LOGGER.finest(() -> "Sending visible range update: " + range.toString()); //$NON-NLS-1$
 
             getControl().updateVisibleTimeRange(range, false);
 
