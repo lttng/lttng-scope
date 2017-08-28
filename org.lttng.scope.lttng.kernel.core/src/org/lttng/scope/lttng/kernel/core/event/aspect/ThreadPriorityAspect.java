@@ -31,8 +31,9 @@ import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
 import ca.polymtl.dorsal.libdelorean.exceptions.TimeRangeException;
-import ca.polymtl.dorsal.libdelorean.interval.IStateInterval;
-import ca.polymtl.dorsal.libdelorean.statevalue.IStateValue;
+import ca.polymtl.dorsal.libdelorean.interval.StateInterval;
+import ca.polymtl.dorsal.libdelorean.statevalue.IntegerStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.StateValue;
 
 /**
  * This aspect finds the priority of the thread running from this event using
@@ -84,10 +85,10 @@ public final class ThreadPriorityAspect implements ITmfEventAspect<Integer> {
                 cpu = TmfTraceUtils.resolveIntEventAspectOfClassForEvent(trace, TmfCpuAspect.class, event);
             }
             int execPrioQuark = ss.getQuarkAbsolute(Attributes.THREADS, Attributes.buildThreadAttributeName(tid, cpu), Attributes.PRIO);
-            IStateInterval interval = ss.querySingleState(ts, execPrioQuark);
-            IStateValue prioValue = interval.getStateValue();
+            StateInterval interval = ss.querySingleState(ts, execPrioQuark);
+            StateValue prioValue = interval.getStateValue();
             /* We know the prio must be an Integer */
-            execPrio = prioValue.unboxInt();
+            execPrio = (prioValue.isNull() ? -1 : ((IntegerStateValue) prioValue).getValue());
         } catch (AttributeNotFoundException | StateSystemDisposedException | TimeRangeException e) {
         }
         return execPrio;

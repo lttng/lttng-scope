@@ -23,7 +23,7 @@ import org.eclipse.tracecompass.tmf.core.event.ITmfEvent;
 import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 import ca.polymtl.dorsal.libdelorean.exceptions.AttributeNotFoundException;
 import ca.polymtl.dorsal.libdelorean.exceptions.StateSystemDisposedException;
-import ca.polymtl.dorsal.libdelorean.statevalue.IStateValue;
+import ca.polymtl.dorsal.libdelorean.statevalue.StateValue;
 
 /**
  * Aspect representing a query in a given state system, at the timestamp of the
@@ -77,7 +77,7 @@ public class TmfStateSystemAspect implements ITmfEventAspect<String> {
     @Override
     public @Nullable String resolve(ITmfEvent event) {
         try {
-            IStateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
+            StateValue value = fSS.querySingleState(event.getTimestamp().getValue(), fAttribute).getStateValue();
             return requireNonNull(value.toString());
         } catch (StateSystemDisposedException | AttributeNotFoundException e) {
             return null;
