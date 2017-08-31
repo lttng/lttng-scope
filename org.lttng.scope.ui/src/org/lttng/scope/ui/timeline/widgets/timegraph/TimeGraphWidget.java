@@ -12,7 +12,6 @@ package org.lttng.scope.ui.timeline.widgets.timegraph;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
-import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -22,6 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.DebugOptions;
 import org.lttng.scope.ui.timeline.ITimelineWidget;
+import org.lttng.scope.ui.timeline.TimelineManager;
 import org.lttng.scope.ui.timeline.TimelineView;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
@@ -95,8 +95,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     // Instance fields
     // ------------------------------------------------------------------------
 
-    private final DebugOptions fDebugOptions = new DebugOptions();
-
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
 
@@ -127,8 +125,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     private final LoadingOverlay fTimeGraphLoadingOverlay;
 
-    private final Timer fUiUpdateTimer = new Timer();
-    private final PeriodicRedrawTask fUiUpdateTimerTask = new PeriodicRedrawTask(this);
+    private final @NonNull PeriodicRedrawTask fRedrawTask = new PeriodicRedrawTask(this);
 
     private volatile TimeGraphTreeRender fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
 
@@ -166,7 +163,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         // Prepare the time graph's part scene graph
         // --------------------------------------------------------------------
 
-        fTimeGraphLoadingOverlay = new LoadingOverlay(fDebugOptions);
+        fTimeGraphLoadingOverlay = new LoadingOverlay(getDebugOptions());
         fTimeGraphLoadingOverlayGroup = new Group(fTimeGraphLoadingOverlay);
 
         fTimeGraphPane = new Pane();
@@ -272,10 +269,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
         fBasePane = new BorderPane();
         fBasePane.setCenter(fSplitPane);
         fBasePane.setTop(fToolBar);
-
-        /* Start the periodic redraw thread */
-        long delay = fDebugOptions.uiUpdateDelay.get();
-        fUiUpdateTimer.schedule(fUiUpdateTimerTask, delay, delay);
     }
 
     public TimeGraphTreeRender getLatestTreeRender() {
@@ -289,6 +282,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     @Override
     public String getName() {
         return getControl().getModelRenderProvider().getName();
+    }
+
+    @Override
+    public @NonNull PeriodicRedrawTask getTimelineWidgetUpdateTask() {
+        return fRedrawTask;
     }
 
     @Override
@@ -322,9 +320,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     @Override
     public void disposeImpl() {
-        /* Stop/cleanup the redraw thread */
-        fUiUpdateTimer.cancel();
-        fUiUpdateTimer.purge();
     }
 
     @Override
@@ -343,7 +338,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
             /* Also clear whatever cached objects the viewer currently has. */
             fLatestTreeRender = TimeGraphTreeRender.EMPTY_RENDER;
-            fUiUpdateTimerTask.forceRedraw();
+            getTimelineWidgetUpdateTask().forceRedraw();
         });
     }
 
@@ -487,7 +482,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * We may ask for some padding on each side, clamped by the trace's
          * start and end.
          */
-        final long timeRangePadding = Math.round(windowRange.getDuration() * fDebugOptions.renderRangePadding.get());
+        final long timeRangePadding = Math.round(windowRange.getDuration() * getDebugOptions().renderRangePadding.get());
         final long renderingStartTime = Math.max(fullTimeGraphRange.getStartTime(), windowRange.getStartTime() - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphRange.getEndTime(), windowRange.getEndTime() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
@@ -646,7 +641,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
          * Listener for the horizontal scrollbar changes
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!fDebugOptions.isScrollingListenersEnabled.get()) {
+            if (!getDebugOptions().isScrollingListenersEnabled.get()) {
                 LOGGER.finest(() -> "HScroll event ignored due to debug option"); //$NON-NLS-1$
                 return;
             }
@@ -715,7 +710,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
     public class ZoomActions {
 
         public void zoom(boolean zoomIn, boolean forceUseMousePosition, @Nullable Double mouseX) {
-            final double zoomStep = fDebugOptions.zoomStep.get();
+            final double zoomStep = getDebugOptions().zoomStep.get();
 
             double newScaleFactor = (zoomIn ? 1.0 * (1 + zoomStep) : 1.0 * (1 / (1 + zoomStep)));
 
@@ -728,13 +723,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
             boolean currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter);
 
             long zoomPivot;
-            if (fDebugOptions.zoomPivotOnMousePosition.get() && mouseX != null && forceUseMousePosition) {
+            if (getDebugOptions().zoomPivotOnMousePosition.get() && mouseX != null && forceUseMousePosition) {
                 /* Pivot on mouse position */
                 zoomPivot = paneXPosToTimestamp(mouseX);
-            } else if (fDebugOptions.zoomPivotOnSelection.get() && currentSelectionCenterIsVisible) {
+            } else if (getDebugOptions().zoomPivotOnSelection.get() && currentSelectionCenterIsVisible) {
                 /* Pivot on current selection center */
                 zoomPivot = currentSelectionCenter;
-            } else if (fDebugOptions.zoomPivotOnMousePosition.get() && mouseX != null) {
+            } else if (getDebugOptions().zoomPivotOnMousePosition.get() && mouseX != null) {
                 /* Pivot on mouse position */
                 zoomPivot = paneXPosToTimestamp(mouseX);
             } else {
@@ -928,7 +923,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
 
     // could eventually be exposed to the user, as "advanced preferences"
     public DebugOptions getDebugOptions() {
-        return fDebugOptions;
+        return TimelineManager.DEBUG_OPTIONS;
     }
 
     public double getCurrentNanosPerPixel() {

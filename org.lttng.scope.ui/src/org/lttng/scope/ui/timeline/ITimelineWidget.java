@@ -24,6 +24,10 @@ public interface ITimelineWidget {
 
     void dispose();
 
+    interface TimelineWidgetUpdateTask extends Runnable {}
+
+    @Nullable TimelineWidgetUpdateTask getTimelineWidgetUpdateTask();
+
     /**
      * Many widgets will use a SplitPane to separate a tree or info pane on the
      * left, and a time-based pane on the right. This method is used to return
