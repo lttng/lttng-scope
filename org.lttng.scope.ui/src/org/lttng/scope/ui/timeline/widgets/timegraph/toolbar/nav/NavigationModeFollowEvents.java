@@ -18,8 +18,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.ui.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.project.ITraceProject;
-import com.efficios.jabberwocky.trace.event.ITraceEvent;
+import com.efficios.jabberwocky.project.TraceProject;
+import com.efficios.jabberwocky.trace.event.TraceEvent;
 
 /**
  * Navigation mode using the current entry's events. It looks through all events
@@ -76,11 +76,11 @@ public class NavigationModeFollowEvents extends NavigationMode {
 
     private static void navigate(TimeGraphWidget viewer, boolean forward) {
         StateRectangle state = viewer.getSelectedState();
-        ITraceProject<?, ?> project = viewer.getControl().getViewContext().getCurrentTraceProject();
+        TraceProject<?, ?> project = viewer.getControl().getViewContext().getCurrentTraceProject();
         if (state == null || project == null) {
             return;
         }
-        Predicate<ITraceEvent> predicate = state.getStateInterval().getTreeElement().getEventMatching();
+        Predicate<TraceEvent> predicate = state.getStateInterval().getTreeElement().getEventMatching();
         if (predicate == null) {
             /* The tree element does not support navigating by events. */
             return;

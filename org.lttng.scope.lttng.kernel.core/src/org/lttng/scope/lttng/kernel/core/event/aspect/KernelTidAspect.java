@@ -28,7 +28,7 @@ import org.lttng.scope.lttng.kernel.core.trace.LttngKernelTrace;
 
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelAnalysis;
 import com.efficios.jabberwocky.lttng.kernel.analysis.os.KernelThreadInformationProvider;
-import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
 
 import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 
@@ -78,7 +78,7 @@ public final class KernelTidAspect implements ITmfEventAspect<Integer> {
             return null;
         }
         LttngKernelTrace kTrace = (LttngKernelTrace) trace;
-        ITraceProject<?, ?> project = kTrace.getJwProject();
+        TraceProject<?, ?> project = kTrace.getJwProject();
         KernelAnalysis analysis = KernelAnalysis.instance();
         JabberwockyProjectManager mgr = JabberwockyProjectManager.instance();
         IStateSystemReader ss = (IStateSystemReader) mgr.getAnalysisResults(project, analysis);

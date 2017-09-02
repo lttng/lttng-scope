@@ -17,7 +17,7 @@ import org.lttng.scope.ui.jfx.JfxColorFactory;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
 
 import com.efficios.jabberwocky.common.ConfigOption;
-import com.efficios.jabberwocky.trace.event.ITraceEvent;
+import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
@@ -115,7 +115,7 @@ class CreateEventSeriesDialog extends Dialog<@Nullable PredicateDrawnEventProvid
             }
 
             TimeGraphDrawnEventSeries series = generateEventSeries();
-            Predicate<ITraceEvent> predicate = event -> event.getEventName().equals(eventName);
+            Predicate<TraceEvent> predicate = event -> event.getEventName().equals(eventName);
             return new PredicateDrawnEventProvider(series, modelProvider, predicate);
         });
 

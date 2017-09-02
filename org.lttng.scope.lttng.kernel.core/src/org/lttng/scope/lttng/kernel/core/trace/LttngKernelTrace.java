@@ -35,7 +35,7 @@ import org.lttng.scope.lttng.kernel.core.event.aspect.KernelTidAspect;
 import org.lttng.scope.lttng.kernel.core.event.aspect.ThreadPriorityAspect;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
-import com.efficios.jabberwocky.trace.ITrace;
+import com.efficios.jabberwocky.trace.Trace;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -80,7 +80,7 @@ public class LttngKernelTrace extends CtfTmfTrace {
     }
 
     @Override
-    protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
+    protected Trace<CtfTraceEvent> getJwTrace(Path tracePath) {
         return new com.efficios.jabberwocky.lttng.kernel.trace.LttngKernelTrace(tracePath);
     }
 

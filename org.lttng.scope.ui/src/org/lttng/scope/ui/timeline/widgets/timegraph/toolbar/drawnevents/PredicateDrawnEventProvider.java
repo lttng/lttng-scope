@@ -23,9 +23,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.ui.context.ViewGroupContextManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.project.ITraceProject;
-import com.efficios.jabberwocky.project.ITraceProjectIterator;
-import com.efficios.jabberwocky.trace.event.ITraceEvent;
+import com.efficios.jabberwocky.project.TraceProject;
+import com.efficios.jabberwocky.project.TraceProjectIterator;
+import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
@@ -42,11 +42,11 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
     private static final int MAX = 2000;
 
     private final ITimeGraphModelProvider fModelProvider;
-    private final Predicate<ITraceEvent> fPredicate;
+    private final Predicate<TraceEvent> fPredicate;
 
     public PredicateDrawnEventProvider(TimeGraphDrawnEventSeries drawnEventSeries,
             ITimeGraphModelProvider modelProvider,
-            Predicate<ITraceEvent> predicate) {
+            Predicate<TraceEvent> predicate) {
         super(drawnEventSeries);
         fModelProvider = modelProvider;
         fPredicate = predicate;
@@ -66,16 +66,16 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
          * Final version should keep an iterator at the last selection, so we can
          * continue using it.
          */
-        ITraceProject<?, ?> project = traceProjectProperty().get();
+        TraceProject<?, ?> project = traceProjectProperty().get();
         if (project == null) {
             return new TimeGraphDrawnEventRender(timeRange, Collections.EMPTY_LIST);
         }
 
         int matches = 0;
-        List<ITraceEvent> matchingEvents = new LinkedList<>();
-        try (ITraceProjectIterator<?> iter = project.iterator()) {
+        List<TraceEvent> matchingEvents = new LinkedList<>();
+        try (TraceProjectIterator<?> iter = project.iterator()) {
             while (iter.hasNext()) {
-                ITraceEvent event = requireNonNull(iter.next());
+                TraceEvent event = requireNonNull(iter.next());
 
                 // Replace this by an iterator seek once implemented
                 if (event.getTimestamp() < timeRange.getStartTime()) {
@@ -113,7 +113,7 @@ class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
                      */
                     Optional<TimeGraphTreeElement> treeElem = treeRender.getAllTreeElements().stream()
                             .filter(elem -> {
-                                Predicate<ITraceEvent> predicate = elem.getEventMatching();
+                                Predicate<TraceEvent> predicate = elem.getEventMatching();
                                 if (predicate == null) {
                                     return false;
                                 }

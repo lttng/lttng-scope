@@ -42,7 +42,7 @@ public abstract class TimeGraphWidgetTestBase {
     @BeforeClass
     public static void setupClass() {
         StubTrace trace = new StubTrace();
-        sfProject = new StubProject(trace);
+        StubProject stubProject = new StubProject(trace);
 
         StubView view;
         try {
@@ -67,9 +67,10 @@ public abstract class TimeGraphWidgetTestBase {
 
         updateUI();
 
-        control.getViewContext().setCurrentTraceProject(sfProject);
+        control.getViewContext().setCurrentTraceProject(stubProject.getTraceProject());
         updateUI();
 
+        sfProject = stubProject;
         sfView = view;
         sfWidget = viewer;
         sfControl = control;

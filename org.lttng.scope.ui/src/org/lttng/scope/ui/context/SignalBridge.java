@@ -26,7 +26,7 @@ import org.eclipse.tracecompass.tmf.core.trace.TmfTraceManager;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.context.ViewGroupContext;
-import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
 
 /**
  * Bridge between a {@link ViewGroupContext} and the {@link TmfSignalManager}.
@@ -111,7 +111,7 @@ public class SignalBridge {
             return;
         }
 
-        ITraceProject<?, ?> project;
+        TraceProject<?, ?> project;
         ITmfTrace trace = signal.getTrace();
         if (trace instanceof CtfTmfTrace) {
             project = ((CtfTmfTrace) trace).getJwProject();
@@ -168,7 +168,7 @@ public class SignalBridge {
             range = TimeRange.of(rangeStart, rangeEnd);
         }
 
-        ITraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
+        TraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
         if (project == null) {
             return;
         }
@@ -187,7 +187,7 @@ public class SignalBridge {
             return;
         }
         TmfTimeRange windowRange = signal.getCurrentRange();
-        ITraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
+        TraceProject<?, ?> project = fViewContext.getCurrentTraceProject();
         if (windowRange == null || project == null) {
             return;
         }

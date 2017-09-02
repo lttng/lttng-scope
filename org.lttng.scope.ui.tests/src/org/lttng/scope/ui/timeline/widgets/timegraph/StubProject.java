@@ -12,17 +12,14 @@ package org.lttng.scope.ui.timeline.widgets.timegraph;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.Collections;
 
 import com.efficios.jabberwocky.collection.TraceCollection;
-import com.efficios.jabberwocky.project.ITraceProject;
-import com.efficios.jabberwocky.project.ITraceProjectIterator;
 import com.efficios.jabberwocky.project.TraceProject;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.google.common.io.MoreFiles;
 
-class StubProject implements ITraceProject<TraceEvent, StubTrace>, AutoCloseable {
+class StubProject implements AutoCloseable {
 
     private final Path fProjectPath;
     private final TraceProject<TraceEvent, StubTrace> fInnerProject;
@@ -38,34 +35,8 @@ class StubProject implements ITraceProject<TraceEvent, StubTrace>, AutoCloseable
         fInnerProject = new TraceProject<>("stub-project", fProjectPath, Collections.singleton(coll));
     }
 
-    @Override
-    public Path getDirectory() {
-        return fInnerProject.getDirectory();
-    }
-
-    @Override
-    public long getEndTime() {
-        return fInnerProject.getEndTime();
-    }
-
-    @Override
-    public String getName() {
-        return fInnerProject.getName();
-    }
-
-    @Override
-    public long getStartTime() {
-        return fInnerProject.getStartTime();
-    }
-
-    @Override
-    public Collection getTraceCollections() {
-        return fInnerProject.getTraceCollections();
-    }
-
-    @Override
-    public ITraceProjectIterator<TraceEvent> iterator() {
-        return fInnerProject.iterator();
+    public TraceProject<TraceEvent, StubTrace> getTraceProject() {
+        return fInnerProject;
     }
 
     @Override

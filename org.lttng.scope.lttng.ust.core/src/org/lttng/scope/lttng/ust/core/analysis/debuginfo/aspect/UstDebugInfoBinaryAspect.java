@@ -22,7 +22,7 @@ import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.BinaryCallsite;
 import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysis;
 import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoAnalysisResults;
 import com.efficios.jabberwocky.lttng.ust.analysis.debuginfo.UstDebugInfoLoadedBinaryFile;
-import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
 
 import ca.polymtl.dorsal.libdelorean.IStateSystemReader;
 
@@ -93,7 +93,7 @@ public class UstDebugInfoBinaryAspect implements ITmfEventAspect<BinaryCallsite>
          * First match the IP to the correct binary or library, by using the
          * UstDebugInfoAnalysis.
          */
-        ITraceProject project = trace.getJwProject();
+        TraceProject project = trace.getJwProject();
         UstDebugInfoAnalysis analysis = UstDebugInfoAnalysis.instance();
 
         if (!analysis.canExecute(project)) {

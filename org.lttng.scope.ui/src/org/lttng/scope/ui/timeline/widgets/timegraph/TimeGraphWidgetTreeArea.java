@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.ui.jfx.JfxUtils;
 
-import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.sun.javafx.scene.control.skin.TreeViewSkin;
@@ -57,7 +57,7 @@ public class TimeGraphWidgetTreeArea extends BorderPane {
     /**
      * Constructor
      */
-    public TimeGraphWidgetTreeArea(double entryHeight, ObjectProperty<@Nullable ITraceProject<?, ?>> targetTraceProjectProperty) {
+    public TimeGraphWidgetTreeArea(double entryHeight, ObjectProperty<@Nullable TraceProject<?, ?>> targetTraceProjectProperty) {
         TreeItem<String> treeRoot = new TreeItem<>();
         treeRoot.setExpanded(true);
 

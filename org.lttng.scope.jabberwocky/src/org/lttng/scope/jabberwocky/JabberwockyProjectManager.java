@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.efficios.jabberwocky.analysis.IAnalysis;
-import com.efficios.jabberwocky.project.ITraceProject;
+import com.efficios.jabberwocky.project.TraceProject;
 
 /**
  * Application-side manager that keeps track of active Jabberwocky projects, and
@@ -34,7 +34,7 @@ public final class JabberwockyProjectManager {
         return INSTANCE;
     }
 
-    private final Map<ITraceProject<?, ?>, Map<IAnalysis, Object>> fAnalysisResults = new HashMap<>();
+    private final Map<TraceProject<?, ?>, Map<IAnalysis, Object>> fAnalysisResults = new HashMap<>();
 
     /**
      * Clear the "cache" for one given project. Usually should be called when said
@@ -42,7 +42,7 @@ public final class JabberwockyProjectManager {
      *
      * @param project The project to dispose of
      */
-    public synchronized void disposeResults(ITraceProject<?, ?> project) {
+    public synchronized void disposeResults(TraceProject<?, ?> project) {
         fAnalysisResults.remove(project);
     }
 
@@ -62,7 +62,7 @@ public final class JabberwockyProjectManager {
      * @return The results of this analysis. You will have to cast manually to the
      *         real type if you know it.
      */
-    public synchronized Object getAnalysisResults(ITraceProject<?, ?> project, IAnalysis analysis) {
+    public synchronized Object getAnalysisResults(TraceProject<?, ?> project, IAnalysis analysis) {
         Map<IAnalysis, Object> analyses = fAnalysisResults.get(project);
         if (analyses == null) {
             analyses = new HashMap<>();

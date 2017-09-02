@@ -83,9 +83,8 @@ import org.lttng.scope.jabberwocky.JabberwockyProjectManager;
 
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
 import com.efficios.jabberwocky.ctf.trace.generic.GenericCtfTrace;
-import com.efficios.jabberwocky.project.ITraceProject;
 import com.efficios.jabberwocky.project.TraceProject;
-import com.efficios.jabberwocky.trace.ITrace;
+import com.efficios.jabberwocky.trace.Trace;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -157,7 +156,7 @@ public class CtfTmfTrace extends TmfTrace
     /** Reference to the CTF Trace */
     private CTFTrace fTrace;
 
-    private ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> fJwProject;
+    private TraceProject<CtfTraceEvent, Trace<CtfTraceEvent>> fJwProject;
 
     // -------------------------------------------
     // Constructor
@@ -281,7 +280,7 @@ public class CtfTmfTrace extends TmfTrace
 
     private void setupJwProject() throws TmfTraceException {
         Path tracePath = Paths.get(getPath());
-        ITrace<CtfTraceEvent> jwTrace = getJwTrace(tracePath);
+        Trace<CtfTraceEvent> jwTrace = getJwTrace(tracePath);
 
         String projectName = this.getName();
         Path projectDir = Paths.get(TmfTraceManager.getSupplementaryFileDir(this)).resolve("jw-project"); //$NON-NLS-1$
@@ -296,15 +295,15 @@ public class CtfTmfTrace extends TmfTrace
         fJwProject = TraceProject.ofSingleTrace(projectName, projectDir, jwTrace);
     }
 
-    protected ITrace<CtfTraceEvent> getJwTrace(Path tracePath) {
+    protected Trace<CtfTraceEvent> getJwTrace(Path tracePath) {
         return new GenericCtfTrace(tracePath);
     }
 
     /**
      * @return
      */
-    public ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> getJwProject() {
-        ITraceProject<CtfTraceEvent, ITrace<CtfTraceEvent>> proj = fJwProject;
+    public TraceProject<CtfTraceEvent, Trace<CtfTraceEvent>> getJwProject() {
+        TraceProject<CtfTraceEvent, Trace<CtfTraceEvent>> proj = fJwProject;
         if (proj == null) {
             throw new IllegalStateException("Cannot get the project of an uninitialized trace"); //$NON-NLS-1$
         }
@@ -313,7 +312,7 @@ public class CtfTmfTrace extends TmfTrace
 
     @Override
     public synchronized void dispose() {
-        ITraceProject<?, ?> project = fJwProject;
+        TraceProject<?, ?> project = fJwProject;
         if (project != null) {
             JabberwockyProjectManager.instance().disposeResults(project);
         }
