@@ -14,7 +14,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.TimelineWidget.TimelineWidgetUpdateTask;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
@@ -123,7 +122,7 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
     }
 
     @Override
-    public void providerRegistered(@NonNull XYChartModelProviderFactory factory) {
+    public void providerRegistered(XYChartModelProviderFactory factory) {
         /*
          * Since XY chart data scales well to very large time ranges (each data point
          * simply represents an aggregate of a larger time range), we will create two

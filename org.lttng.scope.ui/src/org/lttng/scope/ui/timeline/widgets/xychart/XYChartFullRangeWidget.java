@@ -164,12 +164,12 @@ public final class XYChartFullRangeWidget implements XYChartView, TimelineWidget
     }
 
     @Override
-    public void drawSelection(@NonNull TimeRange arg0) {
+    public void drawSelection(TimeRange arg0) {
         // TODO
     }
 
     @Override
-    public void seekVisibleRange(@NonNull TimeRange timeRange) {
+    public void seekVisibleRange(TimeRange timeRange) {
 
     }
 
