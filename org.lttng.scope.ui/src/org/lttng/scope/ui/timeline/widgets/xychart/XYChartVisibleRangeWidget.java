@@ -43,6 +43,8 @@ import javafx.scene.shape.Rectangle;
  */
 public final class XYChartVisibleRangeWidget implements XYChartView, TimelineWidget {
 
+    private final int weight;
+
     private final XYChartControl control;
     private final XYChartModelProvider modelProvider;
 
@@ -54,7 +56,8 @@ public final class XYChartVisibleRangeWidget implements XYChartView, TimelineWid
 
     private final RedrawTask redrawTask = new RedrawTask();
 
-    public XYChartVisibleRangeWidget(XYChartControl control) {
+    public XYChartVisibleRangeWidget(XYChartControl control, int weight) {
+        this.weight = weight;
         this.control = control;
         this.modelProvider = control.getRenderProvider();
 
@@ -87,6 +90,11 @@ public final class XYChartVisibleRangeWidget implements XYChartView, TimelineWid
     @Override
     public String getName() {
         return getControl().getRenderProvider().getProviderName();
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @Override

@@ -11,6 +11,10 @@ package org.lttng.scope.ui.timeline;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -27,6 +31,8 @@ import javafx.scene.control.SplitPane;
 public class TimelineView extends ViewPart {
 
     public static final String VIEW_ID = "org.lttng.scope.views.timeline"; //$NON-NLS-1$
+
+    private final Map<Node, Integer> itemWeights = new HashMap<>();
 
     private @Nullable TimelineManager fManager;
     private @Nullable SplitPane fSplitPane;
@@ -58,9 +64,15 @@ public class TimelineView extends ViewPart {
         manager.resetInitialSeparatorPosition();
     }
 
-    void addWidget(Node node) {
+    void addWidget(TimelineWidget widget) {
         SplitPane sp = requireNonNull(fSplitPane);
-        JfxUtils.runOnMainThread(() -> sp.getItems().add(node));
+        JfxUtils.runOnMainThread(() -> {
+            Node node = widget.getRootNode();
+            itemWeights.put(node, widget.getWeight());
+
+            sp.getItems().add(node);
+            sp.getItems().sort(Comparator.comparingInt(item -> itemWeights.get(item)));
+        });
     }
 
     @Override

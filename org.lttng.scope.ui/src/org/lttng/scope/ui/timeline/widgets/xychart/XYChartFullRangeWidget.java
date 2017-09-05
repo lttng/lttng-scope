@@ -46,6 +46,8 @@ public final class XYChartFullRangeWidget implements XYChartView, TimelineWidget
 
     private static final double CHART_HEIGHT = 50.0;
 
+    private final int weight;
+
     private final XYChartControl control;
     private final XYChartModelProvider modelProvider;
 
@@ -54,7 +56,8 @@ public final class XYChartFullRangeWidget implements XYChartView, TimelineWidget
 
     private final RedrawTask redrawTask = new RedrawTask();
 
-    public XYChartFullRangeWidget(XYChartControl control) {
+    public XYChartFullRangeWidget(XYChartControl control, int weight) {
+        this.weight = weight;
         this.control = control;
         this.modelProvider = control.getRenderProvider();
 
@@ -96,6 +99,11 @@ public final class XYChartFullRangeWidget implements XYChartView, TimelineWidget
     @Override
     public String getName() {
         return getControl().getRenderProvider().getProviderName();
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @Override

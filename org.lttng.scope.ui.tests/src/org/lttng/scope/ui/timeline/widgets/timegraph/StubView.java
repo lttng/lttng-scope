@@ -55,8 +55,7 @@ public class StubView extends ViewPart {
         }
         FXCanvas fxCanvas = new FXCanvas(parent, SWT.NONE);
 
-
-        TimeGraphWidget viewer = new TimeGraphWidget(fModelControl, new NestingBoolean());
+        TimeGraphWidget viewer = new TimeGraphWidget(fModelControl, new NestingBoolean(), 0);
         fModelControl.attachView(viewer);
 
         fxCanvas.setScene(new Scene(viewer.getRootNode()));

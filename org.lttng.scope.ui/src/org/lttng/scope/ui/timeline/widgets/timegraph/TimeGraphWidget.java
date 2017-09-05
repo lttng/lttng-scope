@@ -20,9 +20,9 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.DebugOptions;
-import org.lttng.scope.ui.timeline.TimelineWidget;
 import org.lttng.scope.ui.timeline.TimelineManager;
 import org.lttng.scope.ui.timeline.TimelineView;
+import org.lttng.scope.ui.timeline.TimelineWidget;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
@@ -95,6 +95,8 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
     // Instance fields
     // ------------------------------------------------------------------------
 
+    private final int weight;
+
     private final ScrollingContext fScrollingCtx = new ScrollingContext();
     private final ZoomActions fZoomActions = new ZoomActions();
 
@@ -149,8 +151,9 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
      *            <code>new NestingBoolean()</code> " that only this view will
      *            use.
      */
-    public TimeGraphWidget(TimeGraphModelControl control, NestingBoolean hScrollListenerStatus) {
+    public TimeGraphWidget(TimeGraphModelControl control, NestingBoolean hScrollListenerStatus, int weight) {
         super(control);
+        this.weight = weight;
         fHScrollListenerStatus = hScrollListenerStatus;
 
         // --------------------------------------------------------------------
@@ -282,6 +285,11 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
     @Override
     public String getName() {
         return getControl().getModelRenderProvider().getName();
+    }
+
+    @Override
+    public int getWeight() {
+        return weight;
     }
 
     @Override

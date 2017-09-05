@@ -20,6 +20,12 @@ public interface TimelineWidget {
 
     String getName();
 
+    /**
+     * UI weight of this widget. The default sort order of the widgets in the
+     * timeline view will be by ascending weight, with the "lighter" ones on top.
+     */
+    int getWeight();
+
     Parent getRootNode();
 
     void dispose();

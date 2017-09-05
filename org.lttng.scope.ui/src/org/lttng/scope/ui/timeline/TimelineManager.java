@@ -48,6 +48,11 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
     /* Application-wide debug options */
     public static final DebugOptions DEBUG_OPTIONS = new DebugOptions();
 
+    private static final int FULL_RANGE_WIDGET_WEIGHT = 10;
+    private static final int PARTIAL_RANGE_WIDGET_WEIGHT = 20;
+    private static final int TIMEGRAPH_WEIGHT = 30;
+    private static final int TABLE_WEIGHT = 40;
+
     private static final double INITIAL_DIVIDER_POSITION = 0.2;
 
     private final Timer fUiRedrawTimer = new Timer();
@@ -83,7 +88,7 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
         /* Instantiate a widget for this provider type */
         ITimeGraphModelProvider provider = factory.get();
         TimeGraphModelControl control = new TimeGraphModelControl(fViewContext, provider);
-        TimeGraphWidget viewer = new TimeGraphWidget(control, fHScrollListenerStatus);
+        TimeGraphWidget viewer = new TimeGraphWidget(control, fHScrollListenerStatus, TIMEGRAPH_WEIGHT);
         control.attachView(viewer);
 
         /*
@@ -114,7 +119,7 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
         });
 
         fWidgets.add(viewer);
-        fView.addWidget(viewer.getRootNode());
+        fView.addWidget(viewer);
     }
 
     @Override
@@ -133,17 +138,17 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
 
         /* Create the "visible range" widget. */
         XYChartControl visibleRangecontrol = new XYChartControl(fViewContext, provider);
-        XYChartVisibleRangeWidget visibleRangeWidget = new XYChartVisibleRangeWidget(visibleRangecontrol);
+        XYChartVisibleRangeWidget visibleRangeWidget = new XYChartVisibleRangeWidget(visibleRangecontrol, PARTIAL_RANGE_WIDGET_WEIGHT);
         visibleRangecontrol.setView(visibleRangeWidget);
         fWidgets.add(visibleRangeWidget);
-        fView.addWidget(visibleRangeWidget.getRootNode());
+        fView.addWidget(visibleRangeWidget);
 
         /* Create the "full range" widget. */
         XYChartControl fullRangeControl = new XYChartControl(fViewContext, provider);
-        XYChartFullRangeWidget fullRangeWidget = new XYChartFullRangeWidget(fullRangeControl);
+        XYChartFullRangeWidget fullRangeWidget = new XYChartFullRangeWidget(fullRangeControl, FULL_RANGE_WIDGET_WEIGHT);
         fullRangeControl.setView(fullRangeWidget);
         fWidgets.add(fullRangeWidget);
-        fView.addWidget(fullRangeWidget.getRootNode());
+        fView.addWidget(fullRangeWidget);
 
         /* Bind properties accordingly */
         Platform.runLater(() -> {
