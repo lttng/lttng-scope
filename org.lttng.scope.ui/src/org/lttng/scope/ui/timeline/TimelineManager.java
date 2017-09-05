@@ -15,7 +15,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.lttng.scope.common.core.NestingBoolean;
-import org.lttng.scope.ui.timeline.ITimelineWidget.TimelineWidgetUpdateTask;
+import org.lttng.scope.ui.timeline.TimelineWidget.TimelineWidgetUpdateTask;
 import org.lttng.scope.ui.timeline.widgets.timegraph.TimeGraphWidget;
 
 import com.efficios.jabberwocky.context.ViewGroupContext;
@@ -46,7 +46,7 @@ public class TimelineManager implements TimeGraphOutput {
 
     private final TimelineView fView;
     private final ViewGroupContext fViewContext;
-    private final Set<ITimelineWidget> fWidgets = ConcurrentHashMap.newKeySet();
+    private final Set<TimelineWidget> fWidgets = ConcurrentHashMap.newKeySet();
 
     private final NestingBoolean fHScrollListenerStatus = new NestingBoolean();
 

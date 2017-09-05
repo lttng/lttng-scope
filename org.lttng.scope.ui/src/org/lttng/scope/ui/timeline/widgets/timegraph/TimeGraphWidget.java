@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.lttng.scope.common.core.NestingBoolean;
 import org.lttng.scope.ui.timeline.DebugOptions;
-import org.lttng.scope.ui.timeline.ITimelineWidget;
+import org.lttng.scope.ui.timeline.TimelineWidget;
 import org.lttng.scope.ui.timeline.TimelineManager;
 import org.lttng.scope.ui.timeline.TimelineView;
 import org.lttng.scope.ui.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
@@ -66,7 +66,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Alexandre Montplaisir
  */
-public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidget {
+public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidget {
 
     private static final Logger LOGGER = Logger.getLogger(TimeGraphWidget.class.getName());
 
@@ -141,7 +141,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements ITimelineWidg
      * @param hScrollListenerStatus
      *            If the hscroll property of this widget's scrollpane is bound
      *            with others (possibly through the
-     *            {@link ITimelineWidget#getTimeBasedScrollPane()} method), then
+     *            {@link TimelineWidget#getTimeBasedScrollPane()} method), then
      *            a common {@link NestingBoolean} should be used to track
      *            requests to disable the hscroll listener.
      *            <p>

@@ -12,7 +12,7 @@ package org.lttng.scope.ui.timeline.widgets.timegraph;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.lttng.scope.ui.timeline.ITimelineWidget;
+import org.lttng.scope.ui.timeline.TimelineWidget;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.context.ViewGroupContext;
@@ -29,7 +29,7 @@ import com.efficios.jabberwocky.context.ViewGroupContext;
  *
  * @author Alexandre Montplaisir
  */
-class PeriodicRedrawTask implements ITimelineWidget.TimelineWidgetUpdateTask {
+class PeriodicRedrawTask implements TimelineWidget.TimelineWidgetUpdateTask {
 
     /**
      * Sequence number attached to each redraw operation. Can be used for

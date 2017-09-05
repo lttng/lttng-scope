@@ -16,7 +16,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.shape.Rectangle;
 
-public interface ITimelineWidget {
+public interface TimelineWidget {
 
     String getName();
 
