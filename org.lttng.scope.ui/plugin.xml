@@ -36,6 +36,13 @@
             name="%view.timeline.name"
             restorable="true">
       </view>
+      <view
+            category="org.eclipse.linuxtools.tmf.ui.views.category"
+            class="org.lttng.scope.ui.timecontrol.TimeControlView"
+            id="org.lttng.scope.views.timecontrol"
+            name="%view.timecontrol.name"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
