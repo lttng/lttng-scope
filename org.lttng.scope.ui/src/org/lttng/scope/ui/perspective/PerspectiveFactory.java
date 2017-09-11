@@ -13,10 +13,10 @@
 package org.lttng.scope.ui.perspective;
 
 import org.eclipse.tracecompass.tmf.ui.project.wizards.NewTmfProjectWizard;
-import org.eclipse.tracecompass.tmf.ui.views.histogram.HistogramView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
+import org.lttng.scope.ui.timecontrol.TimeControlView;
 import org.lttng.scope.ui.timeline.TimelineView;
 
 /**
@@ -27,13 +27,8 @@ public class PerspectiveFactory implements IPerspectiveFactory {
     /** Perspective ID */
     public static final String ID = "org.lttng.scope.ui.perspective"; //$NON-NLS-1$
 
-    // LTTng views
-    private static final String HISTOGRAM_VIEW_ID = HistogramView.ID;
-
     // Standard Eclipse views
     private static final String PROJECT_VIEW_ID = IPageLayout.ID_PROJECT_EXPLORER;
-    private static final String PROPERTIES_VIEW_ID = IPageLayout.ID_PROP_SHEET;
-    private static final String BOOKMARKS_VIEW_ID = IPageLayout.ID_BOOKMARKS;
 
     @Override
     public void createInitialLayout(IPageLayout layout) {
@@ -53,9 +48,7 @@ public class PerspectiveFactory implements IPerspectiveFactory {
         // Create the bottom right folder
         IFolderLayout bottomRightFolder = layout.createFolder(
                 "bottomRightFolder", IPageLayout.BOTTOM, 0.6f, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
-        bottomRightFolder.addView(HISTOGRAM_VIEW_ID);
-        bottomRightFolder.addView(PROPERTIES_VIEW_ID);
-        bottomRightFolder.addView(BOOKMARKS_VIEW_ID);
+        bottomRightFolder.addView(TimeControlView.VIEW_ID);
 
         layout.addNewWizardShortcut(NewTmfProjectWizard.ID);
     }
