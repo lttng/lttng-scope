@@ -10,12 +10,14 @@
 package org.lttng.scope.ui.timecontrol;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Tests for {@link TimeRangeTextFields} specifying a minimum range duration.
  */
+@Ignore
 public class TimeRangeTextFieldsMinimumTest extends TimeRangeTextFieldsTest {
 
 //    protected static final long LIMIT_START = 1000;
