@@ -1,4 +1,0 @@
-class java/lang/System
-getProperty
- (Ljava/lang/String;)Ljava/lang/String;
- (Ljava/lang/String;)L0java/lang/String;

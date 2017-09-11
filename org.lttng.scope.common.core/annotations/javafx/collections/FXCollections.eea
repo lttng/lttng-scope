@@ -1,4 +1,0 @@
-class javafx/collections/FXCollections
-observableSet
- <E:Ljava/lang/Object;>(Ljava/util/Set<TE;>;)Ljavafx/collections/ObservableSet<TE;>;
- <E:Ljava/lang/Object;>(Ljava/util/Set<TE;>;)L1javafx/collections/ObservableSet<TE;>;

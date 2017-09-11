@@ -1,4 +1,0 @@
-class org/eclipse/core/resources/IMarkerDelta
-getMarker
- ()Lorg/eclipse/core/resources/IMarker;
- ()L1org/eclipse/core/resources/IMarker;

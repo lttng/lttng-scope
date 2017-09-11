@@ -1,7 +1,0 @@
-class javafx/scene/shape/Shape
-getStroke
- ()Ljavafx/scene/paint/Paint;
- ()L0javafx/scene/paint/Paint;
-strokeProperty
- ()Ljavafx/beans/property/ObjectProperty<Ljavafx/scene/paint/Paint;>;
- ()L1javafx/beans/property/ObjectProperty<L0javafx/scene/paint/Paint;>;

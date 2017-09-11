@@ -1,4 +1,0 @@
-class org/w3c/dom/Element
-getAttribute
- (Ljava/lang/String;)Ljava/lang/String;
- (Ljava/lang/String;)L1java/lang/String;

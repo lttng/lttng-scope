@@ -1,4 +1,0 @@
-class java/nio/file/Files
-newDirectoryStream
- (Ljava/nio/file/Path;)Ljava/nio/file/DirectoryStream<Ljava/nio/file/Path;>;
- (Ljava/nio/file/Path;)L1java/nio/file/DirectoryStream<L1java/nio/file/Path;>;

@@ -1,6 +1,0 @@
-This is a temporary plugin for the JabberwockyProjectManager.
-
-The TMF plugins currently depend on this, so we cannot put this manager inside
-the main Scope plugin (circular dependency).
-
-Once we stop using TMF this could be merged into the Scope plugin.

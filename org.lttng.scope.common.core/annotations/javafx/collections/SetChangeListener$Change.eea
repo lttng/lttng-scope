@@ -1,7 +1,0 @@
-class javafx/collections/SetChangeListener$Change
-getElementAdded
- ()TE;
- ()T0E;
-getElementRemoved
- ()TE;
- ()T0E;

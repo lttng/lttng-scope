@@ -1,4 +1,10 @@
 .DS_Store
-bin/
 target/
-workspace/
+
+# IDE stuff
+.classpath
+.project
+.settings/
+
+.idea/
+*.iml
