@@ -14,14 +14,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <prerequisites>
-    <maven>${required-maven-version}</maven>
-  </prerequisites>
-
   <parent>
     <groupId>org.lttng.scope</groupId>
     <artifactId>scope-project-parent</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
@@ -49,9 +45,6 @@
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>javafx</artifactId>
-      <version>8.0.0-SNAPSHOT</version>
-      <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-      <scope>system</scope>
     </dependency>
   </dependencies>
 
@@ -60,7 +53,7 @@
       <dependency>
         <groupId>com.efficios.jabberwocky</groupId>
         <artifactId>jabberwocky-lttng</artifactId>
-        <version>0.2.30-SNAPSHOT</version>
+        <version>0.2.31-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
