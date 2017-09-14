@@ -101,6 +101,10 @@ final class StubDrawnEventProviders {
     }
 
     private static int getIndexOfTreeElement(TimeGraphTreeElement treeElem) {
+        /* The "dummy" element is not part of the time graph, so say -1 */
+        if (treeElem == TimeGraphTreeElement.DUMMY_ELEMENT) {
+            return -1;
+        }
         String nb = treeElem.getName().substring("Entry #".length());
         return Integer.parseInt(nb);
     }

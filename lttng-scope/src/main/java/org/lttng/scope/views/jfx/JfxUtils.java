@@ -9,13 +9,6 @@
 
 package org.lttng.scope.views.jfx;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
-import java.util.List;
-
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -26,6 +19,14 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Window;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * JavaFX-related utilities
@@ -110,6 +111,19 @@ public final class JfxUtils {
             r.run();
         } else {
             Platform.runLater(r);
+        }
+    }
+
+    public static void runLaterAndWait(Runnable r) {
+        CountDownLatch latch = new CountDownLatch(1);
+        Platform.runLater(() -> {
+            r.run();
+            latch.countDown();
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
