@@ -142,6 +142,9 @@ public final class JfxUtils {
      */
     public static void centerDialogOnScreen(Dialog<?> dialog, Node referenceNode) {
         Window window = referenceNode.getScene().getWindow();
+        if (window == null) {
+            return;
+        }
         Rectangle2D windowRectangle = new Rectangle2D(window.getX(), window.getY(), window.getWidth(), window.getHeight());
 
         List<Screen> screens = Screen.getScreensForRectangle(windowRectangle);
