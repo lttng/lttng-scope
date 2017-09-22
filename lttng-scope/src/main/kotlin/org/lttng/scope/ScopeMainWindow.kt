@@ -17,10 +17,11 @@ import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelPro
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager
 import javafx.scene.control.SplitPane
-import javafx.scene.layout.Border
 import javafx.scene.layout.BorderPane
 import org.lttng.scope.views.timecontrol.TimeControl
 import org.lttng.scope.views.timeline.TimelineView
+
+private const val INITIAL_DIVIDER_POSITION = 0.15
 
 /**
  * Main window of LTTng Scope, should be the root node of the main Scene.
@@ -79,8 +80,11 @@ class ScopeMainWindow : BorderPane() {
     }
 
     fun onShownCB() {
-        mainPane.setDividerPositions(0.2)
-        analysisArea.timelineView.resetSeparatorPosition()
+        mainPane.setDividerPositions(INITIAL_DIVIDER_POSITION)
+        with (analysisArea.timelineView) {
+            resetTimeBasedSeparatorPosition()
+            resizeWidgets()
+        }
     }
 
 }

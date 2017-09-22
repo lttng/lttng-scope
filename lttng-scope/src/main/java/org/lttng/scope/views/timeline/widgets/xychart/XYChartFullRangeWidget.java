@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.timeline.NavigationAreaWidget;
 import org.lttng.scope.views.timeline.TimelineWidget;
 
 import com.efficios.jabberwocky.common.TimeRange;
@@ -42,7 +43,7 @@ import javafx.scene.shape.Rectangle;
  * display data representing the whole trace, and will display highlighted
  * rectangles representing the current visible and selection time ranges.
  */
-public final class XYChartFullRangeWidget implements XYChartView, TimelineWidget {
+public final class XYChartFullRangeWidget implements XYChartView, NavigationAreaWidget {
 
     private static final double CHART_HEIGHT = 50.0;
 

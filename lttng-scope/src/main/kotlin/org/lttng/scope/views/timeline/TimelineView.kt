@@ -49,19 +49,38 @@ class TimelineView {
     fun addWidget(widget: TimelineWidget) {
         JfxUtils.runOnMainThread {
             val node = widget.rootNode
-            itemWeights.put(node, widget.weight)
-
-            splitPane.items.add(node)
-            splitPane.items.sortBy { itemWeights[it] }
+            if (widget is NavigationAreaWidget) {
+                navigationArea.children.add(node)
+            } else {
+                itemWeights.put(node, widget.weight)
+                splitPane.items.add(node)
+                splitPane.items.sortBy { itemWeights[it] }
+                resizeWidgets()
+            }
         }
     }
 
+
     /**
-     * Reset the divider positions of all active widget to their default values.
+     * Reset the time-based (vertical) divider positions of all active widget to their default values.
      * Has to be done *after* the Stage/Scene is initialized.
      */
-    fun resetSeparatorPosition() {
+    fun resetTimeBasedSeparatorPosition() {
         manager.resetInitialSeparatorPosition()
+    }
+
+    /**
+     * Re-balance the visible widgets, giving them the same vertical size. This corresponds to setting
+     * the horizontal divider positions.
+     */
+    fun resizeWidgets() {
+        val nbWidgets = splitPane.items.count()
+        if (nbWidgets <= 1) return
+        val separatorValue = 1.0 / nbWidgets
+        val nbSeparators = nbWidgets - 1
+        val values = DoubleArray(nbSeparators, { idx -> (idx + 1) * separatorValue })
+        println(values.contentToString())
+        splitPane.setDividerPositions(*values)
     }
 
     fun dispose() {

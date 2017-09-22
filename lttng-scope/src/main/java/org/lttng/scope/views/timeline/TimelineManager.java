@@ -50,7 +50,7 @@ public class TimelineManager implements TimeGraphOutput, XYChartOutput {
     private static final int TIMEGRAPH_WEIGHT = 30;
     private static final int TABLE_WEIGHT = 40;
 
-    private static final double INITIAL_DIVIDER_POSITION = 0.2;
+    private static final double INITIAL_DIVIDER_POSITION = 0.15;
 
     private final Timer fUiRedrawTimer = new Timer();
 

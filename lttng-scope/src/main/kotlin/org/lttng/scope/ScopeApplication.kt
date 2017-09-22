@@ -15,6 +15,8 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
 
+private const val INITIAL_WINDOW_WIDTH = 1500.0
+
 fun main(args: Array<String>) {
     launch(ScopeApplication::class.java, *args)
 }
@@ -35,7 +37,7 @@ class ScopeApplication : Application() {
             title = "LTTng Scope"
 
             /* Ensure initial window has proper size and subdivisions. */
-            width = 1500.0
+            width = INITIAL_WINDOW_WIDTH
             setOnShown { root.onShownCB() }
 
             setOnCloseRequest {
