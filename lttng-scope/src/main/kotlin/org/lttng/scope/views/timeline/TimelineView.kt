@@ -12,6 +12,8 @@ package org.lttng.scope.views.timeline
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.SplitPane
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
 import org.lttng.scope.views.context.ViewGroupContextManager
 import org.lttng.scope.views.jfx.JfxUtils
 
@@ -21,15 +23,25 @@ import org.lttng.scope.views.jfx.JfxUtils
  * Widgets can be added to the timeline using the addWidget() function.
  * // TODO Make widgets removable
  *
- * The 'splitPane' property is the JavaFX node to add to the scenegraph.
+ * The 'rootNode' property is the JavaFX node to add to the scenegraph.
  */
 class TimelineView {
 
     private val itemWeights = mutableMapOf<Node, Int>()
 
-    val splitPane: SplitPane = SplitPane()
+    /** The middle area, with all the timegraphs, charts, etc. */
+    private val splitPane: SplitPane = SplitPane()
     init {
         splitPane.orientation = Orientation.VERTICAL
+    }
+
+    /** The little bar at the top of the timeline to display the whole trace range. */
+    private val navigationArea = VBox()
+
+    val rootNode = BorderPane()
+    init {
+        rootNode.top = navigationArea
+        rootNode.center = splitPane
     }
 
     private val manager = TimelineManager(this, ViewGroupContextManager.getCurrent())

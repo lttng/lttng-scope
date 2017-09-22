@@ -39,7 +39,7 @@ class ScopeMainWindow : BorderPane() {
         val timelineView = TimelineView()
 
         init {
-            center = timelineView.splitPane
+            center = timelineView.rootNode
             bottom = TimeControl()
         }
 
