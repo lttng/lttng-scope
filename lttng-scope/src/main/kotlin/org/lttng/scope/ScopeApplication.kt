@@ -29,17 +29,23 @@ class ScopeApplication : Application() {
 
         /* Create the application window */
         val root = ScopeMainWindow()
-        val scene = Scene(root)
 
-        primaryStage.scene = scene
-        primaryStage.title = "LTTng Scope"
+        with (primaryStage) {
+            scene = Scene(root)
+            title = "LTTng Scope"
 
-        primaryStage.setOnCloseRequest {
-            Platform.exit()
-            System.exit(0)
+            /* Ensure initial window has proper size and subdivisions. */
+            width = 1500.0
+            setOnShown { root.onShownCB() }
+
+            setOnCloseRequest {
+                Platform.exit()
+                System.exit(0)
+            }
+
+            show()
         }
 
-        primaryStage.show()
     }
 
 }

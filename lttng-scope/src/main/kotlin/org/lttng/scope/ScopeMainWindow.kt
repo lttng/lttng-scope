@@ -27,6 +27,25 @@ import org.lttng.scope.views.timeline.TimelineView
  */
 class ScopeMainWindow : BorderPane() {
 
+    /** The "main pane" separates the project view on the left and the analysis area on the right */
+    private val mainPane: SplitPane
+
+    /** The project area is where the trace project trees are shown. TODO NYI */
+    private val projectArea: BorderPane
+
+    /** The "analysis area" consists of the Timeline pane, and the Time Control at the bottom. */
+    private class AnalysisArea : BorderPane() {
+
+        val timelineView = TimelineView()
+
+        init {
+            center = timelineView.splitPane
+            bottom = TimeControl()
+        }
+
+    }
+    private val analysisArea: AnalysisArea
+
     init {
         /* Load all supported plugins */
         val timeGraphMgr = TimeGraphModelProviderManager.instance();
@@ -52,19 +71,16 @@ class ScopeMainWindow : BorderPane() {
 //            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
 //        }
 
-        /* Instantiate the timeline and its manager */
-        val timelineView = TimelineView()
-
-        /* The "analysis area" consists of the Timeline pane, and the Time Control at the bottom. */
-        val analysisArea = BorderPane()
-        analysisArea.center = timelineView.splitPane
-        analysisArea.bottom = TimeControl()
-
-        /* The "main pane" separates the project view on the left and the analysis area on the right */
-        val projectView = BorderPane() // TODO
-        val mainPane = SplitPane(projectView, analysisArea)
+        analysisArea = AnalysisArea()
+        projectArea = BorderPane() // TODO
+        mainPane = SplitPane(projectArea, analysisArea)
 
         this.center = mainPane
+    }
+
+    fun onShownCB() {
+        mainPane.setDividerPositions(0.2)
+        analysisArea.timelineView.resetSeparatorPosition()
     }
 
 }
