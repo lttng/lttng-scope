@@ -79,7 +79,6 @@ class TimelineView {
         val separatorValue = 1.0 / nbWidgets
         val nbSeparators = nbWidgets - 1
         val values = DoubleArray(nbSeparators, { idx -> (idx + 1) * separatorValue })
-        println(values.contentToString())
         splitPane.setDividerPositions(*values)
     }
 
