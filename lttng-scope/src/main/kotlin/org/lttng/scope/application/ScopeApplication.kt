@@ -7,10 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope
+package org.lttng.scope.application
 
-import javafx.application.Application.launch
 import javafx.application.Application
+import javafx.application.Application.launch
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage

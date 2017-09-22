@@ -32,7 +32,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.lttng.scope.ScopeApplication</mainClass>
+              <mainClass>org.lttng.scope.application.ScopeApplication</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

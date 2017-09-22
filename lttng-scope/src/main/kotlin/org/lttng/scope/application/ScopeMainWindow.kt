@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope
+package org.lttng.scope.application
 
 import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuIrqModelProvider
