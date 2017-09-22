@@ -28,6 +28,7 @@ class ScopeApplication : Application() {
 
     override fun start(primaryStage: Stage?) {
         primaryStage ?: return
+        Platform.setImplicitExit(true)
 
         /* Create the application window */
         val root = ScopeMainWindow()
@@ -40,14 +41,13 @@ class ScopeApplication : Application() {
             width = INITIAL_WINDOW_WIDTH
             setOnShown { root.onShownCB() }
 
-            setOnCloseRequest {
-                Platform.exit()
-                System.exit(0)
-            }
-
             show()
         }
 
+    }
+
+    override fun stop() {
+        System.exit(0)
     }
 
 }

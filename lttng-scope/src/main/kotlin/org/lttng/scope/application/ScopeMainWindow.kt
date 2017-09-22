@@ -43,7 +43,6 @@ class ScopeMainWindow : BorderPane() {
             center = timelineView.rootNode
             bottom = TimeControl()
         }
-
     }
     private val analysisArea: AnalysisArea
 
@@ -72,10 +71,13 @@ class ScopeMainWindow : BorderPane() {
 //            logWarning("Cannot find LTTng analyses configuration files: " + e.getMessage()); //$NON-NLS-1$
 //        }
 
+        val menuBar = ScopeMenuBar()
+
         analysisArea = AnalysisArea()
         projectArea = BorderPane() // TODO
         mainPane = SplitPane(projectArea, analysisArea)
 
+        this.top = menuBar
         this.center = mainPane
     }
 
