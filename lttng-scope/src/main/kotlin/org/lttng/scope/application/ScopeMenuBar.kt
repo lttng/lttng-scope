@@ -13,9 +13,11 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
+import org.lttng.scope.views.context.ViewGroupContextManager
 
 private const val FILE_MENU = "File"
 private const val OPEN_ACTION = "Open..."
+private const val CLOSE_ACTION = "Close Current Project"
 private const val EXIT_ACTION = "Exit"
 
 private const val HELP_MENU = "Help"
@@ -26,11 +28,14 @@ class ScopeMenuBar : MenuBar() {
     init {
         val openMenuItem = MenuItem(OPEN_ACTION)
         openMenuItem.setOnAction { openTraceAction(this) }
+        val closeMenuItem = MenuItem(CLOSE_ACTION)
+        closeMenuItem.setOnAction { ViewGroupContextManager.getCurrent().currentTraceProject = null }
         val exitMenuItem = MenuItem(EXIT_ACTION)
         exitMenuItem.setOnAction { scene.window.hide() }
 
         val fileMenu = Menu(FILE_MENU)
         fileMenu.items.addAll(openMenuItem,
+                closeMenuItem,
                 SeparatorMenuItem(),
                 exitMenuItem)
 
