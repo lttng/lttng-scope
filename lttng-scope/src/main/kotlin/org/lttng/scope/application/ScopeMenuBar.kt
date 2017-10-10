@@ -25,6 +25,7 @@ class ScopeMenuBar : MenuBar() {
 
     init {
         val openMenuItem = MenuItem(OPEN_ACTION)
+        openMenuItem.setOnAction { openTraceAction(this) }
         val exitMenuItem = MenuItem(EXIT_ACTION)
         exitMenuItem.setOnAction { scene.window.hide() }
 
@@ -41,3 +42,4 @@ class ScopeMenuBar : MenuBar() {
     }
 
 }
+

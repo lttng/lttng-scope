@@ -23,16 +23,22 @@ import java.nio.file.Paths
 object ScopePaths {
 
     private const val appDirSuffix = "lttng-scope"
+    private const val projectsDirSuffix = "projects"
+
+    val homeDir: Path
 
     val dataDir: Path
     val configDir: Path
     val cacheDir: Path
 
+    /** Subdirectory to store Jabberwocky trace projects. Should go under 'dataDir' */
+    val projectsDir: Path
+
     init {
         val homeDirStr = System.getProperty("user.home")
                 ?: System.getenv("HOME")
                 ?: throw IllegalArgumentException("Cannot find user home directory. Try defining \$HOME.")
-        val homeDir = Paths.get(homeDirStr)
+        homeDir = Paths.get(homeDirStr)
 
         val dataDirStr = System.getenv("XDG_DATA_HOME")
         dataDir = if (dataDirStr == null) {
@@ -54,5 +60,7 @@ object ScopePaths {
         } else {
             Paths.get(cacheDirStr, appDirSuffix)
         }
+
+        projectsDir = dataDir.resolve(projectsDirSuffix)
     }
 }
