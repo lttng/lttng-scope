@@ -11,13 +11,15 @@ package org.lttng.scope.application
 
 import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuIrqModelProvider
-import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesIrqModelProvider
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.threads.ThreadsModelProvider
 import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager
+import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
+import org.lttng.scope.views.events.EventTable
 import org.lttng.scope.views.timecontrol.TimeControl
 import org.lttng.scope.views.timeline.TimelineView
 
@@ -35,15 +37,18 @@ class ScopeMainWindow : BorderPane() {
     private val projectArea: BorderPane
 
     /** The "analysis area" consists of the Timeline pane, and the Time Control at the bottom. */
-    private class AnalysisArea : BorderPane() {
+    private class AnalysisArea : VBox() {
 
         val timelineView = TimelineView()
+        /** Area containing the timeline widgets and the event table */
+        val widgetArea =  SplitPane(timelineView.rootNode, EventTable())
 
         init {
-            center = timelineView.rootNode
-            bottom = TimeControl()
+            widgetArea.orientation = Orientation.VERTICAL
+            children.addAll(widgetArea, TimeControl())
         }
     }
+
     private val analysisArea: AnalysisArea
 
     init {
@@ -82,10 +87,11 @@ class ScopeMainWindow : BorderPane() {
 
     fun onShownCB() {
         mainPane.setDividerPositions(INITIAL_DIVIDER_POSITION)
-        with (analysisArea.timelineView) {
+        with(analysisArea.timelineView) {
             resetTimeBasedSeparatorPosition()
             resizeWidgets()
         }
+        analysisArea.widgetArea.setDividerPositions(0.75)
     }
 
 }
