@@ -51,7 +51,6 @@ class ScopeMainWindow : BorderPane() {
         val timeGraphMgr = TimeGraphModelProviderManager.instance();
         timeGraphMgr.registerProviderFactory { ThreadsModelProvider() }
         timeGraphMgr.registerProviderFactory { ResourcesCpuIrqModelProvider() }
-        timeGraphMgr.registerProviderFactory { ResourcesIrqModelProvider() }
 
         val xyChartMgr = XYChartModelProviderManager
         /*
