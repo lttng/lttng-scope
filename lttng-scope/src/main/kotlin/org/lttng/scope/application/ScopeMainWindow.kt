@@ -87,11 +87,11 @@ class ScopeMainWindow : BorderPane() {
 
     fun onShownCB() {
         mainPane.setDividerPositions(INITIAL_DIVIDER_POSITION)
+        analysisArea.widgetArea.setDividerPositions(0.75)
         with(analysisArea.timelineView) {
             resetTimeBasedSeparatorPosition()
             resizeWidgets()
         }
-        analysisArea.widgetArea.setDividerPositions(0.75)
     }
 
 }

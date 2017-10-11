@@ -39,7 +39,7 @@ class ScopeApplication : Application() {
 
             /* Ensure initial window has proper size and subdivisions. */
             width = INITIAL_WINDOW_WIDTH
-            setOnShown { root.onShownCB() }
+            setOnShown { Platform.runLater { root.onShownCB() } }
 
             show()
         }
