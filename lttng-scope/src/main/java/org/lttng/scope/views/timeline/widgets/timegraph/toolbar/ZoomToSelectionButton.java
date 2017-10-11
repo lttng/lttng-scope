@@ -9,16 +9,14 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar;
 
-import org.lttng.scope.views.context.ViewGroupContextManager;
-import org.lttng.scope.views.jfx.JfxImageFactory;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
 import com.efficios.jabberwocky.common.TimeRange;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.lttng.scope.views.context.ViewGroupContextManager;
+import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
  * Button to zoom into the current selection, if there is one.

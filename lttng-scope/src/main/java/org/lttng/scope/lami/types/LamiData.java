@@ -9,17 +9,16 @@
 
 package org.lttng.scope.lami.types;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Map;
-import java.util.function.Function;
-
+import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.lttng.scope.lami.core.LamiStrings;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Base class for data types allowed in LAMI analysis scripts JSON output.

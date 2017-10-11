@@ -9,20 +9,18 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import javafx.scene.shape.Shape;
 import org.junit.Before;
 import org.junit.Test;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider1;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider2;
 
-import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
-import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
+import java.util.Collection;
 
-import javafx.scene.shape.Shape;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * {@link TimeGraphWidget} test suite testing drawn event-related operations.

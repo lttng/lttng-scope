@@ -9,12 +9,11 @@
 
 package org.lttng.scope.lami.module;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.lttng.scope.lami.aspect.LamiTableEntryAspect;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * The model of a table element in a LAMI analysis script output.

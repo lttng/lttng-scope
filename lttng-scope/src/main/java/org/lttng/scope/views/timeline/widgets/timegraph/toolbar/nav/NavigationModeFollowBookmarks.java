@@ -9,9 +9,9 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
-import static java.util.Objects.requireNonNull;
-
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Navigation mode using the current entry's events. It looks through all events

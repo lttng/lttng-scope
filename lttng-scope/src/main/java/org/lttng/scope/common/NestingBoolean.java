@@ -9,12 +9,12 @@
 
 package org.lttng.scope.common;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Utility class that serves as a wrapper around a single boolean flag that can

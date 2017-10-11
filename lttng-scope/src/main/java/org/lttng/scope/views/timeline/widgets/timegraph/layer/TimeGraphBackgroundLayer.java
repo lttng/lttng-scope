@@ -9,21 +9,19 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
-import java.util.LinkedList;
-import java.util.concurrent.FutureTask;
-import java.util.stream.DoubleStream;
-
+import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
+import javafx.application.Platform;
+import javafx.scene.Group;
+import javafx.scene.shape.Line;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.views.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 
-import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
-
-import javafx.application.Platform;
-import javafx.scene.Group;
-import javafx.scene.shape.Line;
+import java.util.LinkedList;
+import java.util.concurrent.FutureTask;
+import java.util.stream.DoubleStream;
 
 /**
  * Sub-control of the time graph widget taking care of simply drawing the

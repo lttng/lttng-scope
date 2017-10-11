@@ -9,11 +9,11 @@
 
 package org.lttng.scope.jabberwocky;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.efficios.jabberwocky.analysis.IAnalysis;
 import com.efficios.jabberwocky.project.TraceProject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Application-side manager that keeps track of active Jabberwocky projects, and

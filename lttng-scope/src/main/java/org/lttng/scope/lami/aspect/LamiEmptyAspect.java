@@ -9,11 +9,11 @@
 
 package org.lttng.scope.lami.aspect;
 
-import java.util.Comparator;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.lami.module.LamiTableEntry;
+
+import java.util.Comparator;
 
 /**
  * Null aspect for LAMI tables, normally printing nothing in the corresponding

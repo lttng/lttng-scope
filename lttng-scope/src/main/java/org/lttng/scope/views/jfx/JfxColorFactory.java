@@ -9,12 +9,11 @@
 
 package org.lttng.scope.views.jfx;
 
+import com.efficios.jabberwocky.views.common.ColorDefinition;
+import javafx.scene.paint.Color;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.efficios.jabberwocky.views.common.ColorDefinition;
-
-import javafx.scene.paint.Color;
 
 public final class JfxColorFactory {
 

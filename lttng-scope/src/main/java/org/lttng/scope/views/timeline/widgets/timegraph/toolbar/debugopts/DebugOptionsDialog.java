@@ -9,33 +9,24 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.debugopts;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.stream.Stream;
-
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.timeline.DebugOptions;
-
 import com.efficios.jabberwocky.common.ConfigOption;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
-
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.timeline.DebugOptions;
+
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Dialog to configure the debug options at runtime.

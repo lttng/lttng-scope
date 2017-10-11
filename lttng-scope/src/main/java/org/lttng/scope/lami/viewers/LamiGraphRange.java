@@ -9,9 +9,9 @@
 
 package org.lttng.scope.lami.viewers;
 
-import static java.util.Objects.requireNonNull;
-
 import java.math.BigDecimal;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * BigDecimal based range representation

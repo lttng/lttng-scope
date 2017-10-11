@@ -9,18 +9,16 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider.SortingMode;
-
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Menu button for selecting the sorting mode of tree entries.

@@ -9,7 +9,24 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
-import static java.util.Objects.requireNonNull;
+import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.views.timegraph.model.provider.states.TimeGraphModelStateProvider;
+import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateRender;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
+import javafx.application.Platform;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.OverrunStyle;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.views.timeline.DebugOptions;
+import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,27 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxUtils;
-import org.lttng.scope.views.timeline.DebugOptions;
-import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
-
-import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.views.timegraph.model.provider.states.TimeGraphModelStateProvider;
-import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateRender;
-import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
-import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
-
-import javafx.application.Platform;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.OverrunStyle;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Time graph layer taking care of drawing the state intervals and their labels.

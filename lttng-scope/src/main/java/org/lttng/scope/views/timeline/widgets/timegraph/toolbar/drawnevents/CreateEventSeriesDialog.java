@@ -9,33 +9,17 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.drawnevents;
 
-import java.util.function.Predicate;
-
-import org.lttng.scope.views.jfx.CountingGridPane;
-import org.lttng.scope.views.jfx.JfxColorFactory;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
-
 import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
-
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -43,6 +27,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
+import org.lttng.scope.views.jfx.CountingGridPane;
+import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
+
+import java.util.function.Predicate;
 
 class CreateEventSeriesDialog extends Dialog<PredicateDrawnEventProvider> {
 

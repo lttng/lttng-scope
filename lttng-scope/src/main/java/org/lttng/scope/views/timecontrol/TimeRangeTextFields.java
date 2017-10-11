@@ -9,17 +9,16 @@
 
 package org.lttng.scope.views.timecontrol;
 
-import static org.lttng.scope.views.timecontrol.TimestampConversion.tsToString;
-
-import java.util.stream.Stream;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.context.ViewGroupContext;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TextField;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Stream;
+
+import static org.lttng.scope.views.timecontrol.TimestampConversion.tsToString;
 
 /**
  * Group of 3 {@link TextField} linked together to represent a

@@ -9,19 +9,17 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
 import com.google.common.collect.ImmutableList;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class encapsulating the fowards/backwards navigation buttons, with support

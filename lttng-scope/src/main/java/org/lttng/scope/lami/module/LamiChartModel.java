@@ -9,9 +9,9 @@
 
 package org.lttng.scope.lami.module;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 /**
  * UI Model of a LAMI chart. This object should contain all the information

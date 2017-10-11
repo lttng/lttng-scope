@@ -9,11 +9,10 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
+import javafx.scene.image.Image;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.views.jfx.JfxImageFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
-import javafx.scene.image.Image;
 
 /**
  * Abstract class for defining navigation (back and forward buttons) modes in

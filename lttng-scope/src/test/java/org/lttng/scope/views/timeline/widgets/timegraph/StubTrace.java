@@ -9,14 +9,14 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import java.util.Collections;
-
 import com.efficios.jabberwocky.trace.Trace;
 import com.efficios.jabberwocky.trace.TraceIterator;
 import com.efficios.jabberwocky.trace.event.BaseTraceEvent;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
+
+import java.util.Collections;
 
 class StubTrace extends Trace<TraceEvent> {
 

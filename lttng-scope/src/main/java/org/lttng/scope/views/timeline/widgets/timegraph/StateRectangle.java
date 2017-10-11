@@ -9,22 +9,10 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
-
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.CountingGridPane;
-import org.lttng.scope.views.jfx.JfxColorFactory;
-import org.lttng.scope.views.timeline.DebugOptions;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.timegraph.model.render.LineThickness;
 import com.efficios.jabberwocky.views.timegraph.model.render.states.TimeGraphStateInterval;
 import com.google.common.base.MoreObjects;
-
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -33,6 +21,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.jfx.CountingGridPane;
+import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.views.timeline.DebugOptions;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * {@link Rectangle} object used to draw states in the timegraph. It attaches

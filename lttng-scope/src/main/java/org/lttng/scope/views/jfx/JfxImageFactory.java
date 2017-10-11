@@ -9,13 +9,13 @@
 
 package org.lttng.scope.views.jfx;
 
+import javafx.scene.image.Image;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javafx.scene.image.Image;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory for JavaFX {@link Image}s. This will allow caching the Image objects,

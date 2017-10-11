@@ -9,19 +9,6 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.drawnevents;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.FutureTask;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.context.ViewGroupContextManager;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.project.TraceProject;
 import com.efficios.jabberwocky.project.TraceProjectIterator;
@@ -35,6 +22,14 @@ import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGra
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.context.ViewGroupContextManager;
+
+import java.util.*;
+import java.util.concurrent.FutureTask;
+import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNull;
 
 class PredicateDrawnEventProvider extends TimeGraphDrawnEventProvider {
 

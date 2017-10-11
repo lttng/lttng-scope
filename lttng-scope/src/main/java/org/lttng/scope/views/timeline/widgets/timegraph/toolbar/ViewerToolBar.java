@@ -9,6 +9,11 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar;
 
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import org.lttng.scope.views.jfx.JfxImageFactory;
 import org.lttng.scope.views.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
@@ -17,18 +22,6 @@ import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.debugopts.DebugO
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.drawnevents.EventSeriesMenuButton;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.modelconfig.ModelConfigButton;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav.NavigationButtons;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 
 /**
  * Toolbar for the time graph viewer.

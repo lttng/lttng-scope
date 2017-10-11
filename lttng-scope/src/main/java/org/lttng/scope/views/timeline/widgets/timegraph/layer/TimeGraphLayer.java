@@ -9,16 +9,14 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
-import java.util.concurrent.FutureTask;
-
+import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
+import javafx.scene.Group;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 
-import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
-
-import javafx.scene.Group;
+import java.util.concurrent.FutureTask;
 
 /**
  * Base class for layers of the timegraph, providing one particular data aspect.

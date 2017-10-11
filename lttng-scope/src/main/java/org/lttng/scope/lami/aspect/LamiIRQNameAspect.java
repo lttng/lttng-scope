@@ -9,12 +9,12 @@
 
 package org.lttng.scope.lami.aspect;
 
-import java.util.Comparator;
-
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.lami.module.LamiTableEntry;
 import org.lttng.scope.lami.types.LamiData;
 import org.lttng.scope.lami.types.LamiIRQ;
+
+import java.util.Comparator;
 
 /**
  * Aspect for the IRQ handler names.

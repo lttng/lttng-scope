@@ -9,10 +9,9 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
+import com.efficios.jabberwocky.common.TimeRange;
 import org.lttng.scope.views.context.ViewGroupContextManager;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
-import com.efficios.jabberwocky.common.TimeRange;
 
 /**
  * Common utilities for navigation actions.

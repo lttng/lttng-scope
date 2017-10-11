@@ -9,15 +9,15 @@
 
 package org.lttng.scope.common;
 
-import static org.junit.Assert.assertEquals;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Test;
+import org.lttng.scope.common.StreamUtils.StreamFlattener;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
-import org.lttng.scope.common.StreamUtils.StreamFlattener;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link StreamFlattener}.

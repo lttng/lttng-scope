@@ -9,16 +9,15 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
+import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.lttng.scope.views.jfx.Arrow;
 
-import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * {@link TimeGraphWidget} test suite testing arrow-related operations.

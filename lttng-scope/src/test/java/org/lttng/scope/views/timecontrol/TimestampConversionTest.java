@@ -9,11 +9,11 @@
 
 package org.lttng.scope.views.timecontrol;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.lttng.scope.views.timecontrol.TimestampConversion.stringToTs;
 import static org.lttng.scope.views.timecontrol.TimestampConversion.tsToString;
-
-import org.junit.Test;
 
 
 public class TimestampConversionTest {

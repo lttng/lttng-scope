@@ -9,10 +9,10 @@
 
 package org.lttng.scope.lami.aspect;
 
-import java.util.Comparator;
-
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.lami.module.LamiTableEntry;
+
+import java.util.Comparator;
 
 /**
  * Aspect for LAMI table entries, which normally correspond to one "row"

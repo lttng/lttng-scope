@@ -9,9 +9,9 @@
 
 package org.lttng.scope.common.math;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link MathUtils}.

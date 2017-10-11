@@ -9,10 +9,6 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import java.util.List;
-import java.util.concurrent.FutureTask;
-import java.util.stream.DoubleStream;
-
 import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
@@ -27,6 +23,10 @@ import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeR
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.concurrent.FutureTask;
+import java.util.stream.DoubleStream;
 
 final class StubDrawnEventProviders {
 

@@ -9,13 +9,13 @@
 
 package org.lttng.scope.lami.ui.format;
 
+import com.google.common.collect.BiMap;
+import org.jetbrains.annotations.Nullable;
+
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Map.Entry;
-
-import com.google.common.collect.BiMap;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Format label based on a given Map<String, Integer>

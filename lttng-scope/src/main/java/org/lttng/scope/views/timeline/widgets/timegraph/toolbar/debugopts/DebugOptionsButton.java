@@ -9,11 +9,6 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.debugopts;
 
-import org.lttng.scope.views.jfx.JfxImageFactory;
-import org.lttng.scope.views.jfx.JfxUtils;
-import org.lttng.scope.views.timeline.DebugOptions;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
@@ -21,6 +16,10 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.views.timeline.DebugOptions;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
  * Button to open the debug options dialog.

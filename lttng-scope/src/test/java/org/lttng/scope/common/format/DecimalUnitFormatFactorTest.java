@@ -9,17 +9,16 @@
 
 package org.lttng.scope.common.format;
 
-import static org.junit.Assert.assertEquals;
-
-import java.text.Format;
-import java.util.Arrays;
-
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.lttng.scope.common.format.DecimalUnitFormat;
+
+import java.text.Format;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test the {@link DecimalUnitFormat} class

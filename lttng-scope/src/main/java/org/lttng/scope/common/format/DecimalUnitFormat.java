@@ -9,15 +9,11 @@
 
 package org.lttng.scope.common.format;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
+
+import java.math.BigDecimal;
+import java.text.*;
+import java.util.Map;
 
 /**
  * Provides a formatter for decimal numbers with International System of Units

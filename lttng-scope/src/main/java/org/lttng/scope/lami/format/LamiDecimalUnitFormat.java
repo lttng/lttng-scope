@@ -9,12 +9,12 @@
 
 package org.lttng.scope.lami.format;
 
-import java.math.BigDecimal;
-import java.text.FieldPosition;
-
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.common.format.DecimalUnitFormat;
 import org.lttng.scope.lami.viewers.LamiGraphRange;
+
+import java.math.BigDecimal;
+import java.text.FieldPosition;
 
 /**
  * Decimal formatter for Lami graph

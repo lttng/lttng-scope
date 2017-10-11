@@ -9,20 +9,6 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.FutureTask;
-import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxColorFactory;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
@@ -31,17 +17,25 @@ import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGra
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.SVGPath;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
 

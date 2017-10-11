@@ -9,15 +9,15 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
-
 import com.efficios.jabberwocky.collection.TraceCollection;
 import com.efficios.jabberwocky.project.TraceProject;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.google.common.io.MoreFiles;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
 
 class StubProject implements AutoCloseable {
 

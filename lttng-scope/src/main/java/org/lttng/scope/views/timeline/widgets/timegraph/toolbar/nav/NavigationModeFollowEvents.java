@@ -9,15 +9,14 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.function.Predicate;
-
+import com.efficios.jabberwocky.project.TraceProject;
+import com.efficios.jabberwocky.trace.event.TraceEvent;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
-import com.efficios.jabberwocky.project.TraceProject;
-import com.efficios.jabberwocky.trace.event.TraceEvent;
+import java.util.function.Predicate;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Navigation mode using the current entry's events. It looks through all events

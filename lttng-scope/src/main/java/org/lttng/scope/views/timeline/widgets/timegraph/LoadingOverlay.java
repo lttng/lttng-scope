@@ -9,12 +9,11 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.timeline.DebugOptions;
-
 import javafx.animation.FadeTransition;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.timeline.DebugOptions;
 
 class LoadingOverlay extends Rectangle {
 

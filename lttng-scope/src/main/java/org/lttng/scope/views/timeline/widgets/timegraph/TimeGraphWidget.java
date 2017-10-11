@@ -9,34 +9,12 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Collection;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.common.NestingBoolean;
-import org.lttng.scope.views.timeline.DebugOptions;
-import org.lttng.scope.views.timeline.TimelineManager;
-import org.lttng.scope.views.timeline.TimelineView;
-import org.lttng.scope.views.timeline.TimelineWidget;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphDrawnEventLayer;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphSelectionLayer;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphStateLayer;
-import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.ViewerToolBar;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.efficios.jabberwocky.views.timegraph.view.TimeGraphModelView;
 import com.google.common.annotations.VisibleForTesting;
-
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -56,6 +34,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.common.NestingBoolean;
+import org.lttng.scope.views.timeline.DebugOptions;
+import org.lttng.scope.views.timeline.TimelineManager;
+import org.lttng.scope.views.timeline.TimelineView;
+import org.lttng.scope.views.timeline.TimelineWidget;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.*;
+import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.ViewerToolBar;
+
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Viewer for the {@link TimelineView}, encapsulating all the view's

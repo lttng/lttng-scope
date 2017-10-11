@@ -9,10 +9,10 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
-import java.util.Objects;
-
 import com.google.common.base.MoreObjects;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class VerticalPosition {
 

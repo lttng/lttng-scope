@@ -9,20 +9,8 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.concurrent.FutureTask;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxUtils;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
-
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
@@ -31,6 +19,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
+
+import java.util.concurrent.FutureTask;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Sub-control of the time graph widget to handle the selection layer, which

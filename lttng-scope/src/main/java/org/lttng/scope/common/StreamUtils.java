@@ -9,14 +9,14 @@
 
 package org.lttng.scope.common;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Common utilities for {@link Stream}.

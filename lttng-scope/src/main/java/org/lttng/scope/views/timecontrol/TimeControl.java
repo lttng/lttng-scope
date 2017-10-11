@@ -9,16 +9,8 @@
 
 package org.lttng.scope.views.timecontrol;
 
-import static org.lttng.scope.views.timecontrol.TimestampConversion.tsToString;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import org.lttng.scope.views.context.ViewGroupContextManager;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.context.ViewGroupContext;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
@@ -27,14 +19,16 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.lttng.scope.views.context.ViewGroupContextManager;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import static org.lttng.scope.views.timecontrol.TimestampConversion.tsToString;
 
 public class TimeControl extends BorderPane {
 

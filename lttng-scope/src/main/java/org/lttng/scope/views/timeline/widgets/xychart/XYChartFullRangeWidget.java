@@ -9,14 +9,6 @@
 
 package org.lttng.scope.views.timeline.widgets.xychart;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.timeline.NavigationAreaWidget;
-import org.lttng.scope.views.timeline.TimelineWidget;
-
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.context.ViewGroupContext;
 import com.efficios.jabberwocky.project.TraceProject;
@@ -24,7 +16,6 @@ import com.efficios.jabberwocky.views.xychart.control.XYChartControl;
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider;
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender;
 import com.efficios.jabberwocky.views.xychart.view.XYChartView;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +28,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.views.timeline.NavigationAreaWidget;
+import org.lttng.scope.views.timeline.TimelineWidget;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The chart will

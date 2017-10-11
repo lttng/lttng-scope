@@ -9,11 +9,11 @@
 
 package org.lttng.scope.lami.aspect;
 
-import java.util.Comparator;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.lami.module.LamiTableEntry;
+
+import java.util.Comparator;
 
 /**
  * Base class for LAMI table aspects.

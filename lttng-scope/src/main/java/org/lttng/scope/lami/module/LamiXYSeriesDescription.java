@@ -9,9 +9,9 @@
 
 package org.lttng.scope.lami.module;
 
-import java.util.Objects;
-
 import org.lttng.scope.lami.aspect.LamiTableEntryAspect;
+
+import java.util.Objects;
 
 /**
  * Description of a series to use in LAMI charts.

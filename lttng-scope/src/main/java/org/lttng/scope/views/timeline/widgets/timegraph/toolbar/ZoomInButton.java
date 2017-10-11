@@ -9,13 +9,12 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar;
 
-import org.lttng.scope.views.jfx.JfxImageFactory;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
  * Button for zooming in. It should do the same action as one ctrl+mouse-scroll.

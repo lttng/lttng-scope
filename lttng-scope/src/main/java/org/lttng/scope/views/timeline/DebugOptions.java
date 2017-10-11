@@ -9,17 +9,12 @@
 
 package org.lttng.scope.views.timeline;
 
-import static java.util.Objects.requireNonNull;
-
 import com.efficios.jabberwocky.common.ConfigOption;
-
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
+import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Debug options for the timeline. Advanced users or unit

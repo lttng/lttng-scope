@@ -9,17 +9,15 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar;
 
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
+import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuButton;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
-import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
-import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider.FilterMode;
-
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuButton;
 
 /**
  * Menu-button for listing the filter modes.

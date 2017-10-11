@@ -9,14 +9,14 @@
 
 package org.lttng.scope.lami.aspect;
 
-import java.util.Comparator;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.lami.module.LamiTableEntry;
 import org.lttng.scope.lami.types.LamiData;
 import org.lttng.scope.lami.types.LamiTimeRange;
 import org.lttng.scope.lami.types.LamiTimestamp;
+
+import java.util.Comparator;
 
 /**
  * Aspect for beginning timestamp of a timerange

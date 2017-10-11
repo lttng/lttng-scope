@@ -9,11 +9,10 @@
 
 package org.lttng.scope.lami.module;
 
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.lttng.scope.lami.types.LamiTimeRange;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * Class holding the results contained in one table outputted by a LAMI analysis.

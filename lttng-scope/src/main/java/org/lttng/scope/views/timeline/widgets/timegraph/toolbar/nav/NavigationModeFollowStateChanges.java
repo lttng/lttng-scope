@@ -9,7 +9,9 @@
 
 package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
-import static java.util.Objects.requireNonNull;
+import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
+import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 import java.util.Comparator;
 import java.util.List;
@@ -17,10 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
-import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
-
-import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Navigation mode using state changes. It goes to the end/start of the current
