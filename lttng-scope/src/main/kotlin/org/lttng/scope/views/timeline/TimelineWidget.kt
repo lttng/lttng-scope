@@ -7,31 +7,30 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.timeline;
+package org.lttng.scope.views.timeline
 
-import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
-import javafx.scene.shape.Rectangle;
-import org.jetbrains.annotations.Nullable;
+import javafx.scene.Parent
+import javafx.scene.control.ScrollPane
+import javafx.scene.control.SplitPane
+import javafx.scene.shape.Rectangle
 
-public interface TimelineWidget {
+interface TimelineWidget {
 
-    String getName();
+    val name: String
 
     /**
      * UI weight of this widget. The default sort order of the widgets in the
      * timeline view will be by ascending weight, with the "lighter" ones on top.
      */
-    int getWeight();
+    val weight: Int
 
-    Parent getRootNode();
+    val rootNode: Parent
 
-    void dispose();
+    fun dispose()
 
-    interface TimelineWidgetUpdateTask extends Runnable {}
+    interface TimelineWidgetUpdateTask : Runnable
 
-    @Nullable TimelineWidgetUpdateTask getTimelineWidgetUpdateTask();
+    val timelineWidgetUpdateTask: TimelineWidgetUpdateTask?
 
     /**
      * Many widgets will use a SplitPane to separate a tree or info pane on the
@@ -41,11 +40,11 @@ public interface TimelineWidget {
      * @return The horizontal split pane, or 'null' if the widget doesn't use
      *         one and uses the full horizontal width of the view.
      */
-    @Nullable SplitPane getSplitPane();
+    val splitPane: SplitPane?
 
-    @Nullable ScrollPane getTimeBasedScrollPane();
+    val timeBasedScrollPane: ScrollPane?
 
-    @Nullable Rectangle getSelectionRectangle();
+    val selectionRectangle: Rectangle?
 
-    @Nullable Rectangle getOngoingSelectionRectangle();
+    val ongoingSelectionRectangle: Rectangle?
 }
