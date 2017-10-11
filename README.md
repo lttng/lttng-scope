@@ -44,7 +44,13 @@ The unit tests are run by default, to skip them you can use:
 
     mvn clean install -DskipTests
 
-(No application packages are built at the moment, this is coming soon.)
+You can then run the program with:
+
+    java -jar lttng-scope/target/lttng-scope-0.3.0-SNAPSHOT-jar-with-dependencies.jar
+
+Remember that this is an early pre-release version, and a lot of core
+functionality is still missing. You are still welcome to try it out and report
+issues!
 
 
 Relation to Trace Compass
