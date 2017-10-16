@@ -41,23 +41,20 @@ class XYChartVisibleRangeWidget(override val control: XYChartControl, override v
     private val chart: XYChart<Number, Number>
 
     init {
-        val xAxis = with(NumberAxis()) {
+        val xAxis = NumberAxis().apply {
             isAutoRanging = false
             isTickMarkVisible = false
             tickUnit = 0.0
-            this
         }
-        val yAxis = with(NumberAxis()) {
+        val yAxis = NumberAxis().apply {
             isAutoRanging = true
             isTickLabelsVisible = true
-            this
         }
 
-        chart = with(AreaChart(xAxis, yAxis, null)) {
+        chart = AreaChart(xAxis, yAxis, null).apply {
             title = null
             isLegendVisible = false
             animated = false
-            this
         }
 
         val infoArea = BorderPane(Label(name))

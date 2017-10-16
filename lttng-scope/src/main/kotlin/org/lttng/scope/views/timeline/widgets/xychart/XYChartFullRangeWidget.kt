@@ -43,24 +43,22 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
     private val chart: XYChart<Number, Number>
 
     init {
-        val xAxis = with(NumberAxis()) {
+        val xAxis = NumberAxis().apply {
             /* Hide the axes in the full range chart */
             isTickMarkVisible = false
             isTickLabelsVisible = false
             tickUnit = 0.0
             opacity = 0.0
             isAutoRanging = false
-            this
         }
 
-        val yAxis = with(NumberAxis()) {
+        val yAxis = NumberAxis().apply {
             isAutoRanging = true
             isTickLabelsVisible = false
             opacity = 0.0
-            this
         }
 
-        chart = with(AreaChart(xAxis, yAxis, null)) {
+        chart = AreaChart(xAxis, yAxis, null).apply {
 //          setTitle(getName())
             title = null
             isLegendVisible = false
@@ -71,7 +69,6 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
             minHeight = CHART_HEIGHT
             prefHeight = CHART_HEIGHT
             maxHeight = CHART_HEIGHT
-            this
         }
 
         rootNode.center = chart
