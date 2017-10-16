@@ -102,8 +102,7 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
     // ------------------------------------------------------------------------
 
     override fun clear() {
-        // TODO
-        // Platform.runLater(() -> parentPane.getChildren().clear());
+        /* Nothing to do, the redraw task will remove all series if the trace is null. */
     }
 
     override fun drawSelection(selectionRange: TimeRange) {
@@ -122,14 +121,16 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
             var newTraceProject = viewContext.currentTraceProject
             if (newTraceProject == lastTraceProject) return
 
-            if (newTraceProject != null) {
+            if (newTraceProject == null) {
+                /* Replace the list of series with an empty list */
+                Platform.runLater { chart.data = FXCollections.observableArrayList() }
+            } else {
                 val painted = repaintChart(newTraceProject)
                 if (!painted) {
                     newTraceProject = null
                 }
             }
             lastTraceProject = newTraceProject
-
         }
 
         /**

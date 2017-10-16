@@ -89,8 +89,7 @@ class XYChartVisibleRangeWidget(override val control: XYChartControl, override v
     // ------------------------------------------------------------------------
 
     override fun clear() {
-        // TODO
-        // Platform.runLater(() -> parentPane.getChildren().clear());
+        /* Nothing to do, the redraw task will remove all series if the trace is null. */
     }
 
     override fun drawSelection(selectionRange: TimeRange) {
