@@ -16,13 +16,18 @@ import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvide
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
 import com.efficios.jabberwocky.views.xychart.view.XYChartView
 import javafx.application.Platform
+import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.Pane
+import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
+import javafx.scene.shape.StrokeLineCap
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
 
@@ -35,43 +40,62 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
 
     companion object {
         private const val CHART_HEIGHT = 50.0
+
+        private val VISIBLE_RANGE_STROKE_WIDTH = 4.0
+        private val VISIBLE_RANGE_ARC = 5.0
+        private val VISIBLE_RANGE_STROKE_COLOR = Color.GRAY
+        private val VISIBLE_RANGE_FILL_COLOR = Color.LIGHTGRAY.deriveColor(0.0, 1.2, 1.0, 0.6)
     }
 
     private val modelProvider: XYChartModelProvider = control.renderProvider
 
     override val rootNode = BorderPane()
-    private val chart: XYChart<Number, Number>
 
-    init {
-        val xAxis = NumberAxis().apply {
-            /* Hide the axes in the full range chart */
-            isTickMarkVisible = false
-            isTickLabelsVisible = false
-            tickUnit = 0.0
-            opacity = 0.0
-            isAutoRanging = false
-        }
+    private val xAxis = NumberAxis().apply {
+        /* Hide the axes in the full range chart */
+        isTickMarkVisible = false
+        isTickLabelsVisible = false
+        tickUnit = 0.0
+        opacity = 0.0
+        isAutoRanging = false
+    }
 
-        val yAxis = NumberAxis().apply {
-            isAutoRanging = true
-            isTickLabelsVisible = false
-            opacity = 0.0
-        }
+    private val yAxis = NumberAxis().apply {
+        isAutoRanging = true
+        isTickLabelsVisible = false
+        opacity = 0.0
+    }
 
-        chart = AreaChart(xAxis, yAxis, null).apply {
+    private val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
 //          setTitle(getName())
-            title = null
-            isLegendVisible = false
-            animated = false
-            padding = Insets(-10.0, -10.0, -10.0, -10.0)
+        title = null
+        isLegendVisible = false
+        animated = false
+        padding = Insets(-10.0, -10.0, -10.0, -10.0)
 //          setStyle("-fx-padding: 1px;")
 
-            minHeight = CHART_HEIGHT
-            prefHeight = CHART_HEIGHT
-            maxHeight = CHART_HEIGHT
-        }
+        minHeight = CHART_HEIGHT
+        prefHeight = CHART_HEIGHT
+        maxHeight = CHART_HEIGHT
+    }
 
-        rootNode.center = chart
+    private val visibleRangeRect = Rectangle().apply {
+        stroke = VISIBLE_RANGE_STROKE_COLOR
+        strokeWidth = VISIBLE_RANGE_STROKE_WIDTH
+        strokeLineCap = StrokeLineCap.ROUND
+        fill = VISIBLE_RANGE_FILL_COLOR
+        arcHeight = VISIBLE_RANGE_ARC
+        arcWidth = VISIBLE_RANGE_ARC
+
+        y = 0.0
+        heightProperty().bind(Bindings.subtract(chart.heightProperty(), VISIBLE_RANGE_STROKE_WIDTH))
+
+        isVisible = false
+        viewContext.currentTraceProjectProperty().addListener { _, _, newVal -> isVisible = (newVal != null) }
+    }
+
+    init {
+        rootNode.center = StackPane(chart, Pane(visibleRangeRect))
     }
 
     override fun dispose() {
@@ -110,7 +134,15 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
     }
 
     override fun seekVisibleRange(newVisibleRange: TimeRange) {
-        // TODO ?
+        /* Needs + 10 to be properly aligned, not sure why... */
+        val xStart = xAxis.getDisplayPosition(newVisibleRange.startTime) + 10.0
+        val xEnd = xAxis.getDisplayPosition(newVisibleRange.endTime) + 10.0
+        if (xStart == Double.NaN || xEnd == Double.NaN) return
+
+        with(visibleRangeRect) {
+            x = xStart
+            width = xEnd - xStart
+        }
     }
 
     private inner class RedrawTask : TimelineWidget.TimelineWidgetUpdateTask {
@@ -158,7 +190,6 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
                         it.setNode(symbol)
                     }
                     .toCollection(FXCollections.observableArrayList())
-
 
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
