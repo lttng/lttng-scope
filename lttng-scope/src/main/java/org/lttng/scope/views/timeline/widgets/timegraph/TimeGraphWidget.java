@@ -783,7 +783,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
      *
      * Note that this method gets its information from UI objects only, so there
      * might be discrepancies between this and the results of
-     * {@link ViewGroupContext#getVisibleTimeRange()}.
+     * ViewGroupContext#getVisibleTimeRange()
      *
      * @param newHValue
      *            The "hvalue" property of the horizontal scrollbar to use. If
