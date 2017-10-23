@@ -38,11 +38,9 @@ this project from source.
 To build LTTng Scope from source, run the following from the project's root
 directory:
 
-    mvn clean install
-
-The unit tests are run by default, to skip them you can use:
-
     mvn clean install -DskipTests
+
+To run the unit tests, remove the `-DskipTests` flag.
 
 You can then run the program with:
 
