@@ -53,6 +53,16 @@ functionality is still missing. You are still welcome to try it out and report
 issues!
 
 
+Related projects
+----------------
+
+LTTng Scope makes use of the functionality provided by these other projects:
+
+* [Jabberwocky](https://github.com/efficios/jabberwocky) - Generic trace analysis library
+* [lidelorean-java](https://github.com/efficios/libdelorean-java) - Java state system implementation
+* [ctf-java](https://github.com/efficios/ctf-java) - Java CTF reader library
+
+
 Relation to Trace Compass
 -------------------------
 
