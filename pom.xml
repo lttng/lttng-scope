@@ -17,7 +17,7 @@
   <parent>
     <groupId>org.lttng.scope</groupId>
     <artifactId>scope-project-parent</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
@@ -53,14 +53,7 @@
       <dependency>
         <groupId>com.efficios.jabberwocky</groupId>
         <artifactId>jabberwocky-lttng</artifactId>
-        <version>0.2.31-SNAPSHOT</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-all</artifactId>
-        <version>1.3</version>
-        <scope>test</scope>
+        <version>0.2.32-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

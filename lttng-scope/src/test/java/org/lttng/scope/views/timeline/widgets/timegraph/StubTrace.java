@@ -15,6 +15,7 @@ import com.efficios.jabberwocky.trace.event.BaseTraceEvent;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
@@ -41,6 +42,26 @@ class StubTrace extends Trace<TraceEvent> {
 
         @Override
         public void close() {
+        }
+
+        @Override
+        public void seek(long l) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public @NotNull TraceIterator<TraceEvent> copy() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public TraceEvent previous() {
+            throw new UnsupportedOperationException();
         }
     }
 
