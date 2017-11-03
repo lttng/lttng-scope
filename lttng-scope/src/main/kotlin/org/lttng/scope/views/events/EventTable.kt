@@ -9,25 +9,74 @@
 
 package org.lttng.scope.views.events
 
+import com.efficios.jabberwocky.trace.event.FieldValue
 import com.efficios.jabberwocky.trace.event.TraceEvent
+import javafx.application.Platform
+import javafx.beans.property.ReadOnlyObjectWrapper
+import javafx.collections.FXCollections
+import javafx.scene.CacheHint
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
+import org.lttng.scope.views.timecontrol.TimestampConversion
 
 /**
  * Table displaying the trace project's trace events.
- *
- * TODO NYI
  */
 class EventTable : BorderPane() {
 
+    private val tableView: TableView<TraceEvent>
+
     init {
-        val col1 = TableColumn<TraceEvent, String>("Event table will go here!")
-        col1.prefWidth = 200.0
+        /* Setup the table */
+        val timestampCol = createColumn("Timestamp", 200.0, { TimestampConversion.tsToString(it.timestamp) })
+        val traceCol = createColumn("Trace", 100.0, { it.trace.name })
+        val cpuCol = createColumn("CPU", 50.0, { it.cpu.toString() })
+        val typeCol = createColumn("Event Type", 200.0, { it.eventName })
+        val fieldsCol = createColumn("Event Fields", 800.0, { event ->
+            event.fieldNames
+                    .map { fieldName -> "$fieldName=${event.getField(fieldName, FieldValue::class.java)}" }
+                    .toString()
+        })
 
-        val table = TableView<TraceEvent>()
-        table.columns.add(col1)
+        tableView = TableView<TraceEvent>().apply {
+            fixedCellSize = 24.0
+            isCache = true
+            cacheHint = CacheHint.SPEED
+            columns.addAll(timestampCol, traceCol, cpuCol, typeCol, fieldsCol)
+        }
 
-        center = table
+        center = tableView
+    }
+
+    private fun createColumn(headerText: String, initialWidth: Double, provideText: (TraceEvent) -> String): TableColumn<TraceEvent, String> {
+        return TableColumn<TraceEvent, String>(headerText).apply {
+            setCellValueFactory { ReadOnlyObjectWrapper(provideText(it.value)) }
+            isSortable = false
+            prefWidth = initialWidth
+        }
+    }
+
+    fun clearTable() {
+        tableView.items = FXCollections.emptyObservableList()
+    }
+
+    fun displayEvents(events: List<TraceEvent>) {
+        tableView.items = FXCollections.observableList(events)
+    }
+
+    fun scrollToTop() {
+        Platform.runLater { tableView.scrollTo(0) }
+    }
+
+    fun selectIndex(index: Int) {
+        Platform.runLater {
+            with(tableView) {
+                requestFocus()
+                selectionModel.clearAndSelect(index)
+                focusModel.focus(index)
+                scrollTo(maxOf(0, index - 3))
+            }
+        }
     }
 }

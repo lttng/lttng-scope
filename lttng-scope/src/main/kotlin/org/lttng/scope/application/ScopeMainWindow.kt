@@ -19,7 +19,9 @@ import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
+import org.lttng.scope.views.context.ViewGroupContextManager
 import org.lttng.scope.views.events.EventTable
+import org.lttng.scope.views.events.EventTableControl
 import org.lttng.scope.views.timecontrol.TimeControl
 import org.lttng.scope.views.timeline.TimelineView
 
@@ -40,8 +42,10 @@ class ScopeMainWindow : BorderPane() {
     private class AnalysisArea : VBox() {
 
         val timelineView = TimelineView()
+        val eventTableControl = EventTableControl(ViewGroupContextManager.getCurrent())
+
         /** Area containing the timeline widgets and the event table */
-        val widgetArea =  SplitPane(timelineView.rootNode, EventTable())
+        val widgetArea =  SplitPane(timelineView.rootNode, eventTableControl.table)
 
         init {
             widgetArea.orientation = Orientation.VERTICAL
