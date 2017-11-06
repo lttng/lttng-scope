@@ -24,6 +24,11 @@ class StubTrace extends Trace<TraceEvent> {
     public static final long FULL_TRACE_START_TIME = 100000L;
     public static final long FULL_TRACE_END_TIME = 200000L;
 
+    @Override
+    public @NotNull String getName() {
+        return "StubTrace";
+    }
+
     private class StubTraceIterator implements TraceIterator<TraceEvent> {
 
         private final UnmodifiableIterator<TraceEvent> events = Iterators.forArray(

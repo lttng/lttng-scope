@@ -9,9 +9,7 @@
 
 package org.lttng.scope.application
 
-import com.efficios.jabberwocky.ctf.trace.generic.GenericCtfTrace
-import com.efficios.jabberwocky.lttng.kernel.trace.LttngKernelTrace
-import com.efficios.jabberwocky.lttng.ust.trace.LttngUstTrace
+import com.efficios.jabberwocky.ctf.trace.CtfTrace
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.trace.Trace
 import com.efficios.jabberwocky.trace.TraceInitializationException
@@ -46,14 +44,7 @@ fun openTraceAction(refNode: Node?) {
 
     // TODO Support the user passing the 'index' subdirectory
     val trace = try {
-        // TODO We might be able to do away with the whole class hierarchy (GenericCtf, LttngUst, LttngKernel),
-        // and have analyses only look into the metadata/event layouts.
-        val genericTrace = GenericCtfTrace(tracePath)
-        when (genericTrace.environment["domain"]) {
-            "\"kernel\"" -> LttngKernelTrace(tracePath)
-            "\"ust\"" -> LttngUstTrace(tracePath)
-            else -> genericTrace
-        }
+        CtfTrace(tracePath)
     } catch (e: TraceInitializationException) {
         with(Alert(Alert.AlertType.ERROR)) {
             title = ERROR_OPENING_ALERT_TITLE

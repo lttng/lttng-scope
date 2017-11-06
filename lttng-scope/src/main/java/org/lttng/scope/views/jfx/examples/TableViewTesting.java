@@ -1,15 +1,9 @@
 package org.lttng.scope.views.jfx.examples;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.efficios.jabberwocky.ctf.trace.CtfTrace;
 import com.efficios.jabberwocky.ctf.trace.event.CtfTraceEvent;
-import com.efficios.jabberwocky.ctf.trace.generic.GenericCtfTrace;
 import com.efficios.jabberwocky.trace.TraceIterator;
 import com.google.common.collect.Iterators;
-
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -28,7 +22,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-public class TableViewTesting  extends Application {
+import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TableViewTesting extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -48,7 +47,7 @@ public class TableViewTesting  extends Application {
         }
 
         Path tracePath = dir.toPath();
-        GenericCtfTrace trace = new GenericCtfTrace(tracePath);
+        CtfTrace trace = new CtfTrace(tracePath);
 
         // FIXME Reading all events into memory
         List<CtfTraceEvent> events = new ArrayList<>();
