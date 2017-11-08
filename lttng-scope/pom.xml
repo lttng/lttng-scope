@@ -64,6 +64,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.efficios.jabberwocky</groupId>
       <artifactId>jabberwocky-lttng</artifactId>
     </dependency>
