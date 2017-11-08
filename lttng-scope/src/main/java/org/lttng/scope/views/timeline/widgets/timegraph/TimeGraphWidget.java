@@ -37,6 +37,7 @@ import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.common.NestingBoolean;
+import org.lttng.scope.utils.LatestTaskExecutor;
 import org.lttng.scope.views.timeline.DebugOptions;
 import org.lttng.scope.views.timeline.TimelineManager;
 import org.lttng.scope.views.timeline.TimelineView;
