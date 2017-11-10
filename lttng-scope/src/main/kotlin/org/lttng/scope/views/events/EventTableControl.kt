@@ -27,8 +27,11 @@ class EventTableControl(private val viewContext: ViewGroupContext) {
         private const val FETCH_SIZE = 25_000
     }
 
-    val table = EventTable()
+    val table = EventTable(this)
     private val taskExecutor = LatestTaskExecutor()
+
+    private var currentBackwardsEvents: List<TraceEvent>? = null
+    private var currentForwardsEvents: List<TraceEvent>? = null
 
     init {
         viewContext.currentTraceProjectProperty().addListener { _, _, newProject ->
@@ -44,21 +47,96 @@ class EventTableControl(private val viewContext: ViewGroupContext) {
         }
     }
 
+    @Synchronized
+    fun scrollToBeginning() {
+        val project = viewContext.currentTraceProject ?: return
+        initializeForProject(project)
+    }
+
+    @Synchronized
+    fun pageUp() {
+        val project = viewContext.currentTraceProject ?: return
+        /*
+         * The "currentBackwardsEvents" will become the new "forwardsEvents",
+         * and we will fetch the previous "page" as the new backwardsEvents.
+         */
+        val currentEvents = currentBackwardsEvents ?: return
+        if (currentEvents.isEmpty()) return
+        val ts = currentEvents.first().timestamp
+        val previousEvents = project.iterator().use {
+            it.seek(ts)
+            fetchPreviousEvents(it, FETCH_SIZE)
+        }
+
+        val fullEventList = listOf(previousEvents + currentEvents).flatten()
+
+        currentBackwardsEvents = previousEvents
+        currentForwardsEvents = currentEvents
+
+        table.displayEvents(fullEventList)
+        table.selectIndex(previousEvents.size)
+    }
+
+    @Synchronized
+    fun pageDown() {
+        val project = viewContext.currentTraceProject ?: return
+        /*
+         * The "currentForwardsEvents" will become the new "backwardsEvents",
+         * and we will fetch the next "page" as the new forwardsEvents.
+         */
+        val currentEvents = currentForwardsEvents ?: return
+        if (currentEvents.isEmpty()) return
+        val ts = currentEvents.last().timestamp
+        val nextEvents = project.iterator().use {
+            it.seek(ts)
+            /* Consume the last of "currentEvents", we already have it. */
+            it.next()
+            /* then read the next page */
+            it.asSequence().take(FETCH_SIZE).toList()
+        }
+
+        val fullEventList = listOf(currentEvents + nextEvents).flatten()
+
+        currentBackwardsEvents = currentEvents
+        currentForwardsEvents = nextEvents
+
+        table.displayEvents(fullEventList)
+        table.selectIndex(currentEvents.size)
+    }
+
+    @Synchronized
+    fun scrollToEnd() {
+        val project = viewContext.currentTraceProject ?: return
+        val events = project.iterator().use {
+            it.seek(Long.MAX_VALUE)
+            fetchPreviousEvents(it, FETCH_SIZE)
+        }
+        currentBackwardsEvents = events
+        currentForwardsEvents = null
+
+        table.displayEvents(events)
+        table.scrollToBottom()
+    }
+
     private fun clearView() {
         table.clearTable()
     }
 
     private fun initializeForProject(project: TraceProject<*, *>) {
         val firstEvents = project.iterator().use { it.asSequence().take(FETCH_SIZE).toList() }
+        currentBackwardsEvents = null
+        currentForwardsEvents = firstEvents
+
         table.displayEvents(firstEvents)
         table.scrollToTop()
     }
 
+    @Synchronized
     private fun recenterOn(project: TraceProject<*, *>, timestamp: Long) {
         val task = object : Task<Unit>() {
             override fun call() {
                 // TODO Implement TraceProjectIterator.copy(), use it here instead of seeking twice
-                val forwardEvents = project.iterator().use {
+                val forwardsEvents = project.iterator().use {
                     it.seek(timestamp)
                     it.asSequence().take(FETCH_SIZE).toList()
                 }
@@ -69,10 +147,13 @@ class EventTableControl(private val viewContext: ViewGroupContext) {
                 }
 
                 val eventIndex = backwardsEvents.size
-                val eventsList = listOf(backwardsEvents + forwardEvents).flatten()
+                val eventsList = listOf(backwardsEvents + forwardsEvents).flatten()
 
                 LOGGER.finer { "Backwards events: ${logEventsToString(backwardsEvents)}" }
-                LOGGER.finer { "Forwards events: ${logEventsToString(forwardEvents)}" }
+                LOGGER.finer { "Forwards events: ${logEventsToString(forwardsEvents)}" }
+
+                currentBackwardsEvents = backwardsEvents
+                currentForwardsEvents = forwardsEvents
 
                 table.displayEvents(eventsList)
                 table.selectIndex(eventIndex)

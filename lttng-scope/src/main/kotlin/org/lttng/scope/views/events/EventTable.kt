@@ -23,7 +23,7 @@ import org.lttng.scope.views.timecontrol.TimestampConversion
 /**
  * Table displaying the trace project's trace events.
  */
-class EventTable : BorderPane() {
+class EventTable(tableControl: EventTableControl) : BorderPane() {
 
     private val tableView: TableView<TraceEvent>
 
@@ -47,6 +47,8 @@ class EventTable : BorderPane() {
         }
 
         center = tableView
+
+        right = EventTableScrollToolBar(tableControl)
     }
 
     private fun createColumn(headerText: String, initialWidth: Double, provideText: (TraceEvent) -> String): TableColumn<TraceEvent, String> {
@@ -65,8 +67,21 @@ class EventTable : BorderPane() {
         tableView.items = FXCollections.observableList(events)
     }
 
+    /**
+     * Scroll to the top *of the current event list*.
+     * This method will not load any new events from the trace.
+     */
     fun scrollToTop() {
         Platform.runLater { tableView.scrollTo(0) }
+    }
+
+    /**
+     * Scroll to the end *of the current event list*.
+     * This method will not load any new events from the trace.
+     */
+    fun scrollToBottom() {
+        val nbItems = tableView.items.size
+        Platform.runLater { tableView.scrollTo(nbItems - 1) }
     }
 
     fun selectIndex(index: Int) {
