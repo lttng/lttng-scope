@@ -152,6 +152,8 @@ class EventTableControl(private val viewContext: ViewGroupContext) {
                 LOGGER.finer { "Backwards events: ${logEventsToString(backwardsEvents)}" }
                 LOGGER.finer { "Forwards events: ${logEventsToString(forwardsEvents)}" }
 
+                if (isCancelled) return
+
                 currentBackwardsEvents = backwardsEvents
                 currentForwardsEvents = forwardsEvents
 
