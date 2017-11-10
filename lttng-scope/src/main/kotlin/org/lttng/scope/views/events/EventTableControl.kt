@@ -18,7 +18,7 @@ import org.lttng.scope.utils.LatestTaskExecutor
 import org.lttng.scope.utils.logger
 import java.util.*
 
-class EventTableControl(private val viewContext: ViewGroupContext) {
+class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     companion object {
         private val LOGGER by logger()

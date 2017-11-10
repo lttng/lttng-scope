@@ -9,13 +9,17 @@
 
 package org.lttng.scope.views.events
 
+import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.trace.event.FieldValue
 import com.efficios.jabberwocky.trace.event.TraceEvent
+import com.sun.javafx.scene.control.skin.TableViewSkin
+import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.application.Platform
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.collections.FXCollections
 import javafx.scene.CacheHint
 import javafx.scene.control.TableColumn
+import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
 import org.lttng.scope.views.timecontrol.TimestampConversion
@@ -23,7 +27,7 @@ import org.lttng.scope.views.timecontrol.TimestampConversion
 /**
  * Table displaying the trace project's trace events.
  */
-class EventTable(tableControl: EventTableControl) : BorderPane() {
+class EventTable(private val tableControl: EventTableControl) : BorderPane() {
 
     private val tableView: TableView<TraceEvent>
 
@@ -44,10 +48,16 @@ class EventTable(tableControl: EventTableControl) : BorderPane() {
             isCache = true
             cacheHint = CacheHint.SPEED
             columns.addAll(timestampCol, traceCol, cpuCol, typeCol, fieldsCol)
+
+            /* Row factory to add the click listener on each row */
+            setRowFactory {
+                TableRow<TraceEvent>().apply {
+                    setOnMouseClicked { updateSelection(this.item.timestamp) }
+                }
+            }
         }
 
         center = tableView
-
         right = EventTableScrollToolBar(tableControl)
     }
 
@@ -90,8 +100,39 @@ class EventTable(tableControl: EventTableControl) : BorderPane() {
                 requestFocus()
                 selectionModel.clearAndSelect(index)
                 focusModel.focus(index)
-                scrollTo(maxOf(0, index - 3))
+
+                /*
+                 * Scroll to the target index, but only if it is out of the current
+                 * range shown by the table.
+                 */
+                val visibleRows = getVisibleRowIndices()
+                if (index !in visibleRows) {
+                    /* Place the target row in the middle of the view. */
+                    scrollTo(maxOf(0, index - visibleRows.count() / 2))
+                }
             }
         }
+    }
+
+    /**
+     * Whenever a table row is clicked, the selection in the rest
+     * of the framework should be updated.
+     *
+     * If we end up pointing to a timestamp outside of the current
+     * visible range, also recenter the visible range on that timestamp
+     * (but *only* if it's outside, else don't move the visible range).
+     */
+    private fun updateSelection(timestamp: Long) {
+        tableControl.viewContext.currentSelectionTimeRange = TimeRange.of(timestamp, timestamp)
+
+        val currentVisibleRange = tableControl.viewContext.currentVisibleTimeRange
+        if (timestamp !in currentVisibleRange) {
+            // TODO Also move visible range
+        }
+    }
+
+    private fun getVisibleRowIndices(): IntRange {
+        val flow = (tableView.skin as TableViewSkin<*>).children[1] as VirtualFlow<*>
+        return flow.firstVisibleCell.index..flow.lastVisibleCell.index
     }
 }
