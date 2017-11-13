@@ -123,11 +123,11 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
      * (but *only* if it's outside, else don't move the visible range).
      */
     private fun updateSelection(timestamp: Long) {
-        tableControl.viewContext.currentSelectionTimeRange = TimeRange.of(timestamp, timestamp)
+        val viewCtx = tableControl.viewContext
+        viewCtx.currentSelectionTimeRange = TimeRange.of(timestamp, timestamp)
 
-        val currentVisibleRange = tableControl.viewContext.currentVisibleTimeRange
-        if (timestamp !in currentVisibleRange) {
-            // TODO Also move visible range
+        if (timestamp !in viewCtx.currentVisibleTimeRange) {
+            viewCtx.centerVisibleRangeOn(timestamp)
         }
     }
 
