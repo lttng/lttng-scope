@@ -20,8 +20,8 @@ import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.events.EventTable
 import org.lttng.scope.views.events.EventTableControl
+import org.lttng.scope.views.project.ProjectArea
 import org.lttng.scope.views.timecontrol.TimeControl
 import org.lttng.scope.views.timeline.TimelineView
 
@@ -35,8 +35,8 @@ class ScopeMainWindow : BorderPane() {
     /** The "main pane" separates the project view on the left and the analysis area on the right */
     private val mainPane: SplitPane
 
-    /** The project area is where the trace project trees are shown. TODO NYI */
-    private val projectArea: BorderPane
+    /** The project area is where the trace project trees are shown. */
+    private val projectArea: ProjectArea
 
     /** The "analysis area" consists of the Timeline pane, and the Time Control at the bottom. */
     private class AnalysisArea : VBox() {
@@ -45,7 +45,7 @@ class ScopeMainWindow : BorderPane() {
         val eventTableControl = EventTableControl(ViewGroupContextManager.getCurrent())
 
         /** Area containing the timeline widgets and the event table */
-        val widgetArea =  SplitPane(timelineView.rootNode, eventTableControl.table)
+        val widgetArea = SplitPane(timelineView.rootNode, eventTableControl.table)
 
         init {
             widgetArea.orientation = Orientation.VERTICAL
@@ -57,7 +57,7 @@ class ScopeMainWindow : BorderPane() {
 
     init {
         /* Load all supported plugins */
-        val timeGraphMgr = TimeGraphModelProviderManager.instance();
+        val timeGraphMgr = TimeGraphModelProviderManager.instance()
         timeGraphMgr.registerProviderFactory { ThreadsModelProvider() }
         timeGraphMgr.registerProviderFactory { ResourcesCpuIrqModelProvider() }
 
@@ -82,7 +82,7 @@ class ScopeMainWindow : BorderPane() {
         val menuBar = ScopeMenuBar()
 
         analysisArea = AnalysisArea()
-        projectArea = BorderPane() // TODO
+        projectArea = ProjectArea()
         mainPane = SplitPane(projectArea, analysisArea)
 
         this.top = menuBar
