@@ -7,34 +7,18 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.jabberwocky;
+package org.lttng.scope.project
 
-import com.efficios.jabberwocky.analysis.IAnalysis;
-import com.efficios.jabberwocky.project.TraceProject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.efficios.jabberwocky.analysis.IAnalysis
+import com.efficios.jabberwocky.project.TraceProject
 
 /**
  * Application-side manager that keeps track of active Jabberwocky projects, and
- * which analyses have been run on them. A kind of cache of analysis results.
- *
- * @author Alexandre Montplaisir
+ * the viewer-side state that we want to associate to them.
  */
-public final class JabberwockyProjectManager {
+object ProjectManager {
 
-    private static final JabberwockyProjectManager INSTANCE = new JabberwockyProjectManager();
-
-    /**
-     * Get the singleton instance of this manager.
-     *
-     * @return The singleton instance
-     */
-    public static JabberwockyProjectManager instance() {
-        return INSTANCE;
-    }
-
-    private final Map<TraceProject<?, ?>, Map<IAnalysis, Object>> fAnalysisResults = new HashMap<>();
+    private val analysisResults = mutableMapOf<TraceProject<*, *>, MutableMap<IAnalysis, Any>>();
 
     /**
      * Clear the "cache" for one given project. Usually should be called when said
@@ -42,8 +26,9 @@ public final class JabberwockyProjectManager {
      *
      * @param project The project to dispose of
      */
-    public synchronized void disposeResults(TraceProject<?, ?> project) {
-        fAnalysisResults.remove(project);
+    @Synchronized
+    fun dispose(project: TraceProject<*, *>) {
+        analysisResults.remove(project);
     }
 
     /**
@@ -51,8 +36,8 @@ public final class JabberwockyProjectManager {
      *
      * Note this method does not handle special analysis parameters, like
      * timestamps. It should only be used for "permanent" analysis results, which
-     * usually run on the whole trace. For other specific analysis queries, calling
-     * {@link IAnalysis#execute} should be done instead.
+     * usually run on the whole trace. For other specific analysis queries,
+     * {@link IAnalysis#execute} should be called directly instead.
      *
      * @param project
      *            The project on which to run the analysis
@@ -62,14 +47,15 @@ public final class JabberwockyProjectManager {
      * @return The results of this analysis. You will have to cast manually to the
      *         real type if you know it.
      */
-    public synchronized Object getAnalysisResults(TraceProject<?, ?> project, IAnalysis analysis) {
-        Map<IAnalysis, Object> analyses = fAnalysisResults.get(project);
+    @Synchronized
+    fun getAnalysisResults(project: TraceProject<*, *>, analysis: IAnalysis): Any {
+        var analyses = analysisResults[project];
         if (analyses == null) {
-            analyses = new HashMap<>();
-            fAnalysisResults.put(project, analyses);
+            analyses = mutableMapOf()
+            analysisResults.put(project, analyses);
         }
 
-        Object result = analyses.get(analysis);
+        var result = analyses[analysis];
         if (result != null) {
             return result;
         }
