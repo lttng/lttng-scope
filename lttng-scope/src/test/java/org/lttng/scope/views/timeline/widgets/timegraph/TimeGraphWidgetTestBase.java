@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
 public abstract class TimeGraphWidgetTestBase {
 
     @Rule
-    public TestRule timeoutRule = new Timeout(1, TimeUnit.MINUTES);
+    public TestRule timeoutRule = new Timeout(5, TimeUnit.MINUTES);
 
     private static StubProject sfProject;
     private static StubView sfView;
