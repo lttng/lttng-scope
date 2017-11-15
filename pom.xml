@@ -51,11 +51,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-reflect</artifactId>
-        <version>${kotlin.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.efficios.jabberwocky</groupId>
         <artifactId>jabberwocky-lttng</artifactId>
         <version>0.2.33-SNAPSHOT</version>

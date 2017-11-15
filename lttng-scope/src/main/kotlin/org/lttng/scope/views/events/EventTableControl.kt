@@ -15,13 +15,13 @@ import com.efficios.jabberwocky.project.TraceProjectIterator
 import com.efficios.jabberwocky.trace.event.TraceEvent
 import javafx.concurrent.Task
 import org.lttng.scope.utils.LatestTaskExecutor
-import org.lttng.scope.utils.logger
 import java.util.*
+import java.util.logging.Logger
 
 class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     companion object {
-        private val LOGGER by logger()
+        private val LOGGER = Logger.getLogger(EventTableControl::class.java.name)
 
         /** How many events to fetch *in each direction*, limited by the start/end of the project. */
         private const val FETCH_SIZE = 25_000
