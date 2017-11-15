@@ -34,9 +34,9 @@ class ProjectArea : BorderPane() {
     init {
         /* Setup tree skeleton */
         val tracesTreeItem = TracesTreeItem()
-        val bookmarksTreeItem = TreeItem(BOOKMARKS_NODE_NAME)
-        val filtersTreeItem = TreeItem(FILTERS_NODE_NAME)
-        val searchesTreeItem = TreeItem(SEARCHES_NODE_NAME)
+        val bookmarksTreeItem = TreeItem(BOOKMARKS_NODE_NAME) // TODO
+        val filtersTreeItem = FiltersTreeItem()
+        val searchesTreeItem = SearchesTreeItem()
 
         projectRootItem.children.addAll(tracesTreeItem,
                 bookmarksTreeItem,
@@ -48,12 +48,13 @@ class ProjectArea : BorderPane() {
         viewCtx.currentTraceProjectProperty().addListener { _, _, newProject ->
             if (newProject == null) {
                 projectTree.root = emptyProjectItem
-                tracesTreeItem.children.clear()
-                // TODO Clear other sub-trees
+                listOf(tracesTreeItem, filtersTreeItem, searchesTreeItem).forEach { it.children.clear() }
             } else {
                 projectRootItem.value = newProject.name
                 projectTree.root = projectRootItem
                 tracesTreeItem.updateTraces(newProject)
+
+                // TODO Restore saved bookmarks/filters/searches
             }
         }
 
@@ -71,4 +72,12 @@ private class TracesTreeItem : TreeItem<String>(TRACES_NODE_NAME) {
         children.addAll(newChildren)
         isExpanded = true
     }
+}
+
+private class FiltersTreeItem : TreeItem<String>(FILTERS_NODE_NAME) {
+
+}
+
+private class SearchesTreeItem : TreeItem<String>(SEARCHES_NODE_NAME) {
+
 }
