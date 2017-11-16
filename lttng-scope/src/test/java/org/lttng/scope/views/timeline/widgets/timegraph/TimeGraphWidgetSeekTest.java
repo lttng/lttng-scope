@@ -17,6 +17,8 @@ import org.junit.Test;
 /**
  * {@link TimeGraphWidget} test suite testing seeking operations.
  */
+// TODO Ignore because too flaky, would need a proper testing framework
+@Ignore
 public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
 
     @Before
@@ -54,8 +56,6 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      * Test seeking to the trace's full time range
      */
     @Test
-    @Ignore
-    // TODO This test fails when run in succession with all the others
     public void testSeekFullRange() {
         testSeekVisibleRange(100000L, 200000L);
     }
