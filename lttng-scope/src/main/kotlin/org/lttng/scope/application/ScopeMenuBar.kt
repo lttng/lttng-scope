@@ -26,22 +26,29 @@ private const val ABOUT_ACTION = "About..."
 class ScopeMenuBar : MenuBar() {
 
     init {
-        val openMenuItem = MenuItem(OPEN_ACTION)
-        openMenuItem.setOnAction { openTraceAction(this) }
-        val closeMenuItem = MenuItem(CLOSE_ACTION)
-        closeMenuItem.setOnAction { ViewGroupContextManager.getCurrent().currentTraceProject = null }
-        val exitMenuItem = MenuItem(EXIT_ACTION)
-        exitMenuItem.setOnAction { scene.window.hide() }
+        val openMenuItem = MenuItem(OPEN_ACTION).apply {
+            setOnAction { openTraceAction(this@ScopeMenuBar) }
+        }
+        val closeMenuItem = MenuItem(CLOSE_ACTION).apply {
+            setOnAction { ViewGroupContextManager.getCurrent().currentTraceProject = null }
+        }
+        val exitMenuItem = MenuItem(EXIT_ACTION).apply {
+            setOnAction { scene.window.hide() }
+        }
+        val fileMenu = Menu(FILE_MENU).apply {
+            items.addAll(openMenuItem,
+                    closeMenuItem,
+                    SeparatorMenuItem(),
+                    exitMenuItem)
+        }
 
-        val fileMenu = Menu(FILE_MENU)
-        fileMenu.items.addAll(openMenuItem,
-                closeMenuItem,
-                SeparatorMenuItem(),
-                exitMenuItem)
-
-        val aboutMenuItem = MenuItem(ABOUT_ACTION)
-        val helpMenu = Menu(HELP_MENU)
-        helpMenu.items.addAll(aboutMenuItem)
+        val aboutMenuItem = MenuItem(ABOUT_ACTION).apply {
+            // TODO Open an About window...
+            // setOnAction { ... }
+        }
+        val helpMenu = Menu(HELP_MENU).apply {
+            items.addAll(aboutMenuItem)
+        }
 
         menus.addAll(fileMenu, helpMenu)
     }
