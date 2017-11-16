@@ -19,9 +19,9 @@ import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
+import org.lttng.scope.project.ProjectArea
 import org.lttng.scope.views.context.ViewGroupContextManager
 import org.lttng.scope.views.events.EventTableControl
-import org.lttng.scope.views.project.ProjectArea
 import org.lttng.scope.views.timecontrol.TimeControl
 import org.lttng.scope.views.timeline.TimelineView
 

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.project
+package org.lttng.scope.project
 
 import com.efficios.jabberwocky.project.TraceProject
 import javafx.scene.control.TreeItem
