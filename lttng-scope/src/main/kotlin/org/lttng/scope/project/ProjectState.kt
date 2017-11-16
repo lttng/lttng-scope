@@ -11,10 +11,12 @@ package org.lttng.scope.project
 
 import com.efficios.jabberwocky.analysis.IAnalysis
 import com.efficios.jabberwocky.project.TraceProject
+import org.lttng.scope.project.filter.EventFilterDefinition
 
 class ProjectState(project: TraceProject<*, *>) {
 
     val analysisResults = ProjectAnalysisResults(project)
+    val filters = ProjectFilters(project)
 
 }
 
@@ -51,4 +53,35 @@ class ProjectAnalysisResults(private val project: TraceProject<*, *>) {
         return result;
     }
 
+}
+
+class ProjectFilters(private val project: TraceProject<*, *>) {
+
+    interface FilterListener {
+        fun filterCreated(filter: EventFilterDefinition)
+        fun filterRemoved(filter: EventFilterDefinition)
+    }
+
+    private val registeredListeners = mutableSetOf<FilterListener>()
+    private val filters = mutableSetOf<EventFilterDefinition>()
+
+    @Synchronized
+    fun registerFilterListener(listener: FilterListener) {
+        /* Tell the new listener about the existing filters. */
+        val added = registeredListeners.add(listener)
+        if (added) filters.forEach { listener.filterCreated(it) }
+    }
+
+    @Synchronized
+    fun createFilter(filter: EventFilterDefinition) {
+        /* Notify registered listeners about the new filter. */
+        val added = filters.add(filter)
+        if (added) registeredListeners.forEach { it.filterCreated(filter) }
+    }
+
+    @Synchronized
+    fun removeFilter(filter: EventFilterDefinition) {
+        val removed = filters.remove(filter)
+        if (removed) registeredListeners.forEach { it.filterRemoved(filter) }
+    }
 }

@@ -10,74 +10,187 @@
 package org.lttng.scope.project
 
 import com.efficios.jabberwocky.project.TraceProject
-import javafx.scene.control.TreeItem
-import javafx.scene.control.TreeView
+import javafx.application.Platform
+import javafx.beans.property.ReadOnlyObjectWrapper
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
+import org.lttng.scope.project.filter.CreateEventFilterDialog
+import org.lttng.scope.project.filter.EventFilterDefinition
+import org.lttng.scope.project.filter.getGraphic
 import org.lttng.scope.views.context.ViewGroupContextManager
-
-private const val TRACES_NODE_NAME = "Traces"
-private const val BOOKMARKS_NODE_NAME = "Bookmarks"
-private const val FILTERS_NODE_NAME = "Filters"
-private const val SEARCHES_NODE_NAME = "Recent Searches"
+import org.lttng.scope.views.jfx.JfxColorFactory
+import org.lttng.scope.views.jfx.JfxUtils
 
 private const val NO_PROJECT = "(no project opened)"
+
+private const val TRACES_NODE_NAME = "Traces"
+
+private const val BOOKMARKS_NODE_NAME = "Bookmarks"
+
+private const val FILTERS_NODE_NAME = "Filters"
+private const val FILTERS_CREATE_FILTER = "Create Filter..."
+private const val FILTERS_DELETE = "Delete Filter"
+
 
 class ProjectArea : BorderPane() {
 
     private val projectTree = TreeView<String>()
 
-    private val emptyProjectItem = TreeItem(NO_PROJECT)
+    private val emptyProjectRootItem = TreeItem(NO_PROJECT)
     private val projectRootItem = TreeItem(NO_PROJECT).apply {
         isExpanded = true
     }
 
     init {
         /* Setup tree skeleton */
-        val tracesTreeItem = TracesTreeItem()
-        val bookmarksTreeItem = TreeItem(BOOKMARKS_NODE_NAME) // TODO
-        val filtersTreeItem = FiltersTreeItem()
-        val searchesTreeItem = SearchesTreeItem()
+        val subItems = listOf(TracesTreeItem(),
+                BookmarksTreeItem(),
+                FiltersTreeItem(this))
 
-        projectRootItem.children.addAll(tracesTreeItem,
-                bookmarksTreeItem,
-                filtersTreeItem,
-                searchesTreeItem)
+        projectRootItem.children.addAll(subItems)
+        projectTree.setCellFactory { ProjectTreeCell() }
 
         /* Setup listeners */
-        val viewCtx = ViewGroupContextManager.getCurrent()
-        viewCtx.currentTraceProjectProperty().addListener { _, _, newProject ->
+        ViewGroupContextManager.getCurrent().currentTraceProjectProperty().addListener { _, _, newProject ->
             if (newProject == null) {
-                projectTree.root = emptyProjectItem
-                listOf(tracesTreeItem, filtersTreeItem, searchesTreeItem).forEach { it.children.clear() }
+                projectTree.root = emptyProjectRootItem
             } else {
                 projectRootItem.value = newProject.name
                 projectTree.root = projectRootItem
-                tracesTreeItem.updateTraces(newProject)
-
-                // TODO Restore saved bookmarks/filters/searches
             }
         }
 
-        projectTree.root = emptyProjectItem
+        projectTree.root = emptyProjectRootItem
         center = projectTree
     }
 }
 
-private class TracesTreeItem : TreeItem<String>(TRACES_NODE_NAME) {
-    fun updateTraces(project: TraceProject<*, *>) {
+private abstract class ProjectTreeItem(name: String) : TreeItem<String>(name) {
+
+    init {
+        ViewGroupContextManager.getCurrent().currentTraceProjectProperty().addListener { _, _, newProject ->
+            if (newProject == null) {
+                clear()
+            } else {
+                initForProject(newProject)
+            }
+        }
+        isExpanded = true
+    }
+
+    protected fun getCurrentProject() = ViewGroupContextManager.getCurrent().currentTraceProject
+
+    abstract fun initForProject(project: TraceProject<*, *>)
+
+    open fun clear() {
+        children.clear()
+    }
+
+    open val contextMenu: ContextMenu? = null
+}
+
+private class ProjectTreeCell : TreeCell<String>() {
+
+    override fun updateItem(item: String?, empty: Boolean) {
+        super.updateItem(item, empty)
+
+        if (empty) {
+            text = null
+            graphic = null
+        } else {
+            text = getItem()?.toString() ?: ""
+            graphic = treeItem.graphic
+            if (treeItem is ProjectTreeItem) {
+                contextMenu = (treeItem as ProjectTreeItem).contextMenu
+            }
+        }
+    }
+}
+
+private class TracesTreeItem : ProjectTreeItem(TRACES_NODE_NAME) {
+
+    override fun initForProject(project: TraceProject<*, *>) {
         val traces = project.traceCollections.flatMap { it.traces }
         val newChildren = traces.map { TreeItem(it.name) }
 
         children.clear()
         children.addAll(newChildren)
-        isExpanded = true
     }
 }
 
-private class FiltersTreeItem : TreeItem<String>(FILTERS_NODE_NAME) {
-
+private class BookmarksTreeItem : ProjectTreeItem(BOOKMARKS_NODE_NAME) {
+    override fun initForProject(project: TraceProject<*, *>) {
+        // TODO
+    }
 }
 
-private class SearchesTreeItem : TreeItem<String>(SEARCHES_NODE_NAME) {
+private class FiltersTreeItem(refNode: Node) : ProjectTreeItem(FILTERS_NODE_NAME), ProjectFilters.FilterListener {
+
+    private inner class FilterTreeItem(val filterDef: EventFilterDefinition) : ProjectTreeItem(filterDef.name) {
+
+        override fun initForProject(project: TraceProject<*, *>) {
+            /* Nothing to do, parent will delete us anyway. */
+        }
+
+        override val contextMenu: ContextMenu
+
+        init {
+            /*
+             * We will use a HBox with the checkbox and the filter's symbol.
+             * CheckBoxTreeCell is not very appropriate here, it's more for when you want to
+             * select sub-trees when clicking a parent.
+             */
+            val checkbox = CheckBox().apply { selectedProperty().bindBidirectional(filterDef.enabledProperty()) }
+            /* For now, the graphic won't change for a given filter */
+            val symbol = filterDef.symbol.getGraphic(ReadOnlyObjectWrapper(JfxColorFactory.getColorFromDef(filterDef.color)))
+            graphic = HBox(checkbox, symbol).apply { alignment = Pos.CENTER }
+
+            /* Setup the context menu */
+            val removeFilterMenuItem = MenuItem(FILTERS_DELETE).apply {
+                setOnAction {
+                    val project = getCurrentProject() ?: return@setOnAction
+                    ProjectManager.getProjectState(project).filters.removeFilter(filterDef)
+                }
+            }
+
+            contextMenu = ContextMenu(removeFilterMenuItem)
+        }
+    }
+
+    override val contextMenu: ContextMenu
+
+    init {
+        val createNewFilterMenuItem = MenuItem(FILTERS_CREATE_FILTER).apply {
+            setOnAction {
+                val project = getCurrentProject() ?: return@setOnAction
+                val optFilter = with(CreateEventFilterDialog()) {
+                    setOnShowing { Platform.runLater { JfxUtils.centerDialogOnScreen(this, refNode) } }
+                    showAndWait()
+                }
+                if (optFilter.isPresent) {
+                    ProjectManager.getProjectState(project).filters.createFilter(optFilter.get())
+                }
+            }
+        }
+
+        contextMenu = ContextMenu(createNewFilterMenuItem)
+    }
+
+    override fun initForProject(project: TraceProject<*, *>) {
+        children.clear()
+        ProjectManager.getProjectState(project).filters.registerFilterListener(this)
+    }
+
+    override fun filterCreated(filter: EventFilterDefinition) {
+        children.add(FilterTreeItem(filter))
+    }
+
+    override fun filterRemoved(filter: EventFilterDefinition) {
+        val childItem = children.find { (it as FilterTreeItem).filterDef == filter } ?: return
+        children.remove(childItem)
+    }
 
 }

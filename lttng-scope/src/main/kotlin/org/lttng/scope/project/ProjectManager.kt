@@ -10,6 +10,7 @@
 package org.lttng.scope.project
 
 import com.efficios.jabberwocky.project.TraceProject
+import org.lttng.scope.project.filter.EventFilterDefinition
 
 /**
  * Application-side manager that keeps track of active trace projects, and
