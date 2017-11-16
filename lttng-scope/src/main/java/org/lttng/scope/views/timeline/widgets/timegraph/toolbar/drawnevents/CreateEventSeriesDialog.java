@@ -12,9 +12,9 @@ package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.drawnevents;
 import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.trace.event.TraceEvent;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.common.EventSymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -117,7 +117,7 @@ class CreateEventSeriesDialog extends Dialog<PredicateDrawnEventProvider> {
     private TimeGraphDrawnEventSeries generateEventSeries() {
         String seriesName = fEventNameField.getText();
         ColorDefinition colorDef = JfxColorFactory.colorToColorDef(fSymbolColorPicker.getValue());
-        SymbolStyle style = fSymbolShapePicker.getSelectionModel().getSelectedItem();
+        EventSymbolStyle style = fSymbolShapePicker.getSelectionModel().getSelectedItem();
 
         return new TimeGraphDrawnEventSeries(
                 seriesName == null ? "" : seriesName, //$NON-NLS-1$
@@ -125,19 +125,19 @@ class CreateEventSeriesDialog extends Dialog<PredicateDrawnEventProvider> {
                 new ConfigOption<>(style));
     }
 
-    private static class ShapePicker extends ComboBox<SymbolStyle> {
+    private static class ShapePicker extends ComboBox<EventSymbolStyle> {
 
         public ShapePicker(ReadOnlyProperty<Color> colorSource) {
-            getItems().addAll(SymbolStyle.values());
+            getItems().addAll(EventSymbolStyle.values());
 
-            Callback<ListView<SymbolStyle>, ListCell<SymbolStyle>> cellFactory =
-                    p -> new ListCell<SymbolStyle>() {
+            Callback<ListView<EventSymbolStyle>, ListCell<EventSymbolStyle>> cellFactory =
+                    p -> new ListCell<EventSymbolStyle>() {
                         {
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                         }
 
                         @Override
-                        protected void updateItem(SymbolStyle item, boolean empty) {
+                        protected void updateItem(EventSymbolStyle item, boolean empty) {
                             super.updateItem(item, empty);
                             if (empty) {
                                 setGraphic(null);
@@ -155,7 +155,7 @@ class CreateEventSeriesDialog extends Dialog<PredicateDrawnEventProvider> {
             getSelectionModel().select(0);
         }
 
-        private static Node getGraphicFromSymbol(SymbolStyle symbol, ReadOnlyProperty<Color> colorSource) {
+        private static Node getGraphicFromSymbol(EventSymbolStyle symbol, ReadOnlyProperty<Color> colorSource) {
             Shape graphic = TimeGraphDrawnEventLayer.getShapeFromSymbol(symbol);
             graphic.fillProperty().bind(colorSource);
             return graphic;

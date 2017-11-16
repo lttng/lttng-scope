@@ -10,12 +10,12 @@
 package org.lttng.scope.views.timeline.widgets.timegraph.layer;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.views.common.EventSymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
 import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
-import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;
@@ -175,13 +175,13 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
 
     private static Shape getShapeFromEvent(TimeGraphDrawnEvent event) {
         Color color = JfxColorFactory.getColorFromDef(event.getEventSeries().getColor().get());
-        SymbolStyle symbol = event.getEventSeries().getSymbolStyle().get();
+        EventSymbolStyle symbol = event.getEventSeries().getSymbolStyle().get();
         Shape shape = getShapeFromSymbol(symbol);
         shape.setFill(color);
         return shape;
     }
 
-    public static Shape getShapeFromSymbol(SymbolStyle symbol) {
+    public static Shape getShapeFromSymbol(EventSymbolStyle symbol) {
         Shape shape;
         switch (symbol) {
         case CIRCLE:

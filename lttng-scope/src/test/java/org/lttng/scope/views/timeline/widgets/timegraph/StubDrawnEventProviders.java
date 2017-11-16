@@ -12,12 +12,12 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 import com.efficios.jabberwocky.common.ConfigOption;
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.common.ColorDefinition;
+import com.efficios.jabberwocky.views.common.EventSymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEvent;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries;
-import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventSeries.SymbolStyle;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeElement;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import com.google.common.collect.ImmutableList;
@@ -39,7 +39,7 @@ final class StubDrawnEventProviders {
         private static final TimeGraphDrawnEventSeries EVENT_SERIES = new TimeGraphDrawnEventSeries(
                 "Event Series Alpha",
                 new ConfigOption<>(new ColorDefinition(0, 255, 0, ColorDefinition.MAX)),
-                new ConfigOption<>(SymbolStyle.CIRCLE));
+                new ConfigOption<>(EventSymbolStyle.CIRCLE));
 
         public StubDrawnEventProvider1() {
             super(EVENT_SERIES);
@@ -73,7 +73,7 @@ final class StubDrawnEventProviders {
         private static final TimeGraphDrawnEventSeries EVENT_SERIES = new TimeGraphDrawnEventSeries(
                 "Event Series Zeta",
                 new ConfigOption<>(new ColorDefinition(255, 255, 0, ColorDefinition.MAX)),
-                new ConfigOption<>(SymbolStyle.CROSS));
+                new ConfigOption<>(EventSymbolStyle.CROSS));
 
         public StubDrawnEventProvider2() {
             super(EVENT_SERIES);
