@@ -9,16 +9,25 @@
 
 package org.lttng.scope.project
 
-import com.efficios.jabberwocky.analysis.IAnalysis
 import com.efficios.jabberwocky.project.TraceProject
 
 /**
- * Application-side manager that keeps track of active Jabberwocky projects, and
+ * Application-side manager that keeps track of active trace projects, and
  * the viewer-side state that we want to associate to them.
  */
 object ProjectManager {
 
-    private val analysisResults = mutableMapOf<TraceProject<*, *>, MutableMap<IAnalysis, Any>>();
+    private val projectStates = mutableMapOf<TraceProject<*, *>, ProjectState>()
+
+    @Synchronized
+    fun getProjectState(project: TraceProject<*, *>): ProjectState {
+        var state = projectStates[project]
+        if (state == null) {
+            state = ProjectState(project)
+            projectStates.put(project, state)
+        }
+        return state
+    }
 
     /**
      * Clear the "cache" for one given project. Usually should be called when said
@@ -28,43 +37,7 @@ object ProjectManager {
      */
     @Synchronized
     fun dispose(project: TraceProject<*, *>) {
-        analysisResults.remove(project);
+        projectStates.remove(project);
     }
 
-    /**
-     * Obtain the results of the given analysis running on the given project.
-     *
-     * Note this method does not handle special analysis parameters, like
-     * timestamps. It should only be used for "permanent" analysis results, which
-     * usually run on the whole trace. For other specific analysis queries,
-     * {@link IAnalysis#execute} should be called directly instead.
-     *
-     * @param project
-     *            The project on which to run the analysis
-     * @param analysis
-     *            The analysis to run. Make sure it {@link IAnalysis#appliesTo} and
-     *            {@link IAnalysis#canExecute} on the given project.
-     * @return The results of this analysis. You will have to cast manually to the
-     *         real type if you know it.
-     */
-    @Synchronized
-    fun getAnalysisResults(project: TraceProject<*, *>, analysis: IAnalysis): Any {
-        var analyses = analysisResults[project];
-        if (analyses == null) {
-            analyses = mutableMapOf()
-            analysisResults.put(project, analyses);
-        }
-
-        var result = analyses[analysis];
-        if (result != null) {
-            return result;
-        }
-
-        /* We haven't run this analysis yet, let's run it and save the results */
-        // TODO Separate thread/routine?
-        result = analysis.execute(project, null, null);
-
-        analyses.put(analysis, result);
-        return result;
-    }
 }
