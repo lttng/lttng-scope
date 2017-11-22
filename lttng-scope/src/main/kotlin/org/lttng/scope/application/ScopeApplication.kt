@@ -30,18 +30,27 @@ class ScopeApplication : Application() {
         primaryStage ?: return
         Platform.setImplicitExit(true)
 
-        /* Create the application window */
-        val root = ScopeMainWindow()
+        try {
+            /* Create the application window */
+            val root = ScopeMainWindow()
 
-        with (primaryStage) {
-            scene = Scene(root)
-            title = "LTTng Scope"
+            with(primaryStage) {
+                scene = Scene(root)
+                title = "LTTng Scope"
 
-            /* Ensure initial window has proper size and subdivisions. */
-            width = INITIAL_WINDOW_WIDTH
-            setOnShown { Platform.runLater { root.onShownCB() } }
+                /* Ensure initial window has proper size and subdivisions. */
+                width = INITIAL_WINDOW_WIDTH
+                setOnShown { Platform.runLater { root.onShownCB() } }
 
-            show()
+                show()
+            }
+
+        } catch (e: Exception) {
+            /*
+             * Top-level exception handler.
+             * Without this, exceptions in the UI don't print their stack trace!
+             */
+            e.printStackTrace()
         }
 
     }
