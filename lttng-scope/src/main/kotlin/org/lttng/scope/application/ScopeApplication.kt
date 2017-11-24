@@ -30,6 +30,9 @@ class ScopeApplication : Application() {
         primaryStage ?: return
         Platform.setImplicitExit(true)
 
+        /* Do our part in preventing eye cancer. */
+        System.setProperty("prism.lcdtext", "false")
+
         try {
             /* Create the application window */
             val root = ScopeMainWindow()
