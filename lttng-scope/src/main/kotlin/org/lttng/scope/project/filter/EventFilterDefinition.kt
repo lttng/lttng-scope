@@ -20,8 +20,8 @@ import javafx.scene.Node
 import javafx.scene.paint.Color
 import org.lttng.scope.views.jfx.JfxColorFactory
 
-class EventFilterDefinition(val name: String,
-                            initialColor: ColorDefinition,
+data class EventFilterDefinition(val name: String,
+                            private val initialColor: ColorDefinition,
                             val symbol: EventSymbolStyle,
                             val predicate: (TraceEvent) -> Boolean) {
 
