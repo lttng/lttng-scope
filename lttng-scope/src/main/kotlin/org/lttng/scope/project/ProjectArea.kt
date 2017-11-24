@@ -145,7 +145,7 @@ private class FiltersTreeItem(refNode: Node) : ProjectTreeItem(FILTERS_NODE_NAME
              */
             val checkbox = CheckBox().apply { selectedProperty().bindBidirectional(filterDef.enabledProperty()) }
             /* For now, the graphic won't change for a given filter */
-            val symbol = filterDef.symbol.getGraphic(ReadOnlyObjectWrapper(JfxColorFactory.getColorFromDef(filterDef.color)))
+            val symbol = filterDef.getGraphic()
             graphic = HBox(checkbox, symbol).apply { alignment = Pos.CENTER }
 
             /* Setup the context menu */
