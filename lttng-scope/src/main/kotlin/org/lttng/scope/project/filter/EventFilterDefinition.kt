@@ -20,7 +20,7 @@ data class EventFilterDefinition(val name: String,
                                  val symbol: EventSymbolStyle,
                                  val predicate: (TraceEvent) -> Boolean) {
 
-    private val enabledProperty: BooleanProperty = SimpleBooleanProperty(false)
+    private val enabledProperty: BooleanProperty = SimpleBooleanProperty(true)
     fun enabledProperty() = enabledProperty
     var isEnabled
         get() = enabledProperty.get()
