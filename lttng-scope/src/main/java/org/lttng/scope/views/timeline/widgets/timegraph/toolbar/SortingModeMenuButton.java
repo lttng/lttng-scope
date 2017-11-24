@@ -65,5 +65,8 @@ class SortingModeMenuButton extends MenuButton {
         if (sortingModeItems.size() <= 1) {
             setDisable(true);
         }
+
+        /* TODO Re-enable once sorting modes are working again. */
+        setDisable(true);
     }
 }

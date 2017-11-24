@@ -57,5 +57,8 @@ class FilterModeMenuButton extends MenuButton {
         if (filterModeItems.isEmpty()) {
             setDisable(true);
         }
+
+        /* TODO Re-enable once filter modes are implemented and working */
+        setDisable(true);
     }
 }
