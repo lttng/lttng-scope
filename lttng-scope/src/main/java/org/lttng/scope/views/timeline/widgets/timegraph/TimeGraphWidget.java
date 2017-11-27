@@ -43,6 +43,7 @@ import org.lttng.scope.views.timeline.TimelineManager;
 import org.lttng.scope.views.timeline.TimelineView;
 import org.lttng.scope.views.timeline.TimelineWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.layer.*;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.drawnevents.TimeGraphDrawnEventLayer;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
 import java.util.Collection;

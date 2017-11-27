@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.timeline.widgets.timegraph.layer;
+package org.lttng.scope.views.timeline.widgets.timegraph.layer.drawnevents;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.common.EventSymbolStyle;
@@ -18,15 +18,18 @@ import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGra
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEventRender;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.project.filter.SymbolsKt;
 import org.lttng.scope.views.jfx.JfxColorFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphLayer;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,6 +42,7 @@ import static java.util.Objects.requireNonNull;
 
 public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
 
+    private final DrawnEventFilterListener filterListener;
     private final Map<TimeGraphDrawnEventProvider, Group> fEventProviders = new HashMap<>();
 
     public TimeGraphDrawnEventLayer(TimeGraphWidget widget, Group parentGroup) {
@@ -63,6 +67,8 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
                 untrackEventProvider(removedProvider);
             }
         });
+
+        filterListener = new DrawnEventFilterListener(getWidget());
     }
 
     private void trackEventProvider(TimeGraphDrawnEventProvider provider) {
@@ -176,67 +182,7 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
     private static Shape getShapeFromEvent(TimeGraphDrawnEvent event) {
         Color color = JfxColorFactory.getColorFromDef(event.getEventSeries().getColor().get());
         EventSymbolStyle symbol = event.getEventSeries().getSymbolStyle().get();
-        Shape shape = getShapeFromSymbol(symbol);
-        shape.setFill(color);
-        return shape;
-    }
-
-    public static Shape getShapeFromSymbol(EventSymbolStyle symbol) {
-        Shape shape;
-        switch (symbol) {
-        case CIRCLE:
-            shape = new Circle(5);
-            break;
-
-        case DIAMOND: {
-            shape = new Polygon(5.0, 0.0,
-                    10.0, 5.0,
-                    5.0, 10.0,
-                    0.0, 5.0);
-            shape.relocate(-5.0, -5.0);
-        }
-            break;
-
-        case SQUARE:
-            shape = new Rectangle(-5, -5, 10, 10);
-            break;
-
-        case STAR:
-            // FIXME bigger?
-            shape = new Polygon(4.0, 0.0,
-                    5.0, 4.0,
-                    8.0, 4.0,
-                    6.0, 6.0,
-                    7.0, 9.0,
-                    4.0, 7.0,
-                    1.0, 9.0,
-                    2.0, 6.0,
-                    0.0, 4.0,
-                    3.0, 4.0);
-            shape.relocate(-4, -4.5);
-            break;
-
-        case TRIANGLE: {
-            SVGPath path = new SVGPath();
-            path.setContent("M5,0 L10,8 L0,8 Z"); //$NON-NLS-1$
-            path.relocate(-5, -2);
-            shape = path;
-        }
-            break;
-
-        case CROSS:
-        default: {
-            SVGPath path = new SVGPath();
-            path.setContent("M2,0 L5,4 L8,0 L10,0 L10,2 L6,5 L10,8 L10,10 L8,10 L5,6 L2, 10 L0,10 L0,8 L4,5 L0,2 L0,0 Z"); //$NON-NLS-1$
-            path.relocate(-5, -5);
-            shape = path;
-        }
-            break;
-
-        }
-
-        shape.setStroke(Color.BLACK);
-        return shape;
+        return SymbolsKt.getGraphic(symbol, new ReadOnlyObjectWrapper<>(color));
     }
 
     public synchronized Collection<Shape> getRenderedEvents() {

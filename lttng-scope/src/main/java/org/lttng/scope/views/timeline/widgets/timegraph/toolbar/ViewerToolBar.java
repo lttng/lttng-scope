@@ -19,7 +19,6 @@ import org.lttng.scope.views.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.debugopts.DebugOptionsButton;
-import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.drawnevents.EventSeriesMenuButton;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.modelconfig.ModelConfigButton;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav.NavigationButtons;
 
@@ -35,8 +34,7 @@ public class ViewerToolBar extends ToolBar {
     /**
      * Constructor
      *
-     * @param viewer
-     *            The time graph viewer to which this toolbar belongs.
+     * @param viewer The time graph viewer to which this toolbar belongs.
      */
     public ViewerToolBar(TimeGraphWidget viewer) {
         super();
@@ -54,16 +52,15 @@ public class ViewerToolBar extends ToolBar {
                 new Separator(),
 
                 new HBox(
-                    navButtons.getBackButton(),
-                    navButtons.getForwardButton(),
-                    navButtons.getMenuButton()
+                        navButtons.getBackButton(),
+                        navButtons.getForwardButton(),
+                        navButtons.getMenuButton()
                 ),
                 getStateInfoButton(viewer),
                 new Separator(),
 
                 new ModelConfigButton(viewer),
                 new ArrowSeriesMenuButton(viewer),
-                new EventSeriesMenuButton(viewer),
                 new SortingModeMenuButton(viewer),
                 new FilterModeMenuButton(viewer),
                 new Separator(),

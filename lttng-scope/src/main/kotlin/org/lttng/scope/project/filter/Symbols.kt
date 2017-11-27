@@ -15,7 +15,7 @@ import javafx.scene.Node
 import javafx.scene.paint.Color
 import javafx.scene.shape.*
 
-fun EventSymbolStyle.getGraphic(colorSource: ReadOnlyProperty<Color>): Node =
+fun EventSymbolStyle.getGraphic(colorSource: ReadOnlyProperty<Color>): Shape =
         getShape().apply { fillProperty().bind(colorSource) }
 
 
