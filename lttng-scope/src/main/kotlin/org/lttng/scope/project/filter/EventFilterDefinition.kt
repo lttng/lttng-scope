@@ -13,23 +13,15 @@ import com.efficios.jabberwocky.trace.event.TraceEvent
 import com.efficios.jabberwocky.views.common.ColorDefinition
 import com.efficios.jabberwocky.views.common.EventSymbolStyle
 import javafx.beans.property.BooleanProperty
-import javafx.beans.property.ObjectProperty
+import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
-import javafx.scene.paint.Color
 import org.lttng.scope.views.jfx.JfxColorFactory
 
 data class EventFilterDefinition(val name: String,
-                            private val initialColor: ColorDefinition,
-                            val symbol: EventSymbolStyle,
-                            val predicate: (TraceEvent) -> Boolean) {
-
-    private val colorProperty: ObjectProperty<Color> = SimpleObjectProperty(JfxColorFactory.getColorFromDef(initialColor))
-    fun colorProperty() = colorProperty
-    var color: Color
-        get() = colorProperty.get()
-        set(value) = colorProperty.set(value)
+                                 val color: ColorDefinition,
+                                 val symbol: EventSymbolStyle,
+                                 val predicate: (TraceEvent) -> Boolean) {
 
     private val enabledProperty: BooleanProperty = SimpleBooleanProperty(true)
     fun enabledProperty() = enabledProperty
@@ -39,4 +31,4 @@ data class EventFilterDefinition(val name: String,
 
 }
 
-fun EventFilterDefinition.getGraphic(): Node = this.symbol.getGraphic(this.colorProperty())
+fun EventFilterDefinition.getGraphic(): Node = this.symbol.getGraphic(ReadOnlyObjectWrapper(JfxColorFactory.getColorFromDef(color)))
