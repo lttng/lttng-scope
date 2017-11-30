@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author Alexandre Montplaisir
  */
-class PeriodicRedrawTask implements TimelineWidget.TimelineWidgetUpdateTask {
+public class PeriodicRedrawTask implements TimelineWidget.TimelineWidgetUpdateTask {
 
     /**
      * Sequence number attached to each redraw operation. Can be used for
@@ -55,13 +55,21 @@ class PeriodicRedrawTask implements TimelineWidget.TimelineWidgetUpdateTask {
         TimeRange currentHorizontalPos = fViewer.getControl().getViewContext().getCurrentVisibleTimeRange();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
-        boolean movedHorizontally = !currentHorizontalPos.equals(fPreviousHorizontalPos);
-        boolean movedVertically = !currentVerticalPos.equals(fPreviousVerticalPosition);
+        boolean movedHorizontally;
+        boolean movedVertically;
 
         if (fForceRedraw) {
             fForceRedraw = false;
+            /*
+             * Assume the visible window moved, to make sure everything gets
+             * repainted on all layers.
+             */
+            movedHorizontally = true;
+            movedVertically = true;
             /* Then skip the next checks */
         } else {
+            movedHorizontally = !currentHorizontalPos.equals(fPreviousHorizontalPos);
+            movedVertically = !currentVerticalPos.equals(fPreviousVerticalPosition);
             /*
              * Skip painting if the previous position is the exact same as last
              * time. Also skip if were not yet initialized.

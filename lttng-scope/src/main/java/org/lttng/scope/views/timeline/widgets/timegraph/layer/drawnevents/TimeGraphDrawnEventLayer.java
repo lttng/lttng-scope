@@ -108,6 +108,8 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
             }
         });
 
+        getWidget().getTimelineWidgetUpdateTask().forceRedraw();
+
     }
 
     private void untrackEventProvider(TimeGraphDrawnEventProvider provider) {
