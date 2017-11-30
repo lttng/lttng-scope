@@ -29,7 +29,15 @@ class DrawnEventFilterListener(timeGraphWidget: TimeGraphWidget) : ProjectFilter
         /* Initialize with current project, and attach listener for project changes. */
         with(timeGraphWidget.viewContext) {
             currentTraceProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@DrawnEventFilterListener) }
-            currentTraceProjectProperty().addListener { _, _, newProject -> newProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@DrawnEventFilterListener) } }
+
+            currentTraceProjectProperty().addListener { _, _, newProject ->
+                /* On project change, clear the current providers. */
+                createdProviders.values.forEach { drawnEventProviderManager.registeredProviders.remove(it) }
+                createdProviders.clear()
+
+                /* Re-register to the new project, if there is one. */
+                newProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@DrawnEventFilterListener) }
+            }
         }
 
     }
