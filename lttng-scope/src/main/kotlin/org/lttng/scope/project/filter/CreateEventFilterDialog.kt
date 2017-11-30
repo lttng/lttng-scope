@@ -104,6 +104,8 @@ class CreateEventFilterDialog : Dialog<EventFilterDefinition>() {
                 generateFilterDefinition()
             }
         }
+
+        eventNameField.requestFocus()
     }
 
     /**
