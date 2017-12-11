@@ -51,8 +51,7 @@ class DrawnEventFilterListener(timeGraphWidget: TimeGraphWidget) : ProjectFilter
     }
 
     override fun filterRemoved(filter: EventFilterDefinition) {
-        createdProviders[filter]
-                ?.let { drawnEventProviderManager.registeredProviders.remove(it) }
+        createdProviders.remove(filter)?.let { drawnEventProviderManager.registeredProviders.remove(it) }
     }
 
 }
