@@ -178,25 +178,32 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
             val traceFullRange = TimeRange.of(traceProject.startTime, traceProject.endTime)
             val resolution = (traceFullRange.duration / viewWidth).toLong()
 
-            val render = modelProvider.generateRender(modelProvider.series[0], traceFullRange, resolution, null)
-            if (render == XYChartRender.EMPTY_RENDER) return false
-
-            val data = render.data
-                    .map { XYChart.Data<Number, Number>(it.x, it.y) }
-                    /* Hide the symbols */
-                    .onEach {
-                        val symbol = Rectangle(0.0, 0.0)
-                        symbol.isVisible = false
-                        it.setNode(symbol)
+            val renders = modelProvider.generateSeriesRenders(traceFullRange, resolution, null)
+            val seriesData = renders
+                    .filter { it != XYChartRender.EMPTY_RENDER }
+                    .map {
+                        it.data.map { XYChart.Data<Number, Number>(it.x, it.y) }
+                                /* Hide the symbols */
+                                .onEach {
+                                    val symbol = Rectangle(0.0, 0.0)
+                                    symbol.isVisible = false
+                                    it.setNode(symbol)
+                                }
+                                .toCollection(FXCollections.observableArrayList())
                     }
-                    .toCollection(FXCollections.observableArrayList())
+                    .toList()
+
+            if (seriesData.isEmpty()) return false
+
+            /* Determine start and end times of the display range. */
+            val start = renders.map { it.range.startTime }.min()!!
+            val end = renders.map { it.range.endTime }.max()!!
+            val range = TimeRange.of(start, end)
 
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
-                val series = XYChart.Series(data)
-                chart.data.add(series)
+                seriesData.forEach { chart.data.add(XYChart.Series(it)) }
 
-                val range = render.range
                 with(chart.xAxis as NumberAxis) {
                     tickUnit = range.duration.toDouble()
                     lowerBound = range.startTime.toDouble()

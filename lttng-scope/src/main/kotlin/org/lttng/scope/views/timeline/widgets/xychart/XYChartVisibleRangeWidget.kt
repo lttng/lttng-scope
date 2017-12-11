@@ -115,18 +115,27 @@ class XYChartVisibleRangeWidget(override val control: XYChartControl, override v
             val viewWidth = chartArea.width
             val visibleRange = newVisibleRange.duration
             val resolution = ((visibleRange / viewWidth) * 10L).toLong()
-            val render = modelProvider.generateRender(modelProvider.series[0], newVisibleRange, resolution, null)
 
-            val data = render.data
-                    .map { XYChart.Data<Number, Number>(it.x, it.y) }
-                    .toCollection(FXCollections.observableArrayList())
+            val renders = modelProvider.generateSeriesRenders(newVisibleRange, resolution, null)
+            if (renders.isEmpty()) return
+
+            val seriesData = renders
+                    .map {
+                        it.data
+                                .map { XYChart.Data<Number, Number>(it.x, it.y) }
+                                .toCollection(FXCollections.observableArrayList())
+                    }
+                    .toList()
+
+            /* Determine start and end times of the display range. */
+            val start = renders.map { it.range.startTime }.min()!!
+            val end = renders.map { it.range.endTime }.max()!!
+            val range = TimeRange.of(start, end)
 
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
-                val series = XYChart.Series(data)
-                chart.data.add(series)
+                seriesData.forEach { chart.data.add(XYChart.Series(it)) }
 
-                val range = render.range
                 with(chart.xAxis as NumberAxis) {
                     tickUnit = range.duration.toDouble()
                     lowerBound = range.startTime.toDouble()
