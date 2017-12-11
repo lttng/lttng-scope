@@ -9,6 +9,7 @@
 
 package org.lttng.scope.views.timeline.widgets.xychart
 
+import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
@@ -22,6 +23,7 @@ import javafx.scene.chart.XYChart
 import javafx.scene.control.Label
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
+import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 
 /**
@@ -40,6 +42,8 @@ class XYChartVisibleRangeWidget(override val control: XYChartControl, override v
     private val chartArea: BorderPane
     private val chart: XYChart<Number, Number>
 
+    private val filterListener: ProjectFilters.FilterListener?
+
     init {
         val xAxis = NumberAxis().apply {
             isAutoRanging = false
@@ -55,6 +59,17 @@ class XYChartVisibleRangeWidget(override val control: XYChartControl, override v
             title = null
             isLegendVisible = false
             animated = false
+        }
+
+        /*
+         * Apply the XYChart Fitler listener to the Event Count type charts.
+         * Since the filter listener is defined in the viewer, and not in the library,
+         * it cannot be defined by the model provider itself.
+         */
+        filterListener = if (modelProvider is EventStatsXYChartProvider) {
+            XYChartEventCountFilterListener(viewContext, control.renderProvider)
+        } else {
+            null
         }
 
         val infoArea = BorderPane(Label(name))
