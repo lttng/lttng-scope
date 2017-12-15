@@ -13,7 +13,6 @@ import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
-import com.efficios.jabberwocky.views.xychart.view.XYChartView
 import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.scene.Parent
@@ -23,6 +22,8 @@ import javafx.scene.chart.XYChart
 import javafx.scene.control.Label
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.Pane
+import javafx.scene.layout.StackPane
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 
@@ -39,8 +40,10 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     override val rootNode: Parent
     override val splitPane: SplitPane
 
-    private val chartArea: BorderPane
-    private val chart: XYChart<Number, Number>
+    private val chartArea: Pane
+    override val chart: XYChart<Number, Number>
+
+    override val selectionLayer: XYChartSelectionLayer
 
     private val filterListener: ProjectFilters.FilterListener?
 
@@ -73,7 +76,11 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         }
 
         val infoArea = BorderPane(Label(name))
-        chartArea = BorderPane(chart)
+
+        /* Initialization needs to be done after 'chart' */
+        selectionLayer = XYChartVisibleRangeSelectionLayer(this, 5.0)
+
+        chartArea = StackPane(chart, selectionLayer)
         splitPane = SplitPane(infoArea, chartArea)
         rootNode = BorderPane(splitPane)
     }
@@ -93,10 +100,8 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
      */
     override val timeBasedScrollPane = null
 
-    // TODO
+    // TODO Bind the selection rectangles with the other timeline ones?
     override val selectionRectangle = null
-
-    // TODO
     override val ongoingSelectionRectangle = null
 
     // ------------------------------------------------------------------------
@@ -107,15 +112,14 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         /* Nothing to do, the redraw task will remove all series if the trace is null. */
     }
 
-    override fun drawSelection(selectionRange: TimeRange) {
-        // TODO
-    }
-
     override fun seekVisibleRange(newVisibleRange: TimeRange) {
         /*
-         * Nothing special to do here, the redraw task will repopulate
+         * Nothing special to do regarding the data, the redraw task will repopulate
          * the charts with the correct data.
+         *
+         * However we need to redraw the selection rectangle since it probably moved.
          */
+        drawSelection(viewContext.currentSelectionTimeRange)
     }
 
     private inner class RedrawTask : TimelineWidget.TimelineWidgetUpdateTask {

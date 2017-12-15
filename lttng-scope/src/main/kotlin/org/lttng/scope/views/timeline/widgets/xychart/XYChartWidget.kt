@@ -9,7 +9,18 @@
 
 package org.lttng.scope.views.timeline.widgets.xychart
 
+import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.view.XYChartView
+import javafx.scene.chart.XYChart
 
-abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
+abstract class XYChartWidget(override val control: XYChartControl) : XYChartView {
+
+    abstract val chart: XYChart<Number, Number>
+
+    abstract val selectionLayer: XYChartSelectionLayer
+
+    override fun drawSelection(selectionRange: TimeRange) {
+        selectionLayer.drawSelection(selectionRange)
+    }
+}

@@ -65,7 +65,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         opacity = 0.0
     }
 
-    private val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
+    override val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
         //          setTitle(getName())
         title = null
         isLegendVisible = false
@@ -93,8 +93,10 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         viewContext.currentTraceProjectProperty().addListener { _, _, newVal -> isVisible = (newVal != null) }
     }
 
+    override val selectionLayer = XYChartFullRangeSelectionLayer(this, -10.0)
+
     init {
-        rootNode.center = StackPane(chart, Pane(visibleRangeRect))
+        rootNode.center = StackPane(chart, Pane(visibleRangeRect), selectionLayer)
     }
 
     override fun dispose() {
@@ -114,10 +116,8 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
     /* Not applicable to this widget */
     override val timeBasedScrollPane = null
 
-    // TODO
+    // TODO Bind the selection rectangles with the other timeline ones?
     override val selectionRectangle = null
-
-    // TODO
     override val ongoingSelectionRectangle = null
 
     // ------------------------------------------------------------------------
@@ -126,10 +126,6 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
 
     override fun clear() {
         /* Nothing to do, the redraw task will remove all series if the trace is null. */
-    }
-
-    override fun drawSelection(selectionRange: TimeRange) {
-        // TODO
     }
 
     override fun seekVisibleRange(newVisibleRange: TimeRange) {
