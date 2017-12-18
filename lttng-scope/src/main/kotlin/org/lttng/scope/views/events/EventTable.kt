@@ -10,7 +10,6 @@
 package org.lttng.scope.views.events
 
 import com.efficios.jabberwocky.common.TimeRange
-import com.efficios.jabberwocky.trace.event.FieldValue
 import com.efficios.jabberwocky.trace.event.TraceEvent
 import com.sun.javafx.scene.control.skin.TableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
@@ -48,8 +47,8 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
         val cpuCol = createTextColumn("CPU", 50.0, { it.cpu.toString() })
         val typeCol = createTextColumn("Event Type", 200.0, { it.eventName })
         val fieldsCol = createTextColumn("Event Fields", 800.0, { event ->
-            event.fieldNames
-                    .map { fieldName -> "$fieldName=${event.getField(fieldName, FieldValue::class.java)}" }
+            event.fields
+                    .map { "${it.key}=${it.value}" }
                     .toString()
         })
 
