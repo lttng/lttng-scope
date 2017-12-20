@@ -14,7 +14,6 @@ import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
-import com.efficios.jabberwocky.views.xychart.view.XYChartView
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
@@ -36,7 +35,7 @@ import org.lttng.scope.views.timeline.TimelineWidget
  * display data representing the whole trace, and will display highlighted
  * rectangles representing the current visible and selection time ranges.
  */
-class XYChartFullRangeWidget(override val control: XYChartControl, override val weight: Int) : XYChartView, NavigationAreaWidget {
+class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), NavigationAreaWidget {
 
     companion object {
         private const val CHART_HEIGHT = 50.0
@@ -67,7 +66,7 @@ class XYChartFullRangeWidget(override val control: XYChartControl, override val 
     }
 
     private val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
-//          setTitle(getName())
+        //          setTitle(getName())
         title = null
         isLegendVisible = false
         animated = false

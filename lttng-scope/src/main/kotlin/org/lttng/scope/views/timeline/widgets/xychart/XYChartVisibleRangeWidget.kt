@@ -31,7 +31,7 @@ import org.lttng.scope.views.timeline.TimelineWidget
  * chart will follow the frmework's current visible range and update its display
  * accordingly.
  */
-class XYChartVisibleRangeWidget(override val control: XYChartControl, override val weight: Int) : XYChartView, TimelineWidget {
+class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), TimelineWidget {
 
     private val modelProvider = control.renderProvider
 
