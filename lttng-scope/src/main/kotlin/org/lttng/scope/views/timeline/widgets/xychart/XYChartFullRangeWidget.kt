@@ -27,6 +27,7 @@ import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeLineCap
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragLayer
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartFullRangeSelectionLayer
 
 /**
@@ -48,6 +49,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
     override val rootNode = BorderPane()
 
     override val selectionLayer = XYChartFullRangeSelectionLayer(this, -10.0)
+    override val dragLayer = XYChartDragLayer(this)
 
     private val visibleRangeRect = Rectangle().apply {
         stroke = VISIBLE_RANGE_STROKE_COLOR
@@ -86,11 +88,15 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
             maxHeight = CHART_HEIGHT
         }
 
-        rootNode.center = StackPane(chart, Pane(visibleRangeRect), selectionLayer)
+        rootNode.center = StackPane(chart,
+                Pane(visibleRangeRect).apply { isMouseTransparent = true },
+                selectionLayer)
     }
 
     override fun dispose() {
     }
+
+    override fun getWidgetTimeRange() = viewContext.getCurrentProjectFullRange()
 
     // ------------------------------------------------------------------------
     // TimelineWidget

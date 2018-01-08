@@ -12,10 +12,14 @@ package org.lttng.scope.views.timeline.widgets.xychart
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.view.XYChartView
+import javafx.event.EventHandler
 import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
+import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Region
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragLayer
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 abstract class XYChartWidget(override val control: XYChartControl) : XYChartView {
@@ -39,9 +43,14 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
 
     val chartPlotArea = chart.lookup(".chart-plot-background") as Region
 
-    abstract val selectionLayer: XYChartSelectionLayer
+    protected abstract val selectionLayer: XYChartSelectionLayer
+    protected abstract val dragLayer: XYChartDragLayer
+
+    abstract fun getWidgetTimeRange(): TimeRange
 
     override fun drawSelection(selectionRange: TimeRange) {
         selectionLayer.drawSelection(selectionRange)
     }
+
+
 }

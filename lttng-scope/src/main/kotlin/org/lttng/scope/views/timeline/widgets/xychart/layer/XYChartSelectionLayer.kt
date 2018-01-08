@@ -41,6 +41,8 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
     private val selectionCtx = SelectionContext()
 
     init {
+        isMouseTransparent = true
+
         listOf(selectionRectangle, ongoingSelectionRectangle).forEach {
             // deal
             with(it) {
@@ -61,9 +63,11 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         /*
          * Add mouse listeners to handle the ongoing selection.
          */
-        addEventHandler(MouseEvent.MOUSE_PRESSED, selectionCtx.mousePressedEventHandler)
-        addEventHandler(MouseEvent.MOUSE_DRAGGED, selectionCtx.mouseDraggedEventHandler)
-        addEventHandler(MouseEvent.MOUSE_RELEASED, selectionCtx.mouseReleasedEventHandler)
+        with(widget.chart) {
+            addEventHandler(MouseEvent.MOUSE_PRESSED, selectionCtx.mousePressedEventHandler)
+            addEventHandler(MouseEvent.MOUSE_DRAGGED, selectionCtx.mouseDraggedEventHandler)
+            addEventHandler(MouseEvent.MOUSE_RELEASED, selectionCtx.mouseReleasedEventHandler)
+        }
     }
 
     /** Map a x position *inside the chartPlotArea* to its corresponding timestamp. */
