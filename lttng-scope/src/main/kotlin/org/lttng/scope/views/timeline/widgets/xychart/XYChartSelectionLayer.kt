@@ -11,7 +11,6 @@ package org.lttng.scope.views.timeline.widgets.xychart
 
 import com.efficios.jabberwocky.common.TimeRange
 import javafx.event.EventHandler
-import javafx.geometry.Point2D
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
@@ -144,7 +143,7 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
             val tsStart = mapXPositionToTimestamp(localStartX)
             val tsEnd = mapXPositionToTimestamp(localEndX)
 
-            widget.control.updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
+            widget.control.updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd))
 
             ongoingSelection = false
         }
