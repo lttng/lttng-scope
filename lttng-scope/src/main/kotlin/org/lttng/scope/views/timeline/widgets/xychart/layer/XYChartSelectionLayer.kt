@@ -7,17 +7,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.timeline.widgets.xychart
+package org.lttng.scope.views.timeline.widgets.xychart.layer
 
 import com.efficios.jabberwocky.common.TimeRange
 import javafx.event.EventHandler
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
-import javafx.scene.layout.Region
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeLineCap
+import org.lttng.scope.views.timeline.widgets.xychart.XYChartFullRangeWidget
+import org.lttng.scope.views.timeline.widgets.xychart.XYChartVisibleRangeWidget
+import org.lttng.scope.views.timeline.widgets.xychart.XYChartWidget
 
 abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protected val chartBackgroundAdjustment: Double) : Pane() {
 
@@ -27,8 +29,6 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         private val SELECTION_STROKE_COLOR = Color.BLUE
         private val SELECTION_FILL_COLOR = Color.LIGHTBLUE.deriveColor(0.0, 1.2, 1.0, 0.4)
     }
-
-    protected val chartPlotArea = widget.chart.lookup(".chart-plot-background") as Region
 
     protected val selectionRectangle = Rectangle().apply {
         stroke = SELECTION_STROKE_COLOR
@@ -49,8 +49,8 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
 
                 x = 0.0
                 width = 0.0
-                yProperty().bind(chartPlotArea.layoutYProperty().add(chartBackgroundAdjustment))
-                heightProperty().bind(chartPlotArea.heightProperty())
+                yProperty().bind(widget.chartPlotArea.layoutYProperty().add(chartBackgroundAdjustment))
+                heightProperty().bind(widget.chartPlotArea.heightProperty())
 
                 isVisible = false
             }
@@ -138,8 +138,8 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
             // FIXME Possible glitch when selecting backwards outside of the window?
             val endX = startX + ongoingSelectionRectangle.width
 
-            val localStartX = chartPlotArea.parentToLocal(startX, 0.0).x - chartBackgroundAdjustment
-            val localEndX = chartPlotArea.parentToLocal(endX, 0.0).x - chartBackgroundAdjustment
+            val localStartX = widget.chartPlotArea.parentToLocal(startX, 0.0).x - chartBackgroundAdjustment
+            val localEndX = widget.chartPlotArea.parentToLocal(endX, 0.0).x - chartBackgroundAdjustment
             val tsStart = mapXPositionToTimestamp(localStartX)
             val tsEnd = mapXPositionToTimestamp(localEndX)
 
@@ -156,7 +156,7 @@ class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
     override fun mapXPositionToTimestamp(x: Double): Long {
         val project = widget.viewContext.currentTraceProject ?: return 0L
 
-        val viewWidth = chartPlotArea.width
+        val viewWidth = widget.chartPlotArea.width
         if (viewWidth < 1.0) return project.startTime
 
         val posRatio = x / viewWidth
@@ -167,17 +167,17 @@ class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
     }
 
     override fun drawSelection(sr: TimeRange) {
-        val viewWidth = chartPlotArea.width
+        val viewWidth = widget.chartPlotArea.width
         if (viewWidth < 1.0) return
 
         val project = widget.viewContext.currentTraceProject ?: return
         val projectRange = project.fullRange
 
         val startRatio = (sr.startTime - projectRange.startTime) / projectRange.duration.toDouble()
-        val startPos = startRatio * viewWidth + chartPlotArea.layoutX + chartBackgroundAdjustment
+        val startPos = startRatio * viewWidth + widget.chartPlotArea.layoutX + chartBackgroundAdjustment
 
         val endRatio = (sr.endTime - projectRange.startTime) / projectRange.duration.toDouble()
-        val endPos = endRatio * viewWidth + chartPlotArea.layoutX + chartBackgroundAdjustment
+        val endPos = endRatio * viewWidth + widget.chartPlotArea.layoutX + chartBackgroundAdjustment
 
         with(selectionRectangle) {
             x = startPos
@@ -194,7 +194,7 @@ class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
     override fun mapXPositionToTimestamp(x: Double): Long {
         val vr = widget.viewContext.currentVisibleTimeRange
 
-        val viewWidth = chartPlotArea.width
+        val viewWidth = widget.chartPlotArea.width
         if (viewWidth < 1.0) return vr.startTime
 
         val posRatio = x / viewWidth
@@ -218,16 +218,16 @@ class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
             return
         }
 
-        val viewWidth = chartPlotArea.width
+        val viewWidth = widget.chartPlotArea.width
         if (viewWidth < 1.0) return
 
         val startTime = (Math.max(sr.startTime, vr.startTime))
         val startRatio = (startTime - vr.startTime) / vr.duration.toDouble()
-        val startPos = startRatio * viewWidth + chartPlotArea.layoutX + chartBackgroundAdjustment
+        val startPos = startRatio * viewWidth + widget.chartPlotArea.layoutX + chartBackgroundAdjustment
 
         val endTime = (Math.min(sr.endTime, vr.endTime))
         val endRatio = (endTime - vr.startTime) / vr.duration.toDouble()
-        val endPos = endRatio * viewWidth + chartPlotArea.layoutX + chartBackgroundAdjustment
+        val endPos = endRatio * viewWidth + widget.chartPlotArea.layoutX + chartBackgroundAdjustment
 
         with(selectionRectangle) {
             x = startPos

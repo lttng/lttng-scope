@@ -12,13 +12,11 @@ package org.lttng.scope.views.timeline.widgets.xychart
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
-import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
-import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.BorderPane
@@ -29,6 +27,7 @@ import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeLineCap
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartFullRangeSelectionLayer
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The chart will
@@ -46,37 +45,9 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         private val VISIBLE_RANGE_FILL_COLOR = Color.LIGHTGRAY.deriveColor(0.0, 1.2, 1.0, 0.6)
     }
 
-    private val modelProvider: XYChartModelProvider = control.renderProvider
-
     override val rootNode = BorderPane()
 
-    private val xAxis = NumberAxis().apply {
-        /* Hide the axes in the full range chart */
-        isTickMarkVisible = false
-        isTickLabelsVisible = false
-        tickUnit = 0.0
-        opacity = 0.0
-        isAutoRanging = false
-    }
-
-    private val yAxis = NumberAxis().apply {
-        isAutoRanging = true
-        isTickLabelsVisible = false
-        opacity = 0.0
-    }
-
-    override val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
-        //          setTitle(getName())
-        title = null
-        isLegendVisible = false
-        animated = false
-        padding = Insets(-10.0, -10.0, -10.0, -10.0)
-//          setStyle("-fx-padding: 1px;")
-
-        minHeight = CHART_HEIGHT
-        prefHeight = CHART_HEIGHT
-        maxHeight = CHART_HEIGHT
-    }
+    override val selectionLayer = XYChartFullRangeSelectionLayer(this, -10.0)
 
     private val visibleRangeRect = Rectangle().apply {
         stroke = VISIBLE_RANGE_STROKE_COLOR
@@ -93,9 +64,28 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         viewContext.currentTraceProjectProperty().addListener { _, _, newVal -> isVisible = (newVal != null) }
     }
 
-    override val selectionLayer = XYChartFullRangeSelectionLayer(this, -10.0)
-
     init {
+        /* Hide the axes in the full range chart */
+        with(xAxis) {
+            isTickLabelsVisible = false
+            opacity = 0.0
+        }
+
+        with(yAxis) {
+            isTickLabelsVisible = false
+            opacity = 0.0
+        }
+
+        with(chart) {
+            // setTitle(getName())
+            padding = Insets(-10.0, -10.0, -10.0, -10.0)
+            // setStyle("-fx-padding: 1px;")
+
+            minHeight = CHART_HEIGHT
+            prefHeight = CHART_HEIGHT
+            maxHeight = CHART_HEIGHT
+        }
+
         rootNode.center = StackPane(chart, Pane(visibleRangeRect), selectionLayer)
     }
 
@@ -173,7 +163,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
             val traceFullRange = TimeRange.of(traceProject.startTime, traceProject.endTime)
             val resolution = (traceFullRange.duration / viewWidth).toLong()
 
-            val renders = modelProvider.generateSeriesRenders(traceFullRange, resolution, null)
+            val renders = control.renderProvider.generateSeriesRenders(traceFullRange, resolution, null)
             val seriesData = renders
                     .filter { it != XYChartRender.EMPTY_RENDER }
                     .map {

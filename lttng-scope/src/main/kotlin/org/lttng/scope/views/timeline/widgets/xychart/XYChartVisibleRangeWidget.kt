@@ -16,7 +16,6 @@ import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.scene.Parent
-import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.control.Label
@@ -26,6 +25,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartVisibleRangeSelectionLayer
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The contents of the
@@ -34,52 +34,27 @@ import org.lttng.scope.views.timeline.TimelineWidget
  */
 class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), TimelineWidget {
 
-    private val modelProvider = control.renderProvider
-
     override val name = control.renderProvider.providerName
     override val rootNode: Parent
     override val splitPane: SplitPane
 
     private val chartArea: Pane
-    override val chart: XYChart<Number, Number>
 
-    override val selectionLayer: XYChartSelectionLayer
+    override val selectionLayer = XYChartVisibleRangeSelectionLayer(this, 5.0)
 
-    private val filterListener: ProjectFilters.FilterListener?
+    /*
+     * Apply the XYChart Fitler listener to the Event Count type charts.
+     * Since the filter listener is defined in the viewer, and not in the library,
+     * it cannot be defined by the model provider itself.
+     */
+    private val filterListener: ProjectFilters.FilterListener? = if (control.renderProvider is EventStatsXYChartProvider) {
+        XYChartEventCountFilterListener(viewContext, control.renderProvider)
+    } else {
+        null
+    }
 
     init {
-        val xAxis = NumberAxis().apply {
-            isAutoRanging = false
-            isTickMarkVisible = false
-            tickUnit = 0.0
-        }
-        val yAxis = NumberAxis().apply {
-            isAutoRanging = true
-            isTickLabelsVisible = true
-        }
-
-        chart = AreaChart(xAxis, yAxis, null).apply {
-            title = null
-            isLegendVisible = false
-            animated = false
-        }
-
-        /*
-         * Apply the XYChart Fitler listener to the Event Count type charts.
-         * Since the filter listener is defined in the viewer, and not in the library,
-         * it cannot be defined by the model provider itself.
-         */
-        filterListener = if (modelProvider is EventStatsXYChartProvider) {
-            XYChartEventCountFilterListener(viewContext, control.renderProvider)
-        } else {
-            null
-        }
-
         val infoArea = BorderPane(Label(name))
-
-        /* Initialization needs to be done after 'chart' */
-        selectionLayer = XYChartVisibleRangeSelectionLayer(this, 5.0)
-
         chartArea = StackPane(chart, selectionLayer)
         splitPane = SplitPane(infoArea, chartArea)
         rootNode = BorderPane(splitPane)
@@ -135,7 +110,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             val visibleRange = newVisibleRange.duration
             val resolution = ((visibleRange / viewWidth) * 10L).toLong()
 
-            val renders = modelProvider.generateSeriesRenders(newVisibleRange, resolution, null)
+            val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, resolution, null)
             if (renders.isEmpty()) return
 
             val seriesData = renders
