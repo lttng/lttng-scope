@@ -10,6 +10,10 @@
 package org.lttng.scope.views.timeline.widgets.xychart
 
 import com.efficios.jabberwocky.common.TimeRange
+import javafx.event.EventHandler
+import javafx.geometry.Point2D
+import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.paint.Color
@@ -33,8 +37,9 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         strokeLineCap = StrokeLineCap.ROUND
     }
 
-    // TODO NYI
-    private val ongoingSelectionRectangle = Rectangle()
+    protected val ongoingSelectionRectangle = Rectangle()
+
+    private val selectionCtx = SelectionContext()
 
     init {
         listOf(selectionRectangle, ongoingSelectionRectangle).forEach {
@@ -53,14 +58,114 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         }
 
         children.addAll(selectionRectangle, ongoingSelectionRectangle)
+
+        /*
+         * Add mouse listeners to handle the ongoing selection.
+         */
+        addEventHandler(MouseEvent.MOUSE_PRESSED, selectionCtx.mousePressedEventHandler)
+        addEventHandler(MouseEvent.MOUSE_DRAGGED, selectionCtx.mouseDraggedEventHandler)
+        addEventHandler(MouseEvent.MOUSE_RELEASED, selectionCtx.mouseReleasedEventHandler)
     }
+
+    /** Map a x position *inside the chartPlotArea* to its corresponding timestamp. */
+    abstract fun mapXPositionToTimestamp(x: Double): Long
 
     abstract fun drawSelection(sr: TimeRange)
 
+    /**
+     * Class encapsulating the time range selection, related drawing and
+     * listeners.
+     */
+    private inner class SelectionContext {
+
+        /**
+         * Do not handle the mouse event if it matches these condition. It should be handled
+         * at another level (for moving the visible range, etc.)
+         */
+        private fun MouseEvent.isToBeIgnored(): Boolean =
+                this.button == MouseButton.SECONDARY
+                        || this.button == MouseButton.MIDDLE
+                        || this.isControlDown
+
+        private var ongoingSelection: Boolean = false
+        private var mouseOriginX: Double = 0.0
+
+        val mousePressedEventHandler = EventHandler<MouseEvent> { e ->
+            if (e.isToBeIgnored()) return@EventHandler
+            e.consume()
+
+            if (ongoingSelection) return@EventHandler
+
+            /* Remove the current selection, if there is one */
+            selectionRectangle.isVisible = false
+
+            mouseOriginX = e.x
+
+            with(ongoingSelectionRectangle) {
+                layoutX = mouseOriginX
+                width = 0.0
+                isVisible = true
+            }
+
+            ongoingSelection = true
+        }
+
+        val mouseDraggedEventHandler = EventHandler<MouseEvent> { e ->
+            if (e.isToBeIgnored()) return@EventHandler
+            e.consume()
+
+            val newX = e.x
+            val offsetX = newX - mouseOriginX
+
+            with(ongoingSelectionRectangle) {
+                if (offsetX > 0) {
+                    layoutX = mouseOriginX
+                    width = offsetX
+                } else {
+                    layoutX = newX
+                    width = -offsetX
+                }
+            }
+        }
+
+        val mouseReleasedEventHandler = EventHandler<MouseEvent> { e ->
+            if (e.isToBeIgnored()) return@EventHandler
+            e.consume()
+
+            ongoingSelectionRectangle.isVisible = false
+
+            /* Send a time range selection signal for the currently highlighted time range */
+            val startX = ongoingSelectionRectangle.layoutX
+            // FIXME Possible glitch when selecting backwards outside of the window?
+            val endX = startX + ongoingSelectionRectangle.width
+
+            val localStartX = chartPlotArea.parentToLocal(startX, 0.0).x - chartBackgroundAdjustment
+            val localEndX = chartPlotArea.parentToLocal(endX, 0.0).x - chartBackgroundAdjustment
+            val tsStart = mapXPositionToTimestamp(localStartX)
+            val tsEnd = mapXPositionToTimestamp(localEndX)
+
+            widget.control.updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd));
+
+            ongoingSelection = false
+        }
+    }
 }
 
 class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
                                      chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
+
+    override fun mapXPositionToTimestamp(x: Double): Long {
+        val project = widget.viewContext.currentTraceProject ?: return 0L
+
+        val viewWidth = chartPlotArea.width
+        if (viewWidth < 1.0) return project.startTime
+
+        val posRatio = x / viewWidth
+        val ts = (project.startTime + posRatio * project.fullRange.duration).toLong()
+
+        /* Clamp the result to the trace project's range. */
+        return ts.clampToRange(project.fullRange)
+    }
 
     override fun drawSelection(sr: TimeRange) {
         val viewWidth = chartPlotArea.width
@@ -86,6 +191,19 @@ class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
 
 class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
                                         chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
+
+    override fun mapXPositionToTimestamp(x: Double): Long {
+        val vr = widget.viewContext.currentVisibleTimeRange
+
+        val viewWidth = chartPlotArea.width
+        if (viewWidth < 1.0) return vr.startTime
+
+        val posRatio = x / viewWidth
+        val ts = (vr.startTime + posRatio * vr.duration).toLong()
+
+        /* Clamp the result to the current visible time range. */
+        return ts.clampToRange(vr)
+    }
 
     override fun drawSelection(sr: TimeRange) {
         val vr = widget.viewContext.currentVisibleTimeRange
@@ -118,4 +236,10 @@ class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
             isVisible = true
         }
     }
+}
+
+private fun Long.clampToRange(range: TimeRange): Long {
+    if (this < range.startTime) return range.startTime
+    if (this > range.endTime) return range.endTime
+    return this
 }
