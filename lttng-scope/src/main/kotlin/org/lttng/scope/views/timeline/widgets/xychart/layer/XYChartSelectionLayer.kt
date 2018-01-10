@@ -28,6 +28,17 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         private const val SELECTION_STROKE_WIDTH = 1.0
         private val SELECTION_STROKE_COLOR = Color.BLUE
         private val SELECTION_FILL_COLOR = Color.LIGHTBLUE.deriveColor(0.0, 1.2, 1.0, 0.4)
+
+        /**
+         * Factory method
+         */
+        fun build(widget: XYChartWidget, chartBackgroundAdjustment: Double): XYChartSelectionLayer {
+            return when (widget) {
+                is XYChartVisibleRangeWidget -> XYChartVisibleRangeSelectionLayer(widget, chartBackgroundAdjustment)
+                is XYChartFullRangeWidget -> XYChartFullRangeSelectionLayer(widget, chartBackgroundAdjustment)
+                else -> throw UnsupportedOperationException("Unknown XY Chart class")
+            }
+        }
     }
 
     protected val selectionRectangle = Rectangle().apply {
@@ -154,8 +165,8 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
     }
 }
 
-class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
-                                     chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
+private class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
+                                             chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
 
     override fun mapXPositionToTimestamp(x: Double): Long {
         val project = widget.viewContext.currentTraceProject ?: return 0L
@@ -192,8 +203,8 @@ class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
 
 }
 
-class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
-                                        chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
+private class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
+                                                chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
 
     override fun mapXPositionToTimestamp(x: Double): Long {
         val vr = widget.viewContext.currentVisibleTimeRange

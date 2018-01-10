@@ -26,7 +26,7 @@ import javafx.scene.layout.StackPane
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragLayer
-import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartVisibleRangeSelectionLayer
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The contents of the
@@ -41,7 +41,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
 
     private val chartArea: Pane
 
-    override val selectionLayer = XYChartVisibleRangeSelectionLayer(this, 5.0)
+    override val selectionLayer = XYChartSelectionLayer.build(this, 5.0)
     override val dragLayer = XYChartDragLayer(this)
 
     /*

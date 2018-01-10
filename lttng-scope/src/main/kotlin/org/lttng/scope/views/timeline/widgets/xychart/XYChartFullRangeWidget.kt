@@ -28,7 +28,7 @@ import javafx.scene.shape.StrokeLineCap
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragLayer
-import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartFullRangeSelectionLayer
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The chart will
@@ -48,7 +48,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
 
     override val rootNode = BorderPane()
 
-    override val selectionLayer = XYChartFullRangeSelectionLayer(this, -10.0)
+    override val selectionLayer = XYChartSelectionLayer.build(this, -10.0)
     override val dragLayer = XYChartDragLayer(this)
 
     private val visibleRangeRect = Rectangle().apply {
