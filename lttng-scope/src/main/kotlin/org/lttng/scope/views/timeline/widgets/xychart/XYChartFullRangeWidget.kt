@@ -28,6 +28,7 @@ import javafx.scene.shape.StrokeLineCap
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 /**
@@ -50,6 +51,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
 
     override val selectionLayer = XYChartSelectionLayer.build(this, -10.0)
     override val dragHandlers = XYChartDragHandlers(this)
+    override val scrollHandlers = XYChartScrollHandlers(this)
 
     private val visibleRangeRect = Rectangle().apply {
         stroke = VISIBLE_RANGE_STROKE_COLOR
@@ -97,6 +99,20 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
     }
 
     override fun getWidgetTimeRange() = viewContext.getCurrentProjectFullRange()
+
+    override fun mapXPositionToTimestamp(x: Double): Long {
+        val project = viewContext.currentTraceProject ?: return 0L
+
+        val viewWidth = chartPlotArea.width
+        if (viewWidth < 1.0) return project.startTime
+
+        val posRatio = x / viewWidth
+        val ts = (project.startTime + posRatio * project.fullRange.duration).toLong()
+
+        /* Clamp the result to the trace project's range. */
+        return ts.clampToRange(project.fullRange)
+    }
+
 
     // ------------------------------------------------------------------------
     // TimelineWidget

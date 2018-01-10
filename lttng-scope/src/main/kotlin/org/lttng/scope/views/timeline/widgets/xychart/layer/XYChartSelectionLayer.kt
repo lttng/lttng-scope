@@ -81,9 +81,6 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
         }
     }
 
-    /** Map a x position *inside the chartPlotArea* to its corresponding timestamp. */
-    abstract fun mapXPositionToTimestamp(x: Double): Long
-
     abstract fun drawSelection(sr: TimeRange)
 
     /**
@@ -155,8 +152,8 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
 
             val localStartX = widget.chartPlotArea.parentToLocal(startX, 0.0).x - chartBackgroundAdjustment
             val localEndX = widget.chartPlotArea.parentToLocal(endX, 0.0).x - chartBackgroundAdjustment
-            val tsStart = mapXPositionToTimestamp(localStartX)
-            val tsEnd = mapXPositionToTimestamp(localEndX)
+            val tsStart = widget.mapXPositionToTimestamp(localStartX)
+            val tsEnd = widget.mapXPositionToTimestamp(localEndX)
 
             widget.control.updateTimeRangeSelection(TimeRange.of(tsStart, tsEnd))
 
@@ -167,19 +164,6 @@ abstract class XYChartSelectionLayer(protected val widget: XYChartWidget, protec
 
 private class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
                                              chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
-
-    override fun mapXPositionToTimestamp(x: Double): Long {
-        val project = widget.viewContext.currentTraceProject ?: return 0L
-
-        val viewWidth = widget.chartPlotArea.width
-        if (viewWidth < 1.0) return project.startTime
-
-        val posRatio = x / viewWidth
-        val ts = (project.startTime + posRatio * project.fullRange.duration).toLong()
-
-        /* Clamp the result to the trace project's range. */
-        return ts.clampToRange(project.fullRange)
-    }
 
     override fun drawSelection(sr: TimeRange) {
         val viewWidth = widget.chartPlotArea.width
@@ -205,19 +189,6 @@ private class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
 
 private class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidget,
                                                 chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
-
-    override fun mapXPositionToTimestamp(x: Double): Long {
-        val vr = widget.viewContext.currentVisibleTimeRange
-
-        val viewWidth = widget.chartPlotArea.width
-        if (viewWidth < 1.0) return vr.startTime
-
-        val posRatio = x / viewWidth
-        val ts = (vr.startTime + posRatio * vr.duration).toLong()
-
-        /* Clamp the result to the current visible time range. */
-        return ts.clampToRange(vr)
-    }
 
     override fun drawSelection(sr: TimeRange) {
         val vr = widget.viewContext.currentVisibleTimeRange
@@ -250,10 +221,4 @@ private class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidge
             isVisible = true
         }
     }
-}
-
-private fun Long.clampToRange(range: TimeRange): Long {
-    if (this < range.startTime) return range.startTime
-    if (this > range.endTime) return range.endTime
-    return this
 }

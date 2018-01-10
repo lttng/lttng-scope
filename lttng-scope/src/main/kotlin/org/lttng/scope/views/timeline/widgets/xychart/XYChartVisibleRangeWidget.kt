@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 /**
@@ -43,6 +44,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
 
     override val selectionLayer = XYChartSelectionLayer.build(this, 5.0)
     override val dragHandlers = XYChartDragHandlers(this)
+    override val scrollHandlers = XYChartScrollHandlers(this)
 
     /*
      * Apply the XYChart Fitler listener to the Event Count type charts.
@@ -66,6 +68,19 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     }
 
     override fun getWidgetTimeRange() = viewContext.currentVisibleTimeRange
+
+    override fun mapXPositionToTimestamp(x: Double): Long {
+        val vr = viewContext.currentVisibleTimeRange
+
+        val viewWidth = chartPlotArea.width
+        if (viewWidth < 1.0) return vr.startTime
+
+        val posRatio = x / viewWidth
+        val ts = (vr.startTime + posRatio * vr.duration).toLong()
+
+        /* Clamp the result to the current visible time range. */
+        return ts.clampToRange(vr)
+    }
 
     // ------------------------------------------------------------------------
     // TimelineWidget

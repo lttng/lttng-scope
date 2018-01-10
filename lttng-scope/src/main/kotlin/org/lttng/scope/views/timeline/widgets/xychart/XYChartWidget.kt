@@ -17,6 +17,7 @@ import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.Region
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 abstract class XYChartWidget(override val control: XYChartControl) : XYChartView {
@@ -42,12 +43,21 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
 
     protected abstract val selectionLayer: XYChartSelectionLayer
     protected abstract val dragHandlers: XYChartDragHandlers
+    protected abstract val scrollHandlers: XYChartScrollHandlers
 
     abstract fun getWidgetTimeRange(): TimeRange
+
+    /** Map a x position *inside the chartPlotArea* to its corresponding timestamp. */
+    abstract fun mapXPositionToTimestamp(x: Double): Long
 
     override fun drawSelection(selectionRange: TimeRange) {
         selectionLayer.drawSelection(selectionRange)
     }
 
-
+    protected fun Long.clampToRange(range: TimeRange): Long {
+        if (this < range.startTime) return range.startTime
+        if (this > range.endTime) return range.endTime
+        return this
+    }
 }
+
