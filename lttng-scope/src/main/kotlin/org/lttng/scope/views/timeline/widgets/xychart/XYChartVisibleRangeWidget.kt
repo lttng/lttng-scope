@@ -25,7 +25,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
-import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragLayer
+import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 /**
@@ -42,7 +42,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     private val chartArea: Pane
 
     override val selectionLayer = XYChartSelectionLayer.build(this, 5.0)
-    override val dragLayer = XYChartDragLayer(this)
+    override val dragHandlers = XYChartDragHandlers(this)
 
     /*
      * Apply the XYChart Fitler listener to the Event Count type charts.

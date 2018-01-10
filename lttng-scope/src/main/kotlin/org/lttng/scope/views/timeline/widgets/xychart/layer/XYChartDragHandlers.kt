@@ -17,7 +17,7 @@ import org.lttng.scope.views.timeline.widgets.xychart.XYChartVisibleRangeWidget
 import org.lttng.scope.views.timeline.widgets.xychart.XYChartWidget
 import kotlin.math.roundToLong
 
-class XYChartDragLayer(private val widget: XYChartWidget) {
+class XYChartDragHandlers(private val widget: XYChartWidget) {
 
     private val dragCtx = DragContext()
 
