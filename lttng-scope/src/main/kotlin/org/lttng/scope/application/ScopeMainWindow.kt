@@ -10,7 +10,7 @@
 package org.lttng.scope.application
 
 import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
-import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuIrqModelProvider
+import com.efficios.jabberwocky.lttng.kernel.views.timegraph.resources.ResourcesCpuModelProvider
 import com.efficios.jabberwocky.lttng.kernel.views.timegraph.threads.ThreadsModelProvider
 import com.efficios.jabberwocky.views.timegraph.model.provider.TimeGraphModelProviderManager
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
@@ -59,7 +59,7 @@ class ScopeMainWindow : BorderPane() {
         /* Load all supported plugins */
         val timeGraphMgr = TimeGraphModelProviderManager.instance()
         timeGraphMgr.registerProviderFactory { ThreadsModelProvider() }
-        timeGraphMgr.registerProviderFactory { ResourcesCpuIrqModelProvider() }
+        timeGraphMgr.registerProviderFactory { ResourcesCpuModelProvider() }
 
         val xyChartMgr = XYChartModelProviderManager
         /*
