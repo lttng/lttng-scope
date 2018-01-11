@@ -17,6 +17,7 @@ import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvide
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProviderManager
 import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import org.lttng.scope.project.ProjectArea
@@ -87,6 +88,8 @@ class ScopeMainWindow : BorderPane() {
 
         this.top = menuBar
         this.center = mainPane
+
+        addEventHandler(KeyEvent.KEY_PRESSED, ScopeKeyBindings.VisibleTimeRangeMovingHandler())
     }
 
     fun onShownCB() {
