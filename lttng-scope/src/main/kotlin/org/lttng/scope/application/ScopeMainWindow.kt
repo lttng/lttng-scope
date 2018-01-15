@@ -20,6 +20,7 @@ import javafx.scene.control.SplitPane
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
+import org.lttng.scope.application.task.ScopeStatusBar
 import org.lttng.scope.project.ProjectArea
 import org.lttng.scope.views.context.ViewGroupContextManager
 import org.lttng.scope.views.events.EventTableControl
@@ -81,6 +82,7 @@ class ScopeMainWindow : BorderPane() {
 //        }
 
         val menuBar = ScopeMenuBar()
+        val statusBar = ScopeStatusBar()
 
         analysisArea = AnalysisArea()
         projectArea = ProjectArea()
@@ -88,6 +90,7 @@ class ScopeMainWindow : BorderPane() {
 
         this.top = menuBar
         this.center = mainPane
+        this.bottom = statusBar
 
         addEventHandler(KeyEvent.KEY_PRESSED, ScopeKeyBindings.VisibleTimeRangeMovingHandler())
     }

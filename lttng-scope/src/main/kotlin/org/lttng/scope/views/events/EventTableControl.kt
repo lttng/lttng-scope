@@ -14,6 +14,7 @@ import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.project.TraceProjectIterator
 import com.efficios.jabberwocky.trace.event.TraceEvent
 import javafx.concurrent.Task
+import org.lttng.scope.application.task.ScopeTask
 import org.lttng.scope.utils.LatestTaskExecutor
 import java.util.*
 import java.util.logging.Logger
@@ -133,8 +134,8 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     @Synchronized
     private fun recenterOn(project: TraceProject<*, *>, timestamp: Long) {
-        val task = object : Task<Unit>() {
-            override fun call() {
+        val task = object : ScopeTask("Fetching Event Table Contents") {
+            override fun execute() {
                 // TODO Implement TraceProjectIterator.copy(), use it here instead of seeking twice
                 val forwardsEvents = project.iterator().use {
                     it.seek(timestamp)

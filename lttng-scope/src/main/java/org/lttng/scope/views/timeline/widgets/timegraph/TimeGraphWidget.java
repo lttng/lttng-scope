@@ -36,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.application.task.ScopeTask;
 import org.lttng.scope.common.NestingBoolean;
 import org.lttng.scope.utils.LatestTaskExecutor;
 import org.lttng.scope.views.timeline.DebugOptions;
@@ -499,16 +500,16 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             fTimeGraphLoadingOverlay.fadeIn();
         }
 
-        Task<Void> task = new Task<Void>() {
+        ScopeTask task = new ScopeTask("Updating Timegraph " + getName()) {
             @Override
-            protected @Nullable Void call() {
+            protected void execute() {
                 LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
 
                 ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
                 TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
 
                 if (isCancelled()) {
-                    return null;
+                    return;
                 }
 
                 /* Prepare the tree part, if needed */
@@ -518,7 +519,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
                 }
 
                 if (isCancelled()) {
-                    return null;
+                    return;
                 }
 
                 /* Paint the background. It's very quick so we can do it every time. */
@@ -532,7 +533,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
                 fStateLayer.drawContents(treeRender, renderingRange, verticalPos, this);
 
                 if (isCancelled()) {
-                    return null;
+                    return;
                 }
 
                 /*
@@ -545,7 +546,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
                 }
 
                 if (isCancelled()) {
-                    return null;
+                    return;
                 }
 
                 /* Painting is finished, turn off the loading overlay */
@@ -557,7 +558,6 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
                     }
                 });
 
-                return null;
             }
         };
 
