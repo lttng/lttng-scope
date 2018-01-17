@@ -17,7 +17,7 @@
   <parent>
     <groupId>org.lttng.scope</groupId>
     <artifactId>scope-project-parent</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
@@ -53,7 +53,7 @@
       <dependency>
         <groupId>com.efficios.jabberwocky</groupId>
         <artifactId>jabberwocky-lttng</artifactId>
-        <version>0.2.38-SNAPSHOT</version>
+        <version>0.2.39-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
