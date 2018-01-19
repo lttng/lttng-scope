@@ -16,6 +16,7 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import org.controlsfx.control.StatusBar
+import org.lttng.scope.application.ScopeWindowManager
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -37,6 +38,8 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
     private val taskProgressWindow = Stage().apply {
         title = PROGRESS_VIEW_WINDOW_TITLE
         scene = Scene (progressView, 450.0, 450.0)
+
+        ScopeWindowManager.registerWindow(this)
     }
 
 
