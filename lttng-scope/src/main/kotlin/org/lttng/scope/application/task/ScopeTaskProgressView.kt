@@ -19,10 +19,7 @@ class ScopeTaskProgressView : TaskProgressView<ScopeTask>(), ScopeTaskManager.Ta
     }
 
     override fun taskDeregistered(task: ScopeTask) {
-        /*
-         * No need to de-register the task, TaskProgressView takes care of removing it from its
-         * list by looking at the Task's status.
-         */
+        Platform.runLater { tasks.remove(task) }
     }
 
 }
