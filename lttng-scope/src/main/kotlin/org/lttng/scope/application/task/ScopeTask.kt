@@ -11,6 +11,7 @@ package org.lttng.scope.application.task
 
 import javafx.concurrent.Task
 import javafx.concurrent.WorkerStateEvent
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Wrapper for [Task] for use in LTTng-Scope, the task will be registered to the
@@ -23,6 +24,12 @@ import javafx.concurrent.WorkerStateEvent
  * with Java implementations.
  */
 abstract class ScopeTask(taskTitle: String?) : Task<Void?>() {
+
+    companion object {
+        private val seqNumCounter = AtomicInteger(0)
+    }
+
+    val taskSeqNum = seqNumCounter.getAndIncrement()
 
     init {
         taskTitle?.let { updateTitle(it) }
