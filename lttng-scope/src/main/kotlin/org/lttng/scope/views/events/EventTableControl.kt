@@ -13,9 +13,8 @@ import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.project.TraceProjectIterator
 import com.efficios.jabberwocky.trace.event.TraceEvent
-import javafx.concurrent.Task
 import org.lttng.scope.application.task.ScopeTask
-import org.lttng.scope.utils.LatestTaskExecutor
+import org.lttng.scope.common.LatestTaskExecutor
 import java.util.*
 import java.util.logging.Logger
 

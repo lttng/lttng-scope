@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.utils
+package org.lttng.scope.common
 
 import javafx.concurrent.Task
 import java.lang.ref.WeakReference
