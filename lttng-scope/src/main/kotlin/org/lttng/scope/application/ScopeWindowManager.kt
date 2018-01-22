@@ -10,6 +10,7 @@
 package org.lttng.scope.application
 
 import javafx.stage.Stage
+import java.util.*
 
 /**
  * Manager which will track opened windows (Stages) other than the main application window.
@@ -20,7 +21,7 @@ import javafx.stage.Stage
  */
 object ScopeWindowManager {
 
-    private val trackedWindows = mutableSetOf<Stage>()
+    private val trackedWindows: MutableSet<Stage> = Collections.newSetFromMap(WeakHashMap<Stage, Boolean>())
 
     @Synchronized
     fun registerWindow(window: Stage) {
