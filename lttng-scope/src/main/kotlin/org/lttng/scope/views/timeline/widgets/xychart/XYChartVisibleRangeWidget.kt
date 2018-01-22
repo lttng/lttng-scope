@@ -23,6 +23,7 @@ import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
+import org.lttng.scope.common.clampMin
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
@@ -127,7 +128,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             /* Paint a new chart */
             val viewWidth = chartArea.width
             val visibleRange = newVisibleRange.duration
-            val resolution = ((visibleRange / viewWidth) * 10L).toLong()
+            val resolution = ((visibleRange / viewWidth) * 10L).toLong().clampMin(1)
 
             val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, resolution, null)
             if (renders.isEmpty()) return

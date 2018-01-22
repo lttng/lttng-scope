@@ -25,6 +25,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeLineCap
+import org.lttng.scope.common.clampMin
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
@@ -183,7 +184,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         private fun repaintChart(traceProject: TraceProject<*, *>): Boolean {
             val viewWidth = rootNode.width
             val traceFullRange = TimeRange.of(traceProject.startTime, traceProject.endTime)
-            val resolution = (traceFullRange.duration / viewWidth).toLong()
+            val resolution = (traceFullRange.duration / viewWidth).toLong().clampMin(1)
 
             val renders = control.renderProvider.generateSeriesRenders(traceFullRange, resolution, null)
             val seriesData = renders
