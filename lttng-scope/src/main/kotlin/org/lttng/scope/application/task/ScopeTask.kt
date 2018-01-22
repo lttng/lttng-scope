@@ -41,8 +41,11 @@ abstract class ScopeTask(taskTitle: String?) : Task<Void?>() {
      */
     final override fun call(): Void? {
         ScopeTaskManager.registerTask(this)
-        execute()
-        ScopeTaskManager.deregisterTask(this)
+        try {
+            execute()
+        } finally {
+            ScopeTaskManager.deregisterTask(this)
+        }
         return null
     }
 }
