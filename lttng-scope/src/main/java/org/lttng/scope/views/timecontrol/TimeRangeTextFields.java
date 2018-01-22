@@ -35,7 +35,7 @@ public class TimeRangeTextFields {
         if (minimumDuration != null
                 && newLimits != ViewGroupContext.UNINITIALIZED_RANGE
                 && minimumDuration > newLimits.getDuration()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Minimum duration is " + minimumDuration + ", requested is " + newLimits.getDuration());
         }
         limits = newLimits;
     }
