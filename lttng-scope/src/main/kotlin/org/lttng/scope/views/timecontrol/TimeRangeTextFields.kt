@@ -26,14 +26,6 @@ import kotlin.math.min
 class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration: Long?) {
 
     var limits: TimeRange = initialLimits
-    set(newLimits) {
-        if (minimumDuration != null
-                && newLimits != ViewGroupContext.UNINITIALIZED_RANGE
-                && minimumDuration > newLimits.duration) {
-            throw IllegalArgumentException("Minimum duration is " + minimumDuration + ", requested is " + newLimits.duration);
-        }
-        field = newLimits
-    }
 
     val startTextField: TextField = StartTextField()
     val endTextField: TextField = EndTextField()
@@ -72,7 +64,8 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
                 when (event.code) {
                     KeyCode.ENTER -> applyCurrentText()
                     KeyCode.ESCAPE -> resetValue()
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
         }
