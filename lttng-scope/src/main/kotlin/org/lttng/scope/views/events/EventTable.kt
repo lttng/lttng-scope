@@ -61,7 +61,7 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
             /* Row factory to add the click listener on each row */
             setRowFactory {
                 TableRow<TraceEvent>().apply {
-                    setOnMouseClicked { updateSelection(this.item.timestamp) }
+                    setOnMouseClicked { this.item?.let { updateSelection(it.timestamp) } }
                 }
             }
         }
