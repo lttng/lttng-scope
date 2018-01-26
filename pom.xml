@@ -16,8 +16,8 @@
 
   <parent>
     <groupId>org.lttng.scope</groupId>
-    <artifactId>scope-project-parent</artifactId>
-    <version>1.0.6</version>
+    <artifactId>scope-parent-pom</artifactId>
+    <version>1.0.8</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
