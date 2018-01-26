@@ -28,11 +28,6 @@ class TimeRangeTextFieldsMinimumTest : TimeRangeTextFieldsTest() {
 
     override fun provideFixture() = TimeRangeTextFields(TimeRange.of(LIMIT_START, LIMIT_END), MINIMUM_DURATION)
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testInvalidLimits() {
-        fixture.limits = TimeRange.of(50, 100)
-    }
-
     // ------------------------------------------------------------------------
     // Start text field
     // ------------------------------------------------------------------------
