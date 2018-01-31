@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
+ * Copyright (C) 2017-2018 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -7,37 +7,33 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.timecontrol;
+package org.lttng.scope.views.timecontrol
 
-import org.jetbrains.annotations.Nullable;
+import java.math.BigDecimal
+import java.util.regex.Pattern
 
-import java.math.BigDecimal;
-import java.util.regex.Pattern;
+object TimestampConversion {
 
-public final class TimestampConversion {
-
-    private static final long NANOS_PER_SEC = 1000000000;
-    private static final BigDecimal NANOS_PER_SEC_BD = new BigDecimal(NANOS_PER_SEC);
+    const val NANOS_PER_SEC = 1000000000L
+    private val NANOS_PER_SEC_BD = BigDecimal(NANOS_PER_SEC)
 
     /**
      * Non-numerical characters that might be part of the displayed values but
      * should not be interpreted when trying to match them to a Long value.
      */
-    private static final Pattern NON_NUMERICAL_CHARACTERS = Pattern.compile("[.,;:\\s]");
+    private val NON_NUMERICAL_CHARACTERS = Pattern.compile("[.,;:\\s]")
 
-    private static final Pattern POINT_PATTERN = Pattern.compile("\\.");
-
-    private TimestampConversion() {}
+    private val POINT_PATTERN = Pattern.compile("\\.")
 
     /**
      * Convert a framework timestamp into a string for the UI (and readable by
      * Babeltrace).
      */
-    public static String tsToString(long ts) {
+    fun tsToString(ts: Long): String {
         /* Same timestamp format as Babeltrace */
-        long s = ts / NANOS_PER_SEC;
-        long ns = ts % NANOS_PER_SEC;
-        return String.format("%d.%09d", s, ns);
+        val s = ts / NANOS_PER_SEC
+        val ns = ts % NANOS_PER_SEC
+        return "%d.%09d".format(s, ns)
     }
 
     /**
@@ -52,32 +48,30 @@ public final class TimestampConversion {
      *
      * @return The long value, or null if the string is not parseable
      */
-    public static @Nullable Long stringToTs(String input) {
-        return parseSNS(input);
+    fun stringToTs(input: String): Long? {
+        return parseSNS(input)
     }
 
     /**
      * Parse the format s.ns. If there is no "." we assume the number represents
      * nanos.
      */
-    private static @Nullable Long parseSNS(String input) {
-        long nbPoints = input.chars().filter(c -> c == '.').count();
+    private fun parseSNS(input: String): Long? {
+        val nbPoints = input.chars().filter { it.toChar() == '.' }.count().toInt()
         if (nbPoints > 1) {
             /* Only 1 decimal point allowed */
-            return null;
+            return null
         }
-        try {
-            BigDecimal bd = new BigDecimal(input);
+        return try {
             if (nbPoints == 0) {
                 /* Keep the value as nanoseconds. */
+                BigDecimal(input).toLong()
             } else {
                 /* Parse as seconds then convert to nanos. */
-                bd = bd.multiply(NANOS_PER_SEC_BD);
+                BigDecimal(input).multiply(NANOS_PER_SEC_BD).toLong()
             }
-            return bd.longValue();
-
-        } catch (NumberFormatException e) {
-            return null;
+        } catch (e: NumberFormatException) {
+            null
         }
     }
 
