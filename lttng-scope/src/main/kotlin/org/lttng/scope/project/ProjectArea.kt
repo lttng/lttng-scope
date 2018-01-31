@@ -9,9 +9,9 @@
 
 package org.lttng.scope.project
 
+import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import javafx.application.Platform
-import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.*
@@ -21,7 +21,6 @@ import org.lttng.scope.project.filter.CreateEventFilterDialog
 import org.lttng.scope.project.filter.EventFilterDefinition
 import org.lttng.scope.project.filter.getGraphic
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.jfx.JfxColorFactory
 import org.lttng.scope.views.jfx.JfxUtils
 
 private const val NO_PROJECT = "(no project opened)"
@@ -54,14 +53,16 @@ class ProjectArea : BorderPane() {
         projectTree.setCellFactory { ProjectTreeCell() }
 
         /* Setup listeners */
-        ViewGroupContextManager.getCurrent().currentTraceProjectProperty().addListener { _, _, newProject ->
-            if (newProject == null) {
-                projectTree.root = emptyProjectRootItem
-            } else {
-                projectRootItem.value = newProject.name
-                projectTree.root = projectRootItem
+        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener {
+            override fun newProjectCb(newProject: TraceProject<*, *>?) {
+                if (newProject == null) {
+                    projectTree.root = emptyProjectRootItem
+                } else {
+                    projectRootItem.value = newProject.name
+                    projectTree.root = projectRootItem
+                }
             }
-        }
+        })
 
         projectTree.root = emptyProjectRootItem
         center = projectTree
@@ -70,18 +71,29 @@ class ProjectArea : BorderPane() {
 
 private abstract class ProjectTreeItem(name: String) : TreeItem<String>(name) {
 
-    init {
-        ViewGroupContextManager.getCurrent().currentTraceProjectProperty().addListener { _, _, newProject ->
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+        override fun newProjectCb(newProject: TraceProject<*, *>?) {
             if (newProject == null) {
                 clear()
             } else {
                 initForProject(newProject)
             }
         }
+    }
+
+    init {
+        ViewGroupContextManager.getCurrent().registerProjectChangeListener(projectChangeListener)
         isExpanded = true
     }
 
-    protected fun getCurrentProject() = ViewGroupContextManager.getCurrent().currentTraceProject
+    // Note this doesn't need 'override' in Kotlin, weird
+    @Suppress("Unused")
+    protected fun finalize() {
+        // TODO Handle case where the Context we registered to might have changed
+        ViewGroupContextManager.getCurrent().deregisterProjectChangeListener(projectChangeListener)
+    }
+
+    protected fun getCurrentProject() = ViewGroupContextManager.getCurrent().traceProject
 
     abstract fun initForProject(project: TraceProject<*, *>)
 

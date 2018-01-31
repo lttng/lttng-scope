@@ -10,6 +10,7 @@
 package org.lttng.scope.views.timeline.widgets.xychart
 
 import com.efficios.jabberwocky.common.TimeRange
+import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
@@ -54,19 +55,33 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
     override val dragHandlers = XYChartDragHandlers(this)
     override val scrollHandlers = XYChartScrollHandlers(this)
 
-    private val visibleRangeRect = Rectangle().apply {
-        stroke = VISIBLE_RANGE_STROKE_COLOR
-        strokeWidth = VISIBLE_RANGE_STROKE_WIDTH
-        strokeLineCap = StrokeLineCap.ROUND
-        fill = VISIBLE_RANGE_FILL_COLOR
-        arcHeight = VISIBLE_RANGE_ARC
-        arcWidth = VISIBLE_RANGE_ARC
+    private val visibleRangeRect = object : Rectangle() {
 
-        y = 0.0
-        heightProperty().bind(Bindings.subtract(chart.heightProperty(), VISIBLE_RANGE_STROKE_WIDTH))
+        private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+            override fun newProjectCb(newProject: TraceProject<*, *>?) {
+                isVisible = (newProject != null)
+            }
+        }
 
-        isVisible = false
-        viewContext.currentTraceProjectProperty().addListener { _, _, newVal -> isVisible = (newVal != null) }
+        init {
+            stroke = VISIBLE_RANGE_STROKE_COLOR
+            strokeWidth = VISIBLE_RANGE_STROKE_WIDTH
+            strokeLineCap = StrokeLineCap.ROUND
+            fill = VISIBLE_RANGE_FILL_COLOR
+            arcHeight = VISIBLE_RANGE_ARC
+            arcWidth = VISIBLE_RANGE_ARC
+
+            y = 0.0
+            heightProperty().bind(Bindings.subtract(chart.heightProperty(), VISIBLE_RANGE_STROKE_WIDTH))
+
+            val initialProject = viewContext.registerProjectChangeListener(projectChangeListener)
+            isVisible = (initialProject != null)
+        }
+
+        @Suppress("ProtectedInFinal", "Unused")
+        protected fun finalize() {
+            viewContext.deregisterProjectChangeListener(projectChangeListener)
+        }
     }
 
     init {
@@ -102,7 +117,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
     override fun getWidgetTimeRange() = viewContext.getCurrentProjectFullRange()
 
     override fun mapXPositionToTimestamp(x: Double): Long {
-        val project = viewContext.currentTraceProject ?: return 0L
+        val project = viewContext.traceProject ?: return 0L
 
         val viewWidth = chartPlotArea.width
         if (viewWidth < 1.0) return project.startTime
@@ -158,7 +173,10 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         private var lastTraceProject: TraceProject<*, *>? = null
 
         override fun run() {
-            var newTraceProject = viewContext.currentTraceProject
+            /* Skip redraws if we are in a project-switching operation. */
+            if (viewContext.listenerFreeze) return
+
+            var newTraceProject = viewContext.traceProject
             if (newTraceProject == lastTraceProject) return
 
             if (newTraceProject == null) {

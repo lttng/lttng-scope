@@ -11,6 +11,8 @@ package org.lttng.scope.views.timeline.widgets.timegraph.layer.drawnevents
 
 import com.efficios.jabberwocky.common.ConfigOption
 import com.efficios.jabberwocky.common.TimeRange
+import com.efficios.jabberwocky.context.ViewGroupContext
+import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider
 import com.efficios.jabberwocky.views.timegraph.model.render.TimeGraphEvent
 import com.efficios.jabberwocky.views.timegraph.model.render.drawnevents.TimeGraphDrawnEvent
@@ -29,11 +31,25 @@ private const val MAX_EVENTS = 2000
  */
 class PredicateDrawnEventProvider(private val eventFilter: EventFilterDefinition) : TimeGraphDrawnEventProvider(eventFilter.createSeries()) {
 
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+        override fun newProjectCb(newProject: TraceProject<*, *>?) {
+            /* Effectively just a bind() */
+            traceProject = newProject
+        }
+    }
+
     init {
         /* Just use whatever trace is currently active */
-        traceProjectProperty().bind(ViewGroupContextManager.getCurrent().currentTraceProjectProperty())
+        val currentProject = ViewGroupContextManager.getCurrent().registerProjectChangeListener(projectChangeListener)
+        traceProject = currentProject
+
         /* This provider will be active whenever the project filter is enabled */
         enabledProperty().bind(eventFilter.enabledProperty())
+    }
+
+    @Suppress("ProtectedInFinal", "Unused")
+    protected fun finalize() {
+        ViewGroupContextManager.getCurrent().deregisterProjectChangeListener(projectChangeListener)
     }
 
     override fun getEventRender(treeRender: TimeGraphTreeRender, timeRange: TimeRange, task: FutureTask<*>?): TimeGraphDrawnEventRender {

@@ -68,7 +68,7 @@ fun openTraceAction(refNode: Node?) {
 
     // Only one view context for now
     val viewCtx = ViewGroupContextManager.getCurrent()
-    viewCtx.currentTraceProject = project
+    viewCtx.switchProject(project)
 }
 
 private fun showTraceSelectionDialog(initialDir: Path?, refNode: Node?): Path? {

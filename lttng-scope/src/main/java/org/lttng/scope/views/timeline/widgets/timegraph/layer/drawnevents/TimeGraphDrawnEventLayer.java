@@ -94,7 +94,7 @@ public class TimeGraphDrawnEventLayer extends TimeGraphLayer {
         provider.enabledProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 /* The provider was just enabled */
-                TimeRange timeRange = getWidget().getViewContext().getCurrentVisibleTimeRange();
+                TimeRange timeRange = getWidget().getViewContext().getVisibleTimeRange();
                 TimeGraphTreeRender treeRender = getWidget().getLatestTreeRender();
                 // FIXME Use a Task?
                 paintEventsOfProvider(treeRender, timeRange, provider, null);

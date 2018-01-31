@@ -65,7 +65,7 @@ class XYChartDragHandlers(private val widget: XYChartWidget) {
             var offsetTimeDelta: Long = (offsetRatio * widget.getWidgetTimeRange().duration).roundToLong()
 
             /* Slide the visible time range accordingly */
-            val visibleRange = widget.viewContext.currentVisibleTimeRange
+            val visibleRange = widget.viewContext.visibleTimeRange
             val projectRange = widget.viewContext.getCurrentProjectFullRange()
             if (offsetTimeDelta == 0L) return@EventHandler
 

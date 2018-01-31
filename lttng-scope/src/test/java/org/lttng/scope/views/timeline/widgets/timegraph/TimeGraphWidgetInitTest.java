@@ -34,7 +34,7 @@ public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
         final long expectedEnd = StubTrace.FULL_TRACE_END_TIME;
 
         /* Check the control */
-        TimeRange visibleRange = viewer.getControl().getViewContext().getCurrentVisibleTimeRange();
+        TimeRange visibleRange = viewer.getControl().getViewContext().getVisibleTimeRange();
         assertEquals(expectedStart, visibleRange.getStartTime());
         assertEquals(expectedEnd, visibleRange.getEndTime());
 

@@ -33,7 +33,7 @@ class ZoomToSelectionButton extends Button {
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {
-            TimeRange timeRange = ViewGroupContextManager.getCurrent().getCurrentSelectionTimeRange();
+            TimeRange timeRange = ViewGroupContextManager.getCurrent().getSelectionTimeRange();
             /*
              * Only actually zoom if the selection is a time range, not a single timestamp.
              */

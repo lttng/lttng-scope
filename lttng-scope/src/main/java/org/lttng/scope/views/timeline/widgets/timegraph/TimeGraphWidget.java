@@ -581,7 +581,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
     }
 
     private void redrawSelection() {
-        TimeRange selectionRange = getViewContext().getCurrentSelectionTimeRange();
+        TimeRange selectionRange = getViewContext().getSelectionTimeRange();
         drawSelection(selectionRange);
     }
 
@@ -719,9 +719,9 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
 
             /* Send a corresponding window-range signal to the control */
             TimeGraphModelControl control = getControl();
-            TimeRange visibleRange = getViewContext().getCurrentVisibleTimeRange();
+            TimeRange visibleRange = getViewContext().getVisibleTimeRange();
 
-            TimeRange currentSelection = getViewContext().getCurrentSelectionTimeRange();
+            TimeRange currentSelection = getViewContext().getSelectionTimeRange();
             long currentSelectionCenter = ((currentSelection.getDuration() / 2) + currentSelection.getStartTime());
             boolean currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter);
 
@@ -919,7 +919,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
      */
     @VisibleForTesting
     void paintCurrentLocation() {
-        TimeRange currentHorizontalPos = getViewContext().getCurrentVisibleTimeRange();
+        TimeRange currentHorizontalPos = getViewContext().getVisibleTimeRange();
         VerticalPosition currentVerticalPos = getCurrentVerticalPosition();
         paintArea(currentHorizontalPos, currentVerticalPos, true, true, 0);
     }

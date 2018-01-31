@@ -32,8 +32,8 @@ object ScopeKeyBindings {
         override fun handle(e: KeyEvent) {
             /* Only handle this event if the current view context does not have an active project. */
             val viewCtx = ViewGroupContextManager.getCurrent() ?: return
-            val project = viewCtx.currentTraceProject ?: return
-            val visibleRange = viewCtx.currentVisibleTimeRange
+            val project = viewCtx.traceProject ?: return
+            val visibleRange = viewCtx.visibleTimeRange
 
             when (e.code) {
                 KeyCode.H, KeyCode.A -> scrollLeft(viewCtx, visibleRange, project.fullRange)
@@ -52,7 +52,7 @@ object ScopeKeyBindings {
             val newStartTime = max(projectRange.startTime, visibleRange.startTime - offset)
             val newEndTime = newStartTime + visibleRange.duration
 
-            viewContext.currentVisibleTimeRange = TimeRange.of(newStartTime, newEndTime)
+            viewContext.visibleTimeRange = TimeRange.of(newStartTime, newEndTime)
         }
 
         private fun scrollRight(viewContext: ViewGroupContext, visibleRange: TimeRange, projectRange: TimeRange) {
@@ -63,7 +63,7 @@ object ScopeKeyBindings {
             val newEndTime = min(projectRange.endTime, visibleRange.endTime + offset)
             val newStartTime = newEndTime - visibleRange.duration
 
-            viewContext.currentVisibleTimeRange = TimeRange.of(newStartTime, newEndTime)
+            viewContext.visibleTimeRange = TimeRange.of(newStartTime, newEndTime)
         }
 
         private fun zoom(zoomIn: Boolean, viewContext: ViewGroupContext, visibleRange: TimeRange, projectRange: TimeRange) {
@@ -83,7 +83,7 @@ object ScopeKeyBindings {
             newStart = max(newStart, projectRange.startTime)
             newEnd = min(newEnd, projectRange.endTime)
 
-            viewContext.currentVisibleTimeRange = TimeRange.of(newStart, newEnd)
+            viewContext.visibleTimeRange = TimeRange.of(newStart, newEnd)
         }
     }
 

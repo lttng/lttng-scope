@@ -27,6 +27,27 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
         private const val FETCH_SIZE = 25_000
     }
 
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+        override fun flush() {
+            /* Stop the redraw task and wait for it to finish */
+            val bubble = object : ScopeTask(null) {
+                override fun execute() {
+                }
+            }
+            taskExecutor.schedule(bubble)
+            bubble.get() /* Wait for it be scheduled and finish execution. */
+        }
+
+        override fun newProjectCb(newProject: TraceProject<*, *>?) {
+            if (newProject == null) {
+                clearView()
+            } else {
+                initializeForProject(newProject)
+            }
+        }
+
+    }
+
     val table = EventTable(this)
     private val taskExecutor = LatestTaskExecutor()
 
@@ -34,28 +55,28 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
     private var currentForwardsEvents: List<TraceEvent>? = null
 
     init {
-        viewContext.currentTraceProjectProperty().addListener { _, _, newProject ->
-            if (newProject == null) {
-                clearView()
-            } else {
-                initializeForProject(newProject)
-            }
-            viewContext.currentSelectionTimeRangeProperty().addListener { _, _, newRange ->
-                val project = viewContext.currentTraceProject
-                if (project != null) recenterOn(project, newRange.startTime)
-            }
+        viewContext.registerProjectChangeListener(projectChangeListener)
+
+        viewContext.selectionTimeRangeProperty().addListener { _, _, newRange ->
+            if (viewContext.listenerFreeze) return@addListener
+            viewContext.traceProject?.let { recenterOn(it, newRange.startTime) }
         }
+    }
+
+    @Suppress("ProtectedInFinal", "Unused")
+    protected fun finalize() {
+        viewContext.deregisterProjectChangeListener(projectChangeListener)
     }
 
     @Synchronized
     fun scrollToBeginning() {
-        val project = viewContext.currentTraceProject ?: return
+        val project = viewContext.traceProject ?: return
         initializeForProject(project)
     }
 
     @Synchronized
     fun pageUp() {
-        val project = viewContext.currentTraceProject ?: return
+        val project = viewContext.traceProject ?: return
         /*
          * The "currentBackwardsEvents" will become the new "forwardsEvents",
          * and we will fetch the previous "page" as the new backwardsEvents.
@@ -79,7 +100,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     @Synchronized
     fun pageDown() {
-        val project = viewContext.currentTraceProject ?: return
+        val project = viewContext.traceProject ?: return
         /*
          * The "currentForwardsEvents" will become the new "backwardsEvents",
          * and we will fetch the next "page" as the new forwardsEvents.
@@ -106,7 +127,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     @Synchronized
     fun scrollToEnd() {
-        val project = viewContext.currentTraceProject ?: return
+        val project = viewContext.traceProject ?: return
         val events = project.iterator().use {
             it.seek(Long.MAX_VALUE)
             fetchPreviousEvents(it, FETCH_SIZE)

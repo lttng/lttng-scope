@@ -40,7 +40,7 @@ final class NavUtils {
         viewer.getControl().updateTimeRangeSelection(TimeRange.of(timestamp, timestamp));
 
         TimeRange fullTimeGraphRange = viewer.getControl().getViewContext().getCurrentProjectFullRange();
-        TimeRange windowRange = ViewGroupContextManager.getCurrent().getCurrentVisibleTimeRange();
+        TimeRange windowRange = ViewGroupContextManager.getCurrent().getVisibleTimeRange();
         long windowStart = windowRange.getStartTime();
         long windowEnd = windowRange.getEndTime();
         if (windowStart <= timestamp && timestamp <= windowEnd) {

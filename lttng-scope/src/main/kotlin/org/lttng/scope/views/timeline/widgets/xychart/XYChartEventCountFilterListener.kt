@@ -11,6 +11,7 @@ package org.lttng.scope.views.timeline.widgets.xychart
 
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.context.ViewGroupContext
+import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartModelProvider
 import com.efficios.jabberwocky.views.xychart.model.provider.XYChartSeriesProvider
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
@@ -33,20 +34,27 @@ class XYChartEventCountFilterListener(private val viewContext: ViewGroupContext,
 
     private val createdSeriesProviders = mutableMapOf<EventFilterDefinition, FilterSeriesProvider>()
 
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+        override fun newProjectCb(newProject: TraceProject<*, *>?) {
+            /* On project change, clear the current providers. */
+            createdSeriesProviders.values.forEach { modelProvider.removeSeries(it) }
+            createdSeriesProviders.clear()
+
+            /* Re-register to the new project, if there is one. */
+            newProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@XYChartEventCountFilterListener) }
+        }
+    }
+
     init {
         /* Initialize with current project, and attach listener for project changes. */
-        with(viewContext) {
-            currentTraceProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@XYChartEventCountFilterListener) }
+        viewContext.registerProjectChangeListener(projectChangeListener)
+                /* Register to initial project, if there is one. */
+                ?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@XYChartEventCountFilterListener) }
+    }
 
-            currentTraceProjectProperty().addListener { _, _, newProject ->
-                /* On project change, clear the current providers. */
-                createdSeriesProviders.values.forEach { modelProvider.removeSeries(it) }
-                createdSeriesProviders.clear()
-
-                /* Re-register to the new project, if there is one. */
-                newProject?.let { ProjectManager.getProjectState(it).filters.registerFilterListener(this@XYChartEventCountFilterListener) }
-            }
-        }
+    @Suppress("ProtectedInFinal", "Unused")
+    protected fun finalize() {
+        viewContext.deregisterProjectChangeListener(projectChangeListener)
     }
 
     override fun filterCreated(filter: EventFilterDefinition) {
@@ -68,7 +76,7 @@ class XYChartEventCountFilterListener(private val viewContext: ViewGroupContext,
         override fun generateSeriesRender(range: TimeRange, resolution: Long, task: FutureTask<*>?): XYChartRender {
             // TODO Currently reading all trace events every query.
             // Instead we could build a state system of events matching the filter and re-use that.
-            val proj = viewContext.currentTraceProject ?: return XYChartRender.EMPTY_RENDER
+            val proj = viewContext.traceProject ?: return XYChartRender.EMPTY_RENDER
 
             /*
              * Map<timestamp, matching event count>

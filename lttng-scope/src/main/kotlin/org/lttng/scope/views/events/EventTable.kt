@@ -10,6 +10,8 @@
 package org.lttng.scope.views.events
 
 import com.efficios.jabberwocky.common.TimeRange
+import com.efficios.jabberwocky.context.ViewGroupContext
+import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.trace.event.TraceEvent
 import com.sun.javafx.scene.control.skin.TableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
@@ -133,9 +135,9 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
      */
     private fun updateSelection(timestamp: Long) {
         val viewCtx = tableControl.viewContext
-        viewCtx.currentSelectionTimeRange = TimeRange.of(timestamp, timestamp)
+        viewCtx.selectionTimeRange = TimeRange.of(timestamp, timestamp)
 
-        if (timestamp !in viewCtx.currentVisibleTimeRange) {
+        if (timestamp !in viewCtx.visibleTimeRange) {
             viewCtx.centerVisibleRangeOn(timestamp)
         }
     }
@@ -188,18 +190,20 @@ private class FilterColumn : TableColumn<TraceEvent, TraceEvent>(""), ProjectFil
     private val enabledFilters = FXCollections.observableArrayList<EventFilterDefinition>()
 
     init {
-        ViewGroupContextManager.getCurrent().currentTraceProject?.let {
-            ProjectManager.getProjectState(it).filters.registerFilterListener(this)
-        }
-        ViewGroupContextManager.getCurrent().currentTraceProjectProperty().addListener { _, _, newProject ->
-            //oldProject?. let { ProjectManager.getProjectState(it).filters.unregisterFilterListener(this) }
-            if (newProject != null) {
-                ProjectManager.getProjectState(newProject).filters.registerFilterListener(this)
-            } else {
-                createdFilters.clear()
-                enabledFilters.clear()
+        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener {
+            override fun newProjectCb(newProject: TraceProject<*, *>?) {
+                if (newProject != null) {
+                    ProjectManager.getProjectState(newProject).filters.registerFilterListener(this@FilterColumn)
+                } else {
+                    createdFilters.clear()
+                    enabledFilters.clear()
+                }
             }
-        }
+        })
+                /* The 'register' call returns the current project */
+                ?.let {
+                    ProjectManager.getProjectState(it).filters.registerFilterListener(this)
+                }
 
         setCellValueFactory { ReadOnlyObjectWrapper(it.value) }
         setCellFactory { FilterCell() }

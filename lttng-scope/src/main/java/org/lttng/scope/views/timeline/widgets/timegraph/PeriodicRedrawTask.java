@@ -52,7 +52,7 @@ public class PeriodicRedrawTask implements TimelineWidget.TimelineWidgetUpdateTa
             return;
         }
 
-        TimeRange currentHorizontalPos = fViewer.getControl().getViewContext().getCurrentVisibleTimeRange();
+        TimeRange currentHorizontalPos = fViewer.getControl().getViewContext().getVisibleTimeRange();
         VerticalPosition currentVerticalPos = fViewer.getCurrentVerticalPosition();
 
         boolean movedHorizontally;

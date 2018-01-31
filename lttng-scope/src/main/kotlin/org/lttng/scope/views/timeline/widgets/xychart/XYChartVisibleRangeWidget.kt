@@ -68,10 +68,10 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     override fun dispose() {
     }
 
-    override fun getWidgetTimeRange() = viewContext.currentVisibleTimeRange
+    override fun getWidgetTimeRange() = viewContext.visibleTimeRange
 
     override fun mapXPositionToTimestamp(x: Double): Long {
-        val vr = viewContext.currentVisibleTimeRange
+        val vr = viewContext.visibleTimeRange
 
         val viewWidth = chartPlotArea.width
         if (viewWidth < 1.0) return vr.startTime
@@ -114,7 +114,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
          *
          * However we need to redraw the selection rectangle since it probably moved.
          */
-        drawSelection(viewContext.currentSelectionTimeRange)
+        drawSelection(viewContext.selectionTimeRange)
     }
 
     private inner class RedrawTask : TimelineWidget.TimelineWidgetUpdateTask {
@@ -122,7 +122,10 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         private var previousVisibleRange = ViewGroupContext.UNINITIALIZED_RANGE
 
         override fun run() {
-            val newVisibleRange = viewContext.currentVisibleTimeRange
+            /* Skip redraws if we are in a project-switching operation. */
+            if (viewContext.listenerFreeze) return
+
+            val newVisibleRange = viewContext.visibleTimeRange
             if (newVisibleRange == previousVisibleRange) return
 
             /* Paint a new chart */

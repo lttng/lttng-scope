@@ -169,7 +169,7 @@ private class XYChartFullRangeSelectionLayer(widget: XYChartFullRangeWidget,
         val viewWidth = widget.chartPlotArea.width
         if (viewWidth < 1.0) return
 
-        val project = widget.viewContext.currentTraceProject ?: return
+        val project = widget.viewContext.traceProject ?: return
         val projectRange = project.fullRange
 
         val startRatio = (sr.startTime - projectRange.startTime) / projectRange.duration.toDouble()
@@ -191,7 +191,7 @@ private class XYChartVisibleRangeSelectionLayer(widget: XYChartVisibleRangeWidge
                                                 chartBackgroundAdjustment: Double) : XYChartSelectionLayer(widget, chartBackgroundAdjustment) {
 
     override fun drawSelection(sr: TimeRange) {
-        val vr = widget.viewContext.currentVisibleTimeRange
+        val vr = widget.viewContext.visibleTimeRange
 
         if (sr.startTime <= vr.startTime && sr.endTime <= vr.startTime) {
             /* Selection is completely before the visible range, no range to display. */

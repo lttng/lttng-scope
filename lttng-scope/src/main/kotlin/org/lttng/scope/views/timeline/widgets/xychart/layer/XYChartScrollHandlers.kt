@@ -27,6 +27,7 @@ class XYChartScrollHandlers(private val widget: XYChartWidget) {
     }
 
     private val mouseScrollHandler = EventHandler<ScrollEvent> { e ->
+        if (widget.viewContext.listenerFreeze) return@EventHandler
         if (!e.isControlDown) return@EventHandler
         e.consume();
 
@@ -51,8 +52,8 @@ class XYChartScrollHandlers(private val widget: XYChartWidget) {
 
         /* Send a corresponding window-range signal to the control */
         val control = widget.control
-        val visibleRange = widget.viewContext.currentVisibleTimeRange
-        val currentSelection = widget.viewContext.currentSelectionTimeRange
+        val visibleRange = widget.viewContext.visibleTimeRange
+        val currentSelection = widget.viewContext.selectionTimeRange
         val currentSelectionCenter = (currentSelection.duration / 2) + currentSelection.startTime
         val currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter)
 
@@ -94,7 +95,7 @@ class XYChartScrollHandlers(private val widget: XYChartWidget) {
 
     private fun mouseIsInVisibleRange(mouseX: Double): Boolean {
         if (widget is XYChartVisibleRangeWidget) return true
-        val visibleRange = widget.viewContext.currentVisibleTimeRange
+        val visibleRange = widget.viewContext.visibleTimeRange
         val mouseTs = widget.mapXPositionToTimestamp(mouseX)
         return visibleRange.contains(mouseTs)
     }

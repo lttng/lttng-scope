@@ -68,7 +68,7 @@ public class TimeGraphArrowLayer extends TimeGraphLayer {
                      * The provider is now enabled, we must fetch and display
                      * its arrows
                      */
-                    TimeRange timeRange = getWidget().getViewContext().getCurrentVisibleTimeRange();
+                    TimeRange timeRange = getWidget().getViewContext().getVisibleTimeRange();
                     TimeGraphTreeRender treeRender = getWidget().getLatestTreeRender();
                     // FIXME Not using a task here, so this might end up running
                     // on the UI thread  and not being cancellable...

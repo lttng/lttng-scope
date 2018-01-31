@@ -30,7 +30,7 @@ class ScopeMenuBar : MenuBar() {
             setOnAction { openTraceAction(this@ScopeMenuBar) }
         }
         val closeMenuItem = MenuItem(CLOSE_ACTION).apply {
-            setOnAction { ViewGroupContextManager.getCurrent().currentTraceProject = null }
+            setOnAction { ViewGroupContextManager.getCurrent().switchProject(null) }
         }
         val exitMenuItem = MenuItem(EXIT_ACTION).apply {
             setOnAction { scene.window.hide() }

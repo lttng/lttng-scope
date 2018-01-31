@@ -75,7 +75,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
          * Initially we'll set our window range to the one from the view
          * context, afterwards we'll let the widget update it.
          */
-        fWindowRange = widget.getControl().getViewContext().getCurrentVisibleTimeRange();
+        fWindowRange = widget.getControl().getViewContext().getVisibleTimeRange();
     }
 
     /**

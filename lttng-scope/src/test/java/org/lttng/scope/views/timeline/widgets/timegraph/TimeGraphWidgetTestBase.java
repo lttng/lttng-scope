@@ -78,7 +78,7 @@ public abstract class TimeGraphWidgetTestBase {
 
         updateUI();
 
-        control.getViewContext().setCurrentTraceProject(stubProject.getTraceProject());
+        control.getViewContext().switchProject(stubProject.getTraceProject());
         updateUI();
 
         sfProject = stubProject;
@@ -144,7 +144,7 @@ public abstract class TimeGraphWidgetTestBase {
      * Repaint the current time range.
      */
     protected void repaint() {
-        TimeRange currentRange = getControl().getViewContext().getCurrentVisibleTimeRange();
+        TimeRange currentRange = getControl().getViewContext().getVisibleTimeRange();
         renderRange(currentRange);
     }
 
@@ -174,7 +174,7 @@ public abstract class TimeGraphWidgetTestBase {
     protected void seekVisibleRange(TimeRange timeRange) {
         TimeGraphModelControl control = sfControl;
         assertNotNull(control);
-        control.getViewContext().setCurrentVisibleTimeRange(timeRange);
+        control.getViewContext().setVisibleTimeRange(timeRange);
         updateUI();
     }
 
@@ -233,7 +233,7 @@ public abstract class TimeGraphWidgetTestBase {
         assertNotNull(widget);
 
         /* Check the control */
-        assertEquals(expectedRange, control.getViewContext().getCurrentVisibleTimeRange());
+        assertEquals(expectedRange, control.getViewContext().getVisibleTimeRange());
 
         /* Check the view itself */
         TimeRange timeRange = widget.getTimeGraphEdgeTimestamps(null);
