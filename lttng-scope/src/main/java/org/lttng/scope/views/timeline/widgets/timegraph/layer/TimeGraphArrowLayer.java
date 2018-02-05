@@ -40,7 +40,7 @@ public class TimeGraphArrowLayer extends TimeGraphLayer {
         super(widget, parentGroup);
 
         Collection<TimeGraphModelArrowProvider> arrowProviders =
-                widget.getControl().getModelRenderProvider().getArrowProviders();
+                widget.getControl().getRenderProvider().getArrowProviders();
 
         fArrowProvidersConfig = arrowProviders.stream()
                 .collect(ImmutableMap.toImmutableMap(

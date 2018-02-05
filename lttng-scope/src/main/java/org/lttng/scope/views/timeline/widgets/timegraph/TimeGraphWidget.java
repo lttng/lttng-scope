@@ -156,7 +156,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
         // Prepare the tree part's scene graph
         // --------------------------------------------------------------------
 
-        fTreeArea = new TimeGraphWidgetTreeArea(ENTRY_HEIGHT, getControl().getModelRenderProvider().traceProjectProperty());
+        fTreeArea = new TimeGraphWidgetTreeArea(ENTRY_HEIGHT, getControl().getRenderProvider().traceProjectProperty());
 
         // --------------------------------------------------------------------
         // Prepare the time graph's part scene graph
@@ -280,7 +280,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
 
     @Override
     public String getName() {
-        return getControl().getModelRenderProvider().getName();
+        return getControl().getRenderProvider().getName();
     }
 
     @Override
@@ -504,7 +504,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             protected void execute() {
                 LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
 
-                ITimeGraphModelProvider modelProvider = getControl().getModelRenderProvider();
+                ITimeGraphModelProvider modelProvider = getControl().getRenderProvider();
                 TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
 
                 if (isCancelled()) {

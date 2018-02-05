@@ -30,7 +30,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
     @Before
     public void setup() {
         /* Disable all arrow providers initially */
-        getWidget().getControl().getModelRenderProvider().getArrowProviders()
+        getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(false));
 
         /*
@@ -54,7 +54,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testArrowOneSeries() {
-        TimeGraphModelArrowProvider providerRed = getWidget().getControl().getModelRenderProvider().getArrowProviders().stream()
+        TimeGraphModelArrowProvider providerRed = getWidget().getControl().getRenderProvider().getArrowProviders().stream()
                 .filter(ap -> ap.getArrowSeries().getSeriesName().equals(StubModelArrowProvider1.SERIES_NAME))
                 .findFirst().get();
         providerRed.enabledProperty().set(true);
@@ -70,7 +70,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testArrowsAllSeries() {
-        getWidget().getControl().getModelRenderProvider().getArrowProviders()
+        getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(true));
 
         repaint();
@@ -84,12 +84,12 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      */
     @Test
     public void testArrowsEnableThenDisable() {
-        getWidget().getControl().getModelRenderProvider().getArrowProviders()
+        getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(true));
 
         repaint();
 
-        TimeGraphModelArrowProvider providerRed = getWidget().getControl().getModelRenderProvider().getArrowProviders().stream()
+        TimeGraphModelArrowProvider providerRed = getWidget().getControl().getRenderProvider().getArrowProviders().stream()
                 .filter(ap -> ap.getArrowSeries().getSeriesName().equals(StubModelArrowProvider1.SERIES_NAME))
                 .findFirst().get();
         providerRed.enabledProperty().set(false);

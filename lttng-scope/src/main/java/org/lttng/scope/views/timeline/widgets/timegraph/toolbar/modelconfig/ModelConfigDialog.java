@@ -45,7 +45,7 @@ class ModelConfigDialog extends Dialog<Void> {
         getDialogPane().getButtonTypes().addAll(resetToDefaultButtonType, ButtonType.CLOSE);
 
         // TODO Allow configuring arrow, etc. providers too (different tabs?)
-        TimeGraphModelStateProvider stateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
+        TimeGraphModelStateProvider stateProvider = widget.getControl().getRenderProvider().getStateProvider();
         List<ColorDefControl> stateControls = stateProvider.getStateDefinitions().stream()
                 .map(stateDef -> new ColorDefControl(widget, stateDef))
                 .collect(Collectors.toList());

@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 class FilterModeMenuButton extends MenuButton {
 
     public FilterModeMenuButton(TimeGraphWidget viewer) {
-        ITimeGraphModelProvider provider = viewer.getControl().getModelRenderProvider();
+        ITimeGraphModelProvider provider = viewer.getControl().getRenderProvider();
 
         Collection<CheckMenuItem> filterModeItems = IntStream.range(0, provider.getFilterModes().size())
                 .mapToObj(index -> {

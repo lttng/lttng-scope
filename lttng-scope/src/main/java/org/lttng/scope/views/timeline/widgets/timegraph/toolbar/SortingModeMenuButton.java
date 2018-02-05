@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 class SortingModeMenuButton extends MenuButton {
 
     public SortingModeMenuButton(TimeGraphWidget viewer) {
-        ITimeGraphModelProvider provider = viewer.getControl().getModelRenderProvider();
+        ITimeGraphModelProvider provider = viewer.getControl().getRenderProvider();
 
         ToggleGroup tg = new ToggleGroup();
         List<RadioMenuItem> sortingModeItems = IntStream.range(0, provider.getSortingModes().size())

@@ -70,7 +70,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
     public TimeGraphStateLayer(TimeGraphWidget widget, Group parentGroup) {
         super(widget, parentGroup);
 
-        fStateProvider = widget.getControl().getModelRenderProvider().getStateProvider();
+        fStateProvider = widget.getControl().getRenderProvider().getStateProvider();
         /*
          * Initially we'll set our window range to the one from the view
          * context, afterwards we'll let the widget update it.

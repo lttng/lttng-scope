@@ -36,7 +36,7 @@ class ArrowSeriesMenuButton extends MenuButton {
     private static final double ARROW_GRAPHIC_LENGTH = 10;
 
     public ArrowSeriesMenuButton(TimeGraphWidget widget) {
-        ITimeGraphModelProvider modelProvider = widget.getControl().getModelRenderProvider();
+        ITimeGraphModelProvider modelProvider = widget.getControl().getRenderProvider();
         Collection<TimeGraphModelArrowProvider> arrowProviders = modelProvider.getArrowProviders();
 
         Collection<CheckMenuItem> arrowSeriesItems = arrowProviders.stream()
