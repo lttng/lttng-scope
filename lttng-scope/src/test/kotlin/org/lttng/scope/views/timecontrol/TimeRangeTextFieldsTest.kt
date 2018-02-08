@@ -18,6 +18,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
+import org.lttng.scope.application.ScopeOptions
 
 /**
  * Tests for [TimeRangeTextFields].
@@ -63,9 +64,9 @@ open class TimeRangeTextFieldsTest {
         val expectedRange = TimeRange.of(expectedStart, expectedEnd)
 
         assertEquals(expectedRange, fixture.timeRange)
-        assertEquals(TimestampConversion.tsToString(expectedStart), startField.text)
-        assertEquals(TimestampConversion.tsToString(expectedEnd), endField.text)
-        assertEquals(TimestampConversion.tsToString(expectedRange.duration), durationField.text)
+        assertEquals(ScopeOptions.timestampFormat.tsToString(expectedStart), startField.text)
+        assertEquals(ScopeOptions.timestampFormat.tsToString(expectedEnd), endField.text)
+        assertEquals(ScopeOptions.timestampFormat.tsToString(expectedRange.duration), durationField.text)
     }
 
     @Test

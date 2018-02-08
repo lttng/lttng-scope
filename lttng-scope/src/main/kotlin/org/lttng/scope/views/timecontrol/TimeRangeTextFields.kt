@@ -15,6 +15,7 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.clamp
 import kotlin.math.max
 import kotlin.math.min
@@ -78,7 +79,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         fun applyCurrentText() {
             /* First see if the current text makes sense. */
-            val value = TimestampConversion.stringToTs(text)
+            val value = ScopeOptions.timestampFormat.stringToTs(text)
             if (value == null) {
                 /* Invalid value, reset to previous one */
                 resetValue()
@@ -94,7 +95,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         override fun resetValue() {
             val start = timeRange?.startTime ?: 0L
-            text = TimestampConversion.tsToString(start)
+            text = ScopeOptions.timestampFormat.tsToString(start)
         }
 
         override fun applyValue(value: Long) {
@@ -126,7 +127,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         override fun resetValue() {
             val end = timeRange?.endTime ?: 0L
-            text = TimestampConversion.tsToString(end)
+            text = ScopeOptions.timestampFormat.tsToString(end)
         }
 
         override fun applyValue(value: Long) {
@@ -156,7 +157,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         override fun resetValue() {
             val duration = timeRange?.duration ?: 0L
-            text = TimestampConversion.tsToString(duration)
+            text = ScopeOptions.timestampFormat.tsToString(duration)
         }
 
         override fun applyValue(value: Long) {

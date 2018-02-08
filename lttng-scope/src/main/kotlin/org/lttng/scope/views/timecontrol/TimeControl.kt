@@ -23,8 +23,8 @@ import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.timecontrol.TimestampConversion.tsToString
 
 class TimeControl : BorderPane() {
 
@@ -122,13 +122,14 @@ class TimeControl : BorderPane() {
     private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             val viewCtx = viewContextProperty.get()
+            val tf = ScopeOptions.timestampFormat
 
             /* Update the displayed trace's time range. */
             val projRange = newProject?.fullRange ?: ViewGroupContext.UNINITIALIZED_RANGE
 
-            projRangeTextFields[0].text = tsToString(projRange.startTime)
-            projRangeTextFields[1].text = tsToString(projRange.endTime)
-            projRangeTextFields[2].text = tsToString(projRange.duration)
+            projRangeTextFields[0].text = tf.tsToString(projRange.startTime)
+            projRangeTextFields[1].text = tf.tsToString(projRange.endTime)
+            projRangeTextFields[2].text = tf.tsToString(projRange.duration)
 
             /* Update the text fields' limits */
             visibleRangeFields.limits = projRange
@@ -138,12 +139,12 @@ class TimeControl : BorderPane() {
             val visibleRange = viewCtx.visibleTimeRange
             val selectionRange = viewCtx.selectionTimeRange
             with(textFields) {
-                get(0).text = tsToString(visibleRange.startTime)
-                get(1).text = tsToString(visibleRange.endTime)
-                get(2).text = tsToString(visibleRange.duration)
-                get(3).text = tsToString(selectionRange.startTime)
-                get(4).text = tsToString(selectionRange.endTime)
-                get(5).text = tsToString(selectionRange.duration)
+                get(0).text = tf.tsToString(visibleRange.startTime)
+                get(1).text = tf.tsToString(visibleRange.endTime)
+                get(2).text = tf.tsToString(visibleRange.duration)
+                get(3).text = tf.tsToString(selectionRange.startTime)
+                get(4).text = tf.tsToString(selectionRange.endTime)
+                get(5).text = tf.tsToString(selectionRange.duration)
             }
 
             /**
@@ -153,15 +154,15 @@ class TimeControl : BorderPane() {
              */
             viewCtx.visibleTimeRangeProperty().addListener { _, _, newVal ->
                 if (viewCtx.listenerFreeze) return@addListener
-                textFields[0].text = tsToString(newVal.startTime)
-                textFields[1].text = tsToString(newVal.endTime)
-                textFields[2].text = tsToString(newVal.duration)
+                textFields[0].text = tf.tsToString(newVal.startTime)
+                textFields[1].text = tf.tsToString(newVal.endTime)
+                textFields[2].text = tf.tsToString(newVal.duration)
             }
             viewCtx.selectionTimeRangeProperty().addListener { _, _, newVal ->
                 if (viewCtx.listenerFreeze) return@addListener
-                textFields[3].text = tsToString(newVal.startTime)
-                textFields[4].text = tsToString(newVal.endTime)
-                textFields[5].text = tsToString(newVal.duration)
+                textFields[3].text = tf.tsToString(newVal.startTime)
+                textFields[4].text = tf.tsToString(newVal.endTime)
+                textFields[5].text = tf.tsToString(newVal.duration)
             }
 
             /* Bind underlying properties */

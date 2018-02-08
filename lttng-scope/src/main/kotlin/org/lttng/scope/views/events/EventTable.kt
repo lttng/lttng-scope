@@ -27,12 +27,12 @@ import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.project.ProjectManager
 import org.lttng.scope.project.filter.EventFilterDefinition
 import org.lttng.scope.project.filter.getGraphic
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.timecontrol.TimestampConversion
 
 /**
  * Table displaying the trace project's trace events.
@@ -44,7 +44,7 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
     init {
         /* Setup the table */
         val filterIconsCol = FilterColumn()
-        val timestampCol = createTextColumn("Timestamp", 200.0, { TimestampConversion.tsToString(it.timestamp) })
+        val timestampCol = createTextColumn("Timestamp", 200.0, { ScopeOptions.timestampFormat.tsToString(it.timestamp) })
         val traceCol = createTextColumn("Trace", 100.0, { it.trace.name })
         val cpuCol = createTextColumn("CPU", 50.0, { it.cpu.toString() })
         val typeCol = createTextColumn("Event Type", 200.0, { it.eventName })
