@@ -13,6 +13,7 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
+import org.lttng.scope.application.actions.openTraceAction
 import org.lttng.scope.views.context.ViewGroupContextManager
 
 private const val FILE_MENU = "File"

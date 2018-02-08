@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.application
+package org.lttng.scope.application.actions
 
 import com.efficios.jabberwocky.ctf.trace.CtfTrace
 import com.efficios.jabberwocky.project.TraceProject
