@@ -22,19 +22,47 @@ abstract class TimestampFormatTestBase(private val format: TimestampFormat,
                                        private val tsToStringData: List<Pair<Long, String>>) {
     @Test
     fun testParsing() {
-        stringToTsData.forEach { assertEquals(it.second, format.stringToTs(it.first)) }
+        stringToTsData.forEach { assertEquals(it.first, it.second, format.stringToTs(it.first)) }
     }
 
     @Test
     fun testParsingInvalid() {
-        invalidStrData.forEach { assertNull(format.stringToTs(it)) }
+        invalidStrData.forEach { assertNull(it, format.stringToTs(it)) }
     }
 
     @Test
     fun testPrinting() {
-        tsToStringData.forEach { assertEquals(it.second, format.tsToString(it.first)) }
+        tsToStringData.forEach { assertEquals(it.first.toString(), it.second, format.tsToString(it.first)) }
     }
 }
+
+class TimestampFormatDHMSTest : TimestampFormatTestBase(TimestampFormat.YMD_HMS_N,
+        listOf(
+                "2012-03-13 19:50:47.314038062" to 1331668247314038062L,
+
+                /* Trailing zeroes may be omitted */
+                "2012-03-13 19:50:47.314000000" to 1331668247314000000L,
+                "2012-03-13 19:50:47.314" to 1331668247314000000L,
+                "2012-03-13 19:50:47.00576" to 1331668247005760000L,
+                "2012-03-13 19:50:47.00576000" to 1331668247005760000L,
+
+                "2012-03-13 19:50:47.000000000" to 1331668247000000000L,
+                "2012-03-13 19:50:47.0000" to 1331668247000000000L,
+                "2012-03-13 19:50:47.0" to 1331668247000000000L,
+                "2012-03-13 19:50:47." to 1331668247000000000L, /* Ending with a decimal point should be valid */
+                "2012-03-13 19:50:47" to 1331668247000000000L),
+
+        listOf(
+                "abcdef",
+                "1afe3",
+                "1000",
+                "1000.1",
+                "19:50:47"), /* missing date */
+
+        listOf(
+                1331668247314038062L to "2012-03-13 19:50:47.314038062",
+                1331668247000000000L to "2012-03-13 19:50:47.000000000")
+)
 
 class TimestampFormatNanoSecTest : TimestampFormatTestBase(TimestampFormat.SECONDS_POINT_NANOS,
         listOf(

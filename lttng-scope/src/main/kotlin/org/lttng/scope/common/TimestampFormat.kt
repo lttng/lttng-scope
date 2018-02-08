@@ -10,8 +10,42 @@
 package org.lttng.scope.common
 
 import java.math.BigDecimal
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 enum class TimestampFormat {
+
+    /** "yyyy-mm-dd hh:mm:ss.n" format */
+    YMD_HMS_N {
+        override fun tsToString(ts: Long): String {
+            val s = ts / NANOS_PER_SEC
+            val ns = ts % NANOS_PER_SEC
+            val dateTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(s, ns), ZoneOffset.UTC)
+            return dateTime.format(YMD_HMS_N_FORMATTER)
+        }
+
+        override fun stringToTs(input: String): Long? {
+            return YMD_HMS_N_INPUT_FORMATTERS
+                    .map {
+                        try {
+                            LocalDateTime.parse(input, it)
+                        } catch (e: DateTimeParseException) {
+                            null
+                        }
+                    }
+                    .filterNotNull()
+                    .firstOrNull()
+                    ?.let {
+                        with(it.toInstant(ZoneOffset.UTC)) {
+                            epochSecond * NANOS_PER_SEC + nano
+                        }
+                    }
+        }
+    },
 
     /** "s.ns" format */
     SECONDS_POINT_NANOS {
@@ -44,6 +78,24 @@ enum class TimestampFormat {
     companion object {
         const val NANOS_PER_SEC = 1000000000L
         private val NANOS_PER_SEC_BD = BigDecimal(NANOS_PER_SEC)
+
+        /* Time formatters, see https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html */
+
+        /* "Be specific in what you give ..." */
+        private val YMD_HMS_N_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS")
+        /* "... but liberal in what you accept." */
+        private val YMD_HMS_N_INPUT_FORMATTERS = listOf(
+                YMD_HMS_N_FORMATTER,
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss."),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
     }
 
     /**
