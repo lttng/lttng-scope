@@ -9,6 +9,7 @@
 
 package org.lttng.scope.common
 
+import com.efficios.jabberwocky.common.TimeRange
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDateTime
@@ -28,7 +29,7 @@ enum class TimestampFormat {
             return dateTime.format(YMD_HMS_N_FORMATTER)
         }
 
-        override fun stringToTs(input: String): Long? {
+        override fun stringToTs(projectRange: TimeRange, input: String): Long? {
             return YMD_HMS_N_INPUT_FORMATTERS
                     .map {
                         try {
@@ -55,7 +56,7 @@ enum class TimestampFormat {
             return "%d.%09d".format(s, ns)
         }
 
-        override fun stringToTs(input: String): Long? {
+        override fun stringToTs(projectRange: TimeRange, input: String): Long? {
             val nbPoints = input.chars().filter { it.toChar() == '.' }.count().toInt()
             if (nbPoints > 1) {
                 /* Only 1 decimal point allowed */
@@ -108,5 +109,5 @@ enum class TimestampFormat {
      *
      * @return The long value, or null if the string is not parseable
      */
-    abstract fun stringToTs(input: String): Long?
+    abstract fun stringToTs(projectRange: TimeRange, input: String): Long?
 }

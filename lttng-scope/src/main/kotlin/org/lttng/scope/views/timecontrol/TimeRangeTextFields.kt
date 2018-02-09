@@ -17,6 +17,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.clamp
+import org.lttng.scope.views.context.ViewGroupContextManager
 import kotlin.math.max
 import kotlin.math.min
 
@@ -79,7 +80,8 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         fun applyCurrentText() {
             /* First see if the current text makes sense. */
-            val value = ScopeOptions.timestampFormat.stringToTs(text)
+            val range = ViewGroupContextManager.getCurrent().getCurrentProjectFullRange()
+            val value = ScopeOptions.timestampFormat.stringToTs(range, text)
             if (value == null) {
                 /* Invalid value, reset to previous one */
                 resetValue()

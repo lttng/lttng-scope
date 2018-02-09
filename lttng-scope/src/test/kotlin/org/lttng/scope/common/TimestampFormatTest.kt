@@ -9,6 +9,7 @@
 
 package org.lttng.scope.common
 
+import com.efficios.jabberwocky.common.TimeRange
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -20,14 +21,19 @@ abstract class TimestampFormatTestBase(private val format: TimestampFormat,
                                        private val invalidStrData: List<String>,
                                        /** Test timestamps and their expected formatted strings */
                                        private val tsToStringData: List<Pair<Long, String>>) {
+
+    companion object {
+        private val fullRange = TimeRange.of(0, Long.MAX_VALUE)
+    }
+
     @Test
     fun testParsing() {
-        stringToTsData.forEach { assertEquals(it.first, it.second, format.stringToTs(it.first)) }
+        stringToTsData.forEach { assertEquals(it.first, it.second, format.stringToTs(fullRange, it.first)) }
     }
 
     @Test
     fun testParsingInvalid() {
-        invalidStrData.forEach { assertNull(it, format.stringToTs(it)) }
+        invalidStrData.forEach { assertNull(it, format.stringToTs(fullRange, it)) }
     }
 
     @Test
