@@ -10,14 +10,24 @@
 package org.lttng.scope.common
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 abstract class TimestampFormatTestBase(private val format: TimestampFormat,
+                                       /** Test strings and their parsed timestamp */
                                        private val stringToTsData: List<Pair<String, Long>>,
+                                       /** Strings that should not be valid for this format */
+                                       private val invalidStrData: List<String>,
+                                       /** Test timestamps and their expected formatted strings */
                                        private val tsToStringData: List<Pair<Long, String>>) {
     @Test
     fun testParsing() {
         stringToTsData.forEach { assertEquals(it.second, format.stringToTs(it.first)) }
+    }
+
+    @Test
+    fun testParsingInvalid() {
+        invalidStrData.forEach { assertNull(format.stringToTs(it)) }
     }
 
     @Test
@@ -46,6 +56,12 @@ class TimestampFormatNanoSecTest : TimestampFormatTestBase(TimestampFormat.SECON
                 "0.0100000" to 10000000L,
                 "000001.0100000" to 1010000000L,
                 "000000.0100000" to 10000000L),
+
+        listOf(
+                "abcdef",
+                "1afe3",
+                "22:00:1.123",
+                "2018-01-26 11:50:00"),
 
         listOf(
                 1000000000L to "1.000000000",
