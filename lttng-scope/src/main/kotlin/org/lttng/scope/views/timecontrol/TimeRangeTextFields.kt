@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import org.lttng.scope.application.ScopeOptions
+import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.common.clamp
 import org.lttng.scope.views.context.ViewGroupContextManager
 import kotlin.math.max
@@ -81,7 +82,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
         fun applyCurrentText() {
             /* First see if the current text makes sense. */
             val range = ViewGroupContextManager.getCurrent().getCurrentProjectFullRange()
-            val value = ScopeOptions.timestampFormat.stringToTs(range, text)
+            val value = getTimestampFormat().stringToTs(range, text)
             if (value == null) {
                 /* Invalid value, reset to previous one */
                 resetValue()
@@ -91,13 +92,15 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
         }
 
         protected abstract fun applyValue(value: Long)
+
+        protected open fun getTimestampFormat(): TimestampFormat = ScopeOptions.timestampFormat
     }
 
     private inner class StartTextField : TimeRangeTextField() {
 
         override fun resetValue() {
             val start = timeRange?.startTime ?: 0L
-            text = ScopeOptions.timestampFormat.tsToString(start)
+            text = getTimestampFormat().tsToString(start)
         }
 
         override fun applyValue(value: Long) {
@@ -129,7 +132,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         override fun resetValue() {
             val end = timeRange?.endTime ?: 0L
-            text = ScopeOptions.timestampFormat.tsToString(end)
+            text = getTimestampFormat().tsToString(end)
         }
 
         override fun applyValue(value: Long) {
@@ -159,7 +162,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         override fun resetValue() {
             val duration = timeRange?.duration ?: 0L
-            text = ScopeOptions.timestampFormat.tsToString(duration)
+            text = getTimestampFormat().tsToString(duration)
         }
 
         override fun applyValue(value: Long) {
@@ -195,6 +198,8 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
             resetAllValues()
         }
 
+        /* Duration always uses s.ns */
+        override fun getTimestampFormat() = TimestampFormat.SECONDS_POINT_NANOS
     }
 
 }

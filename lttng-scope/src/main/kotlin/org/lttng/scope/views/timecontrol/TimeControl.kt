@@ -24,6 +24,7 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import org.lttng.scope.application.ScopeOptions
+import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.views.context.ViewGroupContextManager
 
 class TimeControl : BorderPane() {
@@ -40,6 +41,8 @@ class TimeControl : BorderPane() {
         private const val MINIMUM_VISIBLE_RANGE = 10000L
         private val TITLE_FONT = Font.font(null, FontWeight.BOLD, -1.0)
         private val GRID_PADDING = Insets(10.0)
+        private const val TIMESTAMPS_FIELDS_WIDTH = 250.0
+        private const val SPAN_FIELDS_WIDTH = 200.0
     }
 
     private val viewContextProperty: ObjectProperty<ViewGroupContext> = SimpleObjectProperty(ViewGroupContextManager.getCurrent())
@@ -64,15 +67,17 @@ class TimeControl : BorderPane() {
                 selectionRangeFields.endTextField,
                 selectionRangeFields.durationTextField
         )
-        textFields.forEach { it.alignment = Pos.CENTER_LEFT }
+        textFields.forEach { it.alignment = Pos.CENTER_RIGHT }
 
         projRangeTextFields = generateSequence { TextField() }.take(3)
                 .onEach {
                     it.isEditable = false
-                    it.prefWidth = 220.0
-                    it.alignment = Pos.CENTER_LEFT
+                    it.alignment = Pos.CENTER_RIGHT
                     it.background = Background(BackgroundFill(Color.LIGHTGRAY, CornerRadii(2.0), null))
                 }.toList().toTypedArray()
+        projRangeTextFields[0].prefWidth = TIMESTAMPS_FIELDS_WIDTH
+        projRangeTextFields[1].prefWidth = TIMESTAMPS_FIELDS_WIDTH
+        projRangeTextFields[2].prefWidth = SPAN_FIELDS_WIDTH
 
         val topHeaderLabels = listOf(LABEL_START, LABEL_END, LABEL_SPAN)
                 .map { Label(it) }
@@ -127,9 +132,14 @@ class TimeControl : BorderPane() {
             /* Update the displayed trace's time range. */
             val projRange = newProject?.fullRange ?: ViewGroupContext.UNINITIALIZED_RANGE
 
-            projRangeTextFields[0].text = tf.tsToString(projRange.startTime)
-            projRangeTextFields[1].text = tf.tsToString(projRange.endTime)
-            projRangeTextFields[2].text = tf.tsToString(projRange.duration)
+            /* Project ranges always use full [date]-[time] format, or s.ns if configured. */
+            val projRangeFormat = when(tf) {
+                TimestampFormat.HMS_N, TimestampFormat.YMD_HMS_N -> TimestampFormat.YMD_HMS_N
+                TimestampFormat.SECONDS_POINT_NANOS -> TimestampFormat.SECONDS_POINT_NANOS
+            }
+            projRangeTextFields[0].text = projRangeFormat.tsToString(projRange.startTime)
+            projRangeTextFields[1].text = projRangeFormat.tsToString(projRange.endTime)
+            projRangeTextFields[2].text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(projRange.duration)
 
             /* Update the text fields' limits */
             visibleRangeFields.limits = projRange
@@ -141,10 +151,10 @@ class TimeControl : BorderPane() {
             with(textFields) {
                 get(0).text = tf.tsToString(visibleRange.startTime)
                 get(1).text = tf.tsToString(visibleRange.endTime)
-                get(2).text = tf.tsToString(visibleRange.duration)
+                get(2).text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(visibleRange.duration)
                 get(3).text = tf.tsToString(selectionRange.startTime)
                 get(4).text = tf.tsToString(selectionRange.endTime)
-                get(5).text = tf.tsToString(selectionRange.duration)
+                get(5).text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(selectionRange.duration)
             }
 
             /**
@@ -156,13 +166,13 @@ class TimeControl : BorderPane() {
                 if (viewCtx.listenerFreeze) return@addListener
                 textFields[0].text = tf.tsToString(newVal.startTime)
                 textFields[1].text = tf.tsToString(newVal.endTime)
-                textFields[2].text = tf.tsToString(newVal.duration)
+                textFields[2].text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(newVal.duration)
             }
             viewCtx.selectionTimeRangeProperty().addListener { _, _, newVal ->
                 if (viewCtx.listenerFreeze) return@addListener
                 textFields[3].text = tf.tsToString(newVal.startTime)
                 textFields[4].text = tf.tsToString(newVal.endTime)
-                textFields[5].text = tf.tsToString(newVal.duration)
+                textFields[5].text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(newVal.duration)
             }
 
             /* Bind underlying properties */

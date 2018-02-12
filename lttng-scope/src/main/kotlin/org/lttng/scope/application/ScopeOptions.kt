@@ -16,5 +16,5 @@ import org.lttng.scope.common.TimestampFormat
  */
 object ScopeOptions {
 
-    val timestampFormat = TimestampFormat.SECONDS_POINT_NANOS
+    val timestampFormat = TimestampFormat.HMS_N
 }
