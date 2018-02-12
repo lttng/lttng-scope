@@ -13,9 +13,11 @@ import com.efficios.jabberwocky.common.TimeRange
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.time.temporal.Temporal
 
 const val NANOS_PER_SEC = 1000000000L
 private val NANOS_PER_SEC_BD = BigDecimal(NANOS_PER_SEC)
@@ -25,7 +27,39 @@ enum class TimestampFormat {
     /** "yyyy-mm-dd hh:mm:ss.n" format */
     YMD_HMS_N {
         override fun tsToString(ts: Long): String = ts.toDateTime().format(YMD_HMS_N_FORMATTERS[0])
-        override fun stringToTs(projectRange: TimeRange, input: String) = parseString(input, YMD_HMS_N_FORMATTERS)
+        override fun stringToTs(projectRange: TimeRange, input: String) = parseString(input, YMD_HMS_N_FORMATTERS, LocalDateTime::parse)?.toTimestamp()
+    },
+
+    /** "hh:mm:ss.n" format */
+    HMS_N {
+        override fun tsToString(ts: Long): String = ts.toDateTime().format(HMS_N_FORMATTERS[0])
+
+        override fun stringToTs(projectRange: TimeRange, input: String): Long? {
+            /* This conversion is impossible if the project range spans over 24 hours. */
+            if (projectRange.duration > NANOS_PER_SEC * 60 * 60 * 24) {
+                throw IllegalArgumentException("Cannot parse string $input as H:M:S format because range $projectRange spans over 24 hours.")
+            }
+
+            val startDateTime = projectRange.startTime.toDateTime()
+            val endDateTime = projectRange.endTime.toDateTime()
+            val tsTime = parseString(input, HMS_N_FORMATTERS, LocalTime::parse) ?: return null
+
+            /* Only use this timestamp if it's part of the project range. */
+            with(LocalDateTime.of(startDateTime.toLocalDate(), tsTime)) {
+                if (this >= startDateTime && this <= endDateTime) {
+                    return this.toTimestamp()
+                }
+            }
+            with(LocalDateTime.of(endDateTime.toLocalDate(), tsTime)) {
+                if (this >= startDateTime && this <= endDateTime) {
+                    return this.toTimestamp()
+                }
+            }
+
+            /* The target timestamp is not part of the project's range. */
+            return null
+        }
+
     },
 
     /** "s.ns" format */
@@ -61,6 +95,19 @@ enum class TimestampFormat {
          * Time formatters, see https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
          * The lists include all the acceptable ones for parsing, but the one at index 0 should be used for formatting.
          */
+        private val HMS_N_FORMATTERS = listOf(
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SS"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.S"),
+                DateTimeFormatter.ofPattern("HH:mm:ss."),
+                DateTimeFormatter.ofPattern("HH:mm:ss")
+        )
         private val YMD_HMS_N_FORMATTERS = listOf(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS"),
@@ -100,23 +147,31 @@ private fun Long.toDateTime(): LocalDateTime {
 }
 
 /**
- * Attempt to parse the given string as a timestamp, using the list of provided formatters.
+ * Convert a [LocalDateTime] to a framework timestamp in the UTC timezone.
+ */
+private fun LocalDateTime.toTimestamp(): Long {
+    return with(this.toInstant(ZoneOffset.UTC)) {
+        epochSecond * NANOS_PER_SEC + nano
+    }
+}
+
+/**
+ * Attempt to parse the given string using a list of provided formatters.
  * The formatters will be tried according to the iteration order, until a working one is
  * found. If none of the formatters can parse the string, then null is returned.
+ *
+ * The 'parseFunction' parameter will determine the returned type, for example you can pass
+ * "LocalTime::parse", which will return a [LocalTime] object. The parse should either return
+ * null or throw a [DateTimeParseException] to indicate it cannot parse the given string with
+ * a given formatter.
  */
-private fun parseString(input: String, formatters: List<DateTimeFormatter>): Long? =
+private fun <T : Temporal> parseString(input: String, formatters: List<DateTimeFormatter>, parseFunction: (String, DateTimeFormatter) -> T): T? =
         formatters
                 .mapNotNull {
                     try {
-                        LocalDateTime.parse(input, it)
+                        parseFunction(input, it)
                     } catch (e: DateTimeParseException) {
                         null
                     }
                 }
                 .firstOrNull()
-                ?.let {
-                    with(it.toInstant(ZoneOffset.UTC)) {
-                        epochSecond * NANOS_PER_SEC + nano
-                    }
-                }
-
