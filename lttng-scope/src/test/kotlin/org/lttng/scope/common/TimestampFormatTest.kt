@@ -74,7 +74,7 @@ class TimestampFormatNanoSecTest : TimestampFormatTestBase(TimestampFormat.SECON
         listOf(
                 "1000" to 1000L,
                 "1" to 1L,
-                "1000.0" to 1000L * TimestampFormat.NANOS_PER_SEC,
+                "1000.0" to 1000L * NANOS_PER_SEC,
                 "1000.1" to 1000100000000L,
                 "1000.01" to 1000010000000L,
                 "1.1" to 1100000000L,
