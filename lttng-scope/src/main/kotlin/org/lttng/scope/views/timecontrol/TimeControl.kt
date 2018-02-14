@@ -27,7 +27,7 @@ import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.views.context.ViewGroupContextManager
 
-class TimeControl : BorderPane() {
+class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
 
     companion object {
         /* UI Text */
@@ -45,8 +45,6 @@ class TimeControl : BorderPane() {
         private const val SPAN_FIELDS_WIDTH = 200.0
     }
 
-    private val viewContextProperty: ObjectProperty<ViewGroupContext> = SimpleObjectProperty(ViewGroupContextManager.getCurrent())
-
     private val textFields: Array<TextField>
     private val visibleRangeFields: TimeRangeTextFields
     private val selectionRangeFields: TimeRangeTextFields
@@ -54,10 +52,8 @@ class TimeControl : BorderPane() {
 
 
     init {
-        val viewCtx = viewContextProperty.get()
-
-        visibleRangeFields = TimeRangeTextFields(viewCtx.getCurrentProjectFullRange(), MINIMUM_VISIBLE_RANGE)
-        selectionRangeFields = TimeRangeTextFields(viewCtx.getCurrentProjectFullRange(), null)
+        visibleRangeFields = TimeRangeTextFields(viewContext.getCurrentProjectFullRange(), MINIMUM_VISIBLE_RANGE)
+        selectionRangeFields = TimeRangeTextFields(viewContext.getCurrentProjectFullRange(), null)
 
         textFields = arrayOf(
                 visibleRangeFields.startTextField,
@@ -126,7 +122,6 @@ class TimeControl : BorderPane() {
 
     private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
-            val viewCtx = viewContextProperty.get()
             val tf = ScopeOptions.timestampFormat
 
             /* Update the displayed trace's time range. */
@@ -146,8 +141,8 @@ class TimeControl : BorderPane() {
             selectionRangeFields.limits = projRange
 
             /* Read initial dynamic range values from the view context. */
-            val visibleRange = viewCtx.visibleTimeRange
-            val selectionRange = viewCtx.selectionTimeRange
+            val visibleRange = viewContext.visibleTimeRange
+            val selectionRange = viewContext.selectionTimeRange
             with(textFields) {
                 get(0).text = tf.tsToString(visibleRange.startTime)
                 get(1).text = tf.tsToString(visibleRange.endTime)
@@ -162,35 +157,33 @@ class TimeControl : BorderPane() {
              * Note we dot no use binds here, we do not want every single keystroke in the
              * text fields to update the view context values!
              */
-            viewCtx.visibleTimeRangeProperty().addListener { _, _, newVal ->
-                if (viewCtx.listenerFreeze) return@addListener
+            viewContext.visibleTimeRangeProperty().addListener { _, _, newVal ->
+                if (viewContext.listenerFreeze) return@addListener
                 textFields[0].text = tf.tsToString(newVal.startTime)
                 textFields[1].text = tf.tsToString(newVal.endTime)
                 textFields[2].text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(newVal.duration)
             }
-            viewCtx.selectionTimeRangeProperty().addListener { _, _, newVal ->
-                if (viewCtx.listenerFreeze) return@addListener
+            viewContext.selectionTimeRangeProperty().addListener { _, _, newVal ->
+                if (viewContext.listenerFreeze) return@addListener
                 textFields[3].text = tf.tsToString(newVal.startTime)
                 textFields[4].text = tf.tsToString(newVal.endTime)
                 textFields[5].text = TimestampFormat.SECONDS_POINT_NANOS.tsToString(newVal.duration)
             }
 
             /* Bind underlying properties */
-            visibleRangeFields.timeRangeProperty().bindBidirectional(viewCtx.visibleTimeRangeProperty())
-            selectionRangeFields.timeRangeProperty().bindBidirectional(viewCtx.selectionTimeRangeProperty())
+            visibleRangeFields.timeRangeProperty().bindBidirectional(viewContext.visibleTimeRangeProperty())
+            selectionRangeFields.timeRangeProperty().bindBidirectional(viewContext.selectionTimeRangeProperty())
         }
 
     }
 
     init {
-        viewContextProperty.get().registerProjectChangeListener(projectChangeListener)
+        viewContext.registerProjectChangeListener(projectChangeListener)
     }
 
     @Suppress("ProtectedInFinal", "Unused")
     protected fun finalize() {
-        // TODO Make sure we de register from the correct view context once there
-        // are more than one.
-        viewContextProperty.get().deregisterProjectChangeListener(projectChangeListener)
+        viewContext.deregisterProjectChangeListener(projectChangeListener)
     }
 
 }

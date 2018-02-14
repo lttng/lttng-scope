@@ -43,15 +43,17 @@ class ScopeMainWindow : BorderPane() {
     /** The "analysis area" consists of the Timeline pane, and the Time Control at the bottom. */
     private class AnalysisArea : VBox() {
 
+        private val viewContext = ViewGroupContextManager.getCurrent()
+
         val timelineView = TimelineView()
-        val eventTableControl = EventTableControl(ViewGroupContextManager.getCurrent())
+        val eventTableControl = EventTableControl(viewContext)
 
         /** Area containing the timeline widgets and the event table */
         val widgetArea = SplitPane(timelineView.rootNode, eventTableControl.table)
 
         init {
             widgetArea.orientation = Orientation.VERTICAL
-            children.addAll(widgetArea, TimeControl())
+            children.addAll(widgetArea, TimeControl(viewContext))
         }
     }
 
