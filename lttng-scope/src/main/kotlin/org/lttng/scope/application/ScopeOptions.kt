@@ -9,6 +9,7 @@
 
 package org.lttng.scope.application
 
+import com.efficios.jabberwocky.common.ConfigOption
 import org.lttng.scope.common.TimestampFormat
 
 /**
@@ -16,5 +17,10 @@ import org.lttng.scope.common.TimestampFormat
  */
 object ScopeOptions {
 
-    val timestampFormat = TimestampFormat.HMS_N
+    /* Format to use for timestamp formatting */
+    private val timestampFormatProperty: ConfigOption<TimestampFormat> = ConfigOption(TimestampFormat.HMS_N)
+    fun timestampFormatProperty() = timestampFormatProperty
+    var timestampFormat: TimestampFormat
+        get() = timestampFormatProperty.get()
+        set(value) = timestampFormatProperty.set(value)
 }

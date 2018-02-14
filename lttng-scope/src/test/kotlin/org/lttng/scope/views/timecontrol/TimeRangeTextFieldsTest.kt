@@ -17,7 +17,6 @@ import javafx.scene.input.KeyEvent
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Test
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
@@ -25,7 +24,6 @@ import org.lttng.scope.common.TimestampFormat
 /**
  * Tests for [TimeRangeTextFields].
  */
-@Ignore
 open class TimeRangeTextFieldsTest {
 
     companion object {
@@ -50,6 +48,9 @@ open class TimeRangeTextFieldsTest {
 
     @Before
     fun setup() {
+        /* These tests use the s.ns format */
+        ScopeOptions.timestampFormat = TimestampFormat.SECONDS_POINT_NANOS
+
         fixture = provideFixture()
         fixture.timeRange = TimeRange.of(INITIAL_START, INITIAL_END)
     }
