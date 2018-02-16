@@ -13,6 +13,7 @@ import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.value.ChangeListener
 import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -48,7 +49,7 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
     private val textFields: Array<TextField>
     private val visibleRangeFields: TimeRangeTextFields
     private val selectionRangeFields: TimeRangeTextFields
-    private val projRangeTextFields: Array<TextField>
+    internal val projRangeTextFields: Array<TextField>
 
 
     init {
@@ -177,13 +178,31 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
 
     }
 
+    private val timestampFormatChangeListener = ChangeListener<TimestampFormat> { _, _, newValue ->
+        newValue ?: return@ChangeListener
+        /*
+         * The TimeRangeTextFields class already takes care of updating its contents
+         * on format change. We only need to care care of the "project range" fields.
+         */
+        val formatToUse = when(newValue) {
+            TimestampFormat.HMS_N, TimestampFormat.YMD_HMS_N -> TimestampFormat.YMD_HMS_N
+            TimestampFormat.SECONDS_POINT_NANOS -> TimestampFormat.SECONDS_POINT_NANOS
+        }
+        val (start, end) = viewContext.getCurrentProjectFullRange()
+        projRangeTextFields[0].text = formatToUse.tsToString(start)
+        projRangeTextFields[1].text = formatToUse.tsToString(end)
+        /*  Duration field remains at s.ns */
+    }
+
     init {
         viewContext.registerProjectChangeListener(projectChangeListener)
+        ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
     }
 
     @Suppress("ProtectedInFinal", "Unused")
     protected fun finalize() {
         viewContext.deregisterProjectChangeListener(projectChangeListener)
+        ScopeOptions.timestampFormatProperty().removeListener(timestampFormatChangeListener)
     }
 
 }

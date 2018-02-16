@@ -25,6 +25,7 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
     protected val xAxis = NumberAxis().apply {
         isAutoRanging = false
         isTickMarkVisible = false
+        isTickLabelsVisible = false
         tickUnit = 0.0
     }
 

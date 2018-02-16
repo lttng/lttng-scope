@@ -13,6 +13,8 @@ import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.project.TraceProjectIterator
 import com.efficios.jabberwocky.trace.event.TraceEvent
+import javafx.beans.InvalidationListener
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.application.task.ScopeTask
 import org.lttng.scope.common.LatestTaskExecutor
 import java.util.*
@@ -45,7 +47,10 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
                 initializeForProject(newProject)
             }
         }
+    }
 
+    private val timestampFormatChangeListener = InvalidationListener {
+        table.refresh()
     }
 
     val table = EventTable(this)
@@ -61,11 +66,14 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
             if (viewContext.listenerFreeze) return@addListener
             viewContext.traceProject?.let { recenterOn(it, newRange.startTime) }
         }
+
+        ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
     }
 
     @Suppress("ProtectedInFinal", "Unused")
     protected fun finalize() {
         viewContext.deregisterProjectChangeListener(projectChangeListener)
+        ScopeOptions.timestampFormatProperty().removeListener(timestampFormatChangeListener)
     }
 
     @Synchronized

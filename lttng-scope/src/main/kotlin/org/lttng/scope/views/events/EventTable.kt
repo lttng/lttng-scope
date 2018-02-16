@@ -39,7 +39,7 @@ import org.lttng.scope.views.context.ViewGroupContextManager
  */
 class EventTable(private val tableControl: EventTableControl) : BorderPane() {
 
-    private val tableView: TableView<TraceEvent>
+    internal val tableView: TableView<TraceEvent>
 
     init {
         /* Setup the table */
@@ -123,6 +123,14 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
                 }
             }
         }
+    }
+
+    /**
+     * Refresh the view, as in, keep the same displayed data and selection,
+     * but ask to regenerate the cell contents.
+     */
+    fun refresh() {
+        tableView.refresh()
     }
 
     /**
