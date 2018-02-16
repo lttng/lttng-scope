@@ -11,6 +11,7 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import org.junit.Test;
+import org.lttng.scope.common.tests.StubTrace;
 
 /**
  * {@link TimeGraphWidget} test suite testing zooming operations.

@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.lttng.scope.common.tests.StubTrace;
 
 import java.util.Arrays;
 import java.util.Collection;

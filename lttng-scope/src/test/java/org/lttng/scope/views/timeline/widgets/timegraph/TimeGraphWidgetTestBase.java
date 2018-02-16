@@ -22,6 +22,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.lttng.scope.common.tests.StubProject;
+import org.lttng.scope.common.tests.StubTrace;
 import org.lttng.scope.views.jfx.JfxUtils;
 
 import java.util.concurrent.CountDownLatch;
