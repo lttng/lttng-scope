@@ -11,8 +11,6 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
-import com.sun.javafx.tk.TKPulseListener;
-import com.sun.javafx.tk.Toolkit;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -22,11 +20,11 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubProject;
 import org.lttng.scope.common.tests.StubTrace;
 import org.lttng.scope.views.jfx.JfxUtils;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
@@ -71,17 +69,17 @@ public abstract class TimeGraphWidgetTestBase {
             stage.setHeight(500);
             stage.setWidth(1600);
         });
-        updateUI();
+        JfxTestUtils.updateUI();
 
         /* Disable automatic redraw. We'll trigger view painting manually. */
         viewer.getDebugOptions().isPaintingEnabled.set(false);
         /* Disable mouse listeners in case the mouse dwells inside the view. */
         viewer.getDebugOptions().isScrollingListenersEnabled.set(false);
 
-        updateUI();
+        JfxTestUtils.updateUI();
 
         control.getViewContext().switchProject(stubProject.getTraceProject());
-        updateUI();
+        JfxTestUtils.updateUI();
 
         sfProject = stubProject;
         sfView = view;
@@ -164,7 +162,7 @@ public abstract class TimeGraphWidgetTestBase {
         getWidget().prepareWaitForRepaint();
         getWidget().paintCurrentLocation();
         while (!getWidget().waitForRepaint()) {}
-        updateUI();
+        JfxTestUtils.updateUI();
     }
 
     /**
@@ -177,48 +175,7 @@ public abstract class TimeGraphWidgetTestBase {
         TimeGraphModelControl control = sfControl;
         assertNotNull(control);
         control.getViewContext().setVisibleTimeRange(timeRange);
-        updateUI();
-    }
-
-    /**
-     * Execute all pending UI operations. Since these tests are meant to start
-     * on the UI thread, calling this will allow pausing the test and running
-     * queued up UI operations.
-     */
-    protected static void updateUI() {
-        // TODO Replace with Scene.addPostLayoutListener(), etc. in JavaFX 9
-        WaitForNextPulseListener listener = new WaitForNextPulseListener();
-        listener.await();
-    }
-
-    private static class WaitForNextPulseListener implements TKPulseListener {
-
-        private final CountDownLatch latch;
-        private final Toolkit tk;
-
-        private WaitForNextPulseListener() {
-            this.latch = new CountDownLatch(2);
-            this.tk = Toolkit.getToolkit();
-            tk.addPostSceneTkPulseListener(this);
-        }
-
-        @Override
-        public void pulse() {
-            latch.countDown();
-            if (latch.getCount() <= 0) {
-                tk.removePostSceneTkPulseListener(this);
-            }
-            tk.requestNextPulse();
-        }
-
-        public void await() {
-            tk.requestNextPulse();
-            try {
-                latch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        JfxTestUtils.updateUI();
     }
 
     /**

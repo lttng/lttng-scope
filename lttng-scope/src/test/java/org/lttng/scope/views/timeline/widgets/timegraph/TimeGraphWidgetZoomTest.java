@@ -11,6 +11,7 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
 import org.junit.Test;
+import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubTrace;
 
 /**
@@ -117,7 +118,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
         for (int i = 0; i < nbSteps; i++) {
             widget.getZoomActions().zoom(zoomIn, false, null);
         }
-        updateUI();
+        JfxTestUtils.updateUI();
 
         final long expectedStart = Math.max(
                 newStart, StubTrace.FULL_TRACE_START_TIME);
