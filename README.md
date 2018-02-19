@@ -25,9 +25,13 @@ The following items are required to run LTTng Scope:
 * Java 8
 * JavaFX
 
-If you use Oracle's JVM, JavaFX is included. If you use OpenJDK, you might need
-to install OpenJFX separately. On Debian/Ubuntu, it is part of the _openjfx_
-package.
+If you use Oracle's JVM, which is typical on Windows and macOS, then JavaFX is
+already included.
+
+If you use OpenJDK, you might need to install OpenJFX separately.
+On Debian/Ubuntu, you can run the following command to install the dependencies:
+
+    sudo apt install openjdk-8-jre openjdk-8-jdk openjfx
 
 
 Build from source
