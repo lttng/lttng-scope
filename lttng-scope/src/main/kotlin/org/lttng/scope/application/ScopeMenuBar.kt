@@ -32,34 +32,33 @@ private const val ABOUT_ACTION = "About..."
 class ScopeMenuBar : MenuBar() {
 
     init {
-        /* "File" menu */
-        val openMenuItem = MenuItem(OPEN_ACTION).apply {
+        menus.addAll(FileMenu(),
+                ViewMenu()
+//                HelpMenu()
+        )
+    }
+
+
+    private inner class FileMenu : Menu(FILE_MENU) {
+
+        private val openMenuItem = MenuItem(OPEN_ACTION).apply {
             setOnAction { openTraceAction(this@ScopeMenuBar) }
         }
-        val closeMenuItem = MenuItem(CLOSE_ACTION).apply {
+        private val closeMenuItem = MenuItem(CLOSE_ACTION).apply {
             setOnAction { ViewGroupContextManager.getCurrent().switchProject(null) }
         }
-        val exitMenuItem = MenuItem(EXIT_ACTION).apply {
+        private val exitMenuItem = MenuItem(EXIT_ACTION).apply {
             setOnAction { scene.window.hide() }
         }
-        val fileMenu = Menu(FILE_MENU).apply {
+
+        init {
             items.addAll(openMenuItem,
                     closeMenuItem,
                     SeparatorMenuItem(),
                     exitMenuItem)
         }
-
-        /* "Help" menu */
-        val aboutMenuItem = MenuItem(ABOUT_ACTION).apply {
-            // TODO Open an About window...
-            // setOnAction { ... }
-        }
-        val helpMenu = Menu(HELP_MENU).apply {
-            items.addAll(aboutMenuItem)
-        }
-
-        menus.addAll(fileMenu, ViewMenu(), helpMenu)
     }
+
 
     private class ViewMenu : Menu(VIEW_MENU) {
 
@@ -99,6 +98,19 @@ class ScopeMenuBar : MenuBar() {
             items.addAll(timestampFormatHeaderItem, rmi1, rmi2, rmi3)
         }
 
+    }
+
+
+    private class HelpMenu : Menu(HELP_MENU) {
+
+        private val aboutMenuItem = MenuItem(ABOUT_ACTION).apply {
+            // TODO Open an About window...
+            // setOnAction { ... }
+        }
+
+        init {
+            items.addAll(aboutMenuItem)
+        }
     }
 
 }
