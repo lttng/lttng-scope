@@ -74,7 +74,11 @@ fun openTraceAction(refNode: Node?) {
 private fun showTraceSelectionDialog(initialDir: Path?, refNode: Node?): Path? {
     return with(DirectoryChooser()) {
         title = DIRECTORY_CHOOSER_TITLE
-        if (initialDir != null) initialDirectory = initialDir.toFile()
+        initialDir?.let {
+            if (Files.exists(it) && Files.isDirectory(it)) {
+                initialDirectory = it.toFile()
+            }
+        }
         showDialog(refNode?.scene?.window)
     }?.toPath()
 }
