@@ -16,8 +16,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.lttng.scope.views.jfx.JfxImageFactory;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxImageFactory;
+import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.DebugOptions;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
@@ -46,7 +46,7 @@ public class DebugOptionsButton extends Button {
      *            associated.
      */
     public DebugOptionsButton(TimeGraphWidget widget) {
-        Image icon = JfxImageFactory.instance().getImageFromResource(CONFIG_ICON_PATH);
+        Image icon = JfxImageFactory.getImageFromResource(CONFIG_ICON_PATH);
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.debugOptionsDialogName));
 

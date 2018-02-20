@@ -23,7 +23,7 @@ import org.junit.rules.Timeout;
 import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubProject;
 import org.lttng.scope.common.tests.StubTrace;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxUtils;
 
 import java.util.concurrent.TimeUnit;
 

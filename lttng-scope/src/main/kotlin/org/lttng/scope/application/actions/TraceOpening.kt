@@ -19,7 +19,7 @@ import javafx.scene.layout.Region
 import javafx.stage.DirectoryChooser
 import org.lttng.scope.ScopePaths
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.jfx.JfxUtils
+import org.lttng.scope.common.jfx.JfxUtils
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*

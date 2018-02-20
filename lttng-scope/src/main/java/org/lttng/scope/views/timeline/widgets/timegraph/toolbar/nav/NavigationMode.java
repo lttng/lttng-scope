@@ -11,7 +11,7 @@ package org.lttng.scope.views.timeline.widgets.timegraph.toolbar.nav;
 
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.common.jfx.JfxImageFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
@@ -38,10 +38,8 @@ public abstract class NavigationMode {
      */
     public NavigationMode(String modeName, String backIconPath, String forwardIconPath) {
         fModeName = modeName;
-
-        JfxImageFactory factory = JfxImageFactory.instance();
-        fBackIcon = factory.getImageFromResource(backIconPath);
-        fForwardIcon = factory.getImageFromResource(forwardIconPath);
+        fBackIcon = JfxImageFactory.getImageFromResource(backIconPath);
+        fForwardIcon = JfxImageFactory.getImageFromResource(forwardIconPath);
     }
 
     /**

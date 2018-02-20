@@ -16,7 +16,7 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.Node
-import org.lttng.scope.views.jfx.JfxColorFactory
+import org.lttng.scope.common.jfx.JfxColorFactory
 
 data class EventFilterDefinition(val name: String,
                                  val color: ColorDefinition,

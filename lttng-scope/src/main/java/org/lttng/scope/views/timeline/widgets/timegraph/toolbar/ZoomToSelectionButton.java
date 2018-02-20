@@ -15,7 +15,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.lttng.scope.views.context.ViewGroupContextManager;
-import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.common.jfx.JfxImageFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
@@ -29,7 +29,7 @@ class ZoomToSelectionButton extends Button {
     private static final String ZOOM_TO_SELECTION_ICON_PATH = "/icons/toolbar/zoom_in.gif"; //$NON-NLS-1$
 
     public ZoomToSelectionButton(TimeGraphWidget viewer) {
-        Image icon = JfxImageFactory.instance().getImageFromResource(ZOOM_TO_SELECTION_ICON_PATH);
+        Image icon = JfxImageFactory.getImageFromResource(ZOOM_TO_SELECTION_ICON_PATH);
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomToSelectionActionDescription));
         setOnAction(e -> {

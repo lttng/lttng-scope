@@ -15,7 +15,7 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 

@@ -14,8 +14,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.lttng.scope.views.jfx.JfxImageFactory;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxImageFactory;
+import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.debugopts.DebugOptionsButton;
@@ -71,7 +71,7 @@ public class ViewerToolBar extends ToolBar {
     // FIXME Temporary, should be moved to tooltip
     private Button getStateInfoButton(TimeGraphWidget viewer) {
         Button button = new Button();
-        Image helpIcon = JfxImageFactory.instance().getImageFromResource(HELP_ICON_PATH);
+        Image helpIcon = JfxImageFactory.getImageFromResource(HELP_ICON_PATH);
         button.setGraphic(new ImageView(helpIcon));
         button.setTooltip(new Tooltip("Get State Info")); //$NON-NLS-1$
         button.setOnAction(e -> {

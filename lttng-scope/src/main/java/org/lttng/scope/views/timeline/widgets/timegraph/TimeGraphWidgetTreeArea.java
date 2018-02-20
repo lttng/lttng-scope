@@ -21,7 +21,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;

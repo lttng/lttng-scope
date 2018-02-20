@@ -12,7 +12,7 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.junit.Before;
 import org.junit.Test;
-import org.lttng.scope.views.jfx.Arrow;
+import org.lttng.scope.common.jfx.Arrow;
 
 import java.util.Collection;
 

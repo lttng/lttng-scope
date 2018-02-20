@@ -13,17 +13,15 @@ import com.efficios.jabberwocky.views.common.EventSymbolStyle
 import javafx.beans.property.ReadOnlyProperty
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.scene.shape.*
 import javafx.scene.text.Font
 import javafx.scene.text.FontPosture
 import javafx.scene.text.FontWeight
 import javafx.util.Callback
-import org.lttng.scope.views.jfx.CountingGridPane
-import org.lttng.scope.views.jfx.JfxColorFactory
+import org.lttng.scope.common.jfx.CountingGridPane
+import org.lttng.scope.common.jfx.JfxColorFactory
 
 private const val createEventSeriesDialogTitle = "Create New Filter"
 private const val createEventSeriesDialogSectionFilterDef = "Filter Definition"

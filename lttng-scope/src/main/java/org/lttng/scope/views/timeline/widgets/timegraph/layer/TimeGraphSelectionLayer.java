@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.JfxUtils;
+import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 

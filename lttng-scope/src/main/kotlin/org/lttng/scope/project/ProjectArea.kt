@@ -21,7 +21,7 @@ import org.lttng.scope.project.filter.CreateEventFilterDialog
 import org.lttng.scope.project.filter.EventFilterDefinition
 import org.lttng.scope.project.filter.getGraphic
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.jfx.JfxUtils
+import org.lttng.scope.common.jfx.JfxUtils
 
 private const val NO_PROJECT = "(no project opened)"
 

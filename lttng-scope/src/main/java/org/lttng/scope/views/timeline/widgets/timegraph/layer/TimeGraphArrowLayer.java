@@ -20,8 +20,8 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
 import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.views.jfx.Arrow;
-import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.common.jfx.Arrow;
+import org.lttng.scope.common.jfx.JfxColorFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 

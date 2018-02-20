@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
+ * Copyright (C) 2017-2018 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.views.jfx;
+package org.lttng.scope.common.jfx;
 
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -20,9 +20,9 @@ import javafx.scene.layout.GridPane;
  *
  * @author Alexandre Montplaisir
  */
-public class CountingGridPane extends GridPane {
+open class CountingGridPane : GridPane() {
 
-    private int fNbRows = 0;
+    private var nbRows = 0
 
     /**
      * Add a row of nodes to this grid pane. Not thread-safe!
@@ -30,7 +30,7 @@ public class CountingGridPane extends GridPane {
      * @param children
      *            The contents of the row
      */
-    public void appendRow(Node... children) {
-        addRow(fNbRows++, children);
+    fun appendRow(vararg children: Node) {
+        addRow(nbRows++, *children)
     }
 }

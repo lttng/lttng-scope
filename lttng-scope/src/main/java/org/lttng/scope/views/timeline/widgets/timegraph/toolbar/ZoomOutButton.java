@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.lttng.scope.views.jfx.JfxImageFactory;
+import org.lttng.scope.common.jfx.JfxImageFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 /**
@@ -27,7 +27,7 @@ class ZoomOutButton extends Button {
     private static final String ZOOM_OUT_ICON_PATH = "/icons/toolbar/zoom_out.gif"; //$NON-NLS-1$
 
     public ZoomOutButton(TimeGraphWidget viewer) {
-        Image icon = JfxImageFactory.instance().getImageFromResource(ZOOM_OUT_ICON_PATH);
+        Image icon = JfxImageFactory.getImageFromResource(ZOOM_OUT_ICON_PATH);
         setGraphic(new ImageView(icon));
         setTooltip(new Tooltip(Messages.sfZoomOutActionDescription));
         setOnAction(e -> {

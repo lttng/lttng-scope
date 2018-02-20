@@ -26,7 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.project.filter.SymbolsKt;
-import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.common.jfx.JfxColorFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 import org.lttng.scope.views.timeline.widgets.timegraph.VerticalPosition;
 import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphLayer;

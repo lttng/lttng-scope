@@ -14,8 +14,8 @@ import javafx.scene.Node
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
+import org.lttng.scope.common.jfx.JfxUtils
 import org.lttng.scope.views.context.ViewGroupContextManager
-import org.lttng.scope.views.jfx.JfxUtils
 
 /**
  * Wrapper representing the "timeline" area of the main window.
@@ -47,7 +47,7 @@ class TimelineView {
     private val manager = TimelineManager(this, ViewGroupContextManager.getCurrent())
 
     fun addWidget(widget: TimelineWidget) {
-        JfxUtils.runOnMainThread {
+        JfxUtils.runOnMainThread(Runnable {
             val node = widget.rootNode
             if (widget is NavigationAreaWidget) {
                 navigationArea.children.add(node)
@@ -57,7 +57,7 @@ class TimelineView {
                 splitPane.items.sortBy { itemWeights[it] }
                 resizeWidgets()
             }
-        }
+        })
     }
 
 

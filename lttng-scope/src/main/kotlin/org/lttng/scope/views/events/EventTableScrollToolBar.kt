@@ -19,7 +19,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import org.lttng.scope.views.jfx.JfxImageFactory
+import org.lttng.scope.common.jfx.JfxImageFactory
 
 class EventTableScrollToolBar(tableControl: EventTableControl) : ToolBar() {
 
@@ -62,7 +62,7 @@ private abstract class ToolBarButton(buttonTooltip: String,
                                      action: EventHandler<ActionEvent>) : Button() {
 
     init {
-        val icon = JfxImageFactory.instance().getImageFromResource(buttonIconPath)
+        val icon = JfxImageFactory.getImageFromResource(buttonIconPath)
         graphic = ImageView(icon)
         tooltip = Tooltip(buttonTooltip)
         onAction = action

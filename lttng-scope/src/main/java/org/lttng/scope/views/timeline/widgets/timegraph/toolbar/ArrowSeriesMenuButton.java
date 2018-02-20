@@ -15,8 +15,8 @@ import com.efficios.jabberwocky.views.timegraph.model.render.arrows.TimeGraphArr
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
 import javafx.scene.paint.Color;
-import org.lttng.scope.views.jfx.Arrow;
-import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.common.jfx.Arrow;
+import org.lttng.scope.common.jfx.JfxColorFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
 import java.util.Collection;

@@ -24,8 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import org.lttng.scope.views.jfx.CountingGridPane;
-import org.lttng.scope.views.jfx.JfxColorFactory;
+import org.lttng.scope.common.jfx.CountingGridPane;
+import org.lttng.scope.common.jfx.JfxColorFactory;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
 import org.lttng.scope.views.timeline.widgets.timegraph.TimeGraphWidget;
 
