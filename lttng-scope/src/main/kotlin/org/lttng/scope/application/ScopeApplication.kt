@@ -14,6 +14,7 @@ import javafx.application.Application.launch
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
+import org.lttng.scope.common.jfx.JfxImageFactory
 
 private const val INITIAL_WINDOW_WIDTH = 1500.0
 
@@ -40,6 +41,12 @@ class ScopeApplication : Application() {
             with(primaryStage) {
                 scene = Scene(root)
                 title = "LTTng Scope"
+
+                /* Add the window icons */
+                listOf(16, 32, 48, 64, 128, 256)
+                        .map { "/appicons/png/scope_icon_${it}x$it.png" }
+                        .mapNotNull { JfxImageFactory.getImageFromResource(it) }
+                        .let { icons.addAll(it) }
 
                 /* Ensure initial window has proper size and subdivisions. */
                 width = INITIAL_WINDOW_WIDTH
