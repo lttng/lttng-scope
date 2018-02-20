@@ -11,6 +11,7 @@ package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
+import javafx.beans.InvalidationListener
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ChangeListener
@@ -42,7 +43,7 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
         private const val MINIMUM_VISIBLE_RANGE = 10000L
         private val TITLE_FONT = Font.font(null, FontWeight.BOLD, -1.0)
         private val GRID_PADDING = Insets(10.0)
-        private const val TIMESTAMPS_FIELDS_WIDTH = 250.0
+        private const val TIMESTAMPS_FIELDS_WIDTH = 300.0
         private const val SPAN_FIELDS_WIDTH = 200.0
     }
 
@@ -130,7 +131,9 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
 
             /* Project ranges always use full [date]-[time] format, or s.ns if configured. */
             val projRangeFormat = when(tf) {
-                TimestampFormat.HMS_N, TimestampFormat.YMD_HMS_N -> TimestampFormat.YMD_HMS_N
+                TimestampFormat.YMD_HMS_N_TZ,
+                TimestampFormat.YMD_HMS_N,
+                TimestampFormat.HMS_N -> TimestampFormat.YMD_HMS_N_TZ
                 TimestampFormat.SECONDS_POINT_NANOS -> TimestampFormat.SECONDS_POINT_NANOS
             }
             projRangeTextFields[0].text = projRangeFormat.tsToString(projRange.startTime)
@@ -178,14 +181,19 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
 
     }
 
-    private val timestampFormatChangeListener = ChangeListener<TimestampFormat> { _, _, newValue ->
-        newValue ?: return@ChangeListener
+    private val timestampFormatChangeListener = InvalidationListener {
         /*
          * The TimeRangeTextFields class already takes care of updating its contents
          * on format change. We only need to care care of the "project range" fields.
          */
-        val formatToUse = when(newValue) {
-            TimestampFormat.HMS_N, TimestampFormat.YMD_HMS_N -> TimestampFormat.YMD_HMS_N
+        /*
+         * Note we are not using a ChangeListener, because the same listener can
+         * be triggered by a change to the time zone property too.
+         */
+        val formatToUse = when(ScopeOptions.timestampFormat) {
+            TimestampFormat.YMD_HMS_N_TZ,
+            TimestampFormat.YMD_HMS_N,
+            TimestampFormat.HMS_N -> TimestampFormat.YMD_HMS_N_TZ
             TimestampFormat.SECONDS_POINT_NANOS -> TimestampFormat.SECONDS_POINT_NANOS
         }
         val (start, end) = viewContext.getCurrentProjectFullRange()
@@ -197,12 +205,14 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
     init {
         viewContext.registerProjectChangeListener(projectChangeListener)
         ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().addListener(timestampFormatChangeListener)
     }
 
     @Suppress("ProtectedInFinal", "Unused")
     protected fun finalize() {
         viewContext.deregisterProjectChangeListener(projectChangeListener)
         ScopeOptions.timestampFormatProperty().removeListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().removeListener(timestampFormatChangeListener)
     }
 
 }

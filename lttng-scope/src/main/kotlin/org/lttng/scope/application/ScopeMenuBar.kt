@@ -22,9 +22,14 @@ private const val EXIT_ACTION = "Exit"
 
 private const val VIEW_MENU = "View"
 private const val TIMESTAMP_FORMAT_HEADER = "Timestamp Formatting"
+private const val TIMESTAMP_FORMAT_OPTION_FULL_DATE_TIMEZONE = "YYYY-MM-DD hh:mm:ss.n TZ"
 private const val TIMESTAMP_FORMAT_OPTION_FULL_DATE = "YYYY-MM-DD hh:mm:ss.n"
 private const val TIMESTAMP_FORMAT_OPTION_HMS_NANOS = "hh:mm:ss.n"
 private const val TIMESTAMP_FORMAT_OPTION_SECONDS_NANOS = "s.n"
+
+private const val TIMEZONE_TO_USE_HEADER = "Time Zone"
+private const val TIMEZONE_TO_USE_LOCAL = "Local"
+private const val TIMEZONE_TO_USE_UTC = "UTC"
 
 private const val HELP_MENU = "Help"
 private const val ABOUT_ACTION = "About..."
@@ -62,23 +67,45 @@ class ScopeMenuBar : MenuBar() {
 
     private class ViewMenu : Menu(VIEW_MENU) {
 
-        private val rmi1 = RadioMenuItem(TIMESTAMP_FORMAT_OPTION_FULL_DATE).apply {
-            setOnAction { ScopeOptions.timestampFormat = TimestampFormat.YMD_HMS_N }
-        }
-        private val rmi2 = RadioMenuItem(TIMESTAMP_FORMAT_OPTION_HMS_NANOS).apply {
-            setOnAction { ScopeOptions.timestampFormat = TimestampFormat.HMS_N }
-        }
-        private val rmi3 = RadioMenuItem(TIMESTAMP_FORMAT_OPTION_SECONDS_NANOS).apply {
-            setOnAction { ScopeOptions.timestampFormat = TimestampFormat.SECONDS_POINT_NANOS }
-        }
+        private val timestampFormatRMIs = arrayOf(
+                RadioMenuItem(TIMESTAMP_FORMAT_OPTION_FULL_DATE_TIMEZONE).apply {
+                    setOnAction { ScopeOptions.timestampFormat = TimestampFormat.YMD_HMS_N_TZ }
+                },
+                RadioMenuItem(TIMESTAMP_FORMAT_OPTION_FULL_DATE).apply {
+                    setOnAction { ScopeOptions.timestampFormat = TimestampFormat.YMD_HMS_N }
+                },
+                RadioMenuItem(TIMESTAMP_FORMAT_OPTION_HMS_NANOS).apply {
+                    setOnAction { ScopeOptions.timestampFormat = TimestampFormat.HMS_N }
+                },
+                RadioMenuItem(TIMESTAMP_FORMAT_OPTION_SECONDS_NANOS).apply {
+                    setOnAction { ScopeOptions.timestampFormat = TimestampFormat.SECONDS_POINT_NANOS }
+                })
 
         /** Listener to update the displayed entry if the option changes elsewhere. */
         private val timestampFormatChangeListener = ChangeListener<TimestampFormat> { _, _, newValue ->
+            newValue ?: return@ChangeListener
             when (newValue) {
-                TimestampFormat.YMD_HMS_N -> rmi1.isSelected = true
-                TimestampFormat.HMS_N -> rmi2.isSelected = true
-                TimestampFormat.SECONDS_POINT_NANOS -> rmi3.isSelected = true
-                null -> {}
+                TimestampFormat.YMD_HMS_N_TZ -> timestampFormatRMIs[0].isSelected = true
+                TimestampFormat.YMD_HMS_N -> timestampFormatRMIs[1].isSelected = true
+                TimestampFormat.HMS_N -> timestampFormatRMIs[2].isSelected = true
+                TimestampFormat.SECONDS_POINT_NANOS -> timestampFormatRMIs[3].isSelected = true
+            }
+        }
+
+        private val timeZoneRMIs = arrayOf(
+                RadioMenuItem(TIMEZONE_TO_USE_LOCAL).apply {
+                    setOnAction { ScopeOptions.timestampTimeZone = ScopeOptions.DisplayTimeZone.LOCAL }
+                },
+                RadioMenuItem(TIMEZONE_TO_USE_UTC).apply {
+                    setOnAction { ScopeOptions.timestampTimeZone = ScopeOptions.DisplayTimeZone.UTC }
+                }
+        )
+
+        private val timeZoneToUseChangeListener = ChangeListener<ScopeOptions.DisplayTimeZone> { _, _, newValue ->
+            newValue ?: return@ChangeListener
+            when (newValue) {
+                ScopeOptions.DisplayTimeZone.LOCAL -> timeZoneRMIs[0].isSelected = true
+                ScopeOptions.DisplayTimeZone.UTC -> timeZoneRMIs[1].isSelected = true
             }
         }
 
@@ -88,14 +115,25 @@ class ScopeMenuBar : MenuBar() {
             }
 
             val timestampFormatToggleGroup = ToggleGroup()
-            listOf(rmi1, rmi2, rmi3).forEach { it.toggleGroup = timestampFormatToggleGroup }
+            timestampFormatRMIs.forEach { it.toggleGroup = timestampFormatToggleGroup }
 
             /* "Fire" the listener manually initially to set the initial state. */
             timestampFormatChangeListener.changed(null, null, ScopeOptions.timestampFormat)
             /* then attach the listener to the property to track future changes */
             ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
 
-            items.addAll(timestampFormatHeaderItem, rmi1, rmi2, rmi3)
+            val timeZoneToUseHeaderItem = MenuItem(TIMEZONE_TO_USE_HEADER).apply {
+                isDisable = true
+            }
+
+            val timeZoneToggleGroup = ToggleGroup()
+            timeZoneRMIs.forEach { it.toggleGroup = timeZoneToggleGroup }
+            timeZoneToUseChangeListener.changed(null, null, ScopeOptions.timestampTimeZone)
+            ScopeOptions.timestampTimeZoneProperty().addListener(timeZoneToUseChangeListener)
+
+            items.addAll(timestampFormatHeaderItem, *timestampFormatRMIs,
+                    SeparatorMenuItem(),
+                    timeZoneToUseHeaderItem, *timeZoneRMIs)
         }
 
     }

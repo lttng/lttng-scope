@@ -68,12 +68,14 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
         }
 
         ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().addListener(timestampFormatChangeListener)
     }
 
     @Suppress("ProtectedInFinal", "Unused")
     protected fun finalize() {
         viewContext.deregisterProjectChangeListener(projectChangeListener)
         ScopeOptions.timestampFormatProperty().removeListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().removeListener(timestampFormatChangeListener)
     }
 
     @Synchronized

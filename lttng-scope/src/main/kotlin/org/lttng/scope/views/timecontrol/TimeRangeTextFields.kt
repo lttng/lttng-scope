@@ -40,10 +40,6 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
         get() = timeRangeProperty.get()
         set(timeRange) = timeRangeProperty.set(timeRange)
 
-    private val timestampFormatProperty: ObjectProperty<TimestampFormat> = SimpleObjectProperty<TimestampFormat>().apply {
-        bind(ScopeOptions.timestampFormatProperty())
-    }
-
     init {
         if (minimumDuration != null
                 && initialLimits != ViewGroupContext.UNINITIALIZED_RANGE
@@ -52,7 +48,8 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
         }
 
         timeRangeProperty.addListener { _ -> resetAllValues() }
-        timestampFormatProperty.addListener { _ -> resetAllValues() }
+        ScopeOptions.timestampFormatProperty().addListener { _ -> resetAllValues() }
+        ScopeOptions.timestampTimeZoneProperty().addListener { _ -> resetAllValues() }
     }
 
     private fun resetAllValues() {
@@ -98,7 +95,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
 
         protected abstract fun applyValue(value: Long)
 
-        protected open fun getTimestampFormat(): TimestampFormat = timestampFormatProperty.get()
+        protected open fun getTimestampFormat(): TimestampFormat = ScopeOptions.timestampFormatProperty().get()
     }
 
     private inner class StartTextField : TimeRangeTextField() {

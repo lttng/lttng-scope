@@ -10,56 +10,35 @@
 package org.lttng.scope.common
 
 import com.efficios.jabberwocky.common.TimeRange
+import org.lttng.scope.application.ScopeOptions
 import java.math.BigDecimal
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.Temporal
+import java.util.*
 
 const val NANOS_PER_SEC = 1000000000L
 private val NANOS_PER_SEC_BD = BigDecimal(NANOS_PER_SEC)
 
 enum class TimestampFormat {
 
+    /** "yyyy-mm-dd hh:mm:ss.n tz" format */
+    YMD_HMS_N_TZ {
+        override fun tsToString(ts: Long): String = ts.toZonedDateTime().format(YMD_HMS_N_TZ_FORMATTERS[0])
+        override fun stringToTs(projectRange: TimeRange, input: String) = parseString(input, YMD_HMS_N_TZ_FORMATTERS, ZonedDateTime::parse)?.toTimestamp()
+    },
+
     /** "yyyy-mm-dd hh:mm:ss.n" format */
     YMD_HMS_N {
-        override fun tsToString(ts: Long): String = ts.toDateTime().format(YMD_HMS_N_FORMATTERS[0])
+        override fun tsToString(ts: Long): String = ts.toLocalDateTime().format(YMD_HMS_N_FORMATTERS[0])
         override fun stringToTs(projectRange: TimeRange, input: String) = parseString(input, YMD_HMS_N_FORMATTERS, LocalDateTime::parse)?.toTimestamp()
     },
 
     /** "hh:mm:ss.n" format */
     HMS_N {
-        override fun tsToString(ts: Long): String = ts.toDateTime().format(HMS_N_FORMATTERS[0])
-
-        override fun stringToTs(projectRange: TimeRange, input: String): Long? {
-            /* This conversion is impossible if the project range spans over 24 hours. */
-            if (projectRange.duration > NANOS_PER_SEC * 60 * 60 * 24) {
-                throw IllegalArgumentException("Cannot parse string $input as H:M:S format because range $projectRange spans over 24 hours.")
-            }
-
-            val startDateTime = projectRange.startTime.toDateTime()
-            val endDateTime = projectRange.endTime.toDateTime()
-            val tsTime = parseString(input, HMS_N_FORMATTERS, LocalTime::parse) ?: return null
-
-            /* Only use this timestamp if it's part of the project range. */
-            with(LocalDateTime.of(startDateTime.toLocalDate(), tsTime)) {
-                if (this >= startDateTime && this <= endDateTime) {
-                    return this.toTimestamp()
-                }
-            }
-            with(LocalDateTime.of(endDateTime.toLocalDate(), tsTime)) {
-                if (this >= startDateTime && this <= endDateTime) {
-                    return this.toTimestamp()
-                }
-            }
-
-            /* The target timestamp is not part of the project's range. */
-            return null
-        }
-
+        override fun tsToString(ts: Long): String = ts.toLocalDateTime().format(HMS_N_FORMATTERS[0])
+        override fun stringToTs(projectRange: TimeRange, input: String) = parseHours(projectRange, input, HMS_N_FORMATTERS)
     },
 
     /** "s.ns" format */
@@ -91,10 +70,53 @@ enum class TimestampFormat {
     };
 
     companion object {
+        /** The time zone of the user's system. Should only be modified for testing purposes. */
+        var systemTimeZone: ZoneId = ZoneId.systemDefault()
+            internal set
+
         /*
          * Time formatters, see https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
          * The lists include all the acceptable ones for parsing, but the one at index 0 should be used for formatting.
          */
+        private val YMD_HMS_N_TZ_FORMATTERS = listOf(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss. xxx"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss xxx")
+        )
+        private val YMD_HMS_N_FORMATTERS = listOf(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss."),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        )
+        private val HMS_N_TZ_FORMATTERS = listOf(
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SSS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.SS xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss.S xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss. xxx"),
+                DateTimeFormatter.ofPattern("HH:mm:ss xxx")
+        )
         private val HMS_N_FORMATTERS = listOf(
                 DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSSS"),
                 DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSS"),
@@ -108,18 +130,7 @@ enum class TimestampFormat {
                 DateTimeFormatter.ofPattern("HH:mm:ss."),
                 DateTimeFormatter.ofPattern("HH:mm:ss")
         )
-        private val YMD_HMS_N_FORMATTERS = listOf(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss."),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
     }
 
     /**
@@ -137,20 +148,78 @@ enum class TimestampFormat {
 }
 
 /**
- * Convert a framework timstamp (long, representing nanoseconds since epoch)
- * into a [LocalDateTime] object in the UTC timezone.
+ * Parse a string containing hours only (not the date). We will use the given project
+ * range to determine the corresponding date.
+ *
+ * This conversion is impossible if the project range spans over 24 hours.
  */
-private fun Long.toDateTime(): LocalDateTime {
-    val s = this / NANOS_PER_SEC
-    val ns = this % NANOS_PER_SEC
-    return LocalDateTime.ofInstant(Instant.ofEpochSecond(s, ns), ZoneOffset.UTC)
+private fun parseHours(projectRange: TimeRange, input: String, formatters: List<DateTimeFormatter>): Long? {
+    if (projectRange.duration > NANOS_PER_SEC * 60 * 60 * 24) {
+        throw IllegalArgumentException("Cannot parse string $input as H:M:S format because range $projectRange spans over 24 hours.")
+    }
+
+    val startDateTime = projectRange.startTime.toLocalDateTime()
+    val endDateTime = projectRange.endTime.toLocalDateTime()
+    val tsTime = parseString(input, formatters, LocalTime::parse) ?: return null
+
+    /* Only use this timestamp if it's part of the project range. */
+    with(LocalDateTime.of(startDateTime.toLocalDate(), tsTime)) {
+        if (this >= startDateTime && this <= endDateTime) {
+            return this.toTimestamp()
+        }
+    }
+    with(LocalDateTime.of(endDateTime.toLocalDate(), tsTime)) {
+        if (this >= startDateTime && this <= endDateTime) {
+            return this.toTimestamp()
+        }
+    }
+
+    /* The target timestamp is not part of the project's range. */
+    return null
 }
 
 /**
- * Convert a [LocalDateTime] to a framework timestamp in the UTC timezone.
+ * Convert a framework timstamp (long, representing nanoseconds since epoch)
+ * into a [LocalDateTime] object in the currently configured time zone.
+ */
+private fun Long.toLocalDateTime(): LocalDateTime {
+    val s = this / NANOS_PER_SEC
+    val ns = this % NANOS_PER_SEC
+    val instant = Instant.ofEpochSecond(s, ns)
+    val timeZoneOffset = when (ScopeOptions.timestampTimeZone) {
+        ScopeOptions.DisplayTimeZone.LOCAL -> TimestampFormat.systemTimeZone.rules.getOffset(instant)
+        ScopeOptions.DisplayTimeZone.UTC -> ZoneOffset.UTC
+    }
+    return LocalDateTime.ofInstant(instant, timeZoneOffset)
+}
+
+private fun Long.toZonedDateTime(): ZonedDateTime {
+    val s = this / NANOS_PER_SEC
+    val ns = this % NANOS_PER_SEC
+    val instant = Instant.ofEpochSecond(s, ns)
+    val timeZoneOffset = when (ScopeOptions.timestampTimeZone) {
+        ScopeOptions.DisplayTimeZone.LOCAL -> TimestampFormat.systemTimeZone.rules.getOffset(instant)
+        ScopeOptions.DisplayTimeZone.UTC -> ZoneOffset.UTC
+    }
+    return ZonedDateTime.ofInstant(instant, timeZoneOffset)
+}
+
+/**
+ * Convert a [LocalDateTime] to a framework timestamp in the currently configured time zone.
  */
 private fun LocalDateTime.toTimestamp(): Long {
-    return with(this.toInstant(ZoneOffset.UTC)) {
+    val timeZoneOffset = when (ScopeOptions.timestampTimeZone) {
+        ScopeOptions.DisplayTimeZone.LOCAL -> TimestampFormat.systemTimeZone.rules.getOffset(this)
+        ScopeOptions.DisplayTimeZone.UTC -> ZoneOffset.UTC
+    }
+
+    return with(this.toInstant(timeZoneOffset)) {
+        epochSecond * NANOS_PER_SEC + nano
+    }
+}
+
+private fun ZonedDateTime.toTimestamp(): Long {
+    return with(this.toInstant()) {
         epochSecond * NANOS_PER_SEC + nano
     }
 }
