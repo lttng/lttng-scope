@@ -116,7 +116,7 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
                  * Scroll to the target index, but only if it is out of the current
                  * range shown by the table.
                  */
-                val visibleRows = getVisibleRowIndices()
+                val visibleRows = getVisibleRowIndices() ?: return@runLater
                 if (index !in visibleRows) {
                     /* Place the target row in the middle of the view. */
                     scrollTo(maxOf(0, index - visibleRows.count() / 2))
@@ -150,9 +150,16 @@ class EventTable(private val tableControl: EventTableControl) : BorderPane() {
         }
     }
 
-    private fun getVisibleRowIndices(): IntRange {
+    /**
+     * Get the start/end range currently shown by the table, in terms of row index.
+     *
+     * If the table is empty then null is returned.
+     */
+    private fun getVisibleRowIndices(): IntRange? {
         val flow = (tableView.skin as TableViewSkin<*>).children[1] as VirtualFlow<*>
-        return flow.firstVisibleCell.index..flow.lastVisibleCell.index
+        val firstCell = flow.firstVisibleCell ?: return null
+        val lastCell = flow.lastVisibleCell ?: return null
+        return firstCell.index..lastCell.index
     }
 }
 
