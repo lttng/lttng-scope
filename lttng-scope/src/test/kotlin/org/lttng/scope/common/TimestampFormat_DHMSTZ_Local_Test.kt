@@ -26,7 +26,10 @@ class TimestampFormat_DHMSTZ_Local_Test : TimestampFormatTestBase(TimestampForma
                 "2012-03-13 14:50:47.0000 -05:00" to 1331668247000000000L,
                 "2012-03-13 14:50:47.0 -05:00" to 1331668247000000000L,
                 "2012-03-13 14:50:47. -05:00" to 1331668247000000000L, /* Ending with a decimal point should be valid */
-                "2012-03-13 14:50:47 -05:00" to 1331668247000000000L
+                "2012-03-13 14:50:47 -05:00" to 1331668247000000000L,
+
+                /* Passing a different timezone should do the conversion correctly */
+                "2012-03-13 16:50:47.314038062 -03:00" to 1331668247314038062L
         ),
         listOf(
                 "abcdef",

@@ -26,7 +26,10 @@ class TimestampFormat_DHMSTZ_UTC_Test : TimestampFormatTestBase(TimestampFormat.
                 "2012-03-13 19:50:47.0000 +00:00" to 1331668247000000000L,
                 "2012-03-13 19:50:47.0 +00:00" to 1331668247000000000L,
                 "2012-03-13 19:50:47. +00:00" to 1331668247000000000L, /* Ending with a decimal point should be valid */
-                "2012-03-13 19:50:47 +00:00" to 1331668247000000000L
+                "2012-03-13 19:50:47 +00:00" to 1331668247000000000L,
+
+                /* Passing a different timezone should do the conversion correctly */
+                "2012-03-13 17:50:47.314038062 -02:00" to 1331668247314038062L
         ),
         listOf(
                 "abcdef",
