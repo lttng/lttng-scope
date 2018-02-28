@@ -18,8 +18,10 @@ import javafx.scene.control.Alert
 import javafx.scene.layout.Region
 import javafx.stage.DirectoryChooser
 import org.lttng.scope.ScopePaths
-import org.lttng.scope.views.context.ViewGroupContextManager
+import org.lttng.scope.application.task.ScopeTask
+import org.lttng.scope.common.LatestTaskExecutor
 import org.lttng.scope.common.jfx.JfxUtils
+import org.lttng.scope.views.context.ViewGroupContextManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -33,6 +35,8 @@ private const val ERROR_OPENING_ALERT_WIDTH = 500.0
 
 private var lastUsedDirectory: Path? = ScopePaths.homeDir
 
+private val traceOpenExecutor = LatestTaskExecutor()
+
 /**
  * Ask the user for a directory from which to open a trace.
  *
@@ -41,34 +45,49 @@ private var lastUsedDirectory: Path? = ScopePaths.homeDir
 fun openTraceAction(refNode: Node?) {
     val tracePath = showTraceSelectionDialog(lastUsedDirectory, refNode) ?: return
     lastUsedDirectory = tracePath
-
-    // TODO Support the user passing the 'index' subdirectory
-    val trace = try {
-        CtfTrace(tracePath)
-    } catch (e: TraceInitializationException) {
-        with(Alert(Alert.AlertType.ERROR)) {
-            title = ERROR_OPENING_ALERT_TITLE
-            contentText = ERROR_OPENING_ALERT_TEXT
-            with(dialogPane) {
-                minHeight = Region.USE_PREF_SIZE
-                minWidth = ERROR_OPENING_ALERT_WIDTH
-            }
-            show()
-            if (refNode != null) JfxUtils.centerDialogOnScreen(this, refNode)
-        }
-        return
-    }
-
     val traceName = tracePath.last().toString()
-    val projectName = traceName + trace.hash(traceName)
-    val projectPath = ScopePaths.projectsDir.resolve(projectName)
-    if (!Files.exists(projectPath)) Files.createDirectories(projectPath)
 
-    val project = TraceProject.ofSingleTrace(projectName, projectPath, trace)
+    /*
+     * Switch to a "real" (not the null/empty) project in a separate Task, so
+     * that indexing progress is reported.
+     */
+    ScopeTask<Unit>(null) {
+        it.updateTitle("Opening trace $traceName")
+        // TODO Support the user passing the 'index' subdirectory
+        val trace = try {
+            CtfTrace(tracePath)
+        } catch (e: TraceInitializationException) {
+            JfxUtils.runLaterAndWait(Runnable {
+                with(Alert(Alert.AlertType.ERROR)) {
+                    title = ERROR_OPENING_ALERT_TITLE
+                    contentText = ERROR_OPENING_ALERT_TEXT
+                    with(dialogPane) {
+                        minHeight = Region.USE_PREF_SIZE
+                        minWidth = ERROR_OPENING_ALERT_WIDTH
+                    }
+                    show()
+                    refNode?.let { JfxUtils.centerDialogOnScreen(this, it) }
+                }
+            })
+            return@ScopeTask
+        }
 
-    // Only one view context for now
-    val viewCtx = ViewGroupContextManager.getCurrent()
-    viewCtx.switchProject(project)
+        it.updateTitle("Indexing trace $traceName")
+        val projectName = traceName + trace.hash(traceName)
+        val projectPath = ScopePaths.projectsDir.resolve(projectName)
+        if (!Files.exists(projectPath)) Files.createDirectories(projectPath)
+
+        it.updateTitle("Creating project $projectName")
+        val project = TraceProject.ofSingleTrace(projectName, projectPath, trace)
+
+        // Only one view context for now
+        val viewCtx = ViewGroupContextManager.getCurrent()
+
+        it.updateTitle("Analyzing trace $traceName")
+        viewCtx.switchProject(project)
+    }
+            .let { traceOpenExecutor.schedule(it) }
+
 }
 
 private fun showTraceSelectionDialog(initialDir: Path?, refNode: Node?): Path? {

@@ -37,6 +37,9 @@ class ScopeTask<R>(taskTitle: String?,
         updateProgress(-1.0, 0.0)
     }
 
+    /* Override to make public, so it's accessible via the "it" parameter. */
+    public override fun updateTitle(title: String?) = super.updateTitle(title)
+
     /**
      * Reserve the call() function for our needs, have sub-classes pass the code block at the constructor.
      */

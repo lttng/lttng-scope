@@ -55,12 +55,14 @@ class ProjectArea : BorderPane() {
         /* Setup listeners */
         ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener {
             override fun newProjectCb(newProject: TraceProject<*, *>?) {
-                if (newProject == null) {
-                    projectTree.root = emptyProjectRootItem
-                } else {
-                    projectRootItem.value = newProject.name
-                    projectTree.root = projectRootItem
-                }
+                JfxUtils.runLaterAndWait(Runnable {
+                    if (newProject == null) {
+                        projectTree.root = emptyProjectRootItem
+                    } else {
+                        projectRootItem.value = newProject.name
+                        projectTree.root = projectRootItem
+                    }
+                })
             }
         })
 

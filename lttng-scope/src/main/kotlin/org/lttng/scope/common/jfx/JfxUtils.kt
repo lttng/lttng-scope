@@ -107,6 +107,11 @@ object JfxUtils {
 
     @JvmStatic
     fun runLaterAndWait(r: Runnable) {
+        if (Platform.isFxApplicationThread()) {
+            r.run()
+            return
+        }
+
         val latch = CountDownLatch(1)
         Platform.runLater {
             r.run()
