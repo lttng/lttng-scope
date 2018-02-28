@@ -12,12 +12,12 @@ package org.lttng.scope.application.task
 object ScopeTaskManager {
 
     interface TaskManagerOutput {
-        fun taskRegistered(task: ScopeTask)
-        fun taskDeregistered(task: ScopeTask)
+        fun taskRegistered(task: ScopeTask<*>)
+        fun taskDeregistered(task: ScopeTask<*>)
     }
 
     private val registeredOutputs = mutableSetOf<TaskManagerOutput>()
-    private val registeredTasks = mutableSetOf<ScopeTask>()
+    private val registeredTasks = mutableSetOf<ScopeTask<*>>()
 
     @Synchronized
     fun registerOutput(output: TaskManagerOutput) {
@@ -28,14 +28,14 @@ object ScopeTaskManager {
     }
 
     @Synchronized
-    fun registerTask(task: ScopeTask) {
+    fun registerTask(task: ScopeTask<*>) {
         val added = registeredTasks.add(task)
         /* Emit notifications to the registered outputs */
         if (added) registeredOutputs.forEach { it.taskRegistered(task) }
     }
 
     @Synchronized
-    fun deregisterTask(task: ScopeTask) {
+    fun deregisterTask(task: ScopeTask<*>) {
         val removed = registeredTasks.remove(task)
         /* Emit notifications to the registered outputs */
         if (removed) registeredOutputs.forEach { it.taskDeregistered(task) }
@@ -45,7 +45,7 @@ object ScopeTaskManager {
      * Specific for the status bar. Could be cleaner...
      */
     @Synchronized
-    internal fun getNextTask(): ScopeTask? {
+    internal fun getNextTask(): ScopeTask<*>? {
         return registeredTasks.firstOrNull()
     }
 

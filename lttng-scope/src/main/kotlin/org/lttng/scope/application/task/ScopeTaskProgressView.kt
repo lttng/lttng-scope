@@ -12,13 +12,13 @@ package org.lttng.scope.application.task
 import javafx.application.Platform
 import org.controlsfx.control.TaskProgressView
 
-class ScopeTaskProgressView : TaskProgressView<ScopeTask>(), ScopeTaskManager.TaskManagerOutput {
+class ScopeTaskProgressView : TaskProgressView<ScopeTask<*>>(), ScopeTaskManager.TaskManagerOutput {
 
-    override fun taskRegistered(task: ScopeTask) {
+    override fun taskRegistered(task: ScopeTask<*>) {
         Platform.runLater { tasks.add(task) }
     }
 
-    override fun taskDeregistered(task: ScopeTask) {
+    override fun taskDeregistered(task: ScopeTask<*>) {
         Platform.runLater { tasks.remove(task) }
     }
 

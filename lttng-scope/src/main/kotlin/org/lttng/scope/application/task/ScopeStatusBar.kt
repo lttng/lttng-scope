@@ -37,7 +37,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
 
     private val taskProgressWindow = Stage().apply {
         title = PROGRESS_VIEW_WINDOW_TITLE
-        scene = Scene (progressView, 450.0, 450.0)
+        scene = Scene(progressView, 450.0, 450.0)
 
         ScopeWindowManager.registerWindow(this)
     }
@@ -75,7 +75,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
         }
     }
 
-    private fun setRunningTask(task: ScopeTask) {
+    private fun setRunningTask(task: ScopeTask<*>) {
         Platform.runLater {
             textProperty().bind(task.titleProperty())
             progressProperty().bind(task.progressProperty())
@@ -88,7 +88,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
 
     private val taskCount = AtomicInteger(0)
 
-    override fun taskRegistered(task: ScopeTask) {
+    override fun taskRegistered(task: ScopeTask<*>) {
         val prevCount = taskCount.getAndIncrement()
         if (prevCount == 0) {
             /* We will show this task on the status bar. */
@@ -96,7 +96,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
         }
     }
 
-    override fun taskDeregistered(task: ScopeTask) {
+    override fun taskDeregistered(task: ScopeTask<*>) {
         val newCount = taskCount.decrementAndGet()
         if (newCount > 0) {
             val nextTask = ScopeTaskManager.getNextTask()

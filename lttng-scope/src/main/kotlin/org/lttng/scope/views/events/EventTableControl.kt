@@ -32,10 +32,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
     private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
         override fun flush() {
             /* Stop the redraw task and wait for it to finish */
-            val bubble = object : ScopeTask(null) {
-                override fun execute() {
-                }
-            }
+            val bubble = ScopeTask<Unit>(null) {}
             taskExecutor.schedule(bubble)
             bubble.get() /* Wait for it be scheduled and finish execution. */
         }
@@ -164,33 +161,31 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     @Synchronized
     private fun recenterOn(project: TraceProject<*, *>, timestamp: Long) {
-        val task = object : ScopeTask("Fetching Event Table Contents") {
-            override fun execute() {
-                // TODO Implement TraceProjectIterator.copy(), use it here instead of seeking twice
-                val forwardsEvents = project.iterator().use {
-                    it.seek(timestamp)
-                    it.asSequence().take(FETCH_SIZE).toList()
-                }
-
-                val backwardsEvents = project.iterator().use {
-                    it.seek(timestamp)
-                    fetchPreviousEvents(it, FETCH_SIZE)
-                }
-
-                val eventIndex = backwardsEvents.size
-                val eventsList = listOf(backwardsEvents + forwardsEvents).flatten()
-
-                LOGGER.finer { "Backwards events: ${logEventsToString(backwardsEvents)}" }
-                LOGGER.finer { "Forwards events: ${logEventsToString(forwardsEvents)}" }
-
-                if (isCancelled) return
-
-                currentBackwardsEvents = backwardsEvents
-                currentForwardsEvents = forwardsEvents
-
-                table.displayEvents(eventsList)
-                table.selectIndex(eventIndex)
+        val task = ScopeTask<Unit>("Fetching Event Table Contents") {
+            // TODO Implement TraceProjectIterator.copy(), use it here instead of seeking twice
+            val forwardsEvents = project.iterator().use {
+                it.seek(timestamp)
+                it.asSequence().take(FETCH_SIZE).toList()
             }
+
+            val backwardsEvents = project.iterator().use {
+                it.seek(timestamp)
+                fetchPreviousEvents(it, FETCH_SIZE)
+            }
+
+            val eventIndex = backwardsEvents.size
+            val eventsList = listOf(backwardsEvents + forwardsEvents).flatten()
+
+            LOGGER.finer { "Backwards events: ${logEventsToString(backwardsEvents)}" }
+            LOGGER.finer { "Forwards events: ${logEventsToString(forwardsEvents)}" }
+
+            if (it.isCancelled) return@ScopeTask
+
+            currentBackwardsEvents = backwardsEvents
+            currentForwardsEvents = forwardsEvents
+
+            table.displayEvents(eventsList)
+            table.selectIndex(eventIndex)
         }
         taskExecutor.schedule(task)
     }

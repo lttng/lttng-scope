@@ -36,13 +36,16 @@ import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lttng.scope.application.task.ScopeTask;
-import org.lttng.scope.common.NestingBoolean;
 import org.lttng.scope.common.LatestTaskExecutor;
+import org.lttng.scope.common.NestingBoolean;
 import org.lttng.scope.views.timeline.DebugOptions;
 import org.lttng.scope.views.timeline.TimelineManager;
 import org.lttng.scope.views.timeline.TimelineView;
 import org.lttng.scope.views.timeline.TimelineWidget;
-import org.lttng.scope.views.timeline.widgets.timegraph.layer.*;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphArrowLayer;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphBackgroundLayer;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphSelectionLayer;
+import org.lttng.scope.views.timeline.widgets.timegraph.layer.TimeGraphStateLayer;
 import org.lttng.scope.views.timeline.widgets.timegraph.layer.drawnevents.TimeGraphDrawnEventLayer;
 import org.lttng.scope.views.timeline.widgets.timegraph.toolbar.ViewerToolBar;
 
@@ -499,66 +502,64 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             fTimeGraphLoadingOverlay.fadeIn();
         }
 
-        ScopeTask task = new ScopeTask("Updating Timegraph " + getName()) {
-            @Override
-            protected void execute() {
-                LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
+        ScopeTask<Void> task = new ScopeTask<>("Updating Timegraph " + getName(), it -> {
+            LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
 
-                ITimeGraphModelProvider modelProvider = getControl().getRenderProvider();
-                TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
+            ITimeGraphModelProvider modelProvider = getControl().getRenderProvider();
+            TimeGraphTreeRender treeRender = modelProvider.getTreeRender();
 
-                if (isCancelled()) {
-                    return;
-                }
-
-                /* Prepare the tree part, if needed */
-                if (!treeRender.equals(fLatestTreeRender)) {
-                    fLatestTreeRender = treeRender;
-                    fTreeArea.updateTreeContents(treeRender);
-                }
-
-                if (isCancelled()) {
-                    return;
-                }
-
-                /* Paint the background. It's very quick so we can do it every time. */
-                fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, this);
-
-                /*
-                 * The state rectangles should be redrawn as soon as we move,
-                 * either horizontally or vertically.
-                 */
-                fStateLayer.setWindowRange(windowRange);
-                fStateLayer.drawContents(treeRender, renderingRange, verticalPos, this);
-
-                if (isCancelled()) {
-                    return;
-                }
-
-                /*
-                 * Arrows and drawn events are drawn for the full vertical
-                 * range. Only refetch/repaint them if we moved horizontally.
-                 */
-                if (movedHorizontally) {
-                    fArrowLayer.drawContents(treeRender, renderingRange, verticalPos, this);
-                    fDrawnEventLayer.drawContents(treeRender, renderingRange, verticalPos, this);
-                }
-
-                if (isCancelled()) {
-                    return;
-                }
-
-                /* Painting is finished, turn off the loading overlay */
-                Platform.runLater(() -> {
-                    LOGGER.finest(() -> "fading out overlay"); //$NON-NLS-1$
-                    fTimeGraphLoadingOverlay.fadeOut();
-                    if (fRepaintLatch != null) {
-                        fRepaintLatch.countDown();
-                    }
-                });
-
+            if (it.isCancelled()) {
+                return null;
             }
-        };
+
+            /* Prepare the tree part, if needed */
+            if (!treeRender.equals(fLatestTreeRender)) {
+                fLatestTreeRender = treeRender;
+                fTreeArea.updateTreeContents(treeRender);
+            }
+
+            if (it.isCancelled()) {
+                return null;
+            }
+
+            /* Paint the background. It's very quick so we can do it every time. */
+            fBackgroundLayer.drawContents(treeRender, renderingRange, verticalPos, it);
+
+            /*
+             * The state rectangles should be redrawn as soon as we move,
+             * either horizontally or vertically.
+             */
+            fStateLayer.setWindowRange(windowRange);
+            fStateLayer.drawContents(treeRender, renderingRange, verticalPos, it);
+
+            if (it.isCancelled()) {
+                return null;
+            }
+
+            /*
+             * Arrows and drawn events are drawn for the full vertical
+             * range. Only refetch/repaint them if we moved horizontally.
+             */
+            if (movedHorizontally) {
+                fArrowLayer.drawContents(treeRender, renderingRange, verticalPos, it);
+                fDrawnEventLayer.drawContents(treeRender, renderingRange, verticalPos, it);
+            }
+
+            if (it.isCancelled()) {
+                return null;
+            }
+
+            /* Painting is finished, turn off the loading overlay */
+            Platform.runLater(() -> {
+                LOGGER.finest(() -> "fading out overlay"); //$NON-NLS-1$
+                fTimeGraphLoadingOverlay.fadeOut();
+                if (fRepaintLatch != null) {
+                    fRepaintLatch.countDown();
+                }
+            });
+
+            return null;
+        });
 
         LOGGER.finer(() -> "Queueing task #" + taskSeqNb); //$NON-NLS-1$
 

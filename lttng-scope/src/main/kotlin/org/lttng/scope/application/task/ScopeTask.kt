@@ -10,7 +10,6 @@
 package org.lttng.scope.application.task
 
 import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -18,12 +17,14 @@ import java.util.concurrent.atomic.AtomicInteger
  * central [ScopeTaskManager], which will allow outputs to report progress on these
  * tasks.
  *
- * Override execute() instead of call().
+ * The second constructor parameter is the lambda to execute asynhcronously. The parameter
+ * to this labmda is the Task itself, so that 'if (it.isCancelled())' can be used for example.
  *
  * Note: We extend Task<Void?> (and return null) instead of Task<Unit>, for compatibility
  * with Java implementations.
  */
-abstract class ScopeTask(taskTitle: String?) : Task<Void?>() {
+class ScopeTask<R>(taskTitle: String?,
+                   private val block: (ScopeTask<R>) -> R) : Task<R>() {
 
     companion object {
         private val seqNumCounter = AtomicInteger(0)
@@ -36,23 +37,15 @@ abstract class ScopeTask(taskTitle: String?) : Task<Void?>() {
         updateProgress(-1.0, 0.0)
     }
 
-    /* Make this "final" so we can safely call it from the constructor. */
-    final override fun updateProgress(workDone: Double, max: Double) {
-        super.updateProgress(workDone, max)
-    }
-
-    protected abstract fun execute()
-
     /**
-     * Reserve the call() function for our needs, have sub-classes implement execute() instead.
+     * Reserve the call() function for our needs, have sub-classes pass the code block at the constructor.
      */
-    final override fun call(): Void? {
+    override fun call(): R {
         ScopeTaskManager.registerTask(this)
         try {
-            execute()
+            return block(this)
         } finally {
             ScopeTaskManager.deregisterTask(this)
         }
-        return null
     }
 }
