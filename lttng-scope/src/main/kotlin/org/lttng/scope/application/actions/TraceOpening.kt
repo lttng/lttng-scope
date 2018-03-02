@@ -11,6 +11,7 @@ package org.lttng.scope.application.actions
 
 import com.efficios.jabberwocky.ctf.trace.CtfTrace
 import com.efficios.jabberwocky.project.TraceProject
+import com.efficios.jabberwocky.task.JabberwockyTask
 import com.efficios.jabberwocky.trace.Trace
 import com.efficios.jabberwocky.trace.TraceInitializationException
 import javafx.scene.Node
@@ -18,7 +19,6 @@ import javafx.scene.control.Alert
 import javafx.scene.layout.Region
 import javafx.stage.DirectoryChooser
 import org.lttng.scope.ScopePaths
-import org.lttng.scope.application.task.ScopeTask
 import org.lttng.scope.common.LatestTaskExecutor
 import org.lttng.scope.common.jfx.JfxUtils
 import org.lttng.scope.views.context.ViewGroupContextManager
@@ -51,7 +51,7 @@ fun openTraceAction(refNode: Node?) {
      * Switch to a "real" (not the null/empty) project in a separate Task, so
      * that indexing progress is reported.
      */
-    ScopeTask<Unit>(null) {
+    JabberwockyTask<Unit>(null) {
         it.updateTitle("Opening trace $traceName")
         // TODO Support the user passing the 'index' subdirectory
         val trace = try {
@@ -69,7 +69,7 @@ fun openTraceAction(refNode: Node?) {
                     refNode?.let { JfxUtils.centerDialogOnScreen(this, it) }
                 }
             })
-            return@ScopeTask
+            return@JabberwockyTask
         }
 
         it.updateTitle("Indexing trace $traceName")

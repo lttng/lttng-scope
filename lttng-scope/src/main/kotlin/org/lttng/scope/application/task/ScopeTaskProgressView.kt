@@ -9,16 +9,18 @@
 
 package org.lttng.scope.application.task
 
+import com.efficios.jabberwocky.task.JabberwockyTask
+import com.efficios.jabberwocky.task.JabberwockyTaskManager
 import javafx.application.Platform
 import org.controlsfx.control.TaskProgressView
 
-class ScopeTaskProgressView : TaskProgressView<ScopeTask<*>>(), ScopeTaskManager.TaskManagerOutput {
+class ScopeTaskProgressView : TaskProgressView<JabberwockyTask<*>>(), JabberwockyTaskManager.TaskManagerOutput {
 
-    override fun taskRegistered(task: ScopeTask<*>) {
+    override fun taskRegistered(task: JabberwockyTask<*>) {
         Platform.runLater { tasks.add(task) }
     }
 
-    override fun taskDeregistered(task: ScopeTask<*>) {
+    override fun taskDeregistered(task: JabberwockyTask<*>) {
         Platform.runLater { tasks.remove(task) }
     }
 

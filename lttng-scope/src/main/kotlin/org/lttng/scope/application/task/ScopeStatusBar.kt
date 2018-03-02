@@ -9,6 +9,8 @@
 
 package org.lttng.scope.application.task
 
+import com.efficios.jabberwocky.task.JabberwockyTask
+import com.efficios.jabberwocky.task.JabberwockyTaskManager
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
@@ -22,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Status bar of the main window
  */
-class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
+class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
 
     companion object {
         private const val PROGRESS_VIEW_WINDOW_TITLE = "Running Tasks"
@@ -33,7 +35,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
      * The status bar will "own" the progress view, since it is shown by click on the
      * status bar's progress bar.
      */
-    private val progressView = ScopeTaskProgressView().apply { ScopeTaskManager.registerOutput(this) }
+    private val progressView = ScopeTaskProgressView().apply { JabberwockyTaskManager.registerOutput(this) }
 
     private val taskProgressWindow = Stage().apply {
         title = PROGRESS_VIEW_WINDOW_TITLE
@@ -62,7 +64,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
         })
 
         clearRunningTask()
-        ScopeTaskManager.registerOutput(this)
+        JabberwockyTaskManager.registerOutput(this)
     }
 
     private fun clearRunningTask() {
@@ -75,7 +77,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
         }
     }
 
-    private fun setRunningTask(task: ScopeTask<*>) {
+    private fun setRunningTask(task: JabberwockyTask<*>) {
         Platform.runLater {
             textProperty().bind(task.titleProperty())
             progressProperty().bind(task.progressProperty())
@@ -88,7 +90,7 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
 
     private val taskCount = AtomicInteger(0)
 
-    override fun taskRegistered(task: ScopeTask<*>) {
+    override fun taskRegistered(task: JabberwockyTask<*>) {
         val prevCount = taskCount.getAndIncrement()
         if (prevCount == 0) {
             /* We will show this task on the status bar. */
@@ -96,10 +98,10 @@ class ScopeStatusBar : StatusBar(), ScopeTaskManager.TaskManagerOutput {
         }
     }
 
-    override fun taskDeregistered(task: ScopeTask<*>) {
+    override fun taskDeregistered(task: JabberwockyTask<*>) {
         val newCount = taskCount.decrementAndGet()
         if (newCount > 0) {
-            val nextTask = ScopeTaskManager.getNextTask()
+            val nextTask = JabberwockyTaskManager.getNextTask()
             if (nextTask != null) {
                 setRunningTask(nextTask)
                 return

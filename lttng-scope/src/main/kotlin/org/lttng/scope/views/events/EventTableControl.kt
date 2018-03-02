@@ -12,10 +12,10 @@ package org.lttng.scope.views.events
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.project.TraceProjectIterator
+import com.efficios.jabberwocky.task.JabberwockyTask
 import com.efficios.jabberwocky.trace.event.TraceEvent
 import javafx.beans.InvalidationListener
 import org.lttng.scope.application.ScopeOptions
-import org.lttng.scope.application.task.ScopeTask
 import org.lttng.scope.common.LatestTaskExecutor
 import java.util.*
 import java.util.logging.Logger
@@ -32,9 +32,9 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
     private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
         override fun flush() {
             /* Stop the redraw task and wait for it to finish */
-            val bubble = ScopeTask<Unit>(null) {}
+            val bubble = JabberwockyTask<Unit>(null) {}
             taskExecutor.schedule(bubble)
-            bubble.get() /* Wait for it be scheduled and finish execution. */
+            bubble.get() /* Wait for it be scheduled and to finish its execution. */
         }
 
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
@@ -161,7 +161,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
 
     @Synchronized
     private fun recenterOn(project: TraceProject<*, *>, timestamp: Long) {
-        val task = ScopeTask<Unit>("Fetching Event Table Contents") {
+        val task = JabberwockyTask<Unit>("Fetching Event Table Contents") {
             // TODO Implement TraceProjectIterator.copy(), use it here instead of seeking twice
             val forwardsEvents = project.iterator().use {
                 it.seek(timestamp)
@@ -179,7 +179,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
             LOGGER.finer { "Backwards events: ${logEventsToString(backwardsEvents)}" }
             LOGGER.finer { "Forwards events: ${logEventsToString(forwardsEvents)}" }
 
-            if (it.isCancelled) return@ScopeTask
+            if (it.isCancelled) return@JabberwockyTask
 
             currentBackwardsEvents = backwardsEvents
             currentForwardsEvents = forwardsEvents

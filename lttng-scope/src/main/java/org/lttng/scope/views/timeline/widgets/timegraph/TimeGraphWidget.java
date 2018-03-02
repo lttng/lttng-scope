@@ -10,6 +10,7 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.task.JabberwockyTask;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
 import com.efficios.jabberwocky.views.timegraph.model.provider.ITimeGraphModelProvider;
 import com.efficios.jabberwocky.views.timegraph.model.render.tree.TimeGraphTreeRender;
@@ -35,7 +36,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lttng.scope.application.task.ScopeTask;
 import org.lttng.scope.common.LatestTaskExecutor;
 import org.lttng.scope.common.NestingBoolean;
 import org.lttng.scope.views.timeline.DebugOptions;
@@ -502,7 +502,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             fTimeGraphLoadingOverlay.fadeIn();
         }
 
-        ScopeTask<Void> task = new ScopeTask<>("Updating Timegraph " + getName(), it -> {
+        JabberwockyTask<Void> task = new JabberwockyTask<>("Updating Timegraph " + getName(), it -> {
             LOGGER.finer(() -> "Starting paint task #" + taskSeqNb); //$NON-NLS-1$
 
             ITimeGraphModelProvider modelProvider = getControl().getRenderProvider();
