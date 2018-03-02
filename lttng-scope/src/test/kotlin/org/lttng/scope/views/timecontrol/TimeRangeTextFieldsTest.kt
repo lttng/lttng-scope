@@ -10,20 +10,21 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.common.TimeRange
-import javafx.embed.swing.JFXPanel
+import com.efficios.jabberwocky.tests.JavaFXClassRunner
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 
 /**
  * Tests for [TimeRangeTextFields].
  */
+@RunWith(JavaFXClassRunner::class)
 open class TimeRangeTextFieldsTest {
 
     companion object {
@@ -35,12 +36,6 @@ open class TimeRangeTextFieldsTest {
 
         const val INITIAL_START = 1200L
         const val INITIAL_END = 1800L
-
-        @BeforeClass @JvmStatic
-        fun classSetup() {
-            /* Instantiate JavaFX */
-            JFXPanel()
-        }
     }
 
     protected lateinit var fixture: TimeRangeTextFields

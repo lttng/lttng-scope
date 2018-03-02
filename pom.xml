@@ -35,6 +35,7 @@
 
   <properties>
     <required-maven-version>3.3</required-maven-version>
+    <jabberwocky-version>0.2.44-SNAPSHOT</jabberwocky-version>
   </properties>
 
   <modules>
@@ -53,7 +54,13 @@
       <dependency>
         <groupId>com.efficios.jabberwocky</groupId>
         <artifactId>jabberwocky-lttng</artifactId>
-        <version>0.2.44-SNAPSHOT</version>
+        <version>${jabberwocky-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.efficios.jabberwocky</groupId>
+        <artifactId>jabberwocky-core-test-base</artifactId>
+        <version>${jabberwocky-version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

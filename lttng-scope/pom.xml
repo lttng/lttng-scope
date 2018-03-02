@@ -69,6 +69,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.efficios.jabberwocky</groupId>
+      <artifactId>jabberwocky-core-test-base</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>

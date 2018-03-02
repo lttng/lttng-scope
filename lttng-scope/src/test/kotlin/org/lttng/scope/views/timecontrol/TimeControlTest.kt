@@ -10,27 +10,19 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.context.ViewGroupContext
-import javafx.embed.swing.JFXPanel
+import com.efficios.jabberwocky.tests.JavaFXClassRunner
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.common.tests.StubProject
 import org.lttng.scope.common.tests.StubTrace
 import java.time.ZoneId
 
+@RunWith(JavaFXClassRunner::class)
 class TimeControlTest {
-
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun classSetup() {
-            /* Instantiate JavaFX */
-            JFXPanel()
-        }
-    }
 
     private val viewContext = ViewGroupContext()
     private val fixture = TimeControl(viewContext)

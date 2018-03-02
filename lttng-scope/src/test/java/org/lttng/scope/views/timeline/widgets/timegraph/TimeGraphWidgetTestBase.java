@@ -10,9 +10,9 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import com.efficios.jabberwocky.tests.JavaFXClassRunner;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.AfterClass;
@@ -20,10 +20,11 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.junit.runner.RunWith;
+import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubProject;
 import org.lttng.scope.common.tests.StubTrace;
-import org.lttng.scope.common.jfx.JfxUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,7 @@ import static org.junit.Assert.*;
  * Base for {@link TimeGraphWidget} tests, which sets up all the needed
  * fixtures.
  */
+@RunWith(JavaFXClassRunner.class)
 public abstract class TimeGraphWidgetTestBase {
 
     @Rule
@@ -51,8 +53,6 @@ public abstract class TimeGraphWidgetTestBase {
         StubTrace trace = new StubTrace();
         StubProject stubProject = new StubProject(trace);
 
-        /* Initialize JavaFX */
-        new JFXPanel();
         Platform.setImplicitExit(false);
 
         StubView view = new StubView();
