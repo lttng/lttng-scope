@@ -19,7 +19,6 @@ import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import org.controlsfx.control.StatusBar
 import org.lttng.scope.application.ScopeWindowManager
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Status bar of the main window
@@ -88,25 +87,14 @@ class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
     // ScopeTaskManager.TaskManagerOutput
     //--------------------------------------------------------------------------
 
-    private val taskCount = AtomicInteger(0)
-
     override fun taskRegistered(task: JabberwockyTask<*>) {
-        val prevCount = taskCount.getAndIncrement()
-        if (prevCount == 0) {
-            /* We will show this task on the status bar. */
-            setRunningTask(task)
-        }
+        /* We will show the latest task on the status bar. */
+        setRunningTask(task)
     }
 
     override fun taskDeregistered(task: JabberwockyTask<*>) {
-        val newCount = taskCount.decrementAndGet()
-        if (newCount > 0) {
-            val nextTask = JabberwockyTaskManager.getNextTask()
-            if (nextTask != null) {
-                setRunningTask(nextTask)
-                return
-            }
-        }
-        clearRunningTask()
+        JabberwockyTaskManager.getLatestTask()
+                ?.let { setRunningTask(it) }
+                ?: clearRunningTask()
     }
 }
