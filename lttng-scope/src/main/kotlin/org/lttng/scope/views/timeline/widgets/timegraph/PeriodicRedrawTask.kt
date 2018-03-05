@@ -39,6 +39,7 @@ class PeriodicRedrawTask(private val viewer: TimeGraphWidget) : TimelineWidget.T
 
     override fun run() {
         if (!viewer.debugOptions.isPaintingEnabled.get()) return
+        if (viewer.viewContext.listenerFreeze) return
 
         val currentHorizontalPos = viewer.control.viewContext.visibleTimeRange
         val currentVerticalPos = viewer.currentVerticalPosition
