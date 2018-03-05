@@ -37,51 +37,6 @@ object JfxUtils {
     @JvmField
     val ZERO_PROPERTY: ReadOnlyDoubleProperty = SimpleDoubleProperty(0.0)
 
-    private val LOOKUP = MethodHandles.lookup()!!
-    private val COMPUTE_CLIPPED_TEXT_HANDLE: MethodHandle
-
-    init {
-        val c: Class<*> = Class.forName("com.sun.javafx.scene.control.skin.Utils")
-        val method: Method = c.getDeclaredMethod("computeClippedText",
-                Font::class.java, String::class.java, Double::class.java, OverrunStyle::class.java, String::class.java)
-        method.isAccessible = true
-        COMPUTE_CLIPPED_TEXT_HANDLE = LOOKUP.unreflect(method)
-    }
-
-    /**
-     * Accessor for the
-     * com.sun.javafx.scene.control.skin.Utils.computeClippedText() method.
-     *
-     * This method implements the logic to clip Label strings. It can be useful
-     * for other types, like Text. Unfortunately it is not public, but this
-     * accessor allows calling it through reflection. It makes use of
-     * {@link MethodHandle#invokeExact}, which should be close to just as fast
-     * as a standard compiled method call.
-     *
-     * @param font
-     *            The font of the text that will be used
-     * @param text
-     *            The string to clip
-     * @param width
-     *            The maximum width we want to limit the string to
-     * @param type
-     *            The {@link OverrunStyle}
-     * @param ellipsisString
-     *            The string to use as ellipsis
-     * @return The clipped string, or "ERROR" if an error happened.
-     *         Unfortunately we lose the exception typing due to the reflection
-     *         call, so we do not want to throw "Throwable" here.
-     */
-    @JvmStatic
-    fun computeClippedText(font: Font, text: String, width: Double,
-                           type: OverrunStyle, ellipsisString: String): String {
-        return try {
-            COMPUTE_CLIPPED_TEXT_HANDLE.invokeExact(font, text, width, type, ellipsisString) as String
-        } catch (e: Throwable) {
-            "ERROR"
-        }
-    }
-
     /**
      * Run the given {@link Runnable} on the UI/main/application thread.
      *

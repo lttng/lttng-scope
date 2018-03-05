@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.Nullable;
+import org.lttng.scope.common.jfx.JfxTextUtils;
 import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.views.timeline.DebugOptions;
 import org.lttng.scope.views.timeline.widgets.timegraph.StateRectangle;
@@ -203,7 +204,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
                     double rectEndX = stateRect.getX() + stateRect.getWidth();
                     double minWidth = rectEndX - textX;
 
-                    String ellipsedText = JfxUtils.computeClippedText(textFont,
+                    String ellipsedText = JfxTextUtils.computeClippedText(textFont,
                             labelText,
                             minWidth,
                             overrunStyle,
