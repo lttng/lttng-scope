@@ -34,7 +34,7 @@ class XYChartEventCountFilterListener(private val viewContext: ViewGroupContext,
 
     private val createdSeriesProviders = mutableMapOf<EventFilterDefinition, FilterSeriesProvider>()
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             /* On project change, clear the current providers. */
             createdSeriesProviders.values.forEach { modelProvider.removeSeries(it) }

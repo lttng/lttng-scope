@@ -27,7 +27,7 @@ class DrawnEventFilterListener(private val timeGraphWidget: TimeGraphWidget) : P
 
     private val createdProviders = mutableMapOf<EventFilterDefinition, PredicateDrawnEventProvider>()
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             /* On project change, clear the current providers. */
             createdProviders.values.forEach { drawnEventProviderManager.registeredProviders.remove(it) }

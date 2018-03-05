@@ -122,7 +122,7 @@ class TimeControl(private val viewContext: ViewGroupContext) : BorderPane() {
         center = grid
     }
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             val tf = ScopeOptions.timestampFormat
 

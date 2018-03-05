@@ -205,7 +205,7 @@ private class FilterColumn : TableColumn<TraceEvent, TraceEvent>(""), ProjectFil
     private val enabledFilters = FXCollections.observableArrayList<EventFilterDefinition>()
 
     init {
-        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener {
+        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener(this) {
             override fun newProjectCb(newProject: TraceProject<*, *>?) {
                 if (newProject != null) {
                     ProjectManager.getProjectState(newProject).filters.registerFilterListener(this@FilterColumn)

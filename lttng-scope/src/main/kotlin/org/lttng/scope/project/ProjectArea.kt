@@ -53,7 +53,7 @@ class ProjectArea : BorderPane() {
         projectTree.setCellFactory { ProjectTreeCell() }
 
         /* Setup listeners */
-        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener {
+        ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener(this) {
             override fun newProjectCb(newProject: TraceProject<*, *>?) {
                 JfxUtils.runLaterAndWait(Runnable {
                     if (newProject == null) {
@@ -73,7 +73,7 @@ class ProjectArea : BorderPane() {
 
 private abstract class ProjectTreeItem(name: String) : TreeItem<String>(name) {
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             if (newProject == null) {
                 clear()

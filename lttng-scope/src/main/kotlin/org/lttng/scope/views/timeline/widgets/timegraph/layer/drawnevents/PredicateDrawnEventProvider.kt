@@ -31,7 +31,7 @@ private const val MAX_EVENTS = 2000
  */
 class PredicateDrawnEventProvider(private val eventFilter: EventFilterDefinition) : TimeGraphDrawnEventProvider(eventFilter.createSeries()) {
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun newProjectCb(newProject: TraceProject<*, *>?) {
             /* Effectively just a bind() */
             traceProject = newProject

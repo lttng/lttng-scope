@@ -29,7 +29,7 @@ class EventTableControl(internal val viewContext: ViewGroupContext) {
         private const val FETCH_SIZE = 25_000
     }
 
-    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+    private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this) {
         override fun flush() {
             /* Stop the redraw task and wait for it to finish */
             val bubble = JabberwockyTask<Unit>(null) {}

@@ -30,7 +30,7 @@ public class StubView {
         fModelControl = new TimeGraphModelControl(ViewGroupContextManager.getCurrent(), fModelRenderProvider);
 
         TimeGraphWidget viewer = new TimeGraphWidget(fModelControl, new NestingBoolean(), 0);
-        fModelControl.attachView(viewer);
+        fModelControl.setView(viewer);
         fViewer = viewer;
     }
 

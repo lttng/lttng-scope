@@ -75,7 +75,7 @@ class TimelineManager(private val view: TimelineView,
         val provider = factory.get()
         val control = TimeGraphModelControl(viewContext, provider)
         val viewer = TimeGraphWidget(control, hScrollListenerStatus, TIMEGRAPH_WEIGHT)
-        control.attachView(viewer)
+        control.view = viewer
 
         /*
          * Bind properties in a runLater() statement, so that the UI views have

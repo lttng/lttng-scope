@@ -57,7 +57,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
 
     private val visibleRangeRect = object : Rectangle() {
 
-        private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener {
+        private val projectChangeListener = object : ViewGroupContext.ProjectChangeListener(this@XYChartFullRangeWidget) {
             override fun newProjectCb(newProject: TraceProject<*, *>?) {
                 isVisible = (newProject != null)
             }
