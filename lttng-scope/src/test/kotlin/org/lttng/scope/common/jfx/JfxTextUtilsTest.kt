@@ -11,35 +11,43 @@ package org.lttng.scope.common.jfx
 
 import javafx.scene.control.OverrunStyle
 import javafx.scene.text.Font
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 
 class JfxTextUtilsTest {
 
+    companion object {
+        private const val SHORT_STRING = "short-string"
+        private const val LONG_STRING = "long string that will get clipped somewhere"
+    }
+
     @Test
     fun testComputeClippedText() {
         JfxTextUtils.computeClippedText(Font.font(10.0),
-                "short-string",
+                SHORT_STRING,
                 100.0,
                 OverrunStyle.ELLIPSIS,
                 "...").let {
-            assertEquals("short-string", it)
+            assertEquals(SHORT_STRING, it)
         }
 
         JfxTextUtils.computeClippedText(Font.font(10.0),
-                "long string that will get clipped somewhere",
+                LONG_STRING,
                 100.0,
                 OverrunStyle.ELLIPSIS,
                 "...").let {
-            assertEquals("long string that w...", it)
+            assertTrue(it.startsWith("long str"))
+            assertTrue(it.endsWith("..."))
         }
 
         JfxTextUtils.computeClippedText(Font.font(10.0),
-                "long string that will get clipped somewhere",
+                LONG_STRING,
                 100.0,
                 OverrunStyle.CENTER_ELLIPSIS,
                 "...").let {
-            assertEquals("long str...mewhere", it)
+            assertTrue(it.startsWith("long"))
+            assertTrue(it.contains("..."))
+            assertFalse(it.endsWith(("...")))
         }
     }
 
