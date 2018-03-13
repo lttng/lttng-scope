@@ -35,7 +35,7 @@
 
   <properties>
     <required-maven-version>3.3</required-maven-version>
-    <jabberwocky-version>0.2.45-SNAPSHOT</jabberwocky-version>
+    <jabberwocky-version>0.2.46-SNAPSHOT</jabberwocky-version>
   </properties>
 
   <modules>
