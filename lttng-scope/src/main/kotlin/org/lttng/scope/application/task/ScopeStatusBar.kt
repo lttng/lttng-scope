@@ -14,6 +14,7 @@ import com.efficios.jabberwocky.task.JabberwockyTaskManager
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
+import javafx.scene.control.Tooltip
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
@@ -28,6 +29,7 @@ class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
     companion object {
         private const val PROGRESS_VIEW_WINDOW_TITLE = "Running Tasks"
         private const val STATUS_BAR_READY_TEXT = "Ready"
+        private const val STATUS_BAR_TOOLTIP = "Click to show/hide all running tasks"
     }
 
     /**
@@ -45,6 +47,8 @@ class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
 
 
     init {
+        tooltip = Tooltip(STATUS_BAR_TOOLTIP)
+
         /*
          * When shown, the progress bar consumes mouse events, so we'll use
          * addEventFilter() (not addEventHandler()) to make sure they get handled.
