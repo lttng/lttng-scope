@@ -12,6 +12,7 @@ package org.lttng.scope.project.tree
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
 import javafx.scene.control.ContextMenu
+import javafx.scene.control.Tooltip
 import javafx.scene.control.TreeItem
 import org.lttng.scope.views.context.ViewGroupContextManager
 
@@ -48,4 +49,5 @@ internal abstract class ProjectTreeItem(name: String) : TreeItem<String>(name) {
     }
 
     open val contextMenu: ContextMenu? = null
+    open val tooltip: Tooltip? = null
 }

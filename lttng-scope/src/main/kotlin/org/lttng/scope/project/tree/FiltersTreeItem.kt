@@ -16,6 +16,7 @@ import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.MenuItem
+import javafx.scene.control.Tooltip
 import javafx.scene.layout.HBox
 import org.lttng.scope.common.jfx.JfxUtils
 import org.lttng.scope.project.ProjectFilters
@@ -31,13 +32,14 @@ internal class FiltersTreeItem(refNode: Node) : ProjectTreeItem(FILTERS_NODE_NAM
         private const val FILTERS_NODE_TOOLTIP = "Manage project-wide filters"
 
         private const val FILTERS_CREATE_FILTER = "Create Filter..."
-
     }
 
-
     override val contextMenu: ContextMenu
+    override val tooltip: Tooltip
 
     init {
+        tooltip = Tooltip(FILTERS_NODE_TOOLTIP)
+
         val createNewFilterMenuItem = MenuItem(FILTERS_CREATE_FILTER).apply {
             setOnAction {
                 val project = getCurrentProject() ?: return@setOnAction

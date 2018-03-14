@@ -71,11 +71,15 @@ private class ProjectTreeCell : TreeCell<String>() {
         if (empty) {
             text = null
             graphic = null
+            contextMenu = null
+            tooltip = null
         } else {
             text = getItem()?.toString() ?: ""
             graphic = treeItem.graphic
+
             if (treeItem is ProjectTreeItem) {
                 contextMenu = treeItem.contextMenu
+                tooltip = treeItem.tooltip
             }
         }
     }
