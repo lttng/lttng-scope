@@ -16,7 +16,6 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.scene.layout.BorderPane
 import org.lttng.scope.common.jfx.JfxUtils
-import org.lttng.scope.project.tree.BookmarksTreeItem
 import org.lttng.scope.project.tree.FiltersTreeItem
 import org.lttng.scope.project.tree.ProjectTreeItem
 import org.lttng.scope.project.tree.TracesTreeItem
@@ -38,7 +37,7 @@ class ProjectArea : BorderPane() {
     init {
         /* Setup tree skeleton */
         projectRootItem.children.addAll(TracesTreeItem(),
-                BookmarksTreeItem(),
+//                BookmarksTreeItem(),
                 FiltersTreeItem(this))
 
         projectTree.setCellFactory { ProjectTreeCell() }
