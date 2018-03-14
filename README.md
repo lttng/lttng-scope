@@ -48,7 +48,7 @@ To run the unit tests, remove the `-DskipTests` flag.
 
 You can then run the program with:
 
-    java -jar lttng-scope/target/lttng-scope-0.3.0-SNAPSHOT-jar-with-dependencies.jar
+    java -jar lttng-scope/target/lttng-scope-0.4.0-SNAPSHOT-jar-with-dependencies.jar
 
 Remember that this is an early pre-release version, and a lot of core
 functionality is still missing. You are still welcome to try it out and report
