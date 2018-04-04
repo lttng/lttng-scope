@@ -61,11 +61,11 @@ class ScopeMainWindow : BorderPane() {
 
     init {
         /* Load all supported plugins */
-        val timeGraphMgr = TimeGraphModelProviderManager.instance()
-        timeGraphMgr.registerProviderFactory { ThreadsModelProvider() }
-        timeGraphMgr.registerProviderFactory { ResourcesCpuModelProvider() }
+        with(TimeGraphModelProviderManager.instance()) {
+            registerProviderFactory { ThreadsModelProvider() }
+            registerProviderFactory { ResourcesCpuModelProvider() }
+        }
 
-        val xyChartMgr = XYChartModelProviderManager
         /*
          * No SAM-conversion for Kotlin types :(
          * See https://youtrack.jetbrains.com/issue/KT-7770
@@ -73,7 +73,7 @@ class ScopeMainWindow : BorderPane() {
         val factory1 = object : XYChartModelProviderManager.XYChartModelProviderFactory {
             override fun invoke(): XYChartModelProvider = EventStatsXYChartProvider()
         }
-        xyChartMgr.registerProviderFactory(factory1)
+        XYChartModelProviderManager.registerProviderFactory(factory1)
 
         /* Register the built-in LTTng-Analyses descriptors */
 //        try {
