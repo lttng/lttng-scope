@@ -34,6 +34,8 @@ private const val INITIAL_DIVIDER_POSITION = 0.15
  */
 class ScopeMainWindow : BorderPane() {
 
+    val windowManager = ScopeWindowManager()
+
     /** The "main pane" separates the project view on the left and the analysis area on the right */
     private val mainPane: SplitPane
 
@@ -84,7 +86,7 @@ class ScopeMainWindow : BorderPane() {
 //        }
 
         val menuBar = ScopeMenuBar()
-        val statusBar = ScopeStatusBar()
+        val statusBar = ScopeStatusBar(this)
 
         analysisArea = AnalysisArea()
         projectArea = ProjectArea()
@@ -104,6 +106,14 @@ class ScopeMainWindow : BorderPane() {
             resetTimeBasedSeparatorPosition()
             resizeWidgets()
         }
+    }
+
+    fun onHiddenCB() {
+        /*
+         * Once a main window closes, all other application windows linked to this main window
+         * should be closed too.
+         */
+        windowManager.closeAll()
     }
 
 }

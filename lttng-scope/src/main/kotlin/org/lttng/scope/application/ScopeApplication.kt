@@ -50,13 +50,9 @@ class ScopeApplication : Application() {
 
                 /* Ensure initial window has proper size and subdivisions. */
                 width = INITIAL_WINDOW_WIDTH
-                setOnShown { Platform.runLater { root.onShownCB() } }
 
-                /*
-                 * Once the main window closes, all other application windows should be closed too
-                 * so the application exits.
-                 */
-                setOnHidden { ScopeWindowManager.closeAll() }
+                setOnShown { Platform.runLater { root.onShownCB() } }
+                setOnHidden { Platform.runLater { root.onHiddenCB() } }
 
                 show()
             }

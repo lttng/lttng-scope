@@ -19,12 +19,13 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import org.controlsfx.control.StatusBar
+import org.lttng.scope.application.ScopeMainWindow
 import org.lttng.scope.application.ScopeWindowManager
 
 /**
  * Status bar of the main window
  */
-class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
+class ScopeStatusBar(private val ownerWindow: ScopeMainWindow) : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
 
     companion object {
         private const val PROGRESS_VIEW_WINDOW_TITLE = "Running Tasks"
@@ -36,13 +37,15 @@ class ScopeStatusBar : StatusBar(), JabberwockyTaskManager.TaskManagerOutput {
      * The status bar will "own" the progress view, since it is shown by click on the
      * status bar's progress bar.
      */
-    private val progressView = ScopeTaskProgressView().apply { JabberwockyTaskManager.registerOutput(this) }
+    private val progressView = ScopeTaskProgressView().apply {
+        JabberwockyTaskManager.registerOutput(this)
+    }
 
     private val taskProgressWindow = Stage().apply {
         title = PROGRESS_VIEW_WINDOW_TITLE
         scene = Scene(progressView, 450.0, 450.0)
 
-        ScopeWindowManager.registerWindow(this)
+        ownerWindow.windowManager.registerWindow(this)
     }
 
 

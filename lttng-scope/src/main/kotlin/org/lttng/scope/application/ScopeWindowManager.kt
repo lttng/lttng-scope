@@ -19,7 +19,7 @@ import java.util.*
  * if the user closes the main window, we should ensure the application exits by closing other
  * sub-windows.
  */
-object ScopeWindowManager {
+class ScopeWindowManager {
 
     private val trackedWindows: MutableSet<Stage> = Collections.newSetFromMap(WeakHashMap<Stage, Boolean>())
 
