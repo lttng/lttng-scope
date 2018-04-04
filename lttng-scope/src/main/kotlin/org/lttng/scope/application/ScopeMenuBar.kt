@@ -9,7 +9,10 @@
 
 package org.lttng.scope.application
 
+import com.efficios.jabberwocky.context.ViewGroupContext
+import com.efficios.jabberwocky.project.TraceProject
 import javafx.beans.value.ChangeListener
+import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.*
 import org.lttng.scope.application.actions.openTraceAction
@@ -25,29 +28,50 @@ class ScopeMenuBar : MenuBar() {
     }
 }
 
+private class ScopeMenuItem(label: String,
+                            enableOnlyOnActiveProject: Boolean = false,
+                            onAction: (ActionEvent) -> Unit) : MenuItem(label) {
+
+    private val projectChangeListener = if (enableOnlyOnActiveProject) {
+        object : ViewGroupContext.ProjectChangeListener(this) {
+            override fun newProjectCb(newProject: TraceProject<*, *>?) {
+                isDisable = (newProject == null)
+            }
+        }
+    } else {
+        null
+    }
+
+    init {
+        setOnAction(onAction)
+
+        val ctx = ViewGroupContextManager.getCurrent()
+        if (enableOnlyOnActiveProject && ctx.traceProject == null) this.isDisable = true
+        projectChangeListener?.let { ctx.registerProjectChangeListener(it) }
+    }
+
+    @Suppress("ProtectedInFinal", "Unused")
+    protected fun finalize() {
+        projectChangeListener?.let { ViewGroupContextManager.getCurrent().deregisterProjectChangeListener(it) }
+    }
+}
 
 private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
 
     companion object {
         private const val FILE_MENU = "File"
-        private const val OPEN_ACTION = "Open..."
-        private const val CLOSE_ACTION = "Close Current Project"
+        private const val OPEN_PROJECT_ACTION = "Open..."
+        private const val CLOSE_PROJECT_ACTION = "Close Current Project"
         private const val EXIT_ACTION = "Exit"
     }
 
-    private val openMenuItem = MenuItem(OPEN_ACTION).apply {
-        setOnAction { openTraceAction(refNode) }
-    }
-    private val closeMenuItem = MenuItem(CLOSE_ACTION).apply {
-        setOnAction { ViewGroupContextManager.getCurrent().switchProject(null) }
-    }
-    private val exitMenuItem = MenuItem(EXIT_ACTION).apply {
-        setOnAction { refNode.scene.window.hide() }
-    }
+    private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { openTraceAction(refNode) }
+    private val closeProjectMenuItem = ScopeMenuItem(CLOSE_PROJECT_ACTION, true) { ViewGroupContextManager.getCurrent().switchProject(null) }
+    private val exitMenuItem = ScopeMenuItem(EXIT_ACTION) { refNode.scene.window.hide() }
 
     init {
-        items.addAll(openMenuItem,
-                closeMenuItem,
+        items.addAll(openProjectMenuItem,
+                closeProjectMenuItem,
                 SeparatorMenuItem(),
                 exitMenuItem)
     }
