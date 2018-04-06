@@ -17,7 +17,7 @@
   <parent>
     <groupId>org.lttng.scope</groupId>
     <artifactId>scope-parent-pom</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.10</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
@@ -34,20 +34,12 @@
   </repositories>
 
   <properties>
-    <required-maven-version>3.3</required-maven-version>
-    <jabberwocky-version>0.2.46-SNAPSHOT</jabberwocky-version>
+    <jabberwocky-version>0.2.47-SNAPSHOT</jabberwocky-version>
   </properties>
 
   <modules>
     <module>lttng-scope</module>
   </modules>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>javafx</artifactId>
-    </dependency>
-  </dependencies>
 
   <dependencyManagement>
     <dependencies>
