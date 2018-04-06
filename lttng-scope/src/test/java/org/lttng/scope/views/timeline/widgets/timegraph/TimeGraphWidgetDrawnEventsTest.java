@@ -13,6 +13,7 @@ import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeG
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
 import javafx.scene.shape.Shape;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider1;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider2;
@@ -25,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * {@link TimeGraphWidget} test suite testing drawn event-related operations.
  */
+@Ignore("Needs reimplementation in proper testing framework")
 public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
 
     private static final TimeGraphDrawnEventProviderManager MANAGER = TimeGraphDrawnEventProviderManager.instance();

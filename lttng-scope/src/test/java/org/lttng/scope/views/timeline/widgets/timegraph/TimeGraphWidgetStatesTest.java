@@ -10,6 +10,7 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertThat;
  * {@link TimeGraphWidget} test suite testing the correctness of the rendered
  * state rectangles.
  */
+@Ignore("Needs reimplementation in proper testing framework")
 @RunWith(Parameterized.class)
 public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
 

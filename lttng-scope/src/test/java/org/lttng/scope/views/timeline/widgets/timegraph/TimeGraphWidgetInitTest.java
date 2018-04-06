@@ -10,6 +10,7 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.common.tests.StubTrace;
 
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertThat;
 /**
  * {@link TimeGraphWidget} test checking the initial conditions.
  */
+@Ignore("Needs reimplementation in proper testing framework")
 public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
 
     /**

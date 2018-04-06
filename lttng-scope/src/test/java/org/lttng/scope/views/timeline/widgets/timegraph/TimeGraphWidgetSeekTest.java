@@ -17,8 +17,7 @@ import org.junit.Test;
 /**
  * {@link TimeGraphWidget} test suite testing seeking operations.
  */
-// TODO Ignore because too flaky, would need a proper testing framework
-@Ignore
+@Ignore("Needs reimplementation in proper testing framework")
 public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
 
     @Before

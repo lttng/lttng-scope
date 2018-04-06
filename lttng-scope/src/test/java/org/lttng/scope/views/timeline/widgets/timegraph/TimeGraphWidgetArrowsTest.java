@@ -11,6 +11,7 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.common.jfx.Arrow;
 
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * {@link TimeGraphWidget} test suite testing arrow-related operations.
  */
+@Ignore("Needs reimplementation in proper testing framework")
 public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
 
     /**

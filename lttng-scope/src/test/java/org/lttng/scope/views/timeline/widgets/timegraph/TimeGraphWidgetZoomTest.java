@@ -10,6 +10,7 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubTrace;
@@ -17,6 +18,7 @@ import org.lttng.scope.common.tests.StubTrace;
 /**
  * {@link TimeGraphWidget} test suite testing zooming operations.
  */
+@Ignore("Needs reimplementation in proper testing framework")
 public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
 
     /**
