@@ -237,6 +237,24 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
                 }
             }
 
+            /*
+             * On project-switching, the whole project time range should be the new visible range.
+             *
+             * Unfortunately, we cannot use the normal facilities here to redraw the visible range
+             * rectangle because the data has not yet been rendered, so the axis does not yet
+             * have its real width
+             *
+             * Instead use this ugly but working hack to artificially draw a rectangle that covers
+             * the whole widget.
+             */
+            Platform.runLater {
+                visibleRangeRect.apply {
+                    isVisible = true
+                    x = 10.0
+                    width = chart.width - 10.0
+                }
+            }
+
             return true
         }
 

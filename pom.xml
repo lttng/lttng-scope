@@ -34,7 +34,7 @@
   </repositories>
 
   <properties>
-    <jabberwocky-version>0.2.47-SNAPSHOT</jabberwocky-version>
+    <jabberwocky-version>0.2.48-SNAPSHOT</jabberwocky-version>
   </properties>
 
   <modules>
