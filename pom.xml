@@ -15,7 +15,7 @@
   <parent>
     <groupId>org.lttng.scope</groupId>
     <artifactId>scope-parent-pom</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
   </parent>
 
   <groupId>org.lttng.scope</groupId>
@@ -51,7 +51,7 @@
     <repository>
       <id>efficios-releases-repo</id>
       <name>EfficiOS Releases</name>
-      <url>https://mvn.efficios.com/maven/releases/</url>
+      <url>https://mvn.efficios.com/repository/releases/</url>
     </repository>
   </repositories>
 </project>
