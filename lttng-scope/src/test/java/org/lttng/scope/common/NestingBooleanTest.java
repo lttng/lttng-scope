@@ -10,18 +10,18 @@
 
 package org.lttng.scope.common;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for the {@link NestingBoolean} class.
- *
+ * <p>
  * TODO Multi-threaded tests
  */
-public class NestingBooleanTest {
+class NestingBooleanTest {
 
     private final NestingBoolean fixture = new NestingBoolean();
 
@@ -29,7 +29,7 @@ public class NestingBooleanTest {
      * Test the initial value
      */
     @Test
-    public void testInitial() {
+    void testInitial() {
         assertTrue(fixture.enabledProperty().get());
     }
 
@@ -37,7 +37,7 @@ public class NestingBooleanTest {
      * Test sequential changes
      */
     @Test
-    public void testChanges() {
+    void testChanges() {
         fixture.disable();
         assertFalse(fixture.enabledProperty().get());
         fixture.enable();
@@ -58,7 +58,7 @@ public class NestingBooleanTest {
      * listeners.
      */
     @Test
-    public void testEnablingNoChange() {
+    void testEnablingNoChange() {
         fixture.enabledProperty().addListener((obs, oldVal, newVal) -> {
             fail();
         });
@@ -72,7 +72,7 @@ public class NestingBooleanTest {
      * listeners.
      */
     @Test
-    public void testDisablingNoChange() {
+    void testDisablingNoChange() {
         fixture.disable();
         fixture.enabledProperty().addListener((obs, oldVal, newVal) -> {
             fail();
@@ -87,7 +87,7 @@ public class NestingBooleanTest {
      * listener.
      */
     @Test
-    public void testEnablingChange() {
+    void testEnablingChange() {
         AtomicBoolean received = new AtomicBoolean(false);
         fixture.disable();
         fixture.enabledProperty().addListener((obs, oldVal, newVal) -> {
@@ -105,7 +105,7 @@ public class NestingBooleanTest {
      * listener.
      */
     @Test
-    public void testDisablingChange() {
+    void testDisablingChange() {
         AtomicBoolean received = new AtomicBoolean(false);
         fixture.enabledProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == false) {

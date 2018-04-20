@@ -9,9 +9,8 @@
 
 package org.lttng.scope.common
 
-import org.hamcrest.core.Is.`is`
-import org.junit.Assert.assertThat
-import org.junit.Test
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
 /**
  * Tests for MathUtils.
@@ -24,24 +23,24 @@ class MathUtilsTest {
      */
     @Test
     fun testRoundToClosestHigherMultiple() {
-        assertThat(12L.roundToClosestHigherMultiple(10L), `is`(20L))
-        assertThat(20L.roundToClosestHigherMultiple(20L), `is`(20L))
+        assertThat(12L.roundToClosestHigherMultiple(10L)).isEqualTo(20L)
+        assertThat(20L.roundToClosestHigherMultiple(20L)).isEqualTo(20L)
     }
 
     @Test
     fun testClamp() {
-        assertThat(10L.clampMin(15L), `is`(15L))
-        assertThat(15L.clampMin(15L), `is`(15L))
-        assertThat(20L.clampMin(15L), `is`(20L))
+        assertThat(10L.clampMin(15L)).isEqualTo(15L)
+        assertThat(15L.clampMin(15L)).isEqualTo(15L)
+        assertThat(20L.clampMin(15L)).isEqualTo(20L)
 
-        assertThat(10L.clampMax(15L), `is`(10L))
-        assertThat(15L.clampMax(15L), `is`(15L))
-        assertThat(20L.clampMax(15L), `is`(15L))
+        assertThat(10L.clampMax(15L)).isEqualTo(10L)
+        assertThat(15L.clampMax(15L)).isEqualTo(15L)
+        assertThat(20L.clampMax(15L)).isEqualTo(15L)
 
-        assertThat( 5L.clamp(10L, 20L), `is`(10L))
-        assertThat(10L.clamp(10L, 20L), `is`(10L))
-        assertThat(15L.clamp(10L, 20L), `is`(15L))
-        assertThat(20L.clamp(10L, 20L), `is`(20L))
-        assertThat(25L.clamp(10L, 20L), `is`(20L))
+        assertThat( 5L.clamp(10L, 20L)).isEqualTo(10L)
+        assertThat(10L.clamp(10L, 20L)).isEqualTo(10L)
+        assertThat(15L.clamp(10L, 20L)).isEqualTo(15L)
+        assertThat(20L.clamp(10L, 20L)).isEqualTo(20L)
+        assertThat(25L.clamp(10L, 20L)).isEqualTo(20L)
     }
 }

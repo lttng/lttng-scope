@@ -10,17 +10,15 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.common.TimeRange
-import com.efficios.jabberwocky.tests.JavaFXClassRunner
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import com.efficios.jabberwocky.tests.JavaFXTestBase
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 import java.time.ZoneId
 
-@RunWith(JavaFXClassRunner::class)
-class TimeRangeTextFieldsFormattingTest {
+class TimeRangeTextFieldsFormattingTest : JavaFXTestBase() {
 
     companion object {
         private const val PROJECT_START = 1331668247_314038062 // 2012-03-13 19:50:47.314038062
@@ -33,7 +31,7 @@ class TimeRangeTextFieldsFormattingTest {
     private val fixture = TimeRangeTextFields(TimeRange.of(PROJECT_START, PROJECT_END), null)
 
 
-    @Before
+    @BeforeEach
     fun setup() {
         TimestampFormat.systemTimeZone = ZoneId.of("EST", ZoneId.SHORT_IDS)
         fixture.timeRange = TimeRange.of(INITIAL_START, INITIAL_END)

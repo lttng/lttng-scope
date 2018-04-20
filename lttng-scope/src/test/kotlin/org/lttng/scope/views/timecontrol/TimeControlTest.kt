@@ -10,19 +10,17 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.context.ViewGroupContext
-import com.efficios.jabberwocky.tests.JavaFXClassRunner
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import com.efficios.jabberwocky.tests.JavaFXTestBase
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.common.tests.StubProject
 import org.lttng.scope.common.tests.StubTrace
 import java.time.ZoneId
 
-@RunWith(JavaFXClassRunner::class)
-class TimeControlTest {
+class TimeControlTest : JavaFXTestBase() {
 
     private val viewContext = ViewGroupContext()
     private val fixture = TimeControl(viewContext)
@@ -31,7 +29,7 @@ class TimeControlTest {
     private val projectRangeEndField = fixture.projRangeTextFields[1]
     private val projectRangeDurationField = fixture.projRangeTextFields[2]
 
-    @Before
+    @BeforeEach
     fun setup() {
         TimestampFormat.systemTimeZone = ZoneId.of("EST", ZoneId.SHORT_IDS)
         ScopeOptions.timestampTimeZone = ScopeOptions.DisplayTimeZone.UTC

@@ -28,16 +28,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.efficios.jabberwocky</groupId>
       <artifactId>jabberwocky-lttng</artifactId>
     </dependency>
@@ -56,7 +46,6 @@
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>

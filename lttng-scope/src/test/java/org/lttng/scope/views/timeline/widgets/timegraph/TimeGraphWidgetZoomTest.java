@@ -10,22 +10,22 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubTrace;
 
 /**
  * {@link TimeGraphWidget} test suite testing zooming operations.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
 
     /**
      * Test zooming-in, starting from a range bordering the trace's start time.
      */
     @Test
-    public void testZoomInBegin() {
+    void testZoomInBegin() {
         testZoom(100000L, 110000L, 105000L, true, 1);
         testZoom(100000L, 120000L, 110000L, true, 3);
     }
@@ -34,7 +34,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * Test zooming-in, starting from an arbitrary range.
      */
     @Test
-    public void testZoomIn() {
+    void testZoomIn() {
         testZoom(120000L, 150000L, 135000L, true, 1);
         testZoom(150000L, 160000L, 155000L, true, 2);
     }
@@ -43,7 +43,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * Test zooming-in, starting from a range bordering the trace's end time.
      */
     @Test
-    public void testZoomInEnd() {
+    void testZoomInEnd() {
         testZoom(160000L, 200000L, 180000L, true, 1);
         testZoom(180000L, 200000L, 190000L, true, 3);
     }
@@ -52,7 +52,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * Test zooming-in, starting from the trace's full time range.
      */
     @Test
-    public void testZoomInFull() {
+    void testZoomInFull() {
         testZoom(100000L, 200000L, 150000L, true, 1);
         testZoom(100000L, 200000L, 150000L, true, 3);
     }
@@ -62,7 +62,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * The resulting range should be clamped to the trace's start time.
      */
     @Test
-    public void testZoomOutBegin() {
+    void testZoomOutBegin() {
         testZoom(100000L, 140000L, 120000L, false, 1);
     }
 
@@ -70,7 +70,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * Test zooming-out, starting from an arbitrary range.
      */
     @Test
-    public void testZoomOut() {
+    void testZoomOut() {
         testZoom(160000L, 180000L, 170000L, false, 1);
         testZoom(140000L, 160000L, 150000L, false, 3);
     }
@@ -80,7 +80,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * The resulting range should be clamped to the trace's end time.
      */
     @Test
-    public void testZoomOutEnd() {
+    void testZoomOutEnd() {
         testZoom(180000L, 200000L, 190000L, false, 1);
     }
 
@@ -89,7 +89,7 @@ public class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
      * range should not be modified.
      */
     @Test
-    public void testZoomOutFull() {
+    void testZoomOutFull() {
         testZoom(160000L, 200000L, 180000L, true, 1);
         testZoom(180000L, 200000L, 190000L, true, 3);
     }

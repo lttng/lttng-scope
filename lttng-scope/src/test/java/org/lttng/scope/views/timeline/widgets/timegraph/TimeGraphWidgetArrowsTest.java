@@ -10,27 +10,27 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.views.timegraph.model.provider.arrows.TimeGraphModelArrowProvider;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.lttng.scope.common.jfx.Arrow;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link TimeGraphWidget} test suite testing arrow-related operations.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
 
     /**
      * Test setup
      */
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         /* Disable all arrow providers initially */
         getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(false));
@@ -46,7 +46,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      * Test that no arrows are shown when all providers are disabled.
      */
     @Test
-    public void testArrowDefault() {
+    void testArrowDefault() {
         Collection<Arrow> arrows = getWidget().getArrowLayer().getRenderedArrows();
         assertTrue(arrows.isEmpty());
     }
@@ -55,7 +55,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      * Test that enabling one series shows those arrows, and only those.
      */
     @Test
-    public void testArrowOneSeries() {
+    void testArrowOneSeries() {
         TimeGraphModelArrowProvider providerRed = getWidget().getControl().getRenderProvider().getArrowProviders().stream()
                 .filter(ap -> ap.getArrowSeries().getSeriesName().equals(StubModelArrowProvider1.SERIES_NAME))
                 .findFirst().get();
@@ -71,7 +71,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      * Test enabling all series
      */
     @Test
-    public void testArrowsAllSeries() {
+    void testArrowsAllSeries() {
         getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(true));
 
@@ -85,7 +85,7 @@ public class TimeGraphWidgetArrowsTest extends TimeGraphWidgetTestBase {
      * Test enabling a series, then disabling it
      */
     @Test
-    public void testArrowsEnableThenDisable() {
+    void testArrowsEnableThenDisable() {
         getWidget().getControl().getRenderProvider().getArrowProviders()
                 .forEach(ap -> ap.enabledProperty().set(true));
 

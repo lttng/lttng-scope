@@ -10,22 +10,20 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.common.TimeRange
-import com.efficios.jabberwocky.tests.JavaFXClassRunner
+import com.efficios.jabberwocky.tests.JavaFXTestBase
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
 
 /**
  * Tests for [TimeRangeTextFields].
  */
-@RunWith(JavaFXClassRunner::class)
-open class TimeRangeTextFieldsTest {
+open class TimeRangeTextFieldsTest : JavaFXTestBase() {
 
     companion object {
         val ENTER_EVENT = KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false)
@@ -38,10 +36,9 @@ open class TimeRangeTextFieldsTest {
         const val INITIAL_END = 1800L
     }
 
-    protected lateinit var fixture: TimeRangeTextFields
-        private set
+    private lateinit var fixture: TimeRangeTextFields
 
-    @Before
+    @BeforeEach
     fun setup() {
         /* These tests use the s.ns format */
         ScopeOptions.timestampFormat = TimestampFormat.SECONDS_POINT_NANOS
@@ -54,9 +51,9 @@ open class TimeRangeTextFieldsTest {
         return TimeRangeTextFields(TimeRange.of(LIMIT_START, LIMIT_END), null)
     }
 
-    protected val startField: TextField get() { return fixture.startTextField }
-    protected val endField: TextField get() { return fixture.endTextField }
-    protected val durationField: TextField get() { return fixture.durationTextField }
+    protected val startField: TextField get() = fixture.startTextField
+    protected val endField: TextField get() = fixture.endTextField
+    protected val durationField: TextField get() = fixture.durationTextField
 
 
     protected fun verifyTimeRange(expectedStart: Long, expectedEnd: Long) {

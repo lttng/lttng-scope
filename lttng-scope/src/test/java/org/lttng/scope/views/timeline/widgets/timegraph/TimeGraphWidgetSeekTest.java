@@ -10,18 +10,18 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * {@link TimeGraphWidget} test suite testing seeking operations.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         repaint();
     }
 
@@ -29,7 +29,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      * Test seeking to a range bordering the trace's start time
      */
     @Test
-    public void testSeekVisibleRangeBegin() {
+    void testSeekVisibleRangeBegin() {
         testSeekVisibleRange(100000L, 110000L);
     }
 
@@ -37,7 +37,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      * Test seeking to an arbitrary range
      */
     @Test
-    public void testSeekVisibleRange() {
+    void testSeekVisibleRange() {
         testSeekVisibleRange(120000L, 150000L);
         testSeekVisibleRange(110000L, 180000L);
         testSeekVisibleRange(150000L, 170000L);
@@ -47,7 +47,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      * Test seeking to a range bordering the trace's end time
      */
     @Test
-    public void testSeekVisibleRangeEnd() {
+    void testSeekVisibleRangeEnd() {
         testSeekVisibleRange(170000L, 200000L);
     }
 
@@ -55,7 +55,7 @@ public class TimeGraphWidgetSeekTest extends TimeGraphWidgetTestBase {
      * Test seeking to the trace's full time range
      */
     @Test
-    public void testSeekFullRange() {
+    void testSeekFullRange() {
         testSeekVisibleRange(100000L, 200000L);
     }
 

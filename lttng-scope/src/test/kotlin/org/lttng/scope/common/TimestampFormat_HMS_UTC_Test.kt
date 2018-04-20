@@ -10,7 +10,8 @@
 package org.lttng.scope.common
 
 import com.efficios.jabberwocky.common.TimeRange
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.lttng.scope.application.ScopeOptions
 
 class TimestampFormat_HMS_UTC_Test : TimestampFormatTestBase(TimestampFormat.HMS_N,
@@ -52,9 +53,9 @@ class TimestampFormat_HMS_UTC_Test : TimestampFormatTestBase(TimestampFormat.HMS
     /**
      * Fail if the project range is > 24 hours
      */
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testInvalidRange() {
         val range = TimeRange.of(1331668247_314038062, 1332000000_000000000)
-        format.stringToTs(range, "19:50:47.314038062")
+        assertThrows<IllegalArgumentException> { format.stringToTs(range, "19:50:47.314038062") }
     }
 }

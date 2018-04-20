@@ -10,35 +10,25 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import com.efficios.jabberwocky.tests.JavaFXClassRunner;
+import com.efficios.jabberwocky.tests.JavaFXTestBase;
 import com.efficios.jabberwocky.views.timegraph.control.TimeGraphModelControl;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.rules.TestRule;
-import org.junit.rules.Timeout;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.lttng.scope.common.jfx.JfxUtils;
 import org.lttng.scope.common.tests.JfxTestUtils;
 import org.lttng.scope.common.tests.StubProject;
 import org.lttng.scope.common.tests.StubTrace;
 
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Base for {@link TimeGraphWidget} tests, which sets up all the needed
  * fixtures.
  */
-@RunWith(JavaFXClassRunner.class)
-public abstract class TimeGraphWidgetTestBase {
-
-    @Rule
-    public TestRule timeoutRule = new Timeout(5, TimeUnit.MINUTES);
+public abstract class TimeGraphWidgetTestBase extends JavaFXTestBase {
 
     private static StubProject sfProject;
     private static StubView sfView;
@@ -47,8 +37,10 @@ public abstract class TimeGraphWidgetTestBase {
 
     private static Stage stage;
 
-    /** Class initialization */
-    @BeforeClass
+    /**
+     * Class initialization
+     */
+    @BeforeAll
     public static void setupClass() {
         StubTrace trace = new StubTrace();
         StubProject stubProject = new StubProject(trace);
@@ -87,8 +79,10 @@ public abstract class TimeGraphWidgetTestBase {
         sfControl = control;
     }
 
-    /** Class teardown */
-    @AfterClass
+    /**
+     * Class teardown
+     */
+    @AfterAll
     public static void teardownClass() {
         if (stage != null) {
             JfxUtils.runLaterAndWait(stage::close);
@@ -153,23 +147,22 @@ public abstract class TimeGraphWidgetTestBase {
      * range. Note that this method won't touch the vertical position of the
      * widget.
      *
-     * @param range
-     *            The target time range
+     * @param range The target time range
      */
     protected void renderRange(TimeRange range) {
         seekVisibleRange(range);
 
         getWidget().prepareWaitForRepaint();
         getWidget().paintCurrentLocation();
-        while (!getWidget().waitForRepaint()) {}
+        while (!getWidget().waitForRepaint()) {
+        }
         JfxTestUtils.updateUI();
     }
 
     /**
      * See the timegraph to the given time range.
      *
-     * @param timeRange
-     *            The target time range
+     * @param timeRange The target time range
      */
     protected void seekVisibleRange(TimeRange timeRange) {
         TimeGraphModelControl control = sfControl;
@@ -182,8 +175,7 @@ public abstract class TimeGraphWidgetTestBase {
      * Verify that both the control and viewer passed as parameters currently
      * report the expected visible time range.
      *
-     * @param expectedRange
-     *            Expected time range
+     * @param expectedRange Expected time range
      */
     protected static void verifyVisibleRange(TimeRange expectedRange) {
         TimeGraphModelControl control = sfControl;
@@ -207,20 +199,17 @@ public abstract class TimeGraphWidgetTestBase {
     }
 
     /**
-     *
      * Assert that a long value is equal to another, within a given delta.
      *
-     * @param expected
-     *            The expected value
-     * @param actual
-     *            The value to test
-     * @param delta
-     *            The delta
+     * @param expected The expected value
+     * @param actual   The value to test
+     * @param delta    The delta
      */
     protected static void assertEqualsWithin(long expected, long actual, double delta) {
         String errMsg = "" + actual + " not within margin (" + delta + ") of " + expected;
-        assertTrue(errMsg, actual < expected + delta);
-        assertTrue(errMsg, actual > expected - delta);
+        assertAll(
+                () -> assertTrue(actual < expected + delta, errMsg),
+                () -> assertTrue(actual > expected - delta, errMsg));
     }
 
 }

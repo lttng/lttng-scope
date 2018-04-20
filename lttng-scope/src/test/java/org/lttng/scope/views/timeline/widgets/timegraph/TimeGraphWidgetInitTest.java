@@ -10,26 +10,25 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.lttng.scope.common.tests.StubTrace;
 
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link TimeGraphWidget} test checking the initial conditions.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
 
     /**
      * Test that the initial visible position of both the control and the view
      * are as expected by the trace's configuration.
      */
     @Test
-    public void testInitialPosition() {
+    void testInitialPosition() {
         repaint();
         TimeGraphWidget viewer = getWidget();
 
@@ -48,6 +47,6 @@ public class TimeGraphWidgetInitTest extends TimeGraphWidgetTestBase {
          * The timegraph may not show the whole range if the window is small.
          * In any case, its end time should never be greater than the trace's end time.
          */
-        assertThat(timeRange.getEndTime(), lessThanOrEqualTo(expectedEnd));
+        assertThat(timeRange.getEndTime()).isLessThanOrEqualTo(expectedEnd);
     }
 }

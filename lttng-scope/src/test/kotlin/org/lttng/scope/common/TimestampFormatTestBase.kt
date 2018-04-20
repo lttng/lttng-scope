@@ -10,10 +10,10 @@
 package org.lttng.scope.common
 
 import com.efficios.jabberwocky.common.TimeRange
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.TestFactory
 import org.lttng.scope.application.ScopeOptions
 import java.time.ZoneId
 
@@ -29,7 +29,7 @@ abstract class TimestampFormatTestBase(protected val format: TimestampFormat,
 
     private val projectRange = projectRange ?: TimeRange.of(0, Long.MAX_VALUE)
 
-    @Before
+    @BeforeEach
     fun setup() {
         /* Hard-code the "system time zone" to GMT-5 for tests, so that they work everywhere. */
         TimestampFormat.systemTimeZone = ZoneId.of("EST", ZoneId.SHORT_IDS)
@@ -38,18 +38,21 @@ abstract class TimestampFormatTestBase(protected val format: TimestampFormat,
         ScopeOptions.timestampTimeZone = displayTimeZone
     }
 
-    @Test
-    fun testParsing() {
-        stringToTsData.forEach { assertEquals(it.first, it.second, format.stringToTs(projectRange, it.first)) }
+    @TestFactory
+    fun testParsing() = stringToTsData.map {
+        dynamicTest("Test parsing valid formatted string: ${it.first}",
+                { assertThat(format.stringToTs(projectRange, it.first)).isEqualTo(it.second) })
     }
 
-    @Test
-    fun testParsingInvalid() {
-        invalidStrData.forEach { assertNull(it, format.stringToTs(projectRange, it)) }
+    @TestFactory
+    fun testParsingInvalid() = invalidStrData.map {
+        dynamicTest("Test parsing invalid formatted string: $it",
+                { assertThat(format.stringToTs(projectRange, it)).isNull() })
     }
 
-    @Test
-    fun testPrinting() {
-        tsToStringData.forEach { assertEquals(it.first.toString(), it.second, format.tsToString(it.first)) }
+    @TestFactory
+    fun testPrinting() = tsToStringData.map {
+        dynamicTest("Test formatting timestamp: ${it.first}",
+                { assertThat(format.tsToString(it.first)).isEqualTo(it.second) })
     }
 }

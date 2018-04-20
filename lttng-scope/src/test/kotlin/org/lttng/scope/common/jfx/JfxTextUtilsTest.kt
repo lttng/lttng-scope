@@ -11,8 +11,8 @@ package org.lttng.scope.common.jfx
 
 import javafx.scene.control.OverrunStyle
 import javafx.scene.text.Font
-import org.junit.Assert.*
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class JfxTextUtilsTest {
 

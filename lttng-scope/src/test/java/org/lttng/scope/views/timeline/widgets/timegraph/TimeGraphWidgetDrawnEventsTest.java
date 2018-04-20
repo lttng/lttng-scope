@@ -12,30 +12,30 @@ package org.lttng.scope.views.timeline.widgets.timegraph;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProvider;
 import com.efficios.jabberwocky.views.timegraph.model.provider.drawnevents.TimeGraphDrawnEventProviderManager;
 import javafx.scene.shape.Shape;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider1;
 import org.lttng.scope.views.timeline.widgets.timegraph.StubDrawnEventProviders.StubDrawnEventProvider2;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link TimeGraphWidget} test suite testing drawn event-related operations.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
 
     private static final TimeGraphDrawnEventProviderManager MANAGER = TimeGraphDrawnEventProviderManager.instance();
 
     /**
      * Test setup
      */
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         MANAGER.getRegisteredProviders().clear();
         repaint();
     }
@@ -44,7 +44,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * Test that with no provider at all, there is no event drawn.
      */
     @Test
-    public void testNoProvider() {
+    void testNoProvider() {
         Collection<Shape> events = getRenderedEvents();
         assertTrue(events.isEmpty());
     }
@@ -53,7 +53,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * Test one registered and enabled provider.
      */
     @Test
-    public void testRegisteredAndEnabledProvider() {
+    void testRegisteredAndEnabledProvider() {
         TimeGraphDrawnEventProvider provider = new StubDrawnEventProvider1();
         MANAGER.getRegisteredProviders().add(provider);
         provider.enabledProperty().set(true);
@@ -69,7 +69,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * its events.
      */
     @Test
-    public void testEnabledButNotRegisteredProvider() {
+    void testEnabledButNotRegisteredProvider() {
         TimeGraphDrawnEventProvider provider = new StubDrawnEventProvider1();
         provider.enabledProperty().set(true);
 
@@ -84,7 +84,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * not paint its event.
      */
     @Test
-    public void testRegisteredButNotEnabledProvider() {
+    void testRegisteredButNotEnabledProvider() {
         TimeGraphDrawnEventProvider provider1 = new StubDrawnEventProvider1();
         TimeGraphDrawnEventProvider provider2 = new StubDrawnEventProvider2();
         MANAGER.getRegisteredProviders().add(provider1);
@@ -103,7 +103,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * all paint their own events.
      */
     @Test
-    public void testManyProviders() {
+    void testManyProviders() {
         TimeGraphDrawnEventProvider provider1 = new StubDrawnEventProvider1();
         TimeGraphDrawnEventProvider provider2 = new StubDrawnEventProvider2();
         MANAGER.getRegisteredProviders().add(provider1);
@@ -123,7 +123,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * This should result in new events being painted.
      */
     @Test
-    public void testEnabling() {
+    void testEnabling() {
         TimeGraphDrawnEventProvider provider = new StubDrawnEventProvider1();
         MANAGER.getRegisteredProviders().add(provider);
         provider.enabledProperty().set(false);
@@ -144,7 +144,7 @@ public class TimeGraphWidgetDrawnEventsTest extends TimeGraphWidgetTestBase {
      * This should remove its events from the view.
      */
     @Test
-    public void testDisabling() {
+    void testDisabling() {
         TimeGraphDrawnEventProvider provider = new StubDrawnEventProvider1();
         MANAGER.getRegisteredProviders().add(provider);
 

@@ -10,7 +10,7 @@
 package org.lttng.scope.views.timecontrol
 
 import com.efficios.jabberwocky.common.TimeRange
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * Tests for [TimeRangeTextFields] specifying a minimum range duration.

@@ -10,68 +10,34 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.lttng.scope.common.tests.StubTrace;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link TimeGraphWidget} test suite testing the correctness of the rendered
  * state rectangles.
  */
-@Ignore("Needs reimplementation in proper testing framework")
-@RunWith(Parameterized.class)
-public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
+@Disabled("Needs reimplementation in proper testing framework")
+class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
 
     private static final long START_TIME = 150000L;
-
-    private final int fTargetResolution;
-
-    /**
-     * Generator for test parameters.
-     *
-     * @return Test parameters
-     */
-    @Parameters(name = "resolution: {0}")
-    public static Iterable<Object[]> getParameters() {
-        return Arrays.asList(
-                new Object[] { 1 },
-                new Object[] { 2 },
-                new Object[] { 5 },
-                new Object[] { 10 },
-                new Object[] { 50 },
-                new Object[] { 100 }
-                );
-    }
-
-    /**
-     * Test constructor
-     *
-     * @param targetResolution
-     *            The resolution we aim to have in the view.
-     */
-    public TimeGraphWidgetStatesTest(int targetResolution) {
-        fTargetResolution = targetResolution;
-    }
 
     /**
      * Test a very zoomed-in view, where all state system intervals should be
      * present in the rendered view.
      */
-    @Test
-    public void testStatesResolution() {
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 5, 10, 50, 100})
+    void testStatesResolution(int targetResolution) {
         repaint();
 
         /*
@@ -79,7 +45,7 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
          * have to have a query resolution of 1.
          */
         double viewWidth = getTimeGraphWidth();
-        long duration = (long) (viewWidth / 2.0) * fTargetResolution;
+        long duration = (long) (viewWidth / 2.0) * targetResolution;
         long end = Math.min(START_TIME + duration, StubTrace.FULL_TRACE_END_TIME);
         TimeRange visibleRange = TimeRange.of(START_TIME, end);
 
@@ -102,9 +68,9 @@ public class TimeGraphWidgetStatesTest extends TimeGraphWidgetTestBase {
              * expected due to prefetching on each side ...
              */
             int expectedSize = (int) (duration / (entryIndex * StubModelStateProvider.DURATION_FACTOR));
-            assertThat("nb of states", entryStates.size(), greaterThanOrEqualTo(expectedSize));
+            assertThat(entryStates.size()).isGreaterThanOrEqualTo(expectedSize);
             /* ... but never more than twice that number. */
-            assertThat("nb of states", entryStates.size(), lessThanOrEqualTo(2 * expectedSize));
+            assertThat(entryStates.size()).isLessThanOrEqualTo(2 * expectedSize);
         }
     }
 

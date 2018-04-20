@@ -10,73 +10,47 @@
 package org.lttng.scope.common.format;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.text.Format;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test the {@link DataSizeWithUnitFormat} class
  *
  * @author Geneviève Bastien
  */
-@RunWith(Parameterized.class)
 public class DataSizeFormatTest {
 
     private static final @NotNull Format FORMAT = DataSizeWithUnitFormat.getInstance();
 
-    private final @NotNull Number fNumValue;
-    private final @NotNull String fStringValue;
-    private final @NotNull Number fParseValue;
-
-    /**
-     * Constructor
-     *
-     * @param numValue
-     *            The numeric value
-     * @param stringValue
-     *            The string value
-     * @param parseValue
-     *            The parse value of the string value
-     */
-    public DataSizeFormatTest(@NotNull Number numValue, @NotNull String stringValue, @NotNull Number parseValue) {
-        fNumValue = numValue;
-        fStringValue = stringValue;
-        fParseValue = parseValue;
-    }
-
-    /**
-     * @return The arrays of parameters
-     */
-    @Parameters(name = "{index}: {0}")
-    public static Iterable<Object[]> getParameters() {
-        return Arrays.asList(new Object[][] {
-                { 0, "0", 0L },
-                { 3, "3 B", 3L },
-                { 975, "975 B", 975L },
-                { 1024, "1 KB", 1024L },
-                { 1024 * 1024, "1 MB", 1024 * 1024L },
-                { 1024 * 1024 * 1024, "1 GB", 1024 * 1024 * 1024L },
-                { 1024L * 1024L * 1024L * 1024L, "1 TB", 1024 * 1024 * 1024 * 1024L },
-                { 4096, "4 KB", 4096L },
-                { -4096, "-4 KB", -4096L },
-                { 4096L, "4 KB", 4096L },
-                { 4096.0, "4 KB", 4096L },
-                { 12345678, "11.774 MB", 12345933.824 },
-                { Integer.MAX_VALUE, "2 GB", 2147483648L },
-                { Integer.MIN_VALUE, "-2 GB", -2147483648L },
-                { Long.MAX_VALUE, "8388608 TB", 9.223372036854775808E18 },
-                { 98765432.123456, "94.19 MB", 98765373.44 },
-                { -98765432.123456, "-94.19 MB", -98765373.44 },
-                { 555555555555L, "517.401 GB", 555555093479.424 },
-                { 555555555555555L, "505.275 TB", 555555737724518.4 }
-        });
+    protected static Stream<Arguments> getParameters() {
+        return Stream.of(
+                Arguments.of(0, "0", 0L),
+                Arguments.of(3, "3 B", 3L),
+                Arguments.of(975, "975 B", 975L),
+                Arguments.of(1024, "1 KB", 1024L),
+                Arguments.of(1024 * 1024, "1 MB", 1024 * 1024L),
+                Arguments.of(1024 * 1024 * 1024, "1 GB", 1024 * 1024 * 1024L),
+                Arguments.of(1024L * 1024L * 1024L * 1024L, "1 TB", 1024 * 1024 * 1024 * 1024L),
+                Arguments.of(4096, "4 KB", 4096L),
+                Arguments.of(-4096, "-4 KB", -4096L),
+                Arguments.of(4096L, "4 KB", 4096L),
+                Arguments.of(4096.0, "4 KB", 4096L),
+                Arguments.of(12345678, "11.774 MB", 12345933.824),
+                Arguments.of(Integer.MAX_VALUE, "2 GB", 2147483648L),
+                Arguments.of(Integer.MIN_VALUE, "-2 GB", -2147483648L),
+                Arguments.of(Long.MAX_VALUE, "8388608 TB", 9.223372036854775808E18),
+                Arguments.of(98765432.123456, "94.19 MB", 98765373.44),
+                Arguments.of(-98765432.123456, "-94.19 MB", -98765373.44),
+                Arguments.of(555555555555L, "517.401 GB", 555555093479.424),
+                Arguments.of(555555555555555L, "505.275 TB", 555555737724518.4)
+        );
     }
 
     /**
@@ -91,19 +65,20 @@ public class DataSizeFormatTest {
     /**
      * Test the {@link Format#format(Object)} method
      */
-    @Test
-    public void testFormat() {
-        assertEquals("format value", fStringValue, getFormatter().format(fNumValue));
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    void testFormat(@NotNull Number numValue, @NotNull String stringValue, @NotNull Number parseValue) {
+        assertEquals(stringValue, getFormatter().format(numValue), "format value");
     }
 
     /**
      * Test the {@link Format#parseObject(String)} method
      *
-     * @throws ParseException
-     *             if the string cannot be parsed
+     * @throws ParseException if the string cannot be parsed
      */
-    @Test
-    public void testParseObject() throws ParseException {
-        assertEquals("parseObject value", fParseValue, getFormatter().parseObject(fStringValue));
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    void testParseObject(@NotNull Number numValue, @NotNull String stringValue, @NotNull Number parseValue) throws ParseException {
+        assertEquals(parseValue, getFormatter().parseObject(stringValue), "parseObject value");
     }
 }

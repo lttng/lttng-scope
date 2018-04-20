@@ -10,14 +10,14 @@
 package org.lttng.scope.views.timeline.widgets.timegraph;
 
 import com.efficios.jabberwocky.common.TimeRange;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link TimeGraphWidget} test suite unit-testing some static utility methods.
  */
-public class TimeGraphWidgetStaticTest {
+class TimeGraphWidgetStaticTest {
 
     private static final double DELTA = 0.1;
 
@@ -35,7 +35,7 @@ public class TimeGraphWidgetStaticTest {
      * Test the {@link TimeGraphWidget#timestampToPaneXPos} method.
      */
     @Test
-    public void testTimeToPosition() {
+    void testTimeToPosition() {
         double yPos = TimeGraphWidget.timestampToPaneXPos(1500,
                 TimeRange.of(TestArea1.START_TIMESTAMP, TestArea1.END_TIMESTAMP),
                 TestArea1.NANOS_PER_PIXEL);
@@ -56,7 +56,7 @@ public class TimeGraphWidgetStaticTest {
      * Test the {@link TimeGraphWidget#paneXPosToTimestamp} method.
      */
     @Test
-    public void testPositionToTimestamp() {
+    void testPositionToTimestamp() {
         long ts = TimeGraphWidget.paneXPosToTimestamp(50.0,
                 TestArea1.START_TIMESTAMP * TestArea1.NANOS_PER_PIXEL,
                 TestArea1.START_TIMESTAMP,
