@@ -15,7 +15,8 @@ import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.*
-import org.lttng.scope.application.actions.openTraceAction
+import org.lttng.scope.application.actions.createNewProjectAction
+import org.lttng.scope.application.actions.setActiveProject
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.views.context.ViewGroupContextManager
 
@@ -60,17 +61,29 @@ private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
 
     companion object {
         private const val FILE_MENU = "File"
-        private const val OPEN_PROJECT_ACTION = "Open..."
+        private const val NEW_PROJECT_FROM_TRACES_ACTION = "New Project from Existing Trace(s)..."
+
+        private const val OPEN_PROJECT_ACTION = "Open Project..."
+        private const val SAVE_PROJECT_ACTION = "Save Project..."
         private const val CLOSE_PROJECT_ACTION = "Close Current Project"
         private const val EXIT_ACTION = "Exit"
     }
 
-    private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { openTraceAction(refNode) }
+    private val newProjectFromTracesItem = ScopeMenuItem(NEW_PROJECT_FROM_TRACES_ACTION) {
+        val project = createNewProjectAction(refNode)
+        project?.let { setActiveProject(it) }
+    }
+
+    private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { TODO() }
+    private val saveProjectMenuItem = ScopeMenuItem(SAVE_PROJECT_ACTION, true) { TODO() }
     private val closeProjectMenuItem = ScopeMenuItem(CLOSE_PROJECT_ACTION, true) { ViewGroupContextManager.getCurrent().switchProject(null) }
     private val exitMenuItem = ScopeMenuItem(EXIT_ACTION) { refNode.scene.window.hide() }
 
     init {
-        items.addAll(openProjectMenuItem,
+        items.addAll(newProjectFromTracesItem,
+//                NYI
+//                openProjectMenuItem,
+//                saveProjectMenuItem,
                 closeProjectMenuItem,
                 SeparatorMenuItem(),
                 exitMenuItem)
