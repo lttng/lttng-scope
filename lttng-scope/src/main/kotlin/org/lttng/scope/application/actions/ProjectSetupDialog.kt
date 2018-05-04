@@ -17,6 +17,7 @@ import javafx.beans.binding.Bindings
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.scene.Node
@@ -30,7 +31,14 @@ import java.nio.file.Files
 import java.util.*
 import kotlin.math.absoluteValue
 
-
+/**
+ * Dialog to create a new project or configure an existing one.
+ *
+ * 'previousProject' is null when we want to create a new project from scratch. If it's set, it means we are editing it.
+ *
+ * The dialog's result is the NEW project that was created. If the dialog is cancelled or if the project didn't change
+ * (included traces remained the same) then the dialog will return null and no project-switching should be needed.
+ */
 class ProjectSetupDialog(private val refNode: Node, previousProject: TraceProject<*, *>?) : Dialog<TraceProject<*, *>?>() {
 
     companion object {
@@ -43,7 +51,14 @@ class ProjectSetupDialog(private val refNode: Node, previousProject: TraceProjec
         private const val SPACING = 10.0
     }
 
-    private val trackedTraces: ObservableList<Trace<*>> = FXCollections.observableArrayList()
+    private var tracesChanged = false
+    private val trackedTraces: ObservableList<Trace<*>> = FXCollections.observableArrayList<Trace<*>>().apply {
+        /* Pre-load the traces from the previous project, if there is one. */
+        previousProject?.let { it.traceCollections.flatMap { it.traces }.let { addAll(it) } }
+
+        /* As soon as the listed traces change, consider the results to be a new project. */
+        addListener(ListChangeListener { tracesChanged = true })
+    }
 
     private val table = TracesTableView(trackedTraces)
 
@@ -84,6 +99,8 @@ class ProjectSetupDialog(private val refNode: Node, previousProject: TraceProjec
         setResultConverter { buttonType ->
             when (buttonType) {
                 ButtonType.OK -> {
+                    if (!tracesChanged) return@setResultConverter null
+
                     val traces = trackedTraces.toList()
                     /* Do not create a project if there are no traces, just cancel. */
                     if (traces.isEmpty()) return@setResultConverter null

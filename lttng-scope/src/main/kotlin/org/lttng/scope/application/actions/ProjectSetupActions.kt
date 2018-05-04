@@ -19,8 +19,11 @@ import org.lttng.scope.views.context.ViewGroupContextManager
 
 private val projectOpenExecutor = LatestTaskExecutor()
 
-fun createNewProjectAction(refNode: Node): TraceProject<*, *>? {
-    return with(ProjectSetupDialog(refNode, null)) {
+/**
+ * Open an empty Project Setup dialog to create a new project from scratch.
+ */
+fun createNewProjectAction(refNode: Node) {
+    with(ProjectSetupDialog(refNode, null)) {
         setOnShowing {
             Platform.runLater {
                 JfxUtils.centerDialogOnScreen(this, refNode)
@@ -30,9 +33,21 @@ fun createNewProjectAction(refNode: Node): TraceProject<*, *>? {
         }
         showAndWait().orElse(null)
     }
+            ?.let { setActiveProject(it) }
 }
 
-fun setActiveProject(project: TraceProject<*, *>) {
+/**
+ * Open the Project Setup dialog to configure an existing project.
+ */
+fun editProject(refNode: Node, project: TraceProject<*, *>) {
+    with(ProjectSetupDialog(refNode, project)) {
+        setOnShowing { Platform.runLater { JfxUtils.centerDialogOnScreen(this, refNode) } }
+        showAndWait().orElse(null)
+    }
+            ?.let { setActiveProject(it) }
+}
+
+private fun setActiveProject(project: TraceProject<*, *>) {
     /*
      * Switch to a "real" (not the null/empty) project in a separate Task, so
      * that indexing progress is reported.

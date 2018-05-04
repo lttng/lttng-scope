@@ -16,7 +16,7 @@ import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.*
 import org.lttng.scope.application.actions.createNewProjectAction
-import org.lttng.scope.application.actions.setActiveProject
+import org.lttng.scope.application.actions.editProject
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.views.context.ViewGroupContextManager
 
@@ -66,17 +66,18 @@ private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
         private const val OPEN_PROJECT_ACTION = "Open Project..."
         private const val SAVE_PROJECT_ACTION = "Save Project..."
         private const val CLOSE_PROJECT_ACTION = "Close Current Project"
+        private const val PROJECT_SETUP_ACTION = "Project Setup..."
         private const val EXIT_ACTION = "Exit"
     }
 
-    private val newProjectFromTracesItem = ScopeMenuItem(NEW_PROJECT_FROM_TRACES_ACTION) {
-        val project = createNewProjectAction(refNode)
-        project?.let { setActiveProject(it) }
-    }
+    private val newProjectFromTracesItem = ScopeMenuItem(NEW_PROJECT_FROM_TRACES_ACTION) { createNewProjectAction(refNode) }
 
     private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { TODO() }
     private val saveProjectMenuItem = ScopeMenuItem(SAVE_PROJECT_ACTION, true) { TODO() }
     private val closeProjectMenuItem = ScopeMenuItem(CLOSE_PROJECT_ACTION, true) { ViewGroupContextManager.getCurrent().switchProject(null) }
+    private val projectSetupMenuItem = ScopeMenuItem(PROJECT_SETUP_ACTION, true) {
+        ViewGroupContextManager.getCurrent().traceProject?.let { editProject(refNode, it) }
+    }
     private val exitMenuItem = ScopeMenuItem(EXIT_ACTION) { refNode.scene.window.hide() }
 
     init {
@@ -85,6 +86,8 @@ private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
 //                openProjectMenuItem,
 //                saveProjectMenuItem,
                 closeProjectMenuItem,
+                SeparatorMenuItem(),
+                projectSetupMenuItem,
                 SeparatorMenuItem(),
                 exitMenuItem)
     }
