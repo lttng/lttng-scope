@@ -11,46 +11,70 @@ package org.lttng.scope.project.tree
 
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.project.TraceProject
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.TreeCell
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
+import org.lttng.scope.application.actions.editProject
 import org.lttng.scope.common.jfx.JfxUtils
+import org.lttng.scope.common.jfx.ScopeMenuItem
 import org.lttng.scope.views.context.ViewGroupContextManager
+
 
 class ProjectTree : TreeView<String>() {
 
     companion object {
         private const val NO_PROJECT = "(no project opened)"
+        private const val PROJECT_SETUP_ACTION = "Project Setup"
     }
 
     private val emptyProjectRootItem = TreeItem(NO_PROJECT)
-    private val projectRootItem = TreeItem(NO_PROJECT).apply {
-        isExpanded = true
-    }
+    private val projectRootItem = RootTreeItem()
 
     init {
-        /* Setup tree skeleton */
-        projectRootItem.children.addAll(TracesTreeItem(),
-//                BookmarksTreeItem(),
-                FiltersTreeItem(this))
-
         setCellFactory { ProjectTreeCell() }
 
         /* Setup listeners */
         ViewGroupContextManager.getCurrent().registerProjectChangeListener(object : ViewGroupContext.ProjectChangeListener(this) {
             override fun newProjectCb(newProject: TraceProject<*, *>?) {
                 JfxUtils.runLaterAndWait(Runnable {
-                    if (newProject == null) {
-                        root = emptyProjectRootItem
+                    root = if (newProject == null) {
+                        emptyProjectRootItem
                     } else {
-                        projectRootItem.value = newProject.name
-                        root = projectRootItem
+                        projectRootItem
                     }
                 })
             }
         })
 
         root = emptyProjectRootItem
+    }
+
+    private inner class RootTreeItem : ProjectTreeItem(NO_PROJECT) {
+
+        override val contextMenu: ContextMenu
+
+        override fun initForProject(project: TraceProject<*, *>) {
+            value = project.name
+        }
+
+        override fun clear() {
+            /* Do not call super.clear() (which clears the children, which we don't want here!) */
+        }
+
+        init {
+            val projectSetupMenuItem = ScopeMenuItem(PROJECT_SETUP_ACTION) {
+                getCurrentProject()?.let { editProject(this@ProjectTree, it) }
+            }
+
+            contextMenu = ContextMenu(projectSetupMenuItem)
+
+            /* Setup tree skeleton */
+            children.addAll(TracesTreeItem(),
+//                BookmarksTreeItem(),
+                    FiltersTreeItem(this@ProjectTree))
+        }
+
     }
 }
 
