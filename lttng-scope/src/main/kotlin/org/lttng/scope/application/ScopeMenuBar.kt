@@ -9,15 +9,13 @@
 
 package org.lttng.scope.application
 
-import com.efficios.jabberwocky.context.ViewGroupContext
-import com.efficios.jabberwocky.project.TraceProject
 import javafx.beans.value.ChangeListener
-import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.*
 import org.lttng.scope.application.actions.createNewProjectAction
 import org.lttng.scope.application.actions.editProject
 import org.lttng.scope.common.TimestampFormat
+import org.lttng.scope.common.jfx.ScopeMenuItem
 import org.lttng.scope.views.context.ViewGroupContextManager
 
 class ScopeMenuBar : MenuBar() {
@@ -26,34 +24,6 @@ class ScopeMenuBar : MenuBar() {
                 ViewMenu()
 //                HelpMenu()
         )
-    }
-}
-
-private class ScopeMenuItem(label: String,
-                            enableOnlyOnActiveProject: Boolean = false,
-                            onAction: (ActionEvent) -> Unit) : MenuItem(label) {
-
-    private val projectChangeListener = if (enableOnlyOnActiveProject) {
-        object : ViewGroupContext.ProjectChangeListener(this) {
-            override fun newProjectCb(newProject: TraceProject<*, *>?) {
-                isDisable = (newProject == null)
-            }
-        }
-    } else {
-        null
-    }
-
-    init {
-        setOnAction(onAction)
-
-        val ctx = ViewGroupContextManager.getCurrent()
-        if (enableOnlyOnActiveProject && ctx.traceProject == null) this.isDisable = true
-        projectChangeListener?.let { ctx.registerProjectChangeListener(it) }
-    }
-
-    @Suppress("ProtectedInFinal", "Unused")
-    protected fun finalize() {
-        projectChangeListener?.let { ViewGroupContextManager.getCurrent().deregisterProjectChangeListener(it) }
     }
 }
 

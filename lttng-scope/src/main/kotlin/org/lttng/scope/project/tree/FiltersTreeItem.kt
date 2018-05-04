@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.HBox
 import org.lttng.scope.common.jfx.JfxUtils
+import org.lttng.scope.common.jfx.ScopeMenuItem
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.project.ProjectManager
 import org.lttng.scope.project.filter.CreateEventFilterDialog
@@ -40,17 +41,14 @@ internal class FiltersTreeItem(refNode: Node) : ProjectTreeItem(FILTERS_NODE_NAM
     init {
         tooltip = Tooltip(FILTERS_NODE_TOOLTIP)
 
-        val createNewFilterMenuItem = MenuItem(FILTERS_CREATE_FILTER).apply {
-            setOnAction {
-                val project = getCurrentProject() ?: return@setOnAction
-                val optFilter = with(CreateEventFilterDialog()) {
-                    setOnShowing { Platform.runLater { JfxUtils.centerDialogOnScreen(this, refNode) } }
-                    showAndWait()
-                }
-                if (optFilter.isPresent) {
-                    ProjectManager.getProjectState(project).filters.createFilter(optFilter.get())
-                }
+        val createNewFilterMenuItem = ScopeMenuItem(FILTERS_CREATE_FILTER) {
+            val project = getCurrentProject() ?: return@ScopeMenuItem
+            with(CreateEventFilterDialog()) {
+                setOnShowing { Platform.runLater { JfxUtils.centerDialogOnScreen(this, refNode) } }
+                showAndWait()
             }
+                    .orElse(null)
+                    ?.let { ProjectManager.getProjectState(project).filters.createFilter(it) }
         }
 
         contextMenu = ContextMenu(createNewFilterMenuItem)
