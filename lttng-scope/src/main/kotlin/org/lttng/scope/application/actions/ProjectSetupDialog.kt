@@ -13,6 +13,7 @@ import com.efficios.jabberwocky.collection.TraceCollection
 import com.efficios.jabberwocky.ctf.trace.CtfTrace
 import com.efficios.jabberwocky.project.TraceProject
 import com.efficios.jabberwocky.trace.Trace
+import javafx.beans.binding.Bindings
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
@@ -76,6 +77,9 @@ class ProjectSetupDialog(private val refNode: Node, previousProject: TraceProjec
         dialogPane.content = content
         dialogPane.buttonTypes.addAll(ButtonType.CANCEL, ButtonType.OK)
         dialogPane.minWidth = DIALOG_INITIAL_WIDTH
+
+        /* Activate the "Remove Trace" button only when there is a selection. */
+        removeTraceButton.disableProperty().bind(Bindings.isEmpty(table.selectionModel.selectedItems))
 
         setResultConverter { buttonType ->
             when (buttonType) {
