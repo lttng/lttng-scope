@@ -47,6 +47,16 @@ fun editProject(refNode: Node, project: TraceProject<*, *>) {
             ?.let { setActiveProject(it) }
 }
 
+/** Save the project to a location specified by the user. */
+fun saveProjectAction(refNode: Node?, traceProject: TraceProject<*, *>) {
+
+}
+
+/** Open a previously-saved project and set it as the new active project. */
+fun loadProjectAction(refNode: Node?) {
+
+}
+
 private fun setActiveProject(project: TraceProject<*, *>) {
     /*
      * Switch to a "real" (not the null/empty) project in a separate Task, so

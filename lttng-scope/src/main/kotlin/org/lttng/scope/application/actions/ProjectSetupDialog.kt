@@ -137,9 +137,10 @@ class ProjectSetupDialog(private val refNode: Node, previousProject: TraceProjec
 
 }
 
+/** Create a new project in the "temporary project" location. */
 private fun createProject(projectName: String, traces: Collection<Trace<*>>): TraceProject<*, *> {
-    val projectPath = ScopePaths.projectsDir.resolve(projectName)
-    if (!Files.exists(projectPath)) Files.createDirectories(projectPath)
+    ScopePaths.cleanTempProjectDir()
+    val projectPath = ScopePaths.tempProjectDir
 
     // For now, we only use a single trace collection for all traces in a project
     val traceCollection = TraceCollection(traces)

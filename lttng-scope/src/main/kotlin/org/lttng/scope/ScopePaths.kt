@@ -9,6 +9,7 @@
 
 package org.lttng.scope
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -23,7 +24,7 @@ import java.nio.file.Paths
 object ScopePaths {
 
     private const val appDirSuffix = "lttng-scope"
-    private const val projectsDirSuffix = "projects"
+    private const val tempProjectDirSuffix = "temporary-project"
 
     val homeDir = System.getProperty("user.home")?.let { Paths.get(it) }
             ?: System.getenv("HOME")?.let { Paths.get(it) }
@@ -41,6 +42,19 @@ object ScopePaths {
             ?.let { Paths.get(it, appDirSuffix) }
             ?: homeDir.resolve(Paths.get(".cache", appDirSuffix))
 
-    /** Subdirectory to store Jabberwocky trace projects. Should go under 'dataDir' */
-    val projectsDir: Path = dataDir.resolve(projectsDirSuffix)
+    /**
+     * Subdirectory to store temporary projects, that is projects before they are saved manually by the user.
+     * Should go under 'dataDir'.
+     */
+    val tempProjectDir: Path = dataDir.resolve(tempProjectDirSuffix)
+
+    @Synchronized
+    fun cleanTempProjectDir() {
+        with(tempProjectDir) {
+            if (Files.exists(this)) {
+                this.toFile().deleteRecursively()
+            }
+            Files.createDirectories(tempProjectDir)
+        }
+    }
 }

@@ -14,6 +14,8 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import org.lttng.scope.application.actions.createNewProjectAction
 import org.lttng.scope.application.actions.editProject
+import org.lttng.scope.application.actions.loadProjectAction
+import org.lttng.scope.application.actions.saveProjectAction
 import org.lttng.scope.common.TimestampFormat
 import org.lttng.scope.common.jfx.ScopeMenuItem
 import org.lttng.scope.views.context.ViewGroupContextManager
@@ -42,8 +44,10 @@ private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
 
     private val newProjectFromTracesItem = ScopeMenuItem(NEW_PROJECT_FROM_TRACES_ACTION) { createNewProjectAction(refNode) }
 
-    private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { TODO() }
-    private val saveProjectMenuItem = ScopeMenuItem(SAVE_PROJECT_ACTION, true) { TODO() }
+    private val openProjectMenuItem = ScopeMenuItem(OPEN_PROJECT_ACTION) { loadProjectAction(refNode) }
+    private val saveProjectMenuItem = ScopeMenuItem(SAVE_PROJECT_ACTION, true) {
+        ViewGroupContextManager.getCurrent().traceProject?.let { saveProjectAction(refNode, it) }
+    }
     private val closeProjectMenuItem = ScopeMenuItem(CLOSE_PROJECT_ACTION, true) { ViewGroupContextManager.getCurrent().switchProject(null) }
     private val projectSetupMenuItem = ScopeMenuItem(PROJECT_SETUP_ACTION, true) {
         ViewGroupContextManager.getCurrent().traceProject?.let { editProject(refNode, it) }
@@ -52,9 +56,8 @@ private class FileMenu(private val refNode: Node) : Menu(FILE_MENU) {
 
     init {
         items.addAll(newProjectFromTracesItem,
-//                NYI
-//                openProjectMenuItem,
-//                saveProjectMenuItem,
+                openProjectMenuItem,
+                saveProjectMenuItem,
                 closeProjectMenuItem,
                 SeparatorMenuItem(),
                 projectSetupMenuItem,
