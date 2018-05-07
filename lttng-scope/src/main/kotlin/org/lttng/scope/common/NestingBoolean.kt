@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
+ * Copyright (C) 2017-2018 EfficiOS Inc., Alexandre Montplaisir <alexmonthy@efficios.com>
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -7,14 +7,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.lttng.scope.common;
+package org.lttng.scope.common
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.ReadOnlyBooleanProperty
+import javafx.beans.property.SimpleBooleanProperty
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Utility class that serves as a wrapper around a single boolean flag that can
@@ -33,23 +31,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * changes.
  *
  * It is "enabled" at creation time.
- *
- * @author Alexandre Montplaisir
  */
-public class NestingBoolean {
+class NestingBoolean {
 
-    private final AtomicInteger fDisabledCount = new AtomicInteger(0);
-    private final BooleanProperty fBoolean = new SimpleBooleanProperty(true);
+    private val disabledCount = AtomicInteger(0)
+
+    private val boolean: BooleanProperty = SimpleBooleanProperty(true)
+    fun enabledProperty(): ReadOnlyBooleanProperty = boolean
 
     /**
      * Decrease the "disabled" count by 1. If it reaches (or already was at) 0
      * then the value is truly enabled.
      */
-    public synchronized void enable() {
+    @Synchronized
+    fun enable() {
         /* Decrement the count but only if it is currently above 0 */
-        int ret = fDisabledCount.updateAndGet(value -> value > 0 ? value - 1 : 0);
+        val ret = disabledCount.updateAndGet { if (it > 0) it - 1 else 0 }
         if (ret == 0) {
-            fBoolean.set(true);
+            boolean.set(true)
         }
     }
 
@@ -57,17 +56,9 @@ public class NestingBoolean {
      * Increase the "disabled" count by 1. The inner value will necessarily be
      * disabled after this call.
      */
-    public synchronized void disable() {
-        fDisabledCount.incrementAndGet();
-        fBoolean.set(false);
-    }
-
-    /**
-     * Property representing the inner boolean value.
-     *
-     * @return The inner value
-     */
-    public ReadOnlyBooleanProperty enabledProperty() {
-        return fBoolean;
+    @Synchronized
+    fun disable() {
+        disabledCount.incrementAndGet()
+        boolean.set(false)
     }
 }
