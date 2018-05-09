@@ -48,7 +48,7 @@ public class TimeGraphBackgroundLayer extends TimeGraphLayer {
             VerticalPosition vPos, @Nullable FutureTask<?> task) {
         final double entryHeight = TimeGraphWidget.ENTRY_HEIGHT;
 
-        final int entriesToPrefetch = getWidget().getDebugOptions().entryPadding.get();
+        final int entriesToPrefetch = getWidget().getDebugOptions().getEntryPadding().get();
         int totalNbEntries = treeRender.getAllTreeElements().size();
 
         final double timeGraphWidth = getWidget().getTimeGraphPane().getWidth();

@@ -64,9 +64,9 @@ public abstract class TimeGraphWidgetTestBase extends JavaFXTestBase {
         JfxTestUtils.updateUI();
 
         /* Disable automatic redraw. We'll trigger view painting manually. */
-        viewer.getDebugOptions().isPaintingEnabled.set(false);
+        viewer.getDebugOptions().isPaintingEnabled().set(false);
         /* Disable mouse listeners in case the mouse dwells inside the view. */
-        viewer.getDebugOptions().isScrollingListenersEnabled.set(false);
+        viewer.getDebugOptions().isScrollingListenersEnabled().set(false);
 
         JfxTestUtils.updateUI();
 

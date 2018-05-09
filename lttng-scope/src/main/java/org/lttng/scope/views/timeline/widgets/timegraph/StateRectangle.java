@@ -89,7 +89,7 @@ public class StateRectangle extends Rectangle {
         setWidth(width);
         setHeight(height);
 
-        double opacity = viewer.getDebugOptions().stateIntervalOpacity.get();
+        double opacity = viewer.getDebugOptions().getStateIntervalOpacity().get();
         setOpacity(opacity);
 
         updatePaint();
@@ -149,7 +149,7 @@ public class StateRectangle extends Rectangle {
         /* Update the color */
         /* Set a special paint for multi-state intervals */
         if (fInterval.isMultiState()) {
-            Paint multiStatePaint = fWidget.getDebugOptions().multiStatePaint.get();
+            Paint multiStatePaint = fWidget.getDebugOptions().getMultiStatePaint().get();
             fBaseColor = multiStatePaint;
             fSelectedColor = multiStatePaint;
         } else {
@@ -282,8 +282,8 @@ public class StateRectangle extends Rectangle {
                     .map(Object::toString)
                     .map(Text::new)
                     .peek(text -> {
-                        text.fontProperty().bind(fOpts.toolTipFont);
-                        text.fillProperty().bind(fOpts.toolTipFontFill);
+                        text.fontProperty().bind(fOpts.getToolTipFont());
+                        text.fillProperty().bind(fOpts.getToolTipFontFill());
                     })
                     .toArray(Node[]::new);
             appendRow(labels);

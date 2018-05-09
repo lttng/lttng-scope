@@ -109,7 +109,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
         final long resolution = Math.max(1, Math.round(getWidget().getCurrentNanosPerPixel()));
         final List<TimeGraphTreeElement> allTreeElements = treeRender.getAllTreeElements();
         final int nbElements = allTreeElements.size();
-        final int entriesToPrefetch = getWidget().getDebugOptions().entryPadding.get();
+        final int entriesToPrefetch = getWidget().getDebugOptions().getEntryPadding().get();
         final int topEntry = Math.max(0,
                 TimeGraphWidget.paneYPosToEntryListIndex(vPos.fTopPos, TimeGraphWidget.ENTRY_HEIGHT) - entriesToPrefetch);
         final int bottomEntry = Math.min(nbElements,
@@ -185,7 +185,7 @@ public class TimeGraphStateLayer extends TimeGraphLayer {
 
         final String ellipsisStr = DebugOptions.ELLIPSIS_STRING;
         final double ellipsisWidth = getWidget().getDebugOptions().getEllipsisWidth();
-        final Font textFont = getWidget().getDebugOptions().stateLabelFont.get();
+        final Font textFont = getWidget().getDebugOptions().getStateLabelFont().get();
         final OverrunStyle overrunStyle = OverrunStyle.ELLIPSIS;
         final Color textColor = Color.WHITE;
 

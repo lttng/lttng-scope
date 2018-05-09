@@ -489,7 +489,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
          * We may ask for some padding on each side, clamped by the trace's
          * start and end.
          */
-        final long timeRangePadding = Math.round(windowRange.getDuration() * getDebugOptions().renderRangePadding.get());
+        final long timeRangePadding = Math.round(windowRange.getDuration() * getDebugOptions().getRenderRangePadding().get());
         final long renderingStartTime = Math.max(fullTimeGraphRange.getStartTime(), windowRange.getStartTime() - timeRangePadding);
         final long renderingEndTime = Math.min(fullTimeGraphRange.getEndTime(), windowRange.getEndTime() + timeRangePadding);
         final TimeRange renderingRange = TimeRange.of(renderingStartTime, renderingEndTime);
@@ -498,7 +498,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
          * Start a new repaint, display the "loading" overlay. The next
          * paint task to finish will put it back to non-visible.
          */
-        if (getDebugOptions().isLoadingOverlayEnabled.get()) {
+        if (getDebugOptions().isLoadingOverlayEnabled().get()) {
             fTimeGraphLoadingOverlay.fadeIn();
         }
 
@@ -645,7 +645,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
          * Listener for the horizontal scrollbar changes
          */
         private final ChangeListener<Number> fHScrollChangeListener = (observable, oldValue, newValue) -> {
-            if (!getDebugOptions().isScrollingListenersEnabled.get()) {
+            if (!getDebugOptions().isScrollingListenersEnabled().get()) {
                 LOGGER.finest(() -> "HScroll event ignored due to debug option"); //$NON-NLS-1$
                 return;
             }
@@ -714,7 +714,7 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
     public class ZoomActions {
 
         public void zoom(boolean zoomIn, boolean forceUseMousePosition, @Nullable Double mouseX) {
-            final double zoomStep = getDebugOptions().zoomStep.get();
+            final double zoomStep = getDebugOptions().getZoomStep().get();
 
             double newScaleFactor = (zoomIn ? 1.0 * (1 + zoomStep) : 1.0 * (1 / (1 + zoomStep)));
 
@@ -727,13 +727,13 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             boolean currentSelectionCenterIsVisible = visibleRange.contains(currentSelectionCenter);
 
             long zoomPivot;
-            if (getDebugOptions().zoomPivotOnMousePosition.get() && mouseX != null && forceUseMousePosition) {
+            if (getDebugOptions().getZoomPivotOnMousePosition().get() && mouseX != null && forceUseMousePosition) {
                 /* Pivot on mouse position */
                 zoomPivot = paneXPosToTimestamp(mouseX);
-            } else if (getDebugOptions().zoomPivotOnSelection.get() && currentSelectionCenterIsVisible) {
+            } else if (getDebugOptions().getZoomPivotOnSelection().get() && currentSelectionCenterIsVisible) {
                 /* Pivot on current selection center */
                 zoomPivot = currentSelectionCenter;
-            } else if (getDebugOptions().zoomPivotOnMousePosition.get() && mouseX != null) {
+            } else if (getDebugOptions().getZoomPivotOnMousePosition().get() && mouseX != null) {
                 /* Pivot on mouse position */
                 zoomPivot = paneXPosToTimestamp(mouseX);
             } else {

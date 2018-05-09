@@ -103,7 +103,7 @@ class TimeGraphWidgetZoomTest extends TimeGraphWidgetTestBase {
 
         widget.getViewContext().setSelectionTimeRange(selectionRange);
 
-        double totalFactor = Math.pow((1.0 + widget.getDebugOptions().zoomStep.get()), nbSteps);
+        double totalFactor = Math.pow((1.0 + widget.getDebugOptions().getZoomStep().get()), nbSteps);
         if (!zoomIn) {
             totalFactor = 1 / totalFactor;
         }

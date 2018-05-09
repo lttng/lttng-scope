@@ -31,14 +31,14 @@ class LoadingOverlay extends Rectangle {
          * config option. That way if the use changes the configured value, this
          * overlay will follow.
          */
-        fillProperty().bind(fOpts.loadingOverlayColor);
+        fillProperty().bind(fOpts.getLoadingOverlayColor());
 
         /*
          * The opacity property on the other hand will change through normal
          * operation of the overlay. We are just setting the initial value here,
          * no permanent bind.
          */
-        setOpacity(fOpts.loadingOverlayTransparentOpacity.get());
+        setOpacity(fOpts.getLoadingOverlayTransparentOpacity().get());
 
         /*
          * The overlay should not catch mouse events. Note we could use
@@ -62,8 +62,8 @@ class LoadingOverlay extends Rectangle {
             fCurrentFadeOut = null;
         }
 
-        double fullOpacity = fOpts.loadingOverlayFullOpacity.get();
-        double fullFadeInDuration = fOpts.loadingOverlayFadeInDuration.get();
+        double fullOpacity = fOpts.getLoadingOverlayFullOpacity().get();
+        double fullFadeInDuration = fOpts.getLoadingOverlayFadeInDuration().get();
         double startOpacity = getOpacity();
 
         /* Do a rule-of-three to determine the duration of fade-in we need. */
@@ -85,9 +85,9 @@ class LoadingOverlay extends Rectangle {
             fCurrentFadeIn = null;
         }
 
-        double fullOpacity = fOpts.loadingOverlayFullOpacity.get();
-        double transparentOpacity = fOpts.loadingOverlayTransparentOpacity.get();
-        double fullFadeOutDuration = fOpts.loadingOverlayFadeOutDuration.get();
+        double fullOpacity = fOpts.getLoadingOverlayFullOpacity().get();
+        double transparentOpacity = fOpts.getLoadingOverlayTransparentOpacity().get();
+        double fullFadeOutDuration = fOpts.getLoadingOverlayFadeOutDuration().get();
         double startOpacity = getOpacity();
 
         /* Do a rule-of-three to determine the duration of fade-in we need. */
