@@ -1,9 +1,6 @@
 LTTng Scope (Alpha Version)
 ===========================
 
-[![Build Status](https://travis-ci.org/lttng/lttng-scope.svg?branch=master)](https://travis-ci.org/lttng/lttng-scope)
-[![codecov](https://codecov.io/gh/lttng/lttng-scope/branch/master/graph/badge.svg)](https://codecov.io/gh/lttng/lttng-scope)
-
 **LTTng Scope** is a trace viewer and analyzer for
 [CTF](http://diamon.org/ctf/) traces, with a focus on
 [LTTng](https://lttng.org/) kernel and user space traces.
