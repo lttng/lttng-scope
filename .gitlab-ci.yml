@@ -21,7 +21,7 @@ variables:
   # As of Maven 3.3.0 instead of this you may define these options in `.mvn/maven.config` so the same config is used
   # when running from the command line.
   # `installAtEnd` and `deployAtEnd` are only effective with recent version of the corresponding plugins.
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   # Docker images to use for jdk8 / jdk10
   MAVEN_IMAGE_JDK8: registry.gitlab.com/lttng/lttng-scope/lttng-scope/maven:3.5-jdk-8-javafx
   MAVEN_IMAGE_JDK10: registry.gitlab.com/lttng/lttng-scope/lttng-scope/maven:3.5-jdk-10-javafx
@@ -82,14 +82,9 @@ verify:jdk8:
 deploy:jdk8:
   # Use stage test here, so the pages job may later pickup the created site.
   stage: test
-  # Run verify at the moment, we might deploy in the future
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
+    - 'mvn $MAVEN_CLI_OPTS deploy'
     - 'bash <(curl -s https://codecov.io/bash)'
   only:
     - master
-  # Archive up the built documentation site.
-  #artifacts:
-  #  paths:
-  #  - target/staging
   image: $MAVEN_IMAGE_JDK8
