@@ -16,13 +16,14 @@ import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.Region
+import org.lttng.scope.common.jfx.TimeAxis
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
 
 abstract class XYChartWidget(override val control: XYChartControl) : XYChartView {
 
-    protected val xAxis = NumberAxis().apply {
+    protected val xAxis = TimeAxis().apply {
         isAutoRanging = false
         isTickMarkVisible = false
         isTickLabelsVisible = false
@@ -61,4 +62,3 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
         return this
     }
 }
-

@@ -16,14 +16,13 @@ import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.scene.Parent
-import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.control.Label
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
-import org.lttng.scope.common.clampMin
+import org.lttng.scope.common.jfx.TimeAxis
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
@@ -160,7 +159,6 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             val end = renders.map { it.range.endTime }.max()!!
             val range = TimeRange.of(start, end)
 
-            /* Determine the major ticks to use */
             // TODO Just assigning 'NumberAxis.tickUnit' atm. Full feature should use a custom time axis
             // and use ticks that are "aligned" on the value (e.g. 0, 2, 4, 6 for a tick value of "2", and not
             // 1, 3, 5 for example. "startTime - (startTime % tickValue) + tickValue)" should give the first tick,
@@ -175,7 +173,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
                 chart.data = FXCollections.observableArrayList()
                 seriesData.forEach { chart.data.add(it) }
 
-                with(chart.xAxis as NumberAxis) {
+                with(chart.xAxis as TimeAxis) {
                     tickUnit = tickValue.toDouble()
                     lowerBound = range.startTime.toDouble()
                     upperBound = range.endTime.toDouble()

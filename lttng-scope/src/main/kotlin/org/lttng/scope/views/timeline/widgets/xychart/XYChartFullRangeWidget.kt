@@ -18,7 +18,6 @@ import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
-import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
@@ -26,7 +25,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeLineCap
-import org.lttng.scope.common.clampMin
+import org.lttng.scope.common.jfx.TimeAxis
 import org.lttng.scope.views.timeline.NavigationAreaWidget
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
@@ -231,7 +230,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
                 chart.data = FXCollections.observableArrayList()
                 seriesData.forEach { chart.data.add(XYChart.Series(it)) }
 
-                with(chart.xAxis as NumberAxis) {
+                with(chart.xAxis as TimeAxis) {
                     tickUnit = range.duration.toDouble()
                     lowerBound = range.startTime.toDouble()
                     upperBound = range.endTime.toDouble()
