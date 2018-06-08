@@ -138,9 +138,11 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
 
             val seriesData = renders
                     .map {
-                        it.data
+                        val name = it.series.name
+                        val data = it.data
                                 .map { XYChart.Data<Number, Number>(it.x, it.y) }
                                 .toCollection(FXCollections.observableArrayList())
+                        XYChart.Series(name, data)
                     }
                     .toList()
 
@@ -151,7 +153,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
 
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
-                seriesData.forEach { chart.data.add(XYChart.Series(it)) }
+                seriesData.forEach { chart.data.add(it) }
 
                 with(chart.xAxis as NumberAxis) {
                     tickUnit = range.duration.toDouble()
