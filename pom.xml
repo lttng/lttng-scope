@@ -28,7 +28,7 @@
   </modules>
 
   <properties>
-    <jabberwocky-version>0.2.51-SNAPSHOT</jabberwocky-version>
+    <jabberwocky-version>0.2.52-SNAPSHOT</jabberwocky-version>
   </properties>
 
   <dependencyManagement>

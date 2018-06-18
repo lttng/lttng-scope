@@ -41,6 +41,8 @@ import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLaye
 class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), NavigationAreaWidget {
 
     companion object {
+        /* Number of data poins we request to the backend */
+        private const val NB_DATA_POINTS = 200
         private const val CHART_HEIGHT = 50.0
 
         private val VISIBLE_RANGE_STROKE_WIDTH = 4.0
@@ -202,9 +204,8 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         private fun repaintChart(traceProject: TraceProject<*, *>): Boolean {
             val viewWidth = rootNode.width
             val traceFullRange = TimeRange.of(traceProject.startTime, traceProject.endTime)
-            val resolution = (traceFullRange.duration / viewWidth).toLong().clampMin(1)
 
-            val renders = control.renderProvider.generateSeriesRenders(traceFullRange, resolution, null)
+            val renders = control.renderProvider.generateSeriesRenders(traceFullRange, NB_DATA_POINTS, null)
             val seriesData = renders
                     .filter { it != XYChartRender.EMPTY_RENDER }
                     .map {

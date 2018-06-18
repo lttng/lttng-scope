@@ -37,6 +37,11 @@ import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLaye
  */
 class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), TimelineWidget {
 
+    companion object {
+        /* Number of data poins we request to the backend */
+        private const val NB_DATA_POINTS = 120
+    }
+
     override val name = control.renderProvider.providerName
     override val rootNode: Parent
     override val splitPane: SplitPane
@@ -131,9 +136,8 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             /* Paint a new chart */
             val viewWidth = chartArea.width
             val visibleRange = newVisibleRange.duration
-            val resolution = ((visibleRange / viewWidth) * 10L).toLong().clampMin(1)
 
-            val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, resolution, null)
+            val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, NB_DATA_POINTS, null)
             if (renders.isEmpty()) return
 
             val seriesData = renders

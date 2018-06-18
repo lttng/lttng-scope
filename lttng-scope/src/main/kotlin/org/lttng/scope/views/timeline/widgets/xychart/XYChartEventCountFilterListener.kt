@@ -73,34 +73,39 @@ class XYChartEventCountFilterListener(private val viewContext: ViewGroupContext,
 
     private inner class FilterSeriesProvider(private val filter: EventFilterDefinition) : XYChartSeriesProvider(filter.createSeries()) {
 
-        override fun generateSeriesRender(range: TimeRange, resolution: Long, task: FutureTask<*>?): XYChartRender {
-            // TODO Currently reading all trace events every query.
-            // Instead we could build a state system of events matching the filter and re-use that.
-            val proj = viewContext.traceProject ?: return XYChartRender.EMPTY_RENDER
-
-            /*
-             * Map<timestamp, matching event count>
-             * We use an AtomicLong just because we want a mutable Long...
-             */
-            val eventsMap = (range.startTime..range.endTime step resolution)
-                    .associateByTo(TreeMap(), { it }, { AtomicLong(0) })
-
-            /* Aggregate the matching events into buckets each representing a data point. */
-            proj.iterator().use {
-                it.seek(range.startTime)
-                it.asSequence()
-                        .takeWhile { it.timestamp <= range.endTime }
-                        .filter(filter.predicate)
-                        .take(RESULTS_LIMIT)
-                        .forEach { eventsMap.floorEntry(it.timestamp)?.let { it.value.incrementAndGet() } }
-            }
-
-            val datapoints = eventsMap
-                    .map { XYChartRender.DataPoint(it.key, it.value.get()) }
-                    .toList()
-
-            return XYChartRender(series, range, datapoints)
+        override fun fillSeriesRender(timestamps: List<Long>, task: FutureTask<*>?): XYChartRender? {
+            // TODO
+            return null
         }
+
+//        override fun generateSeriesRender(range: TimeRange, resolution: Long, task: FutureTask<*>?): XYChartRender {
+//            // TODO Currently reading all trace events every query.
+//            // Instead we could build a state system of events matching the filter and re-use that.
+//            val proj = viewContext.traceProject ?: return XYChartRender.EMPTY_RENDER
+//
+//            /*
+//             * Map<timestamp, matching event count>
+//             * We use an AtomicLong just because we want a mutable Long...
+//             */
+//            val eventsMap = (range.startTime..range.endTime step resolution)
+//                    .associateByTo(TreeMap(), { it }, { AtomicLong(0) })
+//
+//            /* Aggregate the matching events into buckets each representing a data point. */
+//            proj.iterator().use {
+//                it.seek(range.startTime)
+//                it.asSequence()
+//                        .takeWhile { it.timestamp <= range.endTime }
+//                        .filter(filter.predicate)
+//                        .take(RESULTS_LIMIT)
+//                        .forEach { eventsMap.floorEntry(it.timestamp)?.let { it.value.incrementAndGet() } }
+//            }
+//
+//            val datapoints = eventsMap
+//                    .map { XYChartRender.DataPoint(it.key, it.value.get()) }
+//                    .toList()
+//
+//            return XYChartRender(series, range, datapoints)
+//        }
 
     }
 }
