@@ -73,7 +73,7 @@ class XYChartEventCountFilterListener(private val viewContext: ViewGroupContext,
 
     private inner class FilterSeriesProvider(private val filter: EventFilterDefinition) : XYChartSeriesProvider(filter.createSeries()) {
 
-        override fun fillSeriesRender(timestamps: List<Long>, task: FutureTask<*>?): XYChartRender? {
+        override fun fillSeriesRender(timestamps: List<Long>, task: FutureTask<*>?): List<XYChartRender.DataPoint>? {
             // TODO
             return null
         }

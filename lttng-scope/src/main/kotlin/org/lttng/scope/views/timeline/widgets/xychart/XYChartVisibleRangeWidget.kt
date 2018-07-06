@@ -68,6 +68,11 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         chartArea = StackPane(chart, selectionLayer)
         splitPane = SplitPane(infoArea, chartArea)
         rootNode = BorderPane(splitPane)
+
+        with(xAxis) {
+            isTickMarkVisible = true
+            isTickLabelsVisible = true
+        }
     }
 
     override fun dispose() {
@@ -155,12 +160,23 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             val end = renders.map { it.range.endTime }.max()!!
             val range = TimeRange.of(start, end)
 
+            /* Determine the major ticks to use */
+            // TODO Just assigning 'NumberAxis.tickUnit' atm. Full feature should use a custom time axis
+            // and use ticks that are "aligned" on the value (e.g. 0, 2, 4, 6 for a tick value of "2", and not
+            // 1, 3, 5 for example. "startTime - (startTime % tickValue) + tickValue)" should give the first tick,
+            // and then just increment by tickValue.
+            /*
+             * Using the major tick value from the first renders if there are multiple ones. All renders should
+             * have a similar range/resolution anyway.
+             */
+            val tickValue = renders.first().resolutionX * 10
+
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
                 seriesData.forEach { chart.data.add(it) }
 
                 with(chart.xAxis as NumberAxis) {
-                    tickUnit = range.duration.toDouble()
+                    tickUnit = tickValue.toDouble()
                     lowerBound = range.startTime.toDouble()
                     upperBound = range.endTime.toDouble()
                 }
