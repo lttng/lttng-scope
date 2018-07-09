@@ -22,6 +22,8 @@ import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
+import javafx.util.StringConverter
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.jfx.TimeAxis
 import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
@@ -71,6 +73,26 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         with(xAxis) {
             isTickMarkVisible = true
             isTickLabelsVisible = true
+
+            /*
+             * The X-axis represents time, so if a view decides to show the tick labels,
+             * those can be formatted using the context-specific formatting options.
+             */
+            tickLabelFormatter = object : StringConverter<Number>() {
+                override fun toString(value: Number?) = value?.let {
+                    ScopeOptions.timestampFormat.tsToString(it.toLong())
+                            /*
+                             * Formatter might give us 9 decimals all the time, but here
+                             * we'll want to trim the zeroes.
+                             */
+                            .trimEnd { it == '0' }
+                }
+                        ?: ""
+
+
+                // Not needed, we only convert value -> string for showing on the graph.
+                override fun fromString(string: String?) = 0
+            }
         }
     }
 
