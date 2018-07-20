@@ -17,7 +17,6 @@ import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.TimestampFormat
-import org.lttng.scope.common.clamp
 import org.lttng.scope.views.context.ViewGroupContextManager
 import kotlin.math.max
 import kotlin.math.min
@@ -109,7 +108,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
             val prevEnd = timeRange?.endTime ?: 0L
 
             /* The value is valid, apply it as the new range start. */
-            var newStart = value.clamp(limits.startTime, limits.endTime)
+            var newStart = value.coerceIn(limits.startTime, limits.endTime)
             /* Update the end time if we need to (it needs to stay >= start) */
             var newEnd = max(newStart, prevEnd)
 
@@ -140,7 +139,7 @@ class TimeRangeTextFields(initialLimits: TimeRange, private val minimumDuration:
         override fun applyValue(value: Long) {
             val prevStart = timeRange?.startTime ?: 0L
 
-            var newEnd = value.clamp(limits.startTime, limits.endTime)
+            var newEnd = value.coerceIn(limits.startTime, limits.endTime)
             var newStart = min(newEnd, prevStart)
 
             if (minimumDuration != null && (newEnd - newStart) < minimumDuration) {

@@ -26,21 +26,4 @@ class MathUtilsTest {
         assertThat(12L.roundToClosestHigherMultiple(10L)).isEqualTo(20L)
         assertThat(20L.roundToClosestHigherMultiple(20L)).isEqualTo(20L)
     }
-
-    @Test
-    fun testClamp() {
-        assertThat(10L.clampMin(15L)).isEqualTo(15L)
-        assertThat(15L.clampMin(15L)).isEqualTo(15L)
-        assertThat(20L.clampMin(15L)).isEqualTo(20L)
-
-        assertThat(10L.clampMax(15L)).isEqualTo(10L)
-        assertThat(15L.clampMax(15L)).isEqualTo(15L)
-        assertThat(20L.clampMax(15L)).isEqualTo(15L)
-
-        assertThat( 5L.clamp(10L, 20L)).isEqualTo(10L)
-        assertThat(10L.clamp(10L, 20L)).isEqualTo(10L)
-        assertThat(15L.clamp(10L, 20L)).isEqualTo(15L)
-        assertThat(20L.clamp(10L, 20L)).isEqualTo(20L)
-        assertThat(25L.clamp(10L, 20L)).isEqualTo(20L)
-    }
 }

@@ -89,7 +89,7 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
         val ts = (vr.startTime + posRatio * vr.duration).toLong()
 
         /* Clamp the result to the current visible time range. */
-        return ts.clampToRange(vr)
+        return ts.coerceIn(vr.startTime, vr.endTime)
     }
 
     // ------------------------------------------------------------------------

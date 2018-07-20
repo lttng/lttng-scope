@@ -25,7 +25,3 @@ import kotlin.math.min
 fun Long.roundToClosestHigherMultiple(multipleOf: Long): Long {
     return (ceil(this.toDouble() / multipleOf) * multipleOf).toLong()
 }
-
-fun Long.clampMin(lowerLimit: Long): Long = max(this, lowerLimit)
-fun Long.clampMax(upperLimit: Long): Long = min(this, upperLimit)
-fun Long.clamp(lowerLimit: Long, upperLimit: Long): Long = max(lowerLimit, min(this, upperLimit))

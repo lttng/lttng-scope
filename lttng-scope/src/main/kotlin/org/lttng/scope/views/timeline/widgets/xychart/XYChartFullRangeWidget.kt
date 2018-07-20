@@ -127,7 +127,7 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         val ts = (project.startTime + posRatio * project.fullRange.duration).toLong()
 
         /* Clamp the result to the trace project's range. */
-        return ts.clampToRange(project.fullRange)
+        return ts.coerceIn(project.fullRange.startTime, project.fullRange.endTime)
     }
 
 

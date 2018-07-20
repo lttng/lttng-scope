@@ -55,10 +55,4 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
     override fun drawSelection(selectionRange: TimeRange) {
         selectionLayer.drawSelection(selectionRange)
     }
-
-    protected fun Long.clampToRange(range: TimeRange): Long {
-        if (this < range.startTime) return range.startTime
-        if (this > range.endTime) return range.endTime
-        return this
-    }
 }
