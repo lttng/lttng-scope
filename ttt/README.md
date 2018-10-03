@@ -1,10 +1,11 @@
 TTT Test Traces Collection
 ==========================
 
-*TTT* (originally *tracecompass-test-traces*) is a set of CTF test traces
-for use in Trace Compass, LTTng Scope, and related projects.
+*TTT* (originally *tracecompass-test-traces*) is a set of CTF test
+traces for use in Trace Compass, LTTng Scope, and related projects.
 
-To build the package and install it in your local Maven repo, simply isssue
+To build the package and install it in your local Maven repo, simply
+issue:
 
     mvn clean install
 

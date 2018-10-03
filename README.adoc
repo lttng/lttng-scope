@@ -1,0 +1,98 @@
+// Render this file with Asciidoctor
+
+= LTTng Scope
+3 October 2018
+
+**LTTng Scope** is a trace viewer and analyzer for
+https://lttng.org/[LTTng] kernel and user space traces.
+
+LTTng Scope supports Windows, macOS, and Linux. The source code is
+available under the
+https://www.eclipse.org/legal/epl-v10.html[Eclipse Public License].
+
+NOTE: LTTng Scope is currently under development. There are still known
+bugs and some parts need to be optimized.
+
+
+== Installation
+
+=== Binary installer
+
+See the https://lttng.org/beta/#lttng-scope[Beta section] of the LTTng
+website for the latest downloadable installers for Windows, macOS, and
+Linux.
+
+The installers ship with the required Java virtual machine.
+
+
+=== Build from source
+
+You need:
+
+* Java 8
+* JavaFX
+* http://maven.apache.org/[Maven] 3.3 or later
+
+If you use Oracle's JVM, which is typical on Windows and macOS, then
+JavaFX is already included.
+
+If you use OpenJDK, you might need to install OpenJFX separately. On
+Debian and Ubuntu, you can run the following command to install the
+requirements:
+
+----
+sudo apt install openjdk-8-jre openjdk-8-jdk openjfx
+----
+
+To build and install LTTng{nbsp}Scope from source:
+
+. Clone this repository.
+. Run:
++
+----
+mvn clean install -DskipTests
+----
+
+When the `mvn` command finishes, you can start LTTng{nbsp}Scope:
+
+----
+java -jar lttng-scope-ui/target/lttng-scope-ui-*-jar-with-dependencies.jar
+----
+
+
+== Relation to Trace Compass
+
+LTTng{nbsp}Scope is based on some parts of the
+http://www.eclipse.org/tracecompass/[Trace Compass] source code. However,
+it is meant to be a separate project with different design goals. While
+Trace Compass aims to support any analysis for any trace type, LTTng
+Scope aims to:
+
+* Focus on LTTng use cases.
+* Streamline the user experience.
+
+Running analyses on the command line (in a CI server, for example) with
+text-based output is also within the realm of possibilities.
+
+
+== Community
+
+Mailing list::
+	https://lists.lttng.org/cgi-bin/mailman/listinfo/lttng-dev[lttng-dev]
+	(`lttng-dev@lists.lttng.org`). Preferably, use the `[lttng-scope]`
+	subject prefix.
+
+IRC::
+	irc://irc.oftc.net/lttng[`#lttng`] on the OFTC network.
+
+Code contribution::
+	Create a new GitHub https://github.com/lttng/lttng-scope/pulls[pull request].
+
+Bug reporting::
+	Create a new GitHub https://github.com/lttng/lttng-scope/issues/new[issue].
+
+Continuous integration::
+	https://ci.lttng.org/view/LTTng-scope/[LTTng{nbsp}Scope item on LTTng's CI].
+
+Blog::
+	The https://lttng.org/blog/[LTTng blog] contains posts about LTTng{nbsp}Scope.
