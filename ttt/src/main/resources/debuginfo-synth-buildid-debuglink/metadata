@@ -1,0 +1,114 @@
+/* CTF 1.8 */
+
+trace {
+	major = 1;
+	minor = 8;
+	uuid = "cb38709b-0374-4cd1-9e92-58b8bfe1ebad";
+	byte_order = le;
+	packet.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } magic;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } uuid[16];
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } stream_id;
+	} align(8);
+};
+
+env {
+	domain = "ust";
+	tracer_name = "lttng-ust";
+	tracer_major = 2;
+	tracer_minor = 8;
+};
+
+clock {
+	name = A_clock;
+	uuid = "c5909eb3-a83b-40cf-8875-6cbaec30da0b";
+	description = "Simple clock";
+	freq = 1000000000;
+	precision = 1;
+	offset_s = 0;
+	offset = 0;
+	absolute = FALSE;
+};
+
+stream {
+	id = 0;
+	event.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } id;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; map = clock.A_clock.value; } timestamp;
+	} align(8);
+
+	packet.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } timestamp_begin;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } timestamp_end;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } content_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } packet_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } events_discarded;
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } cpu_id;
+	} align(8);
+
+	event.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = hexadecimal; byte_order = le; } _ip;
+		integer { size = 32; align = 8; signed = true; encoding = none; base = decimal; byte_order = le; } _vpid;
+	} align(8);
+};
+
+event {
+	id = 0;
+	name = "dummy_event";
+	stream_id = 0;
+	fields := struct {
+	} align(1);
+};
+
+event {
+	id = 1;
+	name = "lttng_ust_statedump:bin_info";
+	stream_id = 0;
+	fields := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = hexadecimal; byte_order = le; } _baddr;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = hexadecimal; byte_order = le; } _memsz;
+		string { encoding = UTF8; } _path;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } _is_pic;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } _has_build_id;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } _has_debug_link;
+	} align(8);
+};
+
+event {
+	id = 2;
+	name = "lttng_ust_statedump:build_id";
+	stream_id = 0;
+	fields := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = hexadecimal; byte_order = le; } _baddr;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } __build_id_length;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } _build_id[__build_id_length];
+	} align(8);
+};
+
+event {
+	id = 3;
+	name = "lttng_ust_statedump:debug_link";
+	stream_id = 0;
+	fields := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = hexadecimal; byte_order = le; } _baddr;
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = le; } _crc;
+		string { encoding = UTF8; } _filename;
+	} align(8);
+};
+
+event {
+	id = 4;
+	name = "lttng_ust_statedump:end";
+	stream_id = 0;
+	fields := struct {
+	} align(1);
+};
+
+event {
+	id = 5;
+	name = "lttng_ust_statedump:start";
+	stream_id = 0;
+	fields := struct {
+	} align(1);
+};
+

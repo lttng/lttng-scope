@@ -1,0 +1,179 @@
+/* CTF 1.8 */
+
+trace {
+	major = 1;
+	minor = 8;
+	uuid = "09731f23-d160-4df3-90b0-ffbebbec013e";
+	byte_order = be;
+	packet.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } magic;
+		integer { size = 8; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } uuid[16];
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } stream_id;
+		integer { size = 22; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } custom_trace_packet_header_field;
+	} align(8);
+};
+
+env {
+	host = "XThink";
+	test_env_int_obj = 23;
+	test_env_str_obj = "the value";
+	test_env_int = 654321;
+	test_env_str = "oh yeah";
+	sysname = "Linux";
+	nodename = "XThink";
+	release = "4.0.6-1-ARCH";
+	version = "#1 SMP PREEMPT Tue Jun 23 14:25:08 CEST 2015";
+	machine = "x86_64";
+	new_field = "test";
+};
+
+clock {
+	name = test_clock;
+	uuid = "67c4d4a9-0c03-4bb3-89ee-0de1b4258078";
+	description = "This is a test clock";
+	freq = 1123456789;
+	precision = 10;
+	offset_s = 1351530929945824323;
+	offset = 1234567;
+	absolute = TRUE;
+};
+
+stream {
+	id = 123;
+	event.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } id;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; map = clock.test_clock.value; } timestamp;
+	} align(8);
+
+	packet.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_begin;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_end;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } content_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } packet_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } events_discarded;
+		integer { size = 5; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } custom_packet_context_field;
+	} align(8);
+
+	event.context := struct {
+		integer { size = 32; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } common_event_context;
+	} align(1);
+};
+
+event {
+	id = 13;
+	name = "Simple Event";
+	stream_id = 123;
+	context := struct {
+		integer { size = 12; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } event_specific_context;
+	} align(1);
+	fields := struct {
+		enum : integer { size = 64; align = 1; signed = true; encoding = none; base = decimal; byte_order = be; } { "another entry" = -42000 ... -13000, "negative_value" = -12345 ... 0, "escaping; \"test\"" = 1, "\tanother 'escaping'\n test\"" = 2 ... 4, "event clock int float" = 5 ... 22, "truie" = 42 } enum_field;
+		enum : integer { size = 12; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } { "escaping; \"test\"" = 0, "\tanother 'escaping'\n test\"" = 1 ... 4, "event clock int float" = 5 ... 22, "truie" = 42 } enum_field_unsigned;
+		integer { size = 12; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } integer_field;
+		floating_point { exp_dig = 11; mant_dig = 53; byte_order = be; align = 32; } float_field;
+	} align(32);
+};
+
+event {
+	id = 0;
+	name = "Spammy_Event";
+	stream_id = 123;
+	fields := struct {
+		integer { size = 17; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } field_1;
+		string { encoding = UTF8; } a_string;
+	} align(8);
+};
+
+event {
+	id = 11;
+	name = "nu name";
+	loglevel = 5;
+	model.emf.uri = "http://kernel.org/";
+	stream_id = 123;
+	fields := struct {
+		integer { size = 35; align = 1; signed = false; encoding = none; base = hexadecimal; byte_order = be; } uint_35;
+		integer { size = 16; align = 32; signed = true; encoding = none; base = decimal; byte_order = be; } int_16;
+		struct {
+			enum : integer { size = 3; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } { "UINT3_TYPE" = 0, "INT16_TYPE" = 1, "UINT35_TYPE" = 2 ... 7 } variant_selector;
+			string { encoding = UTF8; } a_string;
+			variant <variant_selector> {
+				integer { size = 3; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } UINT3_TYPE;
+				integer { size = 16; align = 32; signed = true; encoding = none; base = decimal; byte_order = be; } INT16_TYPE;
+				integer { size = 35; align = 1; signed = false; encoding = none; base = hexadecimal; byte_order = be; } UINT35_TYPE;
+			} variant_value;
+			struct {
+				integer { size = 35; align = 1; signed = false; encoding = none; base = hexadecimal; byte_order = be; } seq_len;
+				integer { size = 16; align = 32; signed = true; encoding = none; base = decimal; byte_order = be; } a_sequence[seq_len];
+				integer { size = 16; align = 32; signed = true; encoding = none; base = decimal; byte_order = be; } an_array[5];
+			} align(32) inner_structure;
+		} align(32) complex_structure;
+	} align(32);
+};
+
+stream {
+	id = 0;
+	event.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } id;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; map = clock.test_clock.value; } timestamp;
+	} align(8);
+
+	packet.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_begin;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_end;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } content_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } packet_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } events_discarded;
+	} align(8);
+};
+
+event {
+	id = 0;
+	name = "some_event_class_name";
+	stream_id = 0;
+	fields := struct {
+		integer { size = 32; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } integer_field;
+	} align(1);
+};
+
+stream {
+	id = 1;
+	event.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } id;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp;
+	} align(8);
+
+	packet.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_begin;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_end;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } content_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } packet_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } events_discarded;
+	} align(8);
+};
+
+stream {
+	id = 2;
+	event.header := struct {
+		integer { size = 32; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } id;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; map = clock.test_clock.value; } timestamp;
+		integer { size = 13; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } seq_len;
+	} align(8);
+
+	packet.context := struct {
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_begin;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } timestamp_end;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } content_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } packet_size;
+		integer { size = 64; align = 8; signed = false; encoding = none; base = decimal; byte_order = be; } events_discarded;
+	} align(8);
+};
+
+event {
+	id = 0;
+	name = "sequence_event";
+	stream_id = 2;
+	fields := struct {
+		integer { size = 13; align = 1; signed = false; encoding = none; base = decimal; byte_order = be; } some_sequence[stream.event.header.seq_len];
+	} align(1);
+};
+

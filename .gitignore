@@ -1,5 +1,6 @@
 .DS_Store
 target/
+dependency-reduced-pom.xml
 
 # IDE stuff
 .classpath
