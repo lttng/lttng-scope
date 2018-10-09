@@ -1,0 +1,135 @@
+// Render this file with Asciidoctor
+
+= LTTng Scope: development
+9 October 2018
+Philippe Proulx
+:plus: +
+
+This document contains information to help with the development of the
+LTTng{nbsp}Scope project.
+
+
+== Build system
+
+This project uses https://maven.apache.org/[Maven] to compile, test, and
+package.
+
+The master `pom.xml` defines a few properties, dependencies with their
+versions, plugins with their versions and parameters, and profiles. They
+are used by the modules which have minimal POM files:
+
+`ctfreader`::
+    http://diamon.org/ctf/[CTF] reading library (partly inherited from
+    the Trace Compass project).
+
+`jabberwockd`::
+    Stub for an eventual trace analysis daemon application.
+
+`jabberwocky-core`::
+    Main model for analyses.
+
+`jabberwocky-core-test-base`::
+    Base module for tests.
+
+`jabberwocky-ctf`::
+    Wrapper of `ctfreader` to expose a simpler API to the
+    LTTng{nbsp}Scope project.
+
+`jabberwocky-lttng`::
+    LTTng-specific model and analyses.
+
+`javeltrace`::
+    Proof of concept: command-line tool which can analyze a trace.
+
+`libdelorean`::
+    State system and state history library (partly inherited from the
+    Trace Compass project).
+
+`lttng-scope-ui`::
+    User interface part of the LTTng{nbsp}Scope application.
+
+`ttt`::
+    Traces for testing.
+
+
+== Using Maven to build
+
+Follow the _Build from source_ section of `README.adoc`.
+
+The `package` phase of the `lttng-scope-ui` module creates a file in
+`lttng-scope-ui/target` named
+``lttng-scope-ui-_VERSION_-jar-with-dependencies.jar``, where
+``_VERSION_`` is the project's version. This archive contains the class
+files of all the required modules, but it does not contain JavaFX, which
+must be installed on the system (just like the Java{nbsp}VM).
+
+When you modify a module, you can rebuild LTTng{nbsp}Scope as such:
+
+----
+mvn install -DskipTests
+----
+
+
+== Using IntelliJ IDEA
+
+To import the LTTng{nbsp}Scope project in IntelliJ IDEA:
+
+. In IDEA, import a project.
++
+You can do this either when IDEA starts (click **Import Project**), or
+in its main window, by clicking **File** (top menu), then **New**, then
+**Project from Existing Sources...**.
+
+. Select the LTTng{nbsp}Scope Git repository directory (not the
+  `lttng-scope-ui` subdirectory).
+. Check **Import project from external model** and select
+  **Maven**. Click **Next**.
+. Check **Import Maven projects automatically**. Click **Next**.
+. Leave all profiles unchecked. Click **Next**.
+. In the **Select Maven projects to import** step, click **Next**.
+. In the **Please select project SDK** step, click **Next**.
+. Click **Finish**.
+
+You need to create a run configuration to run the project.
+
+To create a run configuration:
+
+. Click **Run** (top menu), then **Edit configurations...**.
+. Click **{plus}**, then **Kotlin**.
+. Give the run configuration a name (for example, `main`).
+. In the **Use classpath of module** list, select **lttng-scope-ui**.
+. In the **Main class** text box, enter:
++
+----
+org.lttng.scope.application.ScopeApplicationKt
+----
+
+. Click **OK**.
+
+To build the project:
+
+* Click **Build** (top menu), then **Build project**.
+
+To run the project:
+
+* Click **Run** (top menu), then **Run 'main'** (if `main` is your
+  run configuration's name).
+
+
+== Changing the version
+
+The project's version should be `x.y.z-SNAPSHOT` until it is ready for
+the release `x.y.z`.
+
+To change the project's version:
+
+* On the command line, working in the directory containing `README.adoc`:
++
+----
+mvn versions:set -DnewVersion=VERSION
+mvn versions:commit
+----
++
+where `VERSION` is the new version.
++
+This updates the versions of the master POM and all the module POMs.

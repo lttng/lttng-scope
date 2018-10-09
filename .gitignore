@@ -2,6 +2,7 @@
 target/
 dependency-reduced-pom.xml
 README.html
+README.dev.html
 
 # IDE stuff
 .classpath
