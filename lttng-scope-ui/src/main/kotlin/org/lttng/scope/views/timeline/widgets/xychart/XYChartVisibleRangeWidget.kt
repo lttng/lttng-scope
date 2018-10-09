@@ -9,12 +9,14 @@
 
 package org.lttng.scope.views.timeline.widgets.xychart
 
-import com.efficios.jabberwocky.analysis.eventstats.EventStatsXYChartProvider
 import com.efficios.jabberwocky.common.TimeRange
 import com.efficios.jabberwocky.context.ViewGroupContext
 import com.efficios.jabberwocky.views.xychart.control.XYChartControl
+import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
 import javafx.application.Platform
+import javafx.beans.InvalidationListener
 import javafx.collections.FXCollections
+import javafx.geometry.Pos
 import javafx.scene.Parent
 import javafx.scene.chart.XYChart
 import javafx.scene.control.Label
@@ -22,8 +24,9 @@ import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
+import org.lttng.scope.application.ScopeOptions
 import org.lttng.scope.common.jfx.TimeAxis
-import org.lttng.scope.project.ProjectFilters
 import org.lttng.scope.views.timeline.TimelineWidget
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
@@ -31,13 +34,13 @@ import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLaye
 
 /**
  * Widget for the timeline view showing data in a XY-Chart. The contents of the
- * chart will follow the frmework's current visible range and update its display
+ * chart will follow the framework's current visible range and update its display
  * accordingly.
  */
 class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: Int) : XYChartWidget(control), TimelineWidget {
 
     companion object {
-        /* Number of data poins we request to the backend */
+        /* Number of data points we request to the backend */
         private const val NB_DATA_POINTS = 120
     }
 
@@ -51,19 +54,23 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     override val dragHandlers = XYChartDragHandlers(this)
     override val scrollHandlers = XYChartScrollHandlers(this)
 
-    /*
-     * Apply the XYChart Fitler listener to the Event Count type charts.
-     * Since the filter listener is defined in the viewer, and not in the library,
-     * it cannot be defined by the model provider itself.
-     */
-    private val filterListener: ProjectFilters.FilterListener? = if (control.renderProvider is EventStatsXYChartProvider) {
-        XYChartEventCountFilterListener(viewContext, control.renderProvider)
-    } else {
-        null
+    private val timestampFormatChangeListener = InvalidationListener {
+        Platform.runLater() {
+        }
     }
 
     init {
-        val infoArea = BorderPane(Label(name))
+        var infoArea : BorderPane? = null
+        val lblName = Label(name)
+
+        lblName.style = "-fx-font-weight: bold"
+
+        val vBox = VBox()
+
+        vBox.alignment = Pos.CENTER
+        vBox.children.add(lblName)
+        vBox.children.add(Label("(Count / Time)"))
+        infoArea = BorderPane(vBox)
         chartArea = StackPane(chart, selectionLayer)
         splitPane = SplitPane(infoArea, chartArea)
         rootNode = BorderPane(splitPane)
@@ -72,9 +79,14 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             isTickMarkVisible = true
             isTickLabelsVisible = true
         }
+
+        ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().addListener(timestampFormatChangeListener)
     }
 
     override fun dispose() {
+        ScopeOptions.timestampFormatProperty().removeListener(timestampFormatChangeListener)
+        ScopeOptions.timestampTimeZoneProperty().removeListener(timestampFormatChangeListener)
     }
 
     override fun getWidgetTimeRange() = viewContext.visibleTimeRange
@@ -138,40 +150,45 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
             if (newVisibleRange == previousVisibleRange) return
 
             /* Paint a new chart */
-            val viewWidth = chartArea.width
-            val visibleRange = newVisibleRange.duration
-
             val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, NB_DATA_POINTS, null)
             if (renders.isEmpty()) return
 
-            val seriesData = renders
-                    .map {
-                        val name = it.series.name
-                        val data = it.data
-                                .map { XYChart.Data<Number, Number>(it.x, it.y) }
-                                .toCollection(FXCollections.observableArrayList())
-                        XYChart.Series(name, data)
-                    }
-                    .toList()
+            val outSeries = mutableListOf<XYChart.Series<Number, Number>>()
+
+            for (render: XYChartRender in renders) {
+                val outPoints = mutableListOf<XYChart.Data<Number, Number>>()
+
+                // Width of a single bar in nanoseconds
+                val step = (render.data[1].x - render.data[0].x)
+
+                /*
+                 * A data point indicates the count difference between the data
+                 * points's timestamp and the next data point's timestamp.
+                 *
+                 * Hack: simulate a bar chart with an area chart here.
+                 */
+                for (renderDp: XYChartRender.DataPoint in render.data) {
+                    outPoints.add(XYChart.Data(renderDp.x, 0.0))
+                    outPoints.add(XYChart.Data(renderDp.x, renderDp.y))
+                    outPoints.add(XYChart.Data(renderDp.x + step, renderDp.y))
+                    outPoints.add(XYChart.Data(renderDp.x + step, 0.0))
+                }
+
+                outSeries.add(XYChart.Series(render.series.name, FXCollections.observableList(outPoints)))
+            }
 
             /* Determine start and end times of the display range. */
             val start = renders.map { it.range.startTime }.min()!!
             val end = renders.map { it.range.endTime }.max()!!
             val range = TimeRange.of(start, end)
-
-            // TODO Just assigning 'NumberAxis.tickUnit' atm. Full feature should use a custom time axis
-            // and use ticks that are "aligned" on the value (e.g. 0, 2, 4, 6 for a tick value of "2", and not
-            // 1, 3, 5 for example. "startTime - (startTime % tickValue) + tickValue)" should give the first tick,
-            // and then just increment by tickValue.
-            /*
-             * Using the major tick value from the first renders if there are multiple ones. All renders should
-             * have a similar range/resolution anyway.
-             */
             val tickValue = renders.first().resolutionX * 10
+
+            xAxis.setTickStep(renders.first().resolutionX)
 
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
-                seriesData.forEach { chart.data.add(it) }
+                outSeries.forEach { chart.data.add(it) }
+                chart.createSymbols = false
 
                 with(chart.xAxis as TimeAxis) {
                     tickUnit = tickValue.toDouble()

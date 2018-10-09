@@ -38,6 +38,8 @@ import javafx.geometry.Dimension2D;
 import javafx.geometry.Side;
 import javafx.scene.chart.ValueAxis;
 import javafx.util.StringConverter;
+import org.lttng.scope.application.ScopeOptions;
+import org.lttng.scope.common.TimestampFormat;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -58,6 +60,14 @@ public class TimeAxis extends ValueAxis<Number> {
     private final ChartLayoutAnimator animator = new ChartLayoutAnimator(this);
     private final StringProperty currentFormatterProperty = new SimpleStringProperty(this, "currentFormatter", "");
     private final DefaultFormatter defaultFormatter = new DefaultFormatter(this);
+    private long tickStep = 0;
+
+    /*
+     * This is a (hopefully temporary) hack. Parent's layoutChildren() always calls calculateTickValues() before
+     * calling getTickMarkLabel(), so we compute the number of digits to keep from the `.` character in the formatted
+     * tick mark labels in calculateTickValues(), and we trim accordingly in getTickMarkLabel().
+     */
+    int suffixDigits = 0;
 
     // -------------- PUBLIC PROPERTIES --------------------------------------------------------------------------------
 
@@ -155,9 +165,17 @@ public class TimeAxis extends ValueAxis<Number> {
      * @return A formatted string for the given value
      */
     @Override protected String getTickMarkLabel(Number value) {
-        StringConverter<Number> formatter = getTickLabelFormatter();
-        if (formatter == null) formatter = defaultFormatter;
-        return formatter.toString(value);
+        final String str = formatTickValue(value);
+
+        if (ScopeOptions.INSTANCE.getTimestampFormat() == TimestampFormat.YMD_HMS_N_TZ) {
+            return str;
+        }
+
+        if (suffixDigits == 0) {
+            return str.substring(0, str.length() - 10);
+        } else {
+            return str.substring(0, str.length() - (9 - suffixDigits));
+        }
     }
 
     /**
@@ -208,9 +226,29 @@ public class TimeAxis extends ValueAxis<Number> {
 //                    )
 //            );
 //        } else {
-            currentLowerBound.set(lowerBound);
-            setScale(scale);
+        currentLowerBound.set(lowerBound);
+        setScale(scale);
 //        }
+    }
+
+    public void setTickStep(long step) {
+        tickStep = step;
+    }
+
+    private String formatTickValue(Number tickValue) {
+        // round tick to avoid floating point number error
+        long fmtTickVal;
+
+        if (tickStep == 0) {
+            // initial state (no chart)
+            fmtTickVal = tickValue.longValue();
+        } else {
+            final long tickValueLong = tickValue.longValue();
+
+            fmtTickVal = ((tickValueLong + (tickStep / 2)) / tickStep) * tickStep;
+        }
+
+        return ScopeOptions.INSTANCE.getTimestampFormat().tsToString(fmtTickVal);
     }
 
     /**
@@ -253,6 +291,27 @@ public class TimeAxis extends ValueAxis<Number> {
 
         /* Regular code path for valid tick values */
         computeMajorTicks(tickValues, lowerBound, upperBound, tickUnit);
+        suffixDigits = 0;
+
+        for (Number tickValue : tickValues) {
+            final String str = formatTickValue(tickValue);
+            final String[] parts = str.split("\\.");
+
+            assert(parts.length == 2);
+
+            int thisSuffixDigits = 9;
+
+            for (int i = parts[1].length() - 1; i >= 0; i--) {
+                if (parts[1].charAt(i) == '0') {
+                    thisSuffixDigits--;
+                } else {
+                    break;
+                }
+            }
+
+            suffixDigits = Math.max(suffixDigits, thisSuffixDigits);
+        }
+
         return tickValues;
     }
 

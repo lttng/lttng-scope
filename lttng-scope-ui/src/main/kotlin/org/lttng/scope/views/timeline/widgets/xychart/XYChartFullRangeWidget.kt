@@ -201,34 +201,46 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
          *         consider it painted.
          */
         private fun repaintChart(traceProject: TraceProject<*, *>): Boolean {
-            val viewWidth = rootNode.width
             val traceFullRange = TimeRange.of(traceProject.startTime, traceProject.endTime)
 
             val renders = control.renderProvider.generateSeriesRenders(traceFullRange, NB_DATA_POINTS, null)
-            val seriesData = renders
-                    .filter { it != XYChartRender.EMPTY_RENDER }
-                    .map {
-                        it.data.map { XYChart.Data<Number, Number>(it.x, it.y) }
-                                /* Hide the symbols */
-                                .onEach {
-                                    val symbol = Rectangle(0.0, 0.0)
-                                    symbol.isVisible = false
-                                    it.setNode(symbol)
-                                }
-                                .toCollection(FXCollections.observableArrayList())
-                    }
-                    .toList()
+            if (renders.isEmpty()) return false
 
-            if (seriesData.isEmpty()) return false
+            val outSeries = mutableListOf<XYChart.Series<Number, Number>>()
+
+            for (render: XYChartRender in renders) {
+                val outPoints = mutableListOf<XYChart.Data<Number, Number>>()
+
+                // Width of a single bar in nanoseconds
+                val step = (render.data[1].x - render.data[0].x)
+
+                /*
+                 * A data point indicates the count difference between the data
+                 * points's timestamp and the next data point's timestamp.
+                 *
+                 * Hack: simulate a bar chart with an area chart here.
+                 */
+                for (renderDp: XYChartRender.DataPoint in render.data) {
+                    outPoints.add(XYChart.Data(renderDp.x, 0.0))
+                    outPoints.add(XYChart.Data(renderDp.x, renderDp.y))
+                    outPoints.add(XYChart.Data(renderDp.x + step, renderDp.y))
+                    outPoints.add(XYChart.Data(renderDp.x + step, 0.0))
+                }
+
+                outSeries.add(XYChart.Series(render.series.name, FXCollections.observableList(outPoints)))
+            }
 
             /* Determine start and end times of the display range. */
             val start = renders.map { it.range.startTime }.min()!!
             val end = renders.map { it.range.endTime }.max()!!
             val range = TimeRange.of(start, end)
 
+            xAxis.setTickStep(renders.first().resolutionX)
+
             Platform.runLater {
                 chart.data = FXCollections.observableArrayList()
-                seriesData.forEach { chart.data.add(XYChart.Series(it)) }
+                outSeries.forEach { chart.data.add(it) }
+                chart.createSymbols = false
 
                 with(chart.xAxis as TimeAxis) {
                     tickUnit = range.duration.toDouble()

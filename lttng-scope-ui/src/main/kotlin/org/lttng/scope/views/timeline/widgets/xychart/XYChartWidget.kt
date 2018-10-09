@@ -14,12 +14,15 @@ import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.view.XYChartView
 import javafx.scene.chart.AreaChart
 import javafx.scene.chart.NumberAxis
-import javafx.scene.chart.XYChart
 import javafx.scene.layout.Region
+import javafx.util.StringConverter
 import org.lttng.scope.common.jfx.TimeAxis
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartDragHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartScrollHandlers
 import org.lttng.scope.views.timeline.widgets.xychart.layer.XYChartSelectionLayer
+import kotlin.math.abs
+import kotlin.math.round
+
 
 abstract class XYChartWidget(override val control: XYChartControl) : XYChartView {
 
@@ -33,9 +36,22 @@ abstract class XYChartWidget(override val control: XYChartControl) : XYChartView
     protected val yAxis = NumberAxis().apply {
         isAutoRanging = true
         isTickLabelsVisible = true
+        tickLabelFormatter = object : StringConverter<Number>() {
+            override fun fromString(string: String?): Number {
+                return string!!.toDouble()
+            }
+
+            override fun toString(obj: Number?): String {
+                if (abs(round(obj!!.toDouble()) - obj.toDouble()) < 0.000001) {
+                    return round(obj.toDouble()).toLong().toString()
+                } else {
+                    return ""
+                }
+            }
+        }
     }
 
-    val chart: XYChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
+    val chart: AreaChart<Number, Number> = AreaChart(xAxis, yAxis, null).apply {
         title = null
         isLegendVisible = false
         animated = false

@@ -26,6 +26,7 @@ class EventStatsTotalsSeriesProvider(modelProvider: EventStatsXYChartProvider) :
 
     override fun fillSeriesRender(timestamps: List<Long>, task: FutureTask<*>?): List<XYChartRender.DataPoint>? {
         val ss = modelProvider.stateSystem
+
         if (ss == null || (task?.isCancelled == true)) {
             return null
         }
@@ -36,54 +37,27 @@ class EventStatsTotalsSeriesProvider(modelProvider: EventStatsXYChartProvider) :
             return null
         }
 
-        /*
-         * For each requested timestamp, we will give a number of events that are present inside a
-         * "bucket" centered on the timestamp. Next we need to determine the borders of those buckets.
-         *
-         * For example, if the requested timestamps are [4, 6, 8, 10], then we will define buckets with
-         * borders: [3, 5, 7, 9, 11].
-         */
         // TODO Support renders with less than 3 timestamps?
         if (timestamps.size < 3) throw IllegalArgumentException("XY Chart renders need a minimum of 3 datapoints, was $timestamps")
 
-        val bucketBorders = mutableListOf<Long>()
-        /* First bucket's start depends on the first 2 timestamps */
-        (timestamps[1] - timestamps[0])
-                .let { timestamps[0] - it / 2 }
-                .let { bucketBorders.add(it) }
+        val tsStateValues = ArrayList<Long>()
 
-        /* Middle buckets are cut halfway of the distance between each timestamp. Note we start at 1 not 0. */
-        for (i in 1 until timestamps.size) {
-            (timestamps[i] - timestamps[i - 1])
-                    .let { timestamps[i] - it / 2 }
-                    .let { bucketBorders.add(it) }
+        for (ts in timestamps) {
+            val queryTs = ts.coerceIn(ss.startTime, ss.currentEndTime)
+            val sv = ss.querySingleState(queryTs, quark).stateValue
+            tsStateValues.add(if (sv.isNull) 0L else (sv as IntegerStateValue).value.toLong())
         }
 
-        /* Last bucket's end depends on the last 2 timestamps */
-        (timestamps.last() - timestamps[timestamps.size - 1])
-                .let { timestamps.last() + it / 2 }
-                .let { bucketBorders.add(it) }
+        val dataPoints = ArrayList<XYChartRender.DataPoint>()
 
-        /* Map <timestamp, count> each bucket border to the amount of events seen so far. */
-        val eventCounts = bucketBorders
-                .map { it.coerceIn(ss.startTime, ss.currentEndTime) }
-                .map { ts ->
-                    val sv = ss.querySingleState(ts, quark).stateValue
-                    val count = if (sv.isNull) 0L else (sv as IntegerStateValue).value.toLong()
-                    ts to count
-                }
+        for (i in 0 until timestamps.size - 1) {
+            val countDiffUntilNext = tsStateValues[i + 1] - tsStateValues[i]
+            val ts = timestamps[i]
 
-        /* Assert everything is as expected */
-        if (eventCounts.size != timestamps.size + 1) throw IllegalStateException()
-
-        /* Compute the number of events in each "bucket" */
-        val bucketCounts = mutableListOf<Pair<Long, Long>>() // Pair<ts, count>
-        for (i in 1 until eventCounts.size) {
-            val count = eventCounts[i].second - eventCounts[i - 1].second
-            bucketCounts.add(timestamps[i - 1] to count)
+            dataPoints.add(XYChartRender.DataPoint(ts, countDiffUntilNext))
         }
 
-        return bucketCounts.map { XYChartRender.DataPoint(it.first, it.second) }
+        return dataPoints
     }
 
 }
