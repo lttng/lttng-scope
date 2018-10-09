@@ -15,6 +15,7 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
 import org.lttng.scope.common.jfx.JfxImageFactory
+import java.util.*
 
 private const val INITIAL_WINDOW_WIDTH = 1500.0
 
@@ -26,6 +27,16 @@ fun main(args: Array<String>) {
  * Main application launcher
  */
 class ScopeApplication : Application() {
+    private fun versionString(): String {
+        return try {
+            val inputStream = javaClass.getResourceAsStream("/META-INF/maven/org.lttng.scope/lttng-scope-ui/pom.properties")
+            val props = Properties()
+            props.load(inputStream)
+            props.getProperty("version")
+        } catch (e: java.lang.Exception) {
+            "(unknown version)"
+        }
+    }
 
     override fun start(primaryStage: Stage?) {
         primaryStage ?: return
@@ -40,7 +51,7 @@ class ScopeApplication : Application() {
 
             with(primaryStage) {
                 scene = Scene(root)
-                title = "LTTng Scope"
+                title = "LTTng Scope " + versionString()
 
                 /* Add the window icons */
                 listOf(16, 32, 48, 64, 128, 256)
