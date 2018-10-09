@@ -94,6 +94,8 @@ You need to create a run configuration to run the project.
 
 To create a run configuration:
 
+. Make sure the project is fully loaded, that is, there's no current
+  indexing/build activity (shown by the status bar).
 . Click **Run** (top menu), then **Edit configurations...**.
 . Click **{plus}**, then **Kotlin**.
 . Give the run configuration a name (for example, `main`).
