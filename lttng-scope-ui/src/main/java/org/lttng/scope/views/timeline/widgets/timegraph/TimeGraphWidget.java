@@ -256,6 +256,14 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
             /* We must not consume the event here */
         });
 
+        /* Redraw everything when the pane is resized */
+        fTimeGraphScrollPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            redraw();
+        });
+        fTimeGraphScrollPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            redraw();
+        });
+
         /* Synchronize the two scrollpanes' vertical scroll bars together */
         fTreeArea.getVerticalScrollBar().valueProperty().bindBidirectional(fTimeGraphScrollPane.vvalueProperty());
 
@@ -327,6 +335,18 @@ public class TimeGraphWidget extends TimeGraphModelView implements TimelineWidge
 
     @Override
     public void disposeImpl() {
+    }
+
+    private void redraw() {
+        Platform.runLater(() -> {
+            fBackgroundLayer.clear();
+            fStateLayer.clear();
+            fArrowLayer.clear();
+            fDrawnEventLayer.clear();
+            seekVisibleRange(getControl().getViewContext().getVisibleTimeRange());
+            redrawSelection();
+            getTimelineWidgetUpdateTask().forceRedraw();
+        });
     }
 
     @Override

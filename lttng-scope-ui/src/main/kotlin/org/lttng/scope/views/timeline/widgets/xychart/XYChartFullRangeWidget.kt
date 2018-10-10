@@ -16,6 +16,7 @@ import com.efficios.jabberwocky.views.xychart.control.XYChartControl
 import com.efficios.jabberwocky.views.xychart.model.render.XYChartRender
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
+import javafx.beans.value.ChangeListener
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.scene.chart.XYChart
@@ -110,6 +111,12 @@ class XYChartFullRangeWidget(control: XYChartControl, override val weight: Int) 
         rootNode.center = StackPane(chart,
                 Pane(visibleRangeRect).apply { isMouseTransparent = true },
                 selectionLayer)
+
+        rootNode.widthProperty().addListener { _, _, _ ->
+            drawSelection(viewContext.selectionTimeRange)
+            seekVisibleRange(viewContext.visibleTimeRange)
+            timelineWidgetUpdateTask.run()
+        }
     }
 
     override fun dispose() {

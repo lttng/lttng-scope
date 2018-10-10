@@ -82,6 +82,11 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
 
         ScopeOptions.timestampFormatProperty().addListener(timestampFormatChangeListener)
         ScopeOptions.timestampTimeZoneProperty().addListener(timestampFormatChangeListener)
+
+        chartArea.widthProperty().addListener { _, _, _ ->
+            drawSelection(viewContext.selectionTimeRange)
+            timelineWidgetUpdateTask.run()
+        }
     }
 
     override fun dispose() {
@@ -139,15 +144,15 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
     }
 
     private inner class RedrawTask : TimelineWidget.TimelineWidgetUpdateTask {
-
-        private var previousVisibleRange = ViewGroupContext.UNINITIALIZED_RANGE
-
         override fun run() {
             /* Skip redraws if we are in a project-switching operation. */
             if (viewContext.listenerFreeze) return
 
             val newVisibleRange = viewContext.visibleTimeRange
-            if (newVisibleRange == previousVisibleRange) return
+
+            if (newVisibleRange == ViewGroupContext.UNINITIALIZED_RANGE) {
+                return
+            }
 
             /* Paint a new chart */
             val renders = control.renderProvider.generateSeriesRenders(newVisibleRange, NB_DATA_POINTS, null)
@@ -196,8 +201,6 @@ class XYChartVisibleRangeWidget(control: XYChartControl, override val weight: In
                     upperBound = range.endTime.toDouble()
                 }
             }
-
-            previousVisibleRange = newVisibleRange
         }
 
     }
