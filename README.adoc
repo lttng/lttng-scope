@@ -10,9 +10,9 @@ LTTng Scope supports Windows, macOS, and Linux. The source code is
 available under the
 https://www.eclipse.org/legal/epl-v10.html[Eclipse Public License].
 
-NOTE: LTTng Scope is currently under development. There are still known
-bugs and some parts need to be optimized.
-
+NOTE: LTTng Scope is not actively developed or maintained. Please
+consider using https://eclipse.dev/tracecompass/[Trace Compass]
+instead.
 
 == Installation
 
